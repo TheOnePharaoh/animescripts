@@ -36,7 +36,7 @@ function Maybe.OnValue(m,f,...)
   local r=nil
   if m:HasValue() then
     local b=false
-    b,r=pcall(f(m:GetValue(),...))
+    b,r=pcall(f,m:GetValue(),...)
     if not b then error(r,2) end
   end
 end
