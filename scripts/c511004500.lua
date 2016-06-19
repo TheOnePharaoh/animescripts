@@ -5,8 +5,6 @@ function ref.start(c)
   --Change Position
   local e1=c:AddActivateProc()
   e1:SetCategory(CATEGORY_POSITION)
-  e1:SetType(EFFECT_TYPE_ACTIVATE)
-  e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
   e1:SetTarget(CCF(ref.tg,ref.tg_check,ref.tg_target))
   e1:SetOperation(ref.op)
