@@ -1,4 +1,5 @@
 --Legend of Heart
+--By Edo9300
 function c170000201.initial_effect(c)
     --Activate
     local e1=Effect.CreateEffect(c)
