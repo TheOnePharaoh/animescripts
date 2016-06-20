@@ -1,4 +1,5 @@
 --Timaeus the Knight of Destiny
+--By Edo9300
 function c170000210.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddFusionProcCode3(c,80019195,85800949,84565800,true,true)

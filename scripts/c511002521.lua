@@ -1,4 +1,5 @@
 --Relay Soul (Anime)
+--By Edo9300
 function c511002521.initial_effect(c)
 	--Survive
 	local e1=Effect.CreateEffect(c)

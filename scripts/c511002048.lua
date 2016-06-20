@@ -1,4 +1,4 @@
---Call of the Haunted (Anime)
+--Call of the Living Dead
 --Scripted by Edo9300
 function c511002048.initial_effect(c)
 	--activate

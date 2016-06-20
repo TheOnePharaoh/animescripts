@@ -1,4 +1,4 @@
---Dark Necrofear (Anime)
+--Dark Necrofear (Manga)
 --Scripted by Edo9300
 function c511004006.initial_effect(c)
 	c:EnableReviveLimit()
