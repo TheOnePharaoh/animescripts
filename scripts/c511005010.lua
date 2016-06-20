@@ -32,11 +32,13 @@ function self.code_fil(c,i)
 end
 
 function self.op(e,tp,eg,ep,ev,re,r,rp)
+  if not e:GetHandler():IsRelateToEffect(e) then return end
   local g=Duel.GetMatchingGroup(Card.IsDiscardable,tp,0,LOCATION_HAND,nil)
   local i=e:GetLabel()
   Duel.ConfirmCards(tp,g)
   local tg=g:Filter(self.code_fil,nil,i)
   if tg:GetCount()>0 then
+    Duel.HintSelection(tg)
     Duel.SendtoGrave(tg,REASON_EFFECT+REASON_DISCARD)
   else
     Duel.Damage(tp,1000,REASON_EFFECT)

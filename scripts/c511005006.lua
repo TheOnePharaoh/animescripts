@@ -40,6 +40,7 @@ end
 function self.me1_op(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.GetFieldCard(1-tp,LOCATION_SZONE,4-e:GetHandler():GetSequence())
   if not tc then return end
+  Duel.HintSelection(Group.FromCards(tc))
   Duel.Destroy(tc,REASON_EFFECT)
 end
 

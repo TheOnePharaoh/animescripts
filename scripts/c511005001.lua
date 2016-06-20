@@ -73,6 +73,7 @@ function self.sfx1_cd(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function self.sfx1_op(e,tp,eg,ep,ev,re,r,rp)
+  if not e:GetHandler():IsRelateToEffect(e) then return end
   local tc=e:GetHandler():GetEquipTarget()
   local ac=Duel.GetAttacker()
   local op=0
@@ -109,13 +110,14 @@ function self.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetMatchingGroup(self.sfx2_fil,tp,0,LOCATION_MZONE,nil)
   local cg=nil
   if g:GetCount()>loc and loc>0 then
-    cg=g:Select(tc,loc,loc)
+    cg=g:Select(tc,loc,loc,nil)
   else
     cg=g:Clone()
   end
   local tc=cg:GetFirst()
   while tc do
     g:RemoveCard(tc)
+    Duel.HintSelection(Group.FromCards(tc))
     Duel.GetControl(tc,tp)
     tc=cg:GetNext()
   end

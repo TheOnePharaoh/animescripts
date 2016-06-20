@@ -45,12 +45,15 @@ function self.cont_tg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function self.cont_op(e,tp,eg,ep,ev,re,r,rp)
+  if not e:GetHandler():IsRelateToEffect(e) then return end
   local tg=eg:Filter(self.cont_fil1,nil)
   if tg:GetCount()>0 then
     local i=e:GetLabel()
     Duel.ConfirmCards(tp,tg)
     if tg:IsExists(self.cont_fil2,1,nil,i) then
-      Duel.SendtoGrave(tg:Filter(self.cont_fil2,nil,i),REASON_EFFECT+REASON_DISCARD)
+      local ng=tg:Filter(self.cont_fil2,nil,i)
+      Duel.HintSelection(ng)
+      Duel.SendtoGrave(ng,REASON_EFFECT+REASON_DISCARD)
       Duel.ShuffleHand(1-tp)
       local e1=Effect.CreateEffect(e:GetHandler())
       e1:SetType(EFFECT_TYPE_FIELD)
