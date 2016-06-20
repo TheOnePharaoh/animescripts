@@ -1,4 +1,5 @@
 --Refracting Prism
+--By Edo9300
 function c511002456.initial_effect(c)
 	-- Activate
 	local e1=Effect.CreateEffect(c)
@@ -11,7 +12,7 @@ function c511002456.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002456.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1-- and Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>1
+	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1 and Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>1
 end
 function c511002456.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)
