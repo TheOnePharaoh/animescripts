@@ -374,14 +374,15 @@ return function()
     local f = function (tc)
       local p=sumplayer or tc:GetControler()
       local tp=target_player or p
-      return Duel.SpecialSummon(tc,sumtype,p,tp,nocheck,nolimit,pos)
+      return Duel.SpecialSummonStep(tc,sumtype,p,tp,nocheck,nolimit,pos)
     end
     local tc=target:GetFirst()
     local n=0
     while (tc) do
-      n=n+Duel.SpecialSummon(tc,sumtype,sumplayer,target_player,nocheck,nolimit,pos)
+      n=n+(f(tc) and 1 or 0)
       tc=target:GetNext()
     end
+    Duel.SpecialSummonComplete()
     return n
   end
 
