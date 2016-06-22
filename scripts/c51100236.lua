@@ -73,10 +73,10 @@ function c51100236.initial_effect(c)
 	e11:SetCountLimit(1)
 	e11:SetOperation(c51100236.atkdefresetop)
 	c:RegisterEffect(e11)
-	--If Special Summoned: Send to Grave
+	--If Special Summoned: Send to previous location
 	local e12=Effect.CreateEffect(c)
 	e12:SetDescription(aux.Stringid(511000235,1))
-	e12:SetCategory(CATEGORY_TOGRAVE)
+	e12:SetCategory(CATEGORY_TOGRAVE+CATEGORY_REMOVE+CATEGORY_TOHAND+CATEGORY_TODECK)
 	e12:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e12:SetRange(LOCATION_MZONE)
 	e12:SetProperty(EFFECT_FLAG_REPEAT+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
@@ -273,12 +273,29 @@ function c51100236.stgcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c51100236.stgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,e:GetHandler(),1,0,0)
+	local c=e:GetHandler()
+	if c:IsPreviousLocation(LOCATION_GRAVE) then
+		Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,c,1,0,0)
+	elseif c:IsPreviousLocation(LOCATION_DECK) then
+		Duel.SetOperationInfo(0,CATEGORY_TODECK,c,1,0,0)
+	elseif c:IsPreviousLocation(LOCATION_HAND) then
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND,c,1,0,0)
+	elseif c:IsPreviousLocation(LOCATION_REMOVED) then
+		Duel.SetOperationInfo(0,CATEGORY_REMOVE,c,1,0,0)
+	end
 end
 function c51100236.stgop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
-		Duel.SendtoGrave(c,REASON_EFFECT)
+		if c:IsPreviousLocation(LOCATION_GRAVE) then
+			Duel.SendtoGrave(c,REASON_EFFECT)
+		elseif c:IsPreviousLocation(LOCATION_DECK) then
+			Duel.SendtoDeck(c,nil,2,REASON_EFFECT)
+		elseif c:IsPreviousLocation(LOCATION_HAND) then
+			Duel.SendtoHand(c,nil,REASON_EFFECT)
+		elseif c:IsPreviousLocation(LOCATION_REMOVED) then
+			Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
+		end
 	end
 end
 function c51100236.valcheck(e,c)
