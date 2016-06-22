@@ -28,14 +28,14 @@ end
 function self.act_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.ChangeAttackTarget(nil)
   local e1=Effect.CreateEffect(e:GetHandler())
-  e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+  e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
   e1:SetCode(EVENT_BATTLED)
   e1:SetOperation(self.draw_op)
-  e1:SetReset(RESET_EVENT)
+  e1:SetReset(RESET_PHASE+PHASE_END)
+  e1:SetCountLimit(1)
   Duel.RegisterEffect(e1,tp)
 end
 
 function self.draw_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Draw(tp,1,REASON_EFFECT)
-  e:Reset()
 end
