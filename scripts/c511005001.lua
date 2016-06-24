@@ -98,7 +98,6 @@ function self.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   if not e:GetHandler():IsRelateToEffect(e) then return end --(maybe)
   local loc=Duel.GetLocationCount(tp,LOCATION_MZONE)
   local g=Duel.GetMatchingGroup(self.sfx2_fil,tp,0,LOCATION_MZONE,nil)
-  Debug.Message(Duel.GetMatchingGroup(self.sfx2_fil,tp,LOCATION_MZONE,0,nil):GetCount())
   local cg=nil
   if g:GetCount()>loc and loc>0 then
     cg=g:Select(tc,loc,loc,nil)
