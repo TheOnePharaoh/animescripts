@@ -1,3 +1,4 @@
+--coded by Lyris
 --Briar Pin-Seal
 function c511007003.initial_effect(c)
 	--When this card is activated; pick 1 card in your opponent's hand at random.
