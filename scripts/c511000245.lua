@@ -112,7 +112,7 @@ end
 function c511000245.chk(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=Duel.GetMatchingGroup(c511000245.atkdeffil,0,LOCATION_MZONE,LOCATION_MZONE,nil)
 	if g:GetCount()>0 then
-		local tc=g:GetFirst
+		local tc=g:GetFirst()
 		while tc do
 			--atk
 			local e1=Effect.CreateEffect(e:GetHandler())
