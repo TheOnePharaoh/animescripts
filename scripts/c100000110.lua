@@ -58,10 +58,8 @@ function c100000110.atkdeffil(c)
 end
 function c100000110.chk(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=Duel.GetMatchingGroup(c100000110.atkdeffil,0,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Debug.Message(g:GetCount())
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
-		Debug.Message(tc:GetCode())
 		while tc do
 			--atk
 			local e1=Effect.CreateEffect(e:GetHandler())
