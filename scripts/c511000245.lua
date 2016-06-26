@@ -1,5 +1,5 @@
---邪神アバター
---マイケル・ローレンス・ディーによってスクリプト
+--Teh Wicked Avatar (Anime)
+--Fixed by Edo9300
 function c511000245.initial_effect(c)
 	--summon with 3 tribute
 	local e1=Effect.CreateEffect(c)
@@ -96,6 +96,35 @@ function c511000245.initial_effect(c)
 	e17:SetRange(LOCATION_MZONE)
 	e17:SetValue(1)
 	c:RegisterEffect(e17)
+	if not c511000245.global_check then
+		c511000245.global_check=true
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+		ge1:SetCode(EVENT_ADJUST)
+		ge1:SetOperation(c511000245.chk)
+		Duel.RegisterEffect(ge1,0)
+	end
+end
+function c511000245.atkdeffil(c)
+	return c:IsType(TYPE_MONSTER) and c:GetAttack()>9999999
+end
+function c511000245.chk(e,tp,eg,ep,ev,re,r,rp,c)
+	local g=Duel.GetMatchingGroup(c511000245.atkdeffil,0,LOCATION_MZONE,LOCATION_MZONE,nil)
+	Debug.Message(g:GetCount())
+	if g:GetCount()>0 then
+		local tc=g:GetFirst()
+		Debug.Message(tc:GetCode())
+		while tc do
+			--atk
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_UPDATE_ATTACK)
+			e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+			e1:SetValue(9999999-tc:GetAttack())
+			tc:RegisterEffect(e1)
+		end
+	end
 end
 function c511000245.ttcon(e,c)
 	if c==nil then return true end
@@ -111,11 +140,15 @@ function c511000245.filter(c)
 end
 function c511000245.adval(e,c)
 	local g=Duel.GetMatchingGroup(c511000245.filter,0,LOCATION_MZONE,LOCATION_MZONE,nil)
-	if g:GetCount()==0 then 
+	if g:GetCount()==0 then
 		return 1
 	else
 		local tg,val=g:GetMaxGroup(Card.GetAttack)
-		return val+1
+		if val+1>9999999 then
+			return 9999999
+		else
+			return val+1
+		end
 	end
 end
 function c511000245.regop(e,tp,eg,ep,ev,re,r,rp)
