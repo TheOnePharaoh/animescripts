@@ -26,6 +26,15 @@ if not self.Set_hunder then
     [511005013]=true --Otonari Thunder (this!)
     --Rolling Thunder, Thunder Mountain to be added
   }
+  
+  for _,i in ipairs{
+    71438011,78663366,61204971,34961968,
+    698785,15510988,31786629,54752875,
+    77506119,987311,50920465,14089428,
+    21817254
+  } do
+    self.Set_hunder[i]=true
+  end
 end
 
 function self.hunder_fil(c)
@@ -33,7 +42,7 @@ function self.hunder_fil(c)
 end
 
 function self.sum_cd(e,c)
-  if c==nil then return true end
+  if not c then return true end
   local tp=c:GetControler()
   return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsAnyMatchingCard(tp,self.hunder_fil,LOCATION_MZONE,0,4,nil)
 end
