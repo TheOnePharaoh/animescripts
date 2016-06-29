@@ -78,7 +78,6 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
       tc:RegisterEffect(e1)
       re:SetLabelObject(e1)
     end
-    Debug.Message(tc:GetAttack()..' - '..ev)
     while tc:GetAttack()~=ev do
       e1:SetValue(e1:GetValue()+ev-tc:GetAttack())
     end
