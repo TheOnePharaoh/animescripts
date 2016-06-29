@@ -35,7 +35,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
     local tec=tc:GetEquipTarget()
     local v=0
     if tec then
-      v=tec:GetAttack()/2
+      v=tec:GetAttack()
     end
     if Duel.Destroy(tc,REASON_EFFECT) then
       if v==0 then return end
@@ -43,7 +43,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
       local e1=Effect.CreateEffect(c)
       e1:SetType(EFFECT_TYPE_SINGLE)
       e1:SetCode(EFFECT_SET_ATTACK_FINAL)
-      e1:SetValue(v)
+      e1:SetValue(v/2)
       e1:SetReset(RESET_EVENT+0x1fe0000)
       tec:RegisterEffect(e1)
       local e2=Effect.CreateEffect(c)
@@ -51,7 +51,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
       e2:SetCode(EFFECT_UPDATE_ATTACK)
       e2:SetRange(LOCATION_MZONE)
       e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_CANNOT_DISABLE)
-      e2:SetValue(v)
+      e2:SetValue(v-tec:GetAttack())
       e1:SetReset(RESET_EVENT+0x1fe0000)
       c:RegisterEffect(e2)
     end

@@ -51,7 +51,7 @@ function self.me2_cd(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function self.me2_sfil(c,e,tp)
-  return c:GetLevel()==3 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(511005006)
+  return c:GetLevel()==3 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not (c:IsCode(41493640) or c:IsCode(511005006))
 end
 
 function self.me2_tg(e,tp,eg,ep,ev,re,r,rp,chk)
