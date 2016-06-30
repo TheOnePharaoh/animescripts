@@ -21,6 +21,7 @@ end
 function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chkc then return chkc:IsOnField() end
   if chk==0 then return Duel.IsExistingTarget(self.fd_fil,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+  Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEDOWN)
   Duel.SetOperationInfo(0,CATEGORY_POSITION,Duel.SelectTarget(tp,self.fd_fil,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil),1,0,0)
 end
 
