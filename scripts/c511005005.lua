@@ -11,6 +11,7 @@ function self.initial_effect(c)
   e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
   e1:SetCategory(CATEGORY_DAMAGE)
   e1:SetCondition(self.cd)
+  e1:SetCost(self.cs)
   e1:SetTarget(self.tg)
   e1:SetOperation(self.op)
   c:RegisterEffect(e1)
@@ -20,8 +21,17 @@ function self.fil(c,p)
   return c:IsType(TYPE_MONSTER) and c:GetPreviousControler()~=p
 end
 
+function self.norm_fil(c)
+  return c:IsType(TYPE_NORMAL) and c:GetLevel()<=2 and c:IsDiscardable()
+end
+
 function self.cd(e,tp,eg,ep,ev,re,r,rp)
   return eg:IsExists(self.fil,1,nil,tp)
+end
+
+function self.cs(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return Duel.IsExistingMatchingCard(self.norm_fil,tp,LOCATION_HAND,0,1,nil) end
+  Duel.DiscardHand(tp,self.norm_fil,1,1,REASON_COST,nil)
 end
 
 function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
