@@ -46,7 +46,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.GetFirstTarget()
   if tc:IsRelateToEffect(e) and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) then
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_OPPO)
-    local ac=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
+    local ac=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil):GetFirst()
     if ac:GetAttack()>0 then
       local e1=Effect.CreateEffect(e:GetHandler())
       e1:SetType(EFFECT_TYPE_SINGLE)
