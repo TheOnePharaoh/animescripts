@@ -18,7 +18,7 @@ function self.initial_effect(c)
   e2:SetType(EFFECT_TYPE_SINGLE)
   e2:SetCode(EFFECT_EQUIP_LIMIT)
   e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-  e2:SetValue(1)
+  e2:SetValue(self.eq_lmt)
   c:RegisterEffect(e2)
   --Inc ATK
   local e3=Effect.CreateEffect(c)
@@ -46,4 +46,8 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   if tc:IsRelateToEffect(e) and tc:IsFaceup() and c:IsRelateToEffect(e) then
     Duel.Equip(tp,c,tc)
   end
+end
+
+function self.eq_lmt(e,c)
+  return c:IsRace(RACE_WARRIOR)
 end
