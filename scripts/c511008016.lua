@@ -14,13 +14,14 @@ function c511008016.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e2:SetRange(LOCATION_FZONE)
-	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_DESTROYED)
 	e2:SetCondition(c511008016.attcon)
+	e2:SetTarget(c511008016.atttg)
 	e2:SetOperation(c511008016.attop)
 	c:RegisterEffect(e2)
 	local e3=e2:Clone()
 	e3:SetCondition(c511008016.attcon2)
+	e3:SetTarget(c511008016.atttg2)
 	e3:SetOperation(c511008016.attop2)
 	c:RegisterEffect(e3)
 	--attach xyz
@@ -40,6 +41,41 @@ function c511008016.initial_effect(c)
 	e5:SetOperation(c511008016.leaveop)
 	c:RegisterEffect(e5)
 end
+
+--attach token
+function c511008016.confil(c,p)
+	return c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:GetPreviousControler()~=p
+end
+function c511008016.attcon(e,tp,eg,ep,ev,re,r,rp)
+	if re~=nil then if re:GetHandlerPlayer()~=tp then return false else return true end end
+	if eg:Filter(c511008016.confil,nil,tp):GetCount()>1 then return false end
+	return eg:IsExists(c511008016.confil,1,nil,tp,rp)
+end
+function c511008016.atttg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(c511008016.tfil,tp,LOCATION_MZONE,0,1,nil)
+		and eg:GetFirst():IsPreviousLocation(LOCATION_MZONE) end
+end
+function c511008016.attop(e,tp,eg,ep,ev,re,r,rp)
+	local tok=Duel.GetMatchingGroup(c511008016.tfil,tp,LOCATION_MZONE,0,nil):GetFirst()
+	local gdes=eg:Filter(c511008016.confil,nil,tp)
+	if e:GetHandler():IsRelateToEffect(e) and gdes:GetCount()>0 and tok then
+		Duel.Overlay(tok,gdes)
+		Duel.RaiseEvent(tok,511008016,e,0,0,0,0)
+	end
+end
+function c511008016.tfil(c)
+	return c:IsCode(511008017) and c:IsFaceup()
+end
+function c511008016.attcon2(e,tp,eg,ep,ev,re,r,rp)
+	return c511008016.attcon(e,1-tp,eg,ep,ev,re,r,rp)
+end
+function c511008016.atttg2(e,tp,eg,ep,ev,re,r,rp,chk)
+	return c511008016.atttg(e,1-tp,eg,ep,ev,re,r,rp,chk)
+end
+function c511008016.attop2(e,tp,eg,ep,ev,re,r,rp)
+	return c511008016.attop(e,1-tp,eg,ep,ev,re,r,rp)
+end
+
 --tokens
 function c511008016.tokcheck(e)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -146,59 +182,7 @@ end
 function c511008016.immfil(e,te)
 	return not te:GetOwner():IsCode(511008016)
 end
---attach token
-function c511008016.attcon2(e,tp,eg,ep,ev,re,r,rp)
-	return c511008016.attcon(e,1-tp,eg,ep,ev,re,r,rp)
-end
-function c511008016.attop2(e,tp,eg,ep,ev,re,r,rp)
-	return c511008016.attop(e,1-tp,eg,ep,ev,re,r,rp)
-end
-function c511008016.attcon(e,tp,eg,ep,ev,re,r,rp)
-	local tok=Duel.GetMatchingGroup(c511008016.tfil,tp,LOCATION_MZONE,0,nil):GetFirst()
-	if re~=nil then
-		if re:GetHandlerPlayer()~=tok:GetControler() then
-			return false
-		end
-	else
-		if Duel.GetAttacker():GetAttack()==Duel.GetAttackTarget():GetAttack() then
-			return true
-		end
---		if Duel.GetAttacker():GetAttack()>Duel.GetAttackTarget():GetAttack() and Duel.GetAttacker():GetControler()~=tp then
---			return true
---		end
-		if Duel.GetAttacker():GetAttack()<Duel.GetAttackTarget():GetAttack() and Duel.GetAttacker():GetControler()~=tp then
-			return true
-		elseif Duel.GetAttacker():GetAttack()<Duel.GetAttackTarget():GetAttack() and Duel.GetAttacker():GetControler()==tp then
-			return false
-		end
-		if Duel.GetAttacker():GetControler()~=tok:GetControler() then
-			return false
-		end
-	end
-	local boolval=false
-	local gconct=0
-	local gcon=eg:GetFirst()
-	while gcon do 
-		if gcon:GetControler()~=tok:GetControler() then gconct=gconct+1 end
-		if not boolval then boolval=true end
-		gcon=eg:GetNext()
-	end
-	if gconct<2 and boolval==true then return true else return false end
-end
-function c511008016.attop(e,tp,eg,ep,ev,re,r,rp)
-	local tok=Duel.GetMatchingGroup(c511008016.tfil,tp,LOCATION_MZONE,0,nil):GetFirst()
-	local gdes=eg:Filter(c511008016.gdesfil,nil,tp)
-	if gdes:GetCount()>0 and tok then
-		Duel.Overlay(tok,gdes)
-		Duel.RaiseEvent(tok,511008016,e,0,0,0,0)
-	end
-end
-function c511008016.gdesfil(c,p)
-	return c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:GetPreviousControler()~=p
-end
-function c511008016.tfil(c)
-	return c:IsCode(511008017) and c:IsFaceup()
-end
+
 --attach xyz
 function c511008016.xattcon(e,tp,eg,ep,ev,re,r,rp)
 	local tok1=Duel.GetMatchingGroup(c511008016.tfil,tp,LOCATION_MZONE,0,nil):GetFirst()
@@ -214,19 +198,20 @@ function c511008016.xattcon(e,tp,eg,ep,ev,re,r,rp)
 	return false
 end
 function c511008016.xattop(e,tp,eg,ep,ev,re,r,rp)
+	if not c:IsRelateToEffect(e) then return end
 	local tok=e:GetLabelObject()
 	local rp=tok:GetControler()
-	c=Duel.GetMatchingGroup(c511008016.tfil,rp,LOCATION_MZONE,0,nil):GetFirst()
-	cp=c:GetControler()
+	local c=Duel.GetMatchingGroup(c511008016.tfil,rp,LOCATION_MZONE,0,nil):GetFirst()
+	local cp=c:GetControler()
 	if Duel.IsExistingMatchingCard(c511008016.xyzfil,cp,LOCATION_MZONE,0,1,nil) then
 		local xg=Duel.GetMatchingGroup(c511008016.xyzfil,cp,LOCATION_MZONE,0,nil)
 		if xg:GetCount()==0 then return end
 		local og=c:GetOverlayGroup()
 		local ogct=og:GetCount()
 		while ogct>0 do
-			Duel.Hint(HINT_SELECTMSG,cp,aux.Stringid(511008016,1))
+			Duel.Hint(HINT_SELECTMSG,cp,HINTMSG_TARGET)
 			local xtg=xg:Select(cp,1,1,nil)
-			Duel.Hint(HINT_SELECTMSG,cp,aux.Stringid(511008016,2))
+			Duel.Hint(HINT_SELECTMSG,cp,HINTMSG_TARGET)
 			local sog=0
 			if xg:GetCount()<2 then
 				sog=og:Select(cp,ogct,ogct,nil)
@@ -253,6 +238,7 @@ end
 function c511008016.xyzfil(c)
 	return c:IsFaceup() and c:IsType(TYPE_XYZ)
 end
+
 --leave
 function c511008016.leaveop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsFacedown() then return end
