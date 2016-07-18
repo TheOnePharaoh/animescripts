@@ -30,7 +30,7 @@ function c511001468.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c511001468.atkval(e,c)
-	return Duel.GetMatchingGroupCount(Card.IsSetCard,c:GetControler(),LOCATION_GRAVE,0,nil,0x20b)*400
+	return Duel.GetMatchingGroupCount(Card.IsSetCard,c:GetControler(),LOCATION_GRAVE,0,nil,0x220b)*400
 end
 function c511001468.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsReason(REASON_DESTROY)
