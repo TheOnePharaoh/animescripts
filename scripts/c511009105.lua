@@ -60,7 +60,7 @@ end
 function c511009105.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local tc=e:GetLabelObject()
 	if chkc then return chkc==tc end
-	if chk==0 then return tc:IsOnField() and tc:IsCanBeEffectTarget(e) end
+	if chk==0 then return tc:IsOnField() and tc:IsFaceup() and tc:IsCanBeEffectTarget(e) end
 	Duel.SetTargetCard(tc)
 end
 function c511009105.atkop(e,tp,eg,ep,ev,re,r,rp)
@@ -70,7 +70,6 @@ function c511009105.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(-600)
-		-- e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		tc:RegisterEffect(e1)
 	end
