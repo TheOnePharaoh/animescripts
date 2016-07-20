@@ -22,7 +22,7 @@ function c511002038.initial_effect(c)
 end
 function c511002038.cfilter(c)
 	local code=c:GetCode()
-	return c:IsFaceup() and (code==511000853 or code==511000826)
+	return c:IsFaceup() and (code==511000853 or c:IsSetCard(0x1405))
 end
 function c511002038.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(c511002038.cfilter,tp,LOCATION_MZONE,0,1,nil)
