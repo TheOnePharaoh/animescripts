@@ -36,7 +36,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   local eg=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
   local tc=eg:GetFirst()
   while tc do
-    if tc:GetControler()==tp and tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) then
+    if tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) then
       if not c:IsRelateToCard(tc) then
         c:CreateRelation(tc,RESET_EVENT+0x1fe0000)
         local e1=Effect.CreateEffect(c)
@@ -51,7 +51,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
         c:SetCardTarget(tc)
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
-        e1:SetCode(EFFECT_SET_ATTACK)
+        e1:SetCode(EFFECT_SET_ATTACK_FINAL)
         e1:SetProperty(EFFECT_FLAG_OWNER_RELATE)
         e1:SetReset(RESET_EVENT+0x1fe0000)
         e1:SetCondition(self.dbl_cd)
@@ -71,7 +71,6 @@ end
 
 function self.dbl_cd(e,c)
   if e:GetOwner():IsRelateToCard(e:GetHandler()) then
-    if e:GetHandler():GetControler()~=e:GetOwner():GetControler() then return false end
     local ph=Duel.GetCurrentPhase()
     return ph>=0x08 and ph<=0x20
   end
@@ -120,6 +119,7 @@ function self.mimic_cs(e,tp,eg,ep,ev,re,r,rp,chk)
   local cost=e:GetHandler():GetActivateEffect():GetCost()
   if chk==0 then return not cost or cost(e,tp,eg,ep,ev,re,r,rp,0) end
   Duel.ChangePosition(e:GetHandler(),POS_FACEUP)
+  e:SetType(EFFECT_TYPE_ACTIVATE)
   if cost then cost(e,tp,eg,ep,ev,re,r,rp,chk) end
 end
 
