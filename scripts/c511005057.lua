@@ -36,6 +36,7 @@ end
 function self.rpl_fil(c,e,tp,eg,ep,ev,re,r,rp)
   if c:GetFlagEffect(511005057)==1 and c:IsCanBeEffectTarget(e) then
     local te=c:GetActivateEffect()
+    if not te then return false end
     local cd=te:GetCondition()
     local cs=te:GetCost()
     local tg=te:GetTarget()

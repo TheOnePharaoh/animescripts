@@ -33,6 +33,7 @@ end
 function self.hnd_fil(c,e,tp,eg,ep,ev,re,r,rp)
   if c:IsType(TYPE_SPELL) and c:GetOriginalCode()~=511005060 then
     local te=c:GetActivateEffect()
+    if not te then return end
     local cd=te:GetCondition()
     local cs=te:GetCost()
     local tg=te:GetTarget()
