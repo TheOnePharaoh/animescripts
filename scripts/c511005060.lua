@@ -1,7 +1,7 @@
 --Master Magician's Incantation
 --  By Shad3
---Activation of Chaining Spells (My Body as a Shield) still needs work
---Works perfectly for "EVENT_FREE_CHAIN" spells only
+
+--Works perfectly for "EVENT_FREE_CHAIN" and "EVENT_CHAINING" spells only
 
 local self=c511005060
 
@@ -86,6 +86,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   local op=te:GetOperation()
   local neg,nep,nev,nre,nr,nrp=eg,ep,ev,re,r,rp
   if te:GetCode()==EVENT_CHAINING then
+    local ch=Duel.GetCurrentChain()-1
     local i=self['cstore_'..ch]
     neg,nep,nev,nre,nr,nrp=i[1],i[2],i[3],i[4],i[5]
   end
