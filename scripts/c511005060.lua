@@ -37,10 +37,8 @@ function self.hnd_fil(c,e,tp,eg,ep,ev,re,r,rp)
     local cd=te:GetCondition()
     local cs=te:GetCost()
     local tg=te:GetTarget()
-    Debug.Message(te:GetCode())
     if te:GetCode()==EVENT_CHAINING then
       local ch=Duel.GetCurrentChain()-1
-      Debug.Message(ch)
       if ch>0 then
         local i=self['cstore_'..ch]
         local neg,nep,nev,nre,nr,nrp=i[1],i[2],i[3],i[4],i[5]
