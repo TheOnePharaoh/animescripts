@@ -97,6 +97,7 @@ function self.set_op(e,tp,eg,ep,ev,re,r,rp)
     Duel.SSet(tp,tc)
     e:GetHandler():CreateRelation(tc,RESET_EVENT+0x1fe0000)
     local te=tc:GetActivateEffect()
+    if not te then return end
     local e1=Effect.CreateEffect(tc)
     e1:SetType(EFFECT_TYPE_QUICK_O)
     e1:SetCode(te:GetCode())
