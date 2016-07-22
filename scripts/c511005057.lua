@@ -4,6 +4,8 @@
 local self=c511005057
 
 function self.initial_effect(c)
+  --Flag to avoid infinite loop
+  self['no_react_ev']=true
   --Global reg
   if not self['gl_reg'] then
     self['gl_reg']=true
@@ -34,7 +36,8 @@ function self.flag_op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function self.rpl_fil(c,e,tp,eg,ep,ev,re,r,rp)
-  if c:GetFlagEffect(511005057)==1 and c:IsCanBeEffectTarget(e) then
+  if c:GetFlagEffect(511005057)==1 and not 
+  self['no_react_ev'] and c:IsCanBeEffectTarget(e) then
     local te=c:GetActivateEffect()
     if not te then return false end
     local cd=te:GetCondition()
@@ -60,6 +63,7 @@ function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
     return loc and g:GetCount()>0
   end
   e:SetProperty(EFFECT_FLAG_CARD_TARGET)
+  Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(511005057,1))
   local tc=g:Select(tp,1,1,nil)
   Duel.SetTargetCard(tc)
 end
@@ -81,7 +85,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
     e:SetProperty(te:GetProperty())
     Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
     Duel.Hint(HINT_CARD,0,tc:GetOriginalCode())
-    if not (tc:IsType(TYPE_SPELL) and tc:IsType(TYPE_CONTINUOUS)) then tc:CancelToGrave(false) end
+    if not (tc:IsType(TYPE_SPELL) and tc:IsType(TYPE_CONTINUOUS+TYPE_EQUIP)) then tc:CancelToGrave(false) end
     if not tc:IsType(TYPE_SPELL) then return end
     tc:CreateEffectRelation(te)
     if cs then cs(te,tp,eg,ep,ev,re,r,rp,1) end

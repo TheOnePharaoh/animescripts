@@ -65,19 +65,16 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   local val=ev-tc:GetAttack()
   if val~=0 then
     Duel.Damage(1-tp,math.abs(val),REASON_EFFECT)
-    local e1=re:GetLabelObject()
-    if e1 then
-      e1:SetValue(e1:GetValue()+val)
-    else
-      e1=Effect.CreateEffect(e:GetHandler())
-      e1:SetType(EFFECT_TYPE_SINGLE)
-      e1:SetCode(EFFECT_UPDATE_ATTACK)
-      e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-      e1:SetReset(RESET_EVENT+0x1fe0000)
-      e1:SetValue(val)
-      tc:RegisterEffect(e1)
-      re:SetLabelObject(e1)
-    end
+    tc:ResetEffect(EFFECT_UPDATE_ATTACK,RESET_CODE)
+    tc:ResetEffect(EFFECT_SET_ATTACK,RESET_CODE)
+    tc:ResetEffect(EFFECT_SET_ATTACK_FINAL,RESET_CODE)
+    local e1=Effect.CreateEffect(e:GetHandler())
+    e1:SetType(EFFECT_TYPE_SINGLE)
+    e1:SetCode(EFFECT_UPDATE_ATTACK)
+    e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+    e1:SetReset(RESET_EVENT+0x1fe0000)
+    e1:SetValue(val)
+    tc:RegisterEffect(e1)
     while tc:GetAttack()~=ev do
       e1:SetValue(e1:GetValue()+ev-tc:GetAttack())
     end
