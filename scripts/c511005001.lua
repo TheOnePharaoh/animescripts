@@ -112,7 +112,12 @@ function self.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   while tc do
     g:RemoveCard(tc)
     Duel.HintSelection(Group.FromCards(tc))
-    Duel.GetControl(tc,tp)
+    if not Duel.GetControl(tc,tp,PHASE_END,1) then
+      if not tc:IsImmuneToEffect(e) and tc:IsAbleToChangeControler() then
+        Duel.Destroy(tc,REASON_EFFECT)
+      end
+      return
+    end
     tc=cg:GetNext()
   end
 end

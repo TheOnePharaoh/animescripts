@@ -6,6 +6,8 @@
 local self=c511005060
 
 function self.initial_effect(c)
+  --Flag to avoid infinite loop
+  self['no_react_ev']=true
   --Global check
   if not self['gl_chk'] then
     self['gl_chk']=true
@@ -31,7 +33,7 @@ function self.flag_op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function self.hnd_fil(c,e,tp,eg,ep,ev,re,r,rp)
-  if c:IsType(TYPE_SPELL) and c:GetOriginalCode()~=511005060 then
+  if c:IsType(TYPE_SPELL) and not self['no_react_ev'] then
     local te=c:GetActivateEffect()
     if not te then return end
     local cd=te:GetCondition()
@@ -63,7 +65,7 @@ function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then
     local loc=Duel.GetLocationCount(tp,LOCATION_SZONE)
     if e:GetHandler():IsLocation(LOCATION_HAND) then loc=loc-1 end
-    if loc>1 then
+    if loc>0 then
       return Duel.IsExistingMatchingCard(self.szo_fil,tp,LOCATION_SZONE,0,1,e:GetHandler(),e,tp,eg,ep,ev,re,r,rp) or Duel.IsExistingMatchingCard(self.hnd_fil,tp,LOCATION_HAND,0,1,e:GetHandler(),e,tp,eg,ep,ev,re,r,rp)
     elseif loc==0 then
       return Duel.IsExistingMatchingCard(self.szo_fil,tp,LOCATION_SZONE,0,1,e:GetHandler(),e,tp,eg,ep,ev,re,r,rp)
@@ -78,6 +80,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
     og:Merge(Duel.GetMatchingGroup(self.hnd_fil,tp,LOCATION_HAND,0,e:GetHandler(),e,tp,eg,ep,ev,re,r,rp))
   end
+  Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(511005057,1))
   local tc=og:Select(tp,1,1,nil):GetFirst()
   if not tc then return end
   local te=tc:GetActivateEffect()
@@ -98,7 +101,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
     Duel.ChangePosition(tc,POS_FACEUP)
   end
   Duel.Hint(HINT_CARD,0,tc:GetOriginalCode())
-  if not (tc:IsType(TYPE_SPELL) and tc:IsType(TYPE_CONTINUOUS)) then tc:CancelToGrave(false) end
+  if not (tc:IsType(TYPE_SPELL) and tc:IsType(TYPE_CONTINUOUS+TYPE_EQUIP)) then tc:CancelToGrave(false) end
   if not tc:IsType(TYPE_SPELL) then return end
   tc:CreateEffectRelation(te)
   if cs then cs(te,tp,neg,nep,nev,nre,nr,nrp,1) end
