@@ -46,6 +46,11 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
     local ttc=Duel.SelectMatchingCard(tp,self.sum_fil,tp,LOCATION_DECK,0,1,1,nil,e,tp,tc:GetCode()):GetFirst()
     if ttc then
       Duel.SpecialSummon(ttc,0,tp,tp,false,false,POS_FACEUP)
+    else
+      local chkg=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
+      Duel.ConfirmCards(1-tp,chkg)
+      Duel.ConfirmCards(tp,chkg)
+      Duel.ShuffleDeck(tp)
     end
   end
 end
