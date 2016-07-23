@@ -28,7 +28,7 @@ function c511009026.initial_effect(c)
 end
 --Predator Plant collection
 c511009026.collection={
-	[7306]=true;[7307]=true;[7308]=true;[95100761]=true;
+	[22011689]=true;[69105797]=true;[96622984]=true;
 }
 function c511009026.filter(c,e,sp)
 	return (c511009026.collection[c:GetCode()]) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)
