@@ -14,13 +14,6 @@ function self.initial_effect(c)
   e1:SetTarget(self.tg)
   e1:SetOperation(self.op)
   c:RegisterEffect(e1)
-  --Global exceptions
-  if not self['gl_chk'] then
-    self['gl_chk']=true
-    local spell_ex={
-      }
-    self['ex'..TYPE_SPELL]={}
-  end
 end
 
 function self.cd(e,tp,eg,ep,ev,re,r,rp)
