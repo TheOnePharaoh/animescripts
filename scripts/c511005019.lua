@@ -32,5 +32,12 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
   local tc=Duel.SelectMatchingCard(tp,self.fil,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
   if not tc then return end
-  if Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) then Duel.ChangeAttackTarget(tc) end
+  if Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) then
+    Duel.ChangeAttackTarget(tc)
+  else
+    local chkg=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
+    Duel.ConfirmCards(1-tp,chkg)
+    Duel.ConfirmCards(tp,chkg)
+    Duel.ShuffleDeck(tp)
+  end
 end

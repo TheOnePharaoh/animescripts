@@ -14,6 +14,13 @@ function self.initial_effect(c)
   e1:SetTarget(self.tg)
   e1:SetOperation(self.op)
   c:RegisterEffect(e1)
+  --Global exceptions
+  if not self['gl_chk'] then
+    self['gl_chk']=true
+    local spell_ex={
+      }
+    self['ex'..TYPE_SPELL]={}
+  end
 end
 
 function self.cd(e,tp,eg,ep,ev,re,r,rp)
@@ -39,8 +46,12 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   if not tc:IsRelateToEffect(e) then return end
   local loc=Duel.GetLocationCount(tp,LOCATION_MZONE)
   if loc<1 then return end
-  Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
-  local sg=Duel.SelectMatchingCard(tp,self.sum_fil,tp,LOCATION_DECK,0,0,loc,nil,e,tp)
+  local gg=Duel.GetMatchingGroup(self.sum_fil,tp,LOCATION_DECK,0,nil,e,tp)
+  local sg=Group.CreateGroup()
+  if gg:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(511005063,1)) then
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+    sg:Merge(gg:Select(tp,1,loc,nil))
+  end
   local sco=sg:GetCount()
   if loc-sco>0 then
     for i=1,loc-sco do
@@ -49,52 +60,44 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   end
   local stc=sg:GetFirst()
   while stc do
-    if stc:IsType(TYPE_TRAP) then
-      local te=stc:GetActivateEffect()
-      if te and te:GetCode()==EVENT_FREE_CHAIN then
-        local se1=Effect.CreateEffect(stc)
-        se1:SetType(EFFECT_TYPE_QUICK_O)
-        se1:SetCondition(self.mimic2_cd)
-        se1:SetCost(self.mimic2_cs)
-        if te:GetTarget() then se1:SetTarget(te:GetTarget()) end
-        se1:SetOperation(self.mimic2_op)
-        se1:SetProperty(bit.bor(te:GetProperty(),EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_UNCOPYABLE))
-        se1:SetCategory(te:GetCategory())
-        se1:SetLabel(te:GetLabel())
-        se1:SetLabelObject(te:GetLabelObject())
-        se1:SetReset(RESET_EVENT+0x47c0000)
-        if not stc:IsType(TYPE_CONTINUOUS) then
-          local se2=se1:Clone()
-          se2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_FLIP)
-          se2:SetCondition(self.mimic_cd)
-          se2:SetCost(self.mimic_cs)
-          se2:SetOperation(self.mimic_op)
-          se2:SetProperty(bit.bor(te:GetProperty(),EFFECT_FLAG_UNCOPYABLE))
-          stc:RegisterEffect(se2)
-        end
-        se1:SetCode(EVENT_FREE_CHAIN)
-        se1:SetRange(LOCATION_MZONE)
-        se1:SetCountLimit(1)
-        stc:RegisterEffect(se1)
-      end
-    elseif stc:IsType(TYPE_SPELL) and not stc:IsType(TYPE_CONTINUOUS) then
+    local e1=Effect.CreateEffect(stc)
+    if stc:IsType(TYPE_SPELL+TYPE_TRAP) then
       local te=stc:GetActivateEffect()
       if te and te:GetCode()==EVENT_FREE_CHAIN then
         local se1=Effect.CreateEffect(stc)
         se1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_FLIP)
-        se1:SetCondition(self.mimic_cd)
-        se1:SetCost(self.mimic_cs)
-        if te:GetTarget() then se1:SetTarget(te:GetTarget()) end
-        se1:SetOperation(self.mimic_op)
-        se1:SetProperty(bit.bor(te:GetProperty(),EFFECT_FLAG_UNCOPYABLE))
-        se1:SetCategory(te:GetCategory())
-        se1:SetLabel(te:GetLabel())
-        se1:SetLabelObject(te:GetLabelObject())
-        se1:SetReset(RESET_EVENT+0x47c0000)
+        se1:SetCondition(self.mimica_cd)
+        se1:SetOperation(self.mimica_op)
+        se1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
         stc:RegisterEffect(se1)
+        if stc:IsType(TYPE_TRAP) then
+          local te1=Effect.CreateEffect(stc)
+          te1:SetType(EFFECT_TYPE_QUICK_F)
+          te1:SetCode(EVENT_BATTLE_START)
+          te1:SetRange(LOCATION_MZONE)
+          te1:SetCondition(self.mimicb_cd)
+          te1:SetOperation(self.mimicb_op)
+          te1:SetProperty(EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_UNCOPYABLE)
+          te1:SetReset(RESET_EVENT+0x47c0000)
+          stc:RegisterEffect(te1)
+        end
+        local se2=Effect.CreateEffect(stc)
+        se2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+        se2:SetCondition(self.mimicc_cd)
+        se2:SetCost(self.mimicc_cs)
+        se2:SetTarget(self.mimicc_tg)
+        se2:SetOperation(self.mimicc_op)
+        se2:SetProperty(bit.bor(te:GetProperty(),EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_DAMAGE_STEP))
+        se2:SetCategory(te:GetCategory())
+        se2:SetLabel(te:GetLabel())
+        se2:SetLabelObject(te:GetLabelObject())
+        se2:SetReset(RESET_EVENT+0x47c0000)
+        se2:SetCode(511005063)
+        se2:SetRange(LOCATION_SZONE)
+        se2:SetCountLimit(1)
+        stc:RegisterEffect(se2)
       end
     end
-    local e1=Effect.CreateEffect(stc)
     e1:SetType(EFFECT_TYPE_SINGLE)
     e1:SetCode(EFFECT_CHANGE_TYPE)
     e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -133,53 +136,72 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   Duel.ShuffleSetCard(sg)
 end
 
-function self.mimic_cd(e,tp,eg,ep,ev,re,r,rp)
+function self.mimica_cd(e,tp,eg,ep,ev,re,r,rp)
   if Duel.GetCurrentPhase()==PHASE_DAMAGE then
-    local cond=e:GetHandler():GetActivateEffect():GetCondition()
-    if cond then return cond(e,tp,eg,ep,ev,re,r,rp) end
-    return true
+    local te=e:GetHandler():GetActivateEffect()
+    local cond=te:GetCondition()
+    local cost=te:GetCost()
+    local targ=te:GetTarget()
+    return (not cond or cond(e,tp,eg,ep,ev,re,r,rp)) and
+      (not cost or cost(e,tp,eg,ep,ev,re,r,rp,0)) and
+      (not targ or targ(e,tp,eg,ep,ev,re,r,rp,0))
   end
   return false
 end
 
-function self.mimic_cs(e,tp,eg,ep,ev,re,r,rp,chk)
-  local cost=e:GetHandler():GetActivateEffect():GetCost()
-  if chk==0 then return not cost or cost(e,tp,eg,ep,ev,re,r,rp,0) end
-  e:SetType(EFFECT_TYPE_ACTIVATE)
-  if cost then cost(e,tp,eg,ep,ev,re,r,rp,chk) end
-end
-
-function self.mimic_op(e,tp,eg,ep,ev,re,r,rp)
+function self.mimica_op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
-  c:SetStatus(STATUS_ACTIVATED,true)
-  local op=c:GetActivateEffect():GetOperation()
-  if op then op(e,tp,eg,ep,ev,re,r,rp) end
-  c:CancelToGrave(false)
-end
-
-function self.mimic2_cd(e,tp,eg,ep,ev,re,r,rp)
-  if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and Duel.GetAttackTarget() and Duel.GetAttackTarget()==e:GetHandler() then
-    local cond=e:GetHandler():GetActivateEffect():GetCondition()
-    return not cond or cond(e,tp,eg,ep,ev,re,r,rp)
-  end
-  return false
-end
-
-function self.mimic2_cs(e,tp,eg,ep,ev,re,r,rp,chk)
-  local c=e:GetHandler()
-  local cost=c:GetActivateEffect():GetCost()
-  if chk==0 then return not cost or cost(e,tp,eg,ep,ev,re,r,rp,0) end
-  Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+  Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEDOWN,true)
   c:ResetEffect(EFFECT_CHANGE_TYPE,RESET_CODE)
-  e:SetType(EFFECT_TYPE_ACTIVATE)
-  Duel.Hint(HINT_CARD,0,c:GetOriginalCode())
+  Duel.ChangePosition(c,POS_FACEUP)
+  Duel.RaiseSingleEvent(c,511005063,e,REASON_DESTROY,tp,tp,0)
+end
+
+function self.mimicb_cd(e,tp,eg,ep,ev,re,r,rp)
+  if e:GetHandler()~=Duel.GetAttackTarget() then return false end
+  local te=e:GetHandler():GetActivateEffect()
+  local cond=te:GetCondition()
+  local cost=te:GetCost()
+  local targ=te:GetTarget()
+  return (not cond or cond(e,tp,eg,ep,ev,re,r,rp)) and
+    (not cost or cost(e,tp,eg,ep,ev,re,r,rp,0)) and
+    (not targ or targ(e,tp,eg,ep,ev,re,r,rp,0))
+end
+
+function self.mimicb_op(e,tp,eg,ep,ev,re,r,rp)
+  if not Duel.SelectYesNo(tp,aux.Stringid(511005063,0)) then return end
+  local c=e:GetHandler()
+  Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEDOWN,true)
+  c:ResetEffect(EFFECT_CHANGE_TYPE,RESET_CODE)
+  Duel.ChangePosition(c,POS_FACEUP)
+  Duel.RaiseSingleEvent(c,511005063,e,0,tp,tp,0)
+  e:Reset()
+end
+
+function self.mimicc_cd(e,tp,eg,ep,ev,re,r,rp)
+  return e:GetHandler()==re:GetHandler()
+end
+
+function self.mimicc_cs(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return true end
+  local cost=e:GetHandler():GetActivateEffect():GetCost()
   if cost then cost(e,tp,eg,ep,ev,re,r,rp,chk) end
 end
 
-function self.mimic2_op(e,tp,eg,ep,ev,re,r,rp)
+function self.mimicc_tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return true end
   local c=e:GetHandler()
+  e:SetType(EFFECT_TYPE_ACTIVATE)
+  local targ=c:GetActivateEffect():GetTarget()
+  if targ then targ(e,tp,eg,ep,ev,re,r,rp,chk) end
   c:SetStatus(STATUS_ACTIVATED,true)
+end
+
+function self.mimicc_op(e,tp,eg,ep,ev,re,r,rp)
+  local c=e:GetHandler()
+  if c:IsType(TYPE_CONTINUOUS+TYPE_EQUIP) and r==REASON_DESTROY then
+    Duel.Destroy(c,REASON_BATTLE)
+  end
   local op=c:GetActivateEffect():GetOperation()
   if op then op(e,tp,eg,ep,ev,re,r,rp) end
-  if c:IsType(TYPE_CONTINUOUS+TYPE_EQUIP) and c:IsOnField() then c:CancelToGrave() end
 end
