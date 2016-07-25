@@ -1,11 +1,5 @@
 --Eye of Illusion
 --  By Shad3
---[[
-Notes
-Hex for Counter is subject to change
-Clarify who get the counter (always the attacking monster? so if the equipped monster declares an attack and self-negated it got a counter? not the attack target?)
-Decide whether taking control is a trigger or continuous effect
-]]
 
 local self=c511005001
 
@@ -35,7 +29,6 @@ function self.initial_effect(c)
   e3:SetRange(LOCATION_SZONE)
   e3:SetCategory(CATEGORY_CONTROL)
   e3:SetCountLimit(1)
-  e3:SetCondition(self.sfx2_cd)
   e3:SetTarget(self.sfx2_tg)
   e3:SetOperation(self.sfx2_op)
   c:RegisterEffect(e3)
@@ -44,7 +37,7 @@ function self.initial_effect(c)
   e4:SetType(EFFECT_TYPE_SINGLE)
   e4:SetCode(EFFECT_EQUIP_LIMIT)
   e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-  e4:SetValue(1)
+  e4:SetValue(self.eq_limit)
   c:RegisterEffect(e4)
 end
 
@@ -65,11 +58,15 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   end
 end
 
+function self.eq_limit(e,c)
+  return e:GetHandler():GetControler()==c:GetControler()
+end
+
 --Effect 2 Negate/Redirect attack
 
 function self.sfx1_cd(e,tp,eg,ep,ev,re,r,rp)
   local tc=e:GetHandler():GetEquipTarget()
-  return Duel.GetAttacker()==tc or Duel.GetAttackTarget()==tc
+  return Duel.GetAttackTarget()==tc or (Duel.GetAttacker()==tc and Duel.GetAttackTarget())
 end
 
 function self.sfx1_op(e,tp,eg,ep,ev,re,r,rp)
@@ -82,9 +79,10 @@ function self.sfx1_op(e,tp,eg,ep,ev,re,r,rp)
   else
     op=Duel.SelectOption(tp,aux.Stringid(511005001,1))
   end
+  if ac==tc then ac=Duel.GetAttackTarget() end
   if op==0 then
     Duel.NegateAttack()
-    ac:AddCounter(0x6F,1) --not sure which counter to use.
+    ac:RegisterFlagEffect(511005001,RESET_PHASE+PHASE_END,0,2)
   else
     Duel.ChangeAttackTarget(Duel.SelectMatchingCard(tp,Card.IsAttackable,tp,LOCATION_MZONE,0,1,1,tc):GetFirst())
   end
@@ -93,11 +91,7 @@ end
 --Effect 3 Take control
 
 function self.sfx2_fil(c)
-  return c:GetCounter(0x6F)>0 and c:IsControlerCanBeChanged()
-end
-
-function self.sfx2_cd(e,tp,eg,ep,ev,re,r,rp)
-  return Duel.GetTurnPlayer()==tp
+  return c:GetFlagEffect(511005001)~=0 and c:IsControlerCanBeChanged()
 end
 
 function self.sfx2_tg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -118,7 +112,12 @@ function self.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   while tc do
     g:RemoveCard(tc)
     Duel.HintSelection(Group.FromCards(tc))
-    Duel.GetControl(tc,tp)
+    if not Duel.GetControl(tc,tp,PHASE_END,1) then
+      if not tc:IsImmuneToEffect(e) and tc:IsAbleToChangeControler() then
+        Duel.Destroy(tc,REASON_EFFECT)
+      end
+      return
+    end
     tc=cg:GetNext()
   end
 end

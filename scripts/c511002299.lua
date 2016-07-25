@@ -8,10 +8,17 @@ function c511002299.initial_effect(c)
 	e1:SetOperation(c511002299.activate)
 	c:RegisterEffect(e1)
 end
+--Sphere collection
+c511002299.collection={
+	[60202749]=true;[75886890]=true;[32559361]=true;
+	[14466224]=true;[82693042]=true;[26302522]=true;
+	[29552709]=true;[60417395]=true;[72144675]=true;
+	[66094973]=true;[1992816]=true;[51043053]=true;
+	[70780151]=true;[10000080]=true;
+}
 function c511002299.condition(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttackTarget()
-	return a and a:IsFaceup() and (a:IsCode(511002289) or a:IsCode(511002290) or a:IsCode(14466224) or a:IsCode(72144675) 
-		or a:IsCode(66094973) or a:IsCode(511002291) or a:IsCode(511002292)) and a:IsControler(tp)
+	return a and a:IsFaceup() and (c511002299.collection[a:GetCode()] or a:IsSetCard(0x406)) and a:IsControler(tp)
 end
 function c511002299.activate(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())

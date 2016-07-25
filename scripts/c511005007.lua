@@ -1,4 +1,4 @@
---Assault Cyclone
+--Guidance to Salvation
 --  By Shad3
 
 local self=c511005007
@@ -6,30 +6,31 @@ local self=c511005007
 function self.initial_effect(c)
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
-  e1:SetCode(EVENT_CHAINING)
-  e1:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY)
-  e1:SetCondition(self.act_cd)
-  e1:SetTarget(self.act_tg)
-  e1:SetOperation(self.act_op)
+  e1:SetCode(EVENT_FREE_CHAIN)
+  e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+  e1:SetCondition(self.cd)
+  e1:SetTarget(self.tg)
+  e1:SetOperation(self.op)
   c:RegisterEffect(e1)
 end
 
-function self.act_cd(e,tp,eg,ep,ev,re,r,rp)
-  ph=Duel.GetCurrentPhase()
-  return (ph==PHASE_DAMAGE or ph==PHASE_DAMAGE_CAL) and re:IsActiveType(TYPE_SPELL+TYPE_TRAP)
+function self.cd(e,tp,eg,ep,ev,re,r,rp)
+  return Duel.GetLP(tp)<=1500
 end
 
-function self.act_tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return true end
-  Duel.SetOperationInfo(0,CATEGORY_DISABLE,eg,1,0,0)
-	if re:GetHandler():IsDestructable() and re:GetHandler():IsRelateToEffect(re) then
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
-	end
+function self.fil(c,e,tp)
+  return c:IsType(TYPE_TUNER) and c:GetAttack()<=1500 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 
-function self.act_op(e,tp,eg,ep,ev,re,r,rp)
-  Duel.NegateActivation(ev)
-  if re:GetHandler():IsRelateToEffect(re) then
-    Duel.Destroy(eg,REASON_EFFECT)
+function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return Duel.IsExistingMatchingCard(self.fil,tp,LOCATION_DECK,0,1,nil,e,tp) end
+  Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
+end
+
+function self.op(e,tp,eg,ep,ev,re,r,rp)
+  Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+  local tc=Duel.SelectMatchingCard(tp,self.fil,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
+  if tc then
+    Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
   end
 end
