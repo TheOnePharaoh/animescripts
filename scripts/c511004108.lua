@@ -27,7 +27,7 @@ function c511004108.facon(e)
 	return Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0
 end
 function c511004108.atfilter(c)
-	return c:IsFaceup() and (c95100557.collection[c:GetCode()] or c:IsSetCard(0xe4) or c:IsSetCard(0x405))
+	return c:IsFaceup() and (c511004108.collection[c:GetCode()] or c:IsSetCard(0xe4) or c:IsSetCard(0x405))
 end
 function c511004108.atop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
