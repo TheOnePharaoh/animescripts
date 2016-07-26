@@ -9,6 +9,7 @@ function c511001813.initial_effect(c)
 	e1:SetOperation(c511001813.activate)
 	c:RegisterEffect(e1)
 end
+c511001813.fit_monster={32012841}
 function c511001813.filter(c,e,tp,m)
 	local cd=c:GetCode()
 	if cd~=32012841 or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,true,false) 

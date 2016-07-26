@@ -10,11 +10,8 @@ function c511000389.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511000389.efilter(e,te)
-	return (te:IsActiveType(TYPE_SPELL) or te:IsActiveType(TYPE_TRAP) or te:IsActiveType(TYPE_MONSTER)) and te:GetOwnerPlayer()~=e:GetHandlerPlayer()
+	return te:GetOwner()~=e:GetOwner()
 end
-function c511000389.cfilter(c)
-	return c:IsFaceup() and c:IsCode(511000380)
-end
-function c511000389.con(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c511000389.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+function c511000389.con(e)
+	return Duel.IsPlayerAffectedByEffect(e:GetHandlerPlayer(),511000380)
 end

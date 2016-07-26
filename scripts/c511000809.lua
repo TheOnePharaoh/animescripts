@@ -30,7 +30,7 @@ function c511000809.unop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE)
 	e1:SetCode(EFFECT_IMMUNE_EFFECT)
 	e1:SetTargetRange(LOCATION_ONFIELD,0)
-	e1:SetReset(RESET_PHASE+RESET_END)
+	e1:SetReset(RESET_PHASE+PHASE_END)
 	e1:SetValue(1)
 	Duel.RegisterEffect(e1,tp)
 end

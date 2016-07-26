@@ -1,34 +1,35 @@
 --Maytr Curse
 function c140000122.initial_effect(c)
-        local e1=Effect.CreateEffect(c)
+	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e1:SetCode(EVENT_TO_GRAVE)
-	e1:SetCondition(c140000122.bacon)
-	e1:SetTarget(c140000122.batg)
-	e1:SetOperation(c140000122.baop)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
+	e1:SetCode(EVENT_DESTROYED)
+	e1:SetCondition(c140000122.condition)
+	e1:SetTarget(c140000122.target)
+	e1:SetOperation(c140000122.activate)
 	c:RegisterEffect(e1)
 end
-function c140000122.bacon(e,tp,eg,ep,ev,re,r,rp)
-        local ph=Duel.GetCurrentPhase()
-	return eg:IsExists(c140000122.cfilter,1,nil) and Duel.GetTurnPlayer()~=tp
-            and (ph==PHASE_BATTLE or ph==PHASE_DAMAGE or ph==PHASE_DAMAGE_CAL)
+function c140000122.cfilter(c,tp)
+	return c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp
 end
-function c140000122.cfilter(c)
-	return (c:IsReason(REASON_DESTROY) or c:IsReason(REASON_BATTLE)) and c:IsControler(tp)
+function c140000122.condition(e,tp,eg,ep,ev,re,r,rp)
+	local ph=Duel.GetCurrentPhase()
+	local g=eg:Filter(c140000122.cfilter,nil,tp)
+	return g:GetCount()==1
 end
-function c140000122.batg(e,tp,eg,ep,ev,re,r,rp,chk)
-        if chk==0 then return Duel.IsExistingMatchingCard(Card.IsPosition,tp,LOCATION_MZONE,0,1,nil,POS_FACEUP_ATTACK)
-            and Duel.IsExistingMatchingCard(Card.IsPosition,tp,0,LOCATION_MZONE,1,nil,POS_FACEUP_ATTACK) end
-        local a=Duel.SelectTarget(tp,Card.IsPosition,tp,LOCATION_MZONE,0,1,1,nil,POS_FACEUP_ATTACK)
-        local d=Duel.SelectTarget(tp,Card.IsPosition,tp,0,LOCATION_MZONE,1,1,nil,POS_FACEUP_ATTACK)
-        c140000122[0]=a:GetFirst()
-        c140000122[1]=d:GetFirst()
+function c140000122.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return false end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) 
+		and Duel.IsExistingTarget(nil,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
+	Duel.SelectTarget(tp,nil,tp,LOCATION_MZONE,0,1,1,nil)
 end
-function c140000122.baop(e,tp,eg,ep,ev,re,r,rp)
-        local a=c140000122[0]
-        local d=c140000122[1]
-        if a:IsAttackPos() and d:IsAttackPos() then
-            Duel.CalculateDamage(a,d)
-        end
+function c140000122.activate(e,tp,eg,ep,ev,re,r,rp)
+	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	local tc1=tg:GetFirst()
+	local tc2=tg:GetNext()
+	if not tc1 or not tc1:IsRelateToEffect(e) or not tc2 or not tc2:IsRelateToEffect(e) then return end
+	if tc1:IsControler(tp) then tc2,tc1=tc1,tc2 end
+	Duel.CalculateDamage(tc1,tc2)
 end

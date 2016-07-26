@@ -5,16 +5,9 @@ function c110000116.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCondition(c110000116.condition)
 	e1:SetTarget(c110000116.target)
 	e1:SetOperation(c110000116.activate)
 	c:RegisterEffect(e1)
-end
-function c110000116.cfilter(c)
-	return c:IsFaceup() and c:IsCode(110000104)
-end
-function c110000116.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c110000116.cfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function c110000116.filter(c,e,tp)
 	return c:IsLevelBelow(4) and c:IsType(0x10000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -28,19 +21,45 @@ function c110000116.activate(e,tp,eg,ep,ev,re,r,rp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ft<=0 then return end
 	if ft>4 then ft=4 end
-	local g=Duel.GetMatchingGroup(c110000116.filter,tp,LOCATION_DECK,0,nil,e,tp)
-	local sg=Group.CreateGroup()
-	local chk=0
-	while sg:GetCount()<4 and (chk==0 or Duel.SelectYesNo(tp,aux.Stringid(525110,1))) do
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=g:Select(tp,1,1,nil):GetFirst()
-		if tc then
-			chk=1
-			sg:AddCard(tc)
-			g:Remove(Card.IsCode,nil,tc:GetCode())
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,c110000116.filter,tp,LOCATION_DECK,0,1,ft,nil,e,tp)
+	if g:GetCount()>0 then
+		local fid=e:GetHandler():GetFieldID()
+		local tc=g:GetFirst()
+		while tc do
+			Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+			tc:RegisterFlagEffect(110000116,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1,fid)
+			tc=g:GetNext()
 		end
+		Duel.SpecialSummonComplete()
+		g:KeepAlive()
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e1:SetCode(EVENT_PHASE+PHASE_END)
+		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		e1:SetCountLimit(1)
+		e1:SetLabel(fid)
+		e1:SetLabelObject(g)
+		e1:SetCondition(c110000116.tgcon)
+		e1:SetOperation(c110000116.tgop)
+		Duel.RegisterEffect(e1,tp)
 	end
-	if sg:GetCount()>0 then
-		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
-	end
+end
+function c110000116.tgfilter(c,fid)
+	return c:GetFlagEffectLabel(110000116)==fid
+end
+function c110000116.tgcon(e,tp,eg,ep,ev,re,r,rp)
+	local g=e:GetLabelObject()
+	if not g:IsExists(c110000116.tgfilter,1,nil,e:GetLabel()) then
+		g:DeleteGroup()
+		e:Reset()
+		return false
+	else return true end
+end
+function c110000116.tgop(e,tp,eg,ep,ev,re,r,rp)
+	local g=e:GetLabelObject()
+	local tg=g:Filter(c110000116.tgfilter,nil,e:GetLabel())
+	g:DeleteGroup()
+	Duel.SendtoGrave(tg,REASON_EFFECT)
 end

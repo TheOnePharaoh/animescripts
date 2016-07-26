@@ -45,9 +45,13 @@ function c511000243.initial_effect(c)
 	e6:SetRange(LOCATION_MZONE)
 	e6:SetOperation(c511000243.winop)
 	c:RegisterEffect(e6)
-	--[[local e7=e6:Clone()
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e7:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e7:SetCode(EVENT_ADJUST)
-	c:RegisterEffect(e7)]]
+	e7:SetRange(LOCATION_MZONE)
+	e7:SetOperation(c511000243.winop)
+	c:RegisterEffect(e7)
 end
 function c511000243.forbtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

@@ -44,10 +44,10 @@ function c95000003.filter(c)
     return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:GetSequence()<5
 end
 function c95000003.setfilter(c,code)
-    return c:IsSSetable() and c:GetCode()==code
+    return c:IsSSetable() and c:IsCode(code)
 end
 function c95000003.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return not Duel.IsExistingMatchingCard(c95000003.filter,tp,LOCATION_ONFIELD,0,1,nil) 
+    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>4 
     	and Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000004) 
     	and Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000005) 
     	and Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000006) 
@@ -55,30 +55,34 @@ function c95000003.target(e,tp,eg,ep,ev,re,r,rp,chk)
     	and Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000008) end
 end
 function c95000003.activate(e,tp,eg,ep,ev,re,r,rp)
-    if Duel.IsExistingMatchingCard(c95000003.filter,tp,LOCATION_ONFIELD,0,1,nil)
-        or not Duel.IsExistingMatchingCard(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000004)	
-	    or not Duel.IsExistingMatchingCard(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000005)	
-	    or not Duel.IsExistingMatchingCard(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000006)	
-	    or not Duel.IsExistingMatchingCard(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000007)	
-	    or not Duel.IsExistingMatchingCard(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,95000008)	
-	then return end
-    Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
-	local g1=Duel.SelectMatchingCard(tp,c95000003.setfilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,95000004)
-	Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
-	local g2=Duel.SelectMatchingCard(tp,c95000003.setfilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,95000005)
-	Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
-	local g3=Duel.SelectMatchingCard(tp,c95000003.setfilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,95000006)
-	Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
-	local g4=Duel.SelectMatchingCard(tp,c95000003.setfilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,95000007)
-	Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
-	local g5=Duel.SelectMatchingCard(tp,c95000003.setfilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,95000008)
-	local og=Group.FromCards(g1:GetFirst(),g2:GetFirst(),g3:GetFirst(),g4:GetFirst(),g5:GetFirst())
-	local tc=og:GetFirst()
-	while tc do 
-	    Duel.SSet(tp,tc)
-	    tc=og:GetNext()
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=4 then return end
+	local g1=Duel.GetMatchingGroup(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,95000004)
+	local g2=Duel.GetMatchingGroup(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,95000005)
+	local g3=Duel.GetMatchingGroup(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,95000006)
+	local g4=Duel.GetMatchingGroup(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,95000007)
+	local g5=Duel.GetMatchingGroup(c95000003.setfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,95000008)
+	if g1:GetCount()>0 and g2:GetCount()>0 and g3:GetCount()>0 and g4:GetCount()>0 and g5:GetCount()>0 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
+		local sg1=g1:Select(tp,1,1,nil)
+		Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
+		local sg2=g2:Select(tp,1,1,nil)
+		sg1:Merge(sg2)
+		Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
+		local sg3=g3:Select(tp,1,1,nil)
+		sg1:Merge(sg3)
+		Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
+		local sg4=g4:Select(tp,1,1,nil)
+		sg1:Merge(sg4)
+		Duel.Hint(HINT_SELECTMSG,tp,HINT_SET)
+		local sg5=g5:Select(tp,1,1,nil)
+		sg1:Merge(sg5)
+		local tc=sg1:GetFirst()
+		while tc do
+			Duel.SSet(tp,tc)
+			tc=sg1:GetNext()
+		end
+		Duel.ConfirmCards(1-tp,sg1)
 	end
-	Duel.ConfirmCards(tp,og)
 end
 function c95000003.valcon(e,re,r,rp)
     return bit.band(r,REASON_EFFECT)~=0

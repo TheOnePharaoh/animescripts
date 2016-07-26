@@ -12,71 +12,35 @@ function c511000350.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511000350.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,e:GetHandler()) end
-	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
+	Duel.DiscardHand(tp,Card.IsAbleToGraveAsCost,1,1,REASON_COST)
 end
-function c511000350.filter(c)
-	return c:IsRace(RACE_DRAGON) and c:IsType(TYPE_NORMAL) and c:IsFaceup()
+function c511000350.filter(c,code)
+	return c:IsCode(code) and c:IsFaceup() and c:IsAbleToGrave()
 end
 function c511000350.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c511000350.filter,tp,LOCATION_MZONE,0,2,nil)
-end
-function c511000350.spfilter(c,e,tp)
-	return c:IsCode(38109772) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY)
+	return Duel.IsExistingMatchingCard(c511000350.filter,tp,LOCATION_MZONE,0,1,nil,511002171) 
+		and Duel.IsExistingMatchingCard(c511000350.filter,tp,LOCATION_MZONE,0,1,nil,511002255)
 end
 function c511000350.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511000350.spfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,nil,e,tp) end
-	local g=Duel.SelectTarget(tp,c511000350.filter,tp,LOCATION_MZONE,0,2,2,nil)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE)
+	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,38109772,0,0x21,2800,2300,7,RACE_DRAGON,ATTRIBUTE_FIRE) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function c511000350.activate(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local ov=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,c511000350.spfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil,e,tp)
-	if g:GetCount()>0 then
-		Duel.Overlay(ov:GetFirst(),ov:GetNext())
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
-		local mg=ov:GetFirst():GetOverlayGroup()
-		local tc=g:GetFirst()
-		Duel.Overlay(tc,mg)
-		Duel.Overlay(tc,ov:GetFirst())
-		--destroy
-		local e1=Effect.CreateEffect(c)
-		e1:SetDescription(aux.Stringid(511000350,0))
-		e1:SetCategory(CATEGORY_DESTROY)
-		e1:SetType(EFFECT_TYPE_IGNITION)
-		e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetCost(c511000350.descost)
-		e1:SetTarget(c511000350.destg)
-		e1:SetOperation(c511000350.desop)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		tc:RegisterEffect(e1)
-		tc:CompleteProcedure()
-	end
-end
-function c511000350.descost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,2,REASON_COST) and c:GetAttackAnnouncedCount()==0 end
-	e:GetHandler():RemoveOverlayCard(tp,2,2,REASON_COST)
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_OATH)
-	e1:SetCode(EFFECT_CANNOT_ATTACK)
-	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-	c:RegisterEffect(e1,true)
-end
-function c511000350.destg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chkc then return chkc:IsOnField() and chkc:IsDestructable() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsDestructable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,Card.IsDestructable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
-end
-function c511000350.desop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
-		Duel.Destroy(tc,REASON_EFFECT)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=-1 then return end
+	if not Duel.IsPlayerCanSpecialSummonMonster(tp,38109772,0,0x21,2800,2300,7,RACE_DRAGON,ATTRIBUTE_FIRE) then return end
+	local g1=Duel.GetMatchingGroup(c511000350.filter,tp,LOCATION_MZONE,0,nil,511002171)
+	local g2=Duel.GetMatchingGroup(c511000350.filter,tp,LOCATION_MZONE,0,nil,511002255)
+	if g1:GetCount()==0 or g2:GetCount()==0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local sg1=g1:Select(tp,1,1,nil)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local sg2=g2:Select(tp,1,1,nil)
+	sg1:Merge(sg2)
+	if Duel.SendtoGrave(sg1,REASON_EFFECT)>0 then
+		local tc=Duel.CreateToken(tp,38109772)
+		if tc then
+			Duel.SpecialSummon(tc,0,tp,tp,true,false,POS_FACEUP)
+		end
 	end
 end

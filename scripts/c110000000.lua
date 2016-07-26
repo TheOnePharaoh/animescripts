@@ -40,7 +40,7 @@ function c110000000.initial_effect(c)
 	--unaffectable
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
-	e5:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e5:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_IGNORE_IMMUNE)
 	e5:SetRange(LOCATION_SZONE)
 	e5:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e5:SetValue(1)
@@ -110,7 +110,7 @@ function c110000000.initial_effect(c)
 	c:RegisterEffect(ee)
 end
 function c110000000.ctcon2(e,re)
-	return not re:GetHandler():IsCode(100100103) or re:GetHandler()~=e:GetHandler()
+	return not re:GetHandler():IsCode(100100103) or re:GetOwner()~=e:GetOwner()
 end
 function c110000000.filter(c)
 	return c:GetCode()~=110000000

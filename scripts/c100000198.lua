@@ -38,7 +38,7 @@ function c100000198.attg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) 
 		and e:GetHandler():GetFlagEffect(100000198)==0 end
-	e:GetHandler():RegisterFlagEffect(100000198,RESET_PHASE+RESET_END,0,1)
+	e:GetHandler():RegisterFlagEffect(100000198,RESET_PHASE+PHASE_END,0,1)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)	
 end

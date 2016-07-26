@@ -21,15 +21,15 @@ function c511000518.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c511000518.condition1(e,tp,eg,ep,ev,re,r,rp)
-	return tp~=Duel.GetTurnPlayer()
+	local d=Duel.GetAttackTarget()
+	return d and d:IsFaceup() and d:IsControler(tp)
 end
 function c511000518.filter1(c,e)
-	local at=Duel.GetAttackTarget()
-	return c:IsCanBeEffectTarget(e) and c:IsFaceup() and at:IsFaceup()
+	return c:IsCanBeEffectTarget(e) and c:IsFaceup()
 end
 function c511000518.target1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return false end
 	local ag=eg:GetFirst():GetAttackableTarget()
+	if chkc then return ag:IsContains(chkc) and c511000518.filter1(chkc,e) end
 	local at=Duel.GetAttackTarget()
 	if chk==0 then return ag:IsExists(c511000518.filter1,1,at,e) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
@@ -38,7 +38,7 @@ function c511000518.target1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000518.activate1(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
+	if tc and tc:IsRelateToEffect(e) then
 		Duel.ChangeAttackTarget(tc)
 		local dam=tc:GetAttack()
 		Duel.Damage(1-tp,dam,REASON_EFFECT)
@@ -66,7 +66,7 @@ function c511000518.target2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000518.activate2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
-	if g:GetFirst():IsRelateToEffect(e) then
+	if g:GetCount()>0 and g:GetFirst():IsRelateToEffect(e) then
 		Duel.ChangeTargetCard(ev,g)
 		local dam=g:GetFirst():GetAttack()
 		Duel.Damage(1-tp,dam,REASON_EFFECT)

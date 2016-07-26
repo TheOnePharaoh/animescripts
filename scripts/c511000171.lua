@@ -105,7 +105,7 @@ function c511000171.actg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local con=false
 	if Duel.GetTurnPlayer()~=c:GetControler() then
-		con=not c:IsStatus(STATUS_SET_TURN) and c:IsFacedown()
+		con=not c:IsStatus(STATUS_SET_TURN) and c:IsFacedown() and not c:IsLocation(LOCATION_HAND)
 	else
 		if Duel.GetCurrentChain()>0 or not (Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2) then
 			if c:IsLocation(LOCATION_HAND) then

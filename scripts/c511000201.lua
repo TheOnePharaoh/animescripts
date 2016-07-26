@@ -26,6 +26,9 @@ function c511000201.activate(e,tp,eg,ep,ev,re,r,rp)
 		if tc:IsLocation(LOCATION_MZONE) then
 			Duel.ChangePosition(tc,POS_FACEDOWN_ATTACK,0,POS_FACEDOWN_DEFENCE,0)
 		else
+			if e:GetHandler()==tc then
+				tc:CancelToGrave()
+			end
 			Duel.ChangePosition(tc,POS_FACEDOWN)
 			Duel.RaiseEvent(tc,EVENT_SSET,e,REASON_EFFECT,tp,tp,0)
 		end

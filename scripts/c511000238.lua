@@ -1,4 +1,5 @@
 --Slifer the Sky Dragon
+--マイケル・ローレンス・ディーによってスクリプト
 function c511000238.initial_effect(c)
 	c:SetUniqueOnField(1,0,511000238)
 	--Summon with 3 Tribute
@@ -43,6 +44,7 @@ function c511000238.initial_effect(c)
 	e6:SetValue(c511000238.recon)
 	c:RegisterEffect(e6)
 	local e7=e6:Clone()
+	e7:SetCondition(c511000238.recon2)
 	e7:SetCode(EFFECT_UNRELEASABLE_NONSUM)
 	c:RegisterEffect(e7)
 	--immune spell
@@ -81,10 +83,10 @@ function c511000238.initial_effect(c)
 	--If Special Summoned: Send to Grave
 	local e16=Effect.CreateEffect(c)
 	e16:SetDescription(aux.Stringid(511000238,1))
-	e16:SetCategory(CATEGORY_TOGRAVE)
+	e16:SetCategory(CATEGORY_TOGRAVE+CATEGORY_REMOVE+CATEGORY_TOHAND+CATEGORY_TODECK)
 	e16:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e16:SetRange(LOCATION_MZONE)
-	e16:SetProperty(EFFECT_FLAG_REPEAT+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e16:SetProperty(EFFECT_FLAG_REPEAT+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
 	e16:SetCountLimit(1)
 	e16:SetCode(EVENT_PHASE+PHASE_END)
 	e16:SetCondition(c511000238.stgcon)
@@ -102,7 +104,7 @@ function c511000238.initial_effect(c)
 	--atk/def
 	local e18=Effect.CreateEffect(c)
 	e18:SetType(EFFECT_TYPE_SINGLE)
-	e18:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e18:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_IGNORE_IMMUNE)
 	e18:SetRange(LOCATION_MZONE)
 	e18:SetCode(EFFECT_UPDATE_ATTACK)
 	e18:SetValue(c511000238.adval)
@@ -127,15 +129,24 @@ function c511000238.initial_effect(c)
 	local e22=e20:Clone()
 	e22:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e22)
+	--redirect attack
+	local red=Effect.CreateEffect(c)
+	red:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	red:SetCode(EVENT_SPSUMMON_SUCCESS)
+	red:SetOperation(c511000238.redatk)
+	c:RegisterEffect(red)
 end
 function c511000238.adval(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_HAND,0)*1000
 end
 function c511000238.indes(e,re,rp)
-	return re:GetOwner():IsCode(10000010)
+	return not re:GetOwner():IsCode(10000010)
 end
 function c511000238.recon(e,c)
 	return c:GetControler()~=e:GetHandler():GetControler()
+end
+function c511000238.recon2(e)
+	return Duel.GetTurnPlayer()~=e:GetOwnerPlayer()
 end
 function c511000238.sumoncon(e,c)
 	if c==nil then return true end
@@ -151,7 +162,10 @@ function c511000238.setcon(e,c)
 	return false
 end
 function c511000238.sumsuc(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SetChainLimitTillChainEnd(aux.FALSE)
+	Duel.SetChainLimitTillChainEnd(c511000238.chainlm)
+end
+function c511000238.chainlm(e,rp,tp)
+	return e:GetHandler():IsAttribute(ATTRIBUTE_DEVINE)
 end
 function c511000238.efilter(e,te)
 	return te:IsActiveType(TYPE_EFFECT) and not te:GetHandler():IsAttribute(ATTRIBUTE_DEVINE)
@@ -165,13 +179,33 @@ function c511000238.stgcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511000238.stgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,e:GetHandler(),1,0,0)
+	local c=e:GetHandler()
+	if c:IsPreviousLocation(LOCATION_GRAVE) then
+		Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,c,1,0,0)
+	elseif c:IsPreviousLocation(LOCATION_DECK) then
+		Duel.SetOperationInfo(0,CATEGORY_TODECK,c,1,0,0)
+	elseif c:IsPreviousLocation(LOCATION_HAND) then
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND,c,1,0,0)
+	elseif c:IsPreviousLocation(LOCATION_REMOVED) then
+		Duel.SetOperationInfo(0,CATEGORY_REMOVE,c,1,0,0)
+	end
 end
 function c511000238.stgop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
-		Duel.SendtoGrave(c,REASON_EFFECT)
+		if c:IsPreviousLocation(LOCATION_GRAVE) then
+			Duel.SendtoGrave(c,REASON_EFFECT)
+		elseif c:IsPreviousLocation(LOCATION_DECK) then
+			Duel.SendtoDeck(c,nil,2,REASON_EFFECT)
+		elseif c:IsPreviousLocation(LOCATION_HAND) then
+			Duel.SendtoHand(c,nil,REASON_EFFECT)
+		elseif c:IsPreviousLocation(LOCATION_REMOVED) then
+			Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
+		end
 	end
+end
+function c511000238.tgg(c,card)
+	return c:GetCardTarget() and c:GetCardTarget():IsContains(card)
 end
 function c511000238.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -179,12 +213,20 @@ function c511000238.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 	e1:SetValue(c511000238.adval)
+	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_SET_DEFENCE_FINAL)
 	e2:SetValue(c511000238.adval)
+	e2:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e2)
+	local eqg=c:GetEquipGroup()
+	local tgg=Duel.GetMatchingGroup(c511000238.tgg,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil,c)
+	eqg:Merge(tgg)
+	if eqg:GetCount()>0 then
+		Duel.Destroy(eqg,REASON_EFFECT)
+	end
 end
 function c511000238.atkfilter(c,e,tp)
 	return c:IsControler(tp) and (not e or c:IsRelateToEffect(e))
@@ -225,3 +267,10 @@ function c511000238.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 	Duel.Destroy(dg,REASON_EFFECT)
 end
+function c511000238.redatk(e,tp,eg,ep,ev,re,r,rp)
+	local a=Duel.GetAttacker()
+	if Duel.CheckEvent(EVENT_ATTACK_ANNOUNCE) and a and a:IsControler(1-tp) and Duel.GetAttackTarget() then
+		Duel.ChangeAttackTarget(e:GetHandler())
+	end
+end
+--MLD

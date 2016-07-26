@@ -16,6 +16,7 @@ function c511000988.initial_effect(c)
 	e2:SetValue(TYPE_NORMAL)
 	c:RegisterEffect(e2)
 end
+c511000988.illegal=true
 function c511000988.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and chkc:IsType(TYPE_FLIP) end

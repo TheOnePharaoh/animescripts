@@ -28,33 +28,42 @@ function c511000978.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000978.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
+	if not tc or tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
 	local lp=tc:GetCounter(0)*100
 	if tc:GetCounter(0x3001)>0 then
-		lp=tc:GetCounter(0x3001)*100
-	elseif tc:GetCounter(0x100)>0 then
-		lp=tc:GetCounter(0x100)*100
-	elseif tc:GetCounter(0xe)>0 then
-		lp=tc:GetCounter(0xe)*100
-	elseif tc:GetCounter(0x15)>0 then
-		lp=tc:GetCounter(0x15)*100
-	elseif tc:GetCounter(0x19)>0 then
-		lp=tc:GetCounter(0x19)*100
-	elseif tc:GetCounter(0xf)>0 then
-		lp=tc:GetCounter(0xf)*100
-	elseif tc:GetCounter(0x1f)>0 then
-		lp=tc:GetCounter(0x1f)*100
-	elseif tc:GetCounter(0x8)>0 then
-		lp=tc:GetCounter(0x8)*100
-	elseif tc:GetCounter(0x10)>0 then
-		lp=tc:GetCounter(0x10)*100
-	elseif tc:GetCounter(0x20)>0 then
-		lp=tc:GetCounter(0x20)*100
-	elseif tc:GetCounter(0x99)>0 then
-		lp=tc:GetCounter(0x99)*100
+		lp=lp+(tc:GetCounter(0x3001)*100)
 	end
-	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
-		if Duel.Destroy(tc,REASON_EFFECT)>0 then
-			Duel.Recover(tp,lp,REASON_EFFECT)
-		end
+	if tc:GetCounter(0x100)>0 then
+		lp=lp+(tc:GetCounter(0x100)*100)
+	end
+	if tc:GetCounter(0xe)>0 then
+		lp=lp+(tc:GetCounter(0xe)*100)
+	end
+	if tc:GetCounter(0x15)>0 then
+		lp=lp+(tc:GetCounter(0x15)*100)
+	end
+	if tc:GetCounter(0x19)>0 then
+		lp=lp+(tc:GetCounter(0x19)*100)
+	end
+	if tc:GetCounter(0xf)>0 then
+		lp=lp+(tc:GetCounter(0xf)*100)
+	end
+	if tc:GetCounter(0x1f)>0 then
+		lp=lp+(tc:GetCounter(0x1f)*100)
+	end
+	if tc:GetCounter(0x8)>0 then
+		lp=lp+(tc:GetCounter(0x8)*100)
+	end
+	if tc:GetCounter(0x10)>0 then
+		lp=lp+(tc:GetCounter(0x10)*100)
+	end
+	if tc:GetCounter(0x20)>0 then
+		lp=lp+(tc:GetCounter(0x20)*100)
+	end
+	if tc:GetCounter(0x99)>0 then
+		lp=lp+(tc:GetCounter(0x99)*100)
+	end
+	if Duel.Destroy(tc,REASON_EFFECT)>0 then
+		Duel.Recover(tp,lp,REASON_EFFECT)
 	end
 end

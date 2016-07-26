@@ -46,7 +46,7 @@ function c511001310.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,c511001310.spfilter,tp,0,LOCATION_DECK,1,1,nil,e,tp)
 	if g:GetCount()>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_ATTACK)
+		Duel.SpecialSummon(g,0,tp,1-tp,false,false,POS_FACEUP_ATTACK)
 	else
 		local cg=Duel.GetFieldGroup(tp,0,LOCATION_DECK)
 		Duel.ConfirmCards(tp,cg)

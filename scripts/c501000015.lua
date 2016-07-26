@@ -17,6 +17,7 @@ function c501000015.initial_effect(c)
 	e2:SetCondition(c501000015.condition)
 	c:RegisterEffect(e2)
 end
+c501000015.illegal=true
 function c501000015.spfilter(c)
 	return c:IsRace(RACE_PLANT)
 end

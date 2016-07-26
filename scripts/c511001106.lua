@@ -2,8 +2,7 @@
 function c511001106.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetCategory(CATEGORY_TODECK+CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetCondition(c511001106.condition)
@@ -16,13 +15,12 @@ function c511001106.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tc:GetSummonType()==SUMMON_TYPE_SYNCHRO and ep~=tp
 end
 function c511001106.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return false end
-	if chk==0 then return eg:GetFirst():IsCanBeEffectTarget(e) end
+	if chk==0 then return eg:GetFirst():IsAbleToExtra() end
 	Duel.SetTargetCard(eg)
-	Duel.SetOperationInfo(0,CATEGORY_CONTROL,eg,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,eg,1,0,0)
 end
 function c511001106.mgfilter(c,e,tp,sync)
-	return not c:IsLocation(LOCATION_GRAVE)
+	return not c:IsLocation(LOCATION_GRAVE) or c:IsControler(1-tp)
 		or bit.band(c:GetReason(),0x80008)~=0x80008 or c:GetReasonCard()~=sync
 		or not c:IsCanBeSpecialSummoned(e,0,tp,false,false) or c:IsHasEffect(EFFECT_NECRO_VALLEY)
 end
@@ -34,7 +32,7 @@ function c511001106.activate(e,tp,eg,ep,ev,re,r,rp)
 	local sumtype=tc:GetSummonType()
 	if Duel.SendtoDeck(tc,nil,0,REASON_EFFECT)==0 or sumtype~=SUMMON_TYPE_SYNCHRO or mg:GetCount()==0 
 		or mg:GetCount()>Duel.GetLocationCount(tp,LOCATION_MZONE)
-		or mg:IsExists(c511001106.mgfilter,1,nil,e,tp,tc) then
+		or mg:IsExists(c511001106.mgfilter,1,nil,e,1-tp,tc) then
 		sumable=false
 	end
 	if sumable then

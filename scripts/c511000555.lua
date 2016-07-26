@@ -21,15 +21,13 @@ function c511000555.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000555.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
+	local atk=Duel.GetMatchingGroupCount(c511000555.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)*300
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
-		e1:SetValue(c511000555.val)
+		e1:SetValue(atk)
 		tc:RegisterEffect(e1)
 	end
-end
-function c511000555.val(e,c)
-	return Duel.GetMatchingGroupCount(c511000555.filter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,nil)*300
 end

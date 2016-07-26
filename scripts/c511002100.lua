@@ -73,7 +73,7 @@ function c511002100.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 		e1:SetCode(EFFECT_FORBIDDEN)
-		e1:SetReset(RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
 		tc=g:GetNext()
 	end

@@ -14,34 +14,18 @@ function c511000437.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c511000437.filter(c)
-	return c:IsAbleToRemove() and c:IsFaceup()
+	return c:IsAbleToRemove() and c:IsFaceup() and c:IsRace(RACE_BEAST+RACE_BEASTWARRIOR)
 end
 function c511000437.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and c511000437.filter(chkc) end
-	if chk==0 then return Duel.IsExistingMatchingCard(c511000437.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c511000437.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectTarget(tp,c511000437.filter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	local g=Duel.SelectTarget(tp,c511000437.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,g:GetCount(),0,0)
 end
 function c511000437.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
-		if tc:IsRace(RACE_BEAST+RACE_BEASTWARRIOR) then
-			Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
-		else
-			if Duel.Remove(tc,tc:GetPosition(),REASON_EFFECT+REASON_TEMPORARY)~=0 then
-				local e1=Effect.CreateEffect(e:GetHandler())
-				e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-				e1:SetCode(EVENT_PHASE+PHASE_END)
-				e1:SetReset(RESET_PHASE+PHASE_END)
-				e1:SetCountLimit(1)
-				e1:SetLabelObject(tc)
-				e1:SetOperation(c511000437.retop)
-				Duel.RegisterEffect(e1,tp)
-			end
-		end
+		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	end
-end
-function c511000437.retop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ReturnToField(e:GetLabelObject())
 end

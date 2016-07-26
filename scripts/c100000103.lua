@@ -13,6 +13,7 @@ function c100000103.initial_effect(c)
 	c:RegisterEffect(e1)
 	Duel.AddCustomActivityCounter(100000103,ACTIVITY_ATTACK,c100000103.counterfilter)
 end
+c100000103.dark_magician_list=true
 function c100000103.counterfilter(c)
     return not c:IsCode(46986414)
 end
@@ -31,7 +32,7 @@ function c100000103.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e1:SetProperty(EFFECT_FLAG_OATH+EFFECT_FLAG_IGNORE_IMMUNE)
 	e1:SetTarget(aux.TargetBoolFunction(Card.IsCode,46986414))
 	e1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e1:SetReset(RESET_PHASE+RESET_END)
+	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end
 function c100000103.filter(c)

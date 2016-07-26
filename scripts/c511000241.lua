@@ -11,6 +11,7 @@ function c511000241.initial_effect(c)
 	e1:SetOperation(c511000241.activate)
 	c:RegisterEffect(e1)
 end
+c511000241.fit_monster={12600382,8124921,44519536,70903634,7902349,33396948}
 function c511000241.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_GRAVE,0,1,nil,8124921)
 		and Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_GRAVE,0,1,nil,44519536)

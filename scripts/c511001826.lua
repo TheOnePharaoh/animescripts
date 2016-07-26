@@ -46,14 +46,14 @@ function c511001826.activate(e,tp,eg,ep,ev,re,r,rp)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e1:SetValue(ct*500)
 		tc:RegisterEffect(e1)
 		local e2=Effect.CreateEffect(e:GetHandler())
 		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 		e2:SetValue(1)
-		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e2)
 		if tc:GetFlagEffect(511001823+tp)==0 then
 			local e3=Effect.CreateEffect(e:GetHandler())
@@ -75,21 +75,21 @@ function c511001826.desop(e,tp,eg,ep,ev,re,r,rp)
 	if ep==tp then
 		if dc:IsControler(1-tp) and bc:IsStatus(STATUS_BATTLE_DESTROYED) 
 			and not dc:IsStatus(STATUS_BATTLE_DESTROYED) then
-			dc:RegisterFlagEffect(511001823+1-tp,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+			dc:RegisterFlagEffect(511001823+1-tp,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 		end
 		if bc:IsControler(1-tp) and dc:IsStatus(STATUS_BATTLE_DESTROYED) 
 			and not bc:IsStatus(STATUS_BATTLE_DESTROYED) then
-			bc:RegisterFlagEffect(511001823+1-tp,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+			bc:RegisterFlagEffect(511001823+1-tp,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 		end
 	end
 	if ep==1-tp then
 		if dc:IsControler(tp) and bc:IsStatus(STATUS_BATTLE_DESTROYED) 
 			and not dc:IsStatus(STATUS_BATTLE_DESTROYED) then
-			dc:RegisterFlagEffect(511001823+tp,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+			dc:RegisterFlagEffect(511001823+tp,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 		end
 		if bc:IsControler(tp) and dc:IsStatus(STATUS_BATTLE_DESTROYED) 
 			and not bc:IsStatus(STATUS_BATTLE_DESTROYED) then
-			bc:RegisterFlagEffect(511001823+tp,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+			bc:RegisterFlagEffect(511001823+tp,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 		end
 	end
 end
@@ -101,9 +101,9 @@ function c511001826.desop2(e,tp,eg,ep,ev,re,r,rp)
 		or bc:GetOverlayCount()>0 or dc:GetOverlayCount()>0 then return end
 	if dc:IsControler(1-tp) then dc,bc=bc,dc end
 	if dc:IsControler(tp) then
-		dc:RegisterFlagEffect(511001825+tp,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+		dc:RegisterFlagEffect(511001825+tp,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 	end
 	if bc:IsControler(1-tp) then
-		bc:RegisterFlagEffect(511001825+1-tp,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+		bc:RegisterFlagEffect(511001825+1-tp,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 	end
 end

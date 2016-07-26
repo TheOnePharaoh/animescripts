@@ -27,11 +27,10 @@ function c511000166.spcon(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(c511000166.spfilter,tp,LOCATION_MZONE,0,1,nil,511000164)
-		and Duel.IsExistingMatchingCard(c511000166.spfilter,tp,LOCATION_MZONE,0,1,nil,511000165)
+		and Duel.IsExistingMatchingCard(c511000166.spfilter,tp,LOCATION_MZONE,0,1,nil,43730887)
+		and Duel.IsExistingMatchingCard(c511000166.spfilter,tp,LOCATION_MZONE,0,1,nil,70124586)
 end
-function c511000166.con(e,c)
-	if c==nil then return true end
-	return Duel.IsExistingMatchingCard(c511000166.spfilter,tp,LOCATION_MZONE,0,1,nil,511000164)
-		and Duel.IsExistingMatchingCard(c511000166.spfilter,tp,LOCATION_MZONE,0,1,nil,511000165)
+function c511000166.con(e)
+	return Duel.IsExistingMatchingCard(c511000166.spfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil,43730887)
+		and Duel.IsExistingMatchingCard(c511000166.spfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil,70124586)
 end

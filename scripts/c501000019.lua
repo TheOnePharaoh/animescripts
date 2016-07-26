@@ -17,6 +17,7 @@ function c501000019.initial_effect(c)
 	e2:SetCondition(c501000019.condition)
 	c:RegisterEffect(e2)
 end
+c501000019.illegal=true
 function c501000019.spfilter(c)
 	return c:IsRace(RACE_MACHINE)
 end

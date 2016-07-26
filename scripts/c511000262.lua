@@ -56,6 +56,21 @@ function c511000262.initial_effect(c)
 	e8:SetCondition(c511000262.nofieldcon)
 	e8:SetOperation(c511000262.nofieldop)
 	c:RegisterEffect(e8)
+	--direct attack
+	local e10=Effect.CreateEffect(c)
+	e10:SetType(EFFECT_TYPE_FIELD)
+	e10:SetCode(EFFECT_DIRECT_ATTACK)
+	e10:SetRange(LOCATION_MZONE)
+	e10:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e10:SetCondition(c511000262.havefieldcon)
+	e10:SetTarget(c511000262.dirtg)
+	c:RegisterEffect(e10)
+end
+function c511000262.dirfilter(c,card)
+	return card~=c
+end
+function c511000262.dirtg(e,c)
+	return not Duel.IsExistingMatchingCard(c511000262.dirfilter,c:GetControler(),0,LOCATION_MZONE,1,nil,e:GetHandler())
 end
 function c511000262.havefieldfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_FIELD)
@@ -82,12 +97,12 @@ function c511000262.dmgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	local Dmg=e:GetHandler():GetDefence()
 	Duel.SetTargetPlayer(1-tp)
-	Duel.SetTargetParam(Dmg)
+	Duel.SetTargetParam(Dmg/2)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,Dmg)
 end
 function c511000262.dmgop(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	Duel.Damage(p,d,REASON_EFFECT)
+	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
+	Duel.Damage(p,e:GetHandler():GetDefence()/2,REASON_EFFECT)
 end
 function c511000262.nofieldcon(e)
 	local f1=Duel.GetFieldCard(0,LOCATION_SZONE,5)

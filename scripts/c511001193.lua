@@ -36,7 +36,7 @@ function c511001193.activate(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetCode(EFFECT_UPDATE_ATTACK)
 		e2:SetValue(-1000)
-		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
+		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 		tc:RegisterEffect(e2)
 	end
 end

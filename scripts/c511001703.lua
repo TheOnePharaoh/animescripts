@@ -9,7 +9,7 @@ function c511001703.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001703.filter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x20f)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0xe3)
 end
 function c511001703.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511001703.filter,tp,LOCATION_DECK,0,3,nil) end

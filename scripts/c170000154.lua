@@ -1,4 +1,4 @@
---Mirror Force Dragon
+--ミラーフォース・ドラゴン
 function c170000154.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
@@ -13,9 +13,7 @@ function c170000154.initial_effect(c)
 	e1:SetOperation(c170000154.op)
 	c:RegisterEffect(e1)
 end
-function c170000154.critias_filter(c)
-	return c:IsCode(44095762)
-end
+c170000154.material_trap=44095762
 function c170000154.con(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=Duel.GetAttacker()

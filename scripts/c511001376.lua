@@ -3,11 +3,14 @@ function c511001376.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0xaf),8,2)
 	c:EnableReviveLimit()
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_CANNOT_DISEFFECT)
+	c:RegisterEffect(e0)
 	--cannot disable
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_CANNOT_DISABLE)
-	e1:SetRange(LOCATION_MZONE)
 	c:RegisterEffect(e1)
 	--negate
 	local e2=Effect.CreateEffect(c)

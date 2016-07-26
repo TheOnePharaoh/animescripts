@@ -5,7 +5,7 @@ function c95000043.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_PREDRAW)
-	e1:SetCountLimit(1)
+	e1:SetCountLimit(1,95000043+EFFECT_COUNT_CODE_DUEL)
 	e1:SetRange(0xff)
 	e1:SetOperation(c95000043.op)
 	c:RegisterEffect(e1)
@@ -30,16 +30,25 @@ function c95000043.initial_effect(c)
 	e4:SetTargetRange(1,1)
 	e4:SetTarget(c95000043.aclimit2)
 	c:RegisterEffect(e4)
-	--~ Add Action Card
+	--cannot activate
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(95000043,0))
-	e5:SetType(EFFECT_TYPE_QUICK_O)
+	e5:SetType(EFFECT_TYPE_FIELD)
+	e5:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e5:SetRange(LOCATION_SZONE)
-	e5:SetCode(EVENT_FREE_CHAIN)
-	e5:SetCondition(c95000043.condition)
-	e5:SetTarget(c95000043.Acttarget)
-	e5:SetOperation(c95000043.operation)
+	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e5:SetTargetRange(1,1)
+	e5:SetValue(c95000043.aclimit)
 	c:RegisterEffect(e5)
+	--~ Add Action Card
+	local e6=Effect.CreateEffect(c)
+	e6:SetDescription(aux.Stringid(95000043,0))
+	e6:SetType(EFFECT_TYPE_QUICK_O)
+	e6:SetRange(LOCATION_SZONE)
+	e6:SetCode(EVENT_FREE_CHAIN)
+	e6:SetCondition(c95000043.condition)
+	e6:SetTarget(c95000043.Acttarget)
+	e6:SetOperation(c95000043.operation)
+	c:RegisterEffect(e6)
 	--cannot change zone
 	local eb=Effect.CreateEffect(c)
 	eb:SetType(EFFECT_TYPE_SINGLE)
@@ -56,7 +65,53 @@ function c95000043.initial_effect(c)
 	local ee=eb:Clone()
 	ee:SetCode(EFFECT_CANNOT_REMOVE)
 	c:RegisterEffect(ee)
+	--cheater check
+	local ef=Effect.CreateEffect(c)	
+	ef:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	ef:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	ef:SetCode(EVENT_PREDRAW)
+	ef:SetCountLimit(1)
+	ef:SetRange(0xff)
+	ef:SetOperation(c95000043.Cheatercheck1)
+	c:RegisterEffect(ef)
+	-- Draw when removed
+	local ef3=Effect.CreateEffect(c)
+	ef3:SetDescription(aux.Stringid(44792253,0))
+	ef3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	ef3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	ef3:SetCode(EVENT_REMOVE)
+	ef3:SetCondition(c95000043.descon)
+	ef3:SetTarget(c95000043.drtarget)
+	ef3:SetOperation(c95000043.drop)
+	c:RegisterEffect(ef3)
 end
+function c95000043.Cheatercheck1(e,c)
+	if Duel.GetMatchingGroupCount(c95000043.Fieldfilter,tp,0,LOCATION_DECK+LOCATION_HAND,nil)>1
+	then
+	local WIN_REASON_ACTION_FIELD=0x55
+	Duel.Win(tp,WIN_REASON_ACTION_FIELD)
+	end
+	
+	local sg=Duel.GetMatchingGroup(c95000043.Fieldfilter,tp,LOCATION_DECK+LOCATION_HAND,LOCATION_DECK+LOCATION_HAND,nil)
+	Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
+end
+function c95000043.Fieldfilter(c)
+	return c:IsSetCard(0xac2)
+end
+function c95000043.descon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsFaceup() and e:GetHandler():IsPreviousLocation(LOCATION_HAND)
+end
+function c95000043.drtarget(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(1)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
+end
+function c95000043.drop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Draw(p,d,REASON_RULE)
+end
+
 function c95000043.ctcon2(e,re)
 	return re:GetHandler()~=e:GetHandler()
 end
@@ -84,13 +139,10 @@ local tc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
 			Duel.MoveToField(token,tp,1-tp,LOCATION_SZONE,POS_FACEUP,true)
 			Duel.SpecialSummonComplete()
 		end
-	else
-		local WIN_REASON_ACTION_FIELD=0x55
-		Duel.Win(1-tp,WIN_REASON_ACTION_FIELD)
 	end
-	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
-		Duel.Draw(tp,1,REASON_RULE)
-	end
+	-- if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
+		-- Duel.Draw(tp,1,REASON_RULE)
+	-- end
 end
 -- Add Action Card
 function c95000043.Acttarget(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -160,6 +212,9 @@ if not Duel.IsExistingMatchingCard(c95000043.cfilter,tp,LOCATION_SZONE+LOCATION_
 end
 end
 end
+function c95000043.aclimit(e,re,tp)
+	return re:GetHandler():IsType(TYPE_FIELD) and re:IsHasType(EFFECT_TYPE_ACTIVATE)
+end
 function c95000043.aclimit2(e,c)
 	return c:IsType(TYPE_FIELD)
 end
@@ -175,6 +230,7 @@ tableAction = {
 95000045,
 95000046,
 95000047,
-95000048
+95000048,
+95000143
 } 
-tableAction_size=5
+tableAction_size=6

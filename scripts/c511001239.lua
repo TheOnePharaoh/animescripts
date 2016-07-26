@@ -5,17 +5,10 @@ function c511001239.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCode(EVENT_CHAINING)
-	e1:SetCondition(c511001239.condition)
+	e1:SetCondition(aux.damcon1)
 	e1:SetTarget(c511001239.target)
 	e1:SetOperation(c511001239.operation)
 	c:RegisterEffect(e1)
-end
-function c511001239.condition(e,tp,eg,ep,ev,re,r,rp)
-	if rp==tp then return end
-	local ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_DAMAGE)
-	if ex then return true end
-	ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_RECOVER)
-	return ex
 end
 function c511001239.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end

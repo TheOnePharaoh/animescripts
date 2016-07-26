@@ -20,6 +20,7 @@ function c120000016.initial_effect(c)
 	e2:SetReset(RESET_PHASE+RESET_END)
 	c:RegisterEffect(e2)
 end
+c120000016.fit_monster={99267150}
 function c120000016.cfilter1(c,rg)
 	if not c:IsAttribute(ATTRIBUTE_WIND) then return false end
 	rg:RemoveCard(c)

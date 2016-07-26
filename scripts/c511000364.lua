@@ -14,9 +14,11 @@ function c511000364.initial_effect(c)
 end
 function c511000364.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_MZONE) end
-	if chk==0 then return c:GetAttack()>=500 and c:GetDefence()>=500
+	local ct=c:GetFlagEffect(511000364)+1
+	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
+	if chk==0 then return c:GetAttack()>=ct*500 and c:GetDefence()>=ct*500
 		and Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
+	c:RegisterFlagEffect(511000364,RESET_CHAIN,0,0)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 end

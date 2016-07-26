@@ -20,15 +20,15 @@ function c511001975.handcon(e)
 end
 function c511001975.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001975,0,0x21,0,600,4,RACE_WARRIOR,ATTRIBUTE_DARK) end
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001975,0,0x21,300,600,4,RACE_WARRIOR,ATTRIBUTE_DARK) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
 function c511001975.activate(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e)
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001975,0,0x21,0,600,4,RACE_WARRIOR,ATTRIBUTE_DARK) then
-		c:AddTrapMonsterAttribute(TYPE_EFFECT,ATTRIBUTE_DARK,RACE_WARRIOR,4,0,600)
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001975,0,0x21,300,600,4,RACE_WARRIOR,ATTRIBUTE_DARK) then
+		c:AddTrapMonsterAttribute(TYPE_EFFECT,ATTRIBUTE_DARK,RACE_WARRIOR,4,300,600)
 		Duel.SpecialSummon(c,0,tp,tp,true,false,POS_FACEUP_DEFENCE)
 		c:TrapMonsterBlock()
 		local e1=Effect.CreateEffect(c)

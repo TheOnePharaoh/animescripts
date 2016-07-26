@@ -134,9 +134,11 @@ function c511000248.dmgop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511000248.battledmgcon(e,tp,eg,ep,ev,re,r,rp,chk)
-	return (Duel.GetAttacker():GetControler()==tp and Duel.GetAttacker():GetAttack()<Duel.GetAttackTarget():GetAttack() and Duel.GetAttackTarget():IsAttackPos() 
-	or Duel.GetAttacker():GetControler()==tp and Duel.GetAttacker():GetAttack()<Duel.GetAttackTarget():GetDefence() and Duel.GetAttackTarget():IsDefencePos()
-	or Duel.GetAttackTarget():GetControler()==tp and Duel.GetAttackTarget():GetAttack()<Duel.GetAttacker():GetAttack())
+	local a=Duel.GetAttacker()
+	local d=Duel.GetAttackTarget()
+	if not d then return false end
+	return (a:GetControler()==tp and a:GetAttack()<d:GetAttack() and d:IsAttackPos() or a:GetControler()==tp and a:GetAttack()<d:GetDefence() 
+		and d:IsDefencePos() or d:GetControler()==tp and d:GetAttack()<a:GetAttack())
 end
 function c511000248.battledmgcon2(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetAttacker():IsControler(1-tp) and Duel.GetAttackTarget()==nil

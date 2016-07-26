@@ -19,10 +19,12 @@ function c511000983.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local at=Duel.GetAttackTarget()
 	if at:IsControler(tp) then at=Duel.GetAttacker() end
 	if chk==0 then return at:IsDestructable() end
+	Duel.SetTargetCard(at)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,at,1,0,0)
 end
 function c511000983.activate(e,tp,eg,ep,ev,re,r,rp)
-	local at=Duel.GetAttackTarget()
-	if at:IsControler(tp) then at=Duel.GetAttacker() end
-	Duel.Destroy(at,REASON_EFFECT)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToBattle() then
+		Duel.Destroy(tc,REASON_EFFECT)
+	end
 end

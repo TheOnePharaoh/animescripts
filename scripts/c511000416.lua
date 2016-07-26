@@ -40,18 +40,18 @@ end
 function c511000416.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	local sg=Duel.GetMatchingGroup(c511000416.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local sg=Duel.GetMatchingGroup(c511000416.filter,tp,0,LOCATION_MZONE,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,sg,sg:GetCount(),0,0)
 end
 function c511000416.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	local sg=Duel.GetMatchingGroup(c511000416.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	if e:GetHandler():IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-	Duel.Equip(tp,e:GetHandler(),tc)
-	Duel.Destroy(sg,REASON_EFFECT,LOCATION_REMOVED)
+	local sg=Duel.GetMatchingGroup(c511000416.filter,tp,0,LOCATION_MZONE,nil)
+	if e:GetHandler():IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
+		Duel.Equip(tp,e:GetHandler(),tc)
+		Duel.Destroy(sg,REASON_EFFECT,LOCATION_REMOVED)
 	end
 end
 function c511000416.descon(e,tp,eg,ep,ev,re,r,rp)

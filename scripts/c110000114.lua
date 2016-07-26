@@ -10,12 +10,6 @@ function c110000114.initial_effect(c)
 	e1:SetOperation(c110000114.operation)
 	c:RegisterEffect(e1)
 end
-function c110000114.cfilter(c)
-	return c:IsCode(110000104) and c:IsFaceup()
-end
-function c110000114.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c110000114.cfilter,tp,LOCATION_MZONE,0,1,nil)
-end
 function c110000114.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetDecktopGroup(tp,10)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsPlayerCanSpecialSummon(tp) 

@@ -1,7 +1,7 @@
 --Number 38: Hope Harbinger Dragon Titanic Galaxy
 function c511001275.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsAttribute,ATTRIBUTE_LIGHT),8,2)
+	aux.AddXyzProcedure(c,nil,8,2)
 	c:EnableReviveLimit()
 	--Negate
 	local e1=Effect.CreateEffect(c)

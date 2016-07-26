@@ -74,7 +74,7 @@ function c700000004.clear(e,tp,eg,ep,ev,re,r,rp)
 	c700000004[1]=false
 end
 function c700000004.synfilter(c)
-	return c:IsSetCard(0x20f) or c:IsCode(7391448) or c:IsCode(63364266) or c:IsCode(98637386) or c:IsCode(84305651) 
+	return c:IsSetCard(0x204) or c:IsCode(7391448) or c:IsCode(63364266) or c:IsCode(98637386) or c:IsCode(84305651) 
 		or c:IsCode(58901502) or c:IsCode(59255742)
 end
 function c700000004.atkcon(e,tp,eg,ep,ev,re,r,rp)
@@ -89,7 +89,7 @@ end
 function c700000004.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c700000004.atkfilter,tp,LOCATION_MZONE,0,1,nil) 
 		and e:GetHandler():GetFlagEffect(700000004)==0 end
-	e:GetHandler():RegisterFlagEffect(700000004,RESET_PHASE+RESET_DAMAGE_CAL,0,1)
+	e:GetHandler():RegisterFlagEffect(700000004,RESET_PHASE+PHASE_DAMAGE_CAL,0,1)
 end
 function c700000004.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

@@ -59,8 +59,23 @@ function c511000192.initial_effect(c)
 	e8:SetCost(c511000192.cost)
 	e8:SetOperation(c511000192.op3)
 	c:RegisterEffect(e8)
+	if not c511000192.xyz_filter then
+		c511000192.xyz_filter=function(mc) return mc:IsType(TYPE_XYZ) and mc:IsCanBeXyzMaterial(c) end
+	end
+	if not c511000192.global_check then
+		c511000192.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511000192.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 c511000192.xyz_number=0
+c511000192.xyz_count=2
+c511000192.maintain_overlay=true
 function c511000192.ovfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_XYZ)
 end	
@@ -142,4 +157,8 @@ end
 function c511000192.damval(e,re,val,r,rp,rc)
 	if bit.band(r,REASON_EFFECT)~=0 then return 0
 	else return val end
+end
+function c511000192.numchk(e,tp,eg,ep,ev,re,r,rp)
+	Duel.CreateToken(tp,65305468)
+	Duel.CreateToken(1-tp,65305468)
 end

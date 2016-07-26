@@ -18,18 +18,25 @@ function c511000453.initial_effect(c)
 	e2:SetLabelObject(e1)
 	e2:SetOperation(c511000453.desop)
 	c:RegisterEffect(e2)
+	--indestructable
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	e3:SetValue(c511000453.indval)
+	c:RegisterEffect(e3)
 end
 function c511000453.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DISABLE,g,1,0,0)
+	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 end
 function c511000453.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if c:IsRelateToEffect(e) and tc:IsFaceup() and tc:IsRelateToEffect(e) then
+	if c:IsRelateToEffect(e) and tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
 		c:SetCardTarget(tc)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
@@ -67,6 +74,9 @@ function c511000453.operation(e,tp,eg,ep,ev,re,r,rp)
 		e:SetLabel(tc:GetAttack())
 	end
 end
+function c511000453.efilter(e,re,rp)
+	return e:GetHandlerPlayer()~=rp
+end
 function c511000453.cfilter(e,c)
 	return c==e:GetHandler()
 end
@@ -83,4 +93,7 @@ function c511000453.desop(e,tp,eg,ep,ev,re,r,rp)
 			e:GetLabelObject():SetLabel(tc:GetAttack())
 		end
 	end
+end
+function c511000453.indval(e,re,tp)
+	return e:GetOwner()~=re:GetOwner()
 end

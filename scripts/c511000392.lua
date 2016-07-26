@@ -9,9 +9,8 @@ function c511000392.initial_effect(c)
 	e1:SetCondition(c511000392.spcon)
 	c:RegisterEffect(e1)
 end
-function c511000392.cfilter(c)
-	return c:IsFaceup() and c:IsCode(511000380)
-end
-function c511000392.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c511000392.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+function c511000392.spcon(e,c)
+	if c==nil then return true end
+	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 
+		and Duel.IsPlayerAffectedByEffect(c:GetControler(),511000380)
 end

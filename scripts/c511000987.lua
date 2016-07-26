@@ -35,12 +35,12 @@ function c511000987.activate(e,tp,eg,ep,ev,re,r,rp)
 	local op=0
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
 	if tc:IsAbleToExtra() and tc:IsAbleToGrave() then
-		op=Duel.SelectOption(tp,aux.Stringid(511000987,0),aux.Stringid(511000987,1))
+		op=Duel.SelectOption(tp,aux.Stringid(2407147,0),aux.Stringid(52823314,0))
 	elseif tc:IsAbleToExtra() then
-		Duel.SelectOption(tp,aux.Stringid(511000987,0))
+		Duel.SelectOption(tp,aux.Stringid(2407147,0))
 		op=0
 	else
-		Duel.SelectOption(tp,aux.Stringid(511000987,1))
+		Duel.SelectOption(tp,aux.Stringid(52823314,0))
 		op=1
 	end
 	local ch=0

@@ -18,6 +18,7 @@ function c501000078.initial_effect(c)
 	e2:SetOperation(c501000078.op)
 	c:RegisterEffect(e2)
 end
+c501000078.illegal=true
 function c501000078.cfilter(c)
 	return c:IsRace(RACE_MACHINE) and c:IsType(TYPE_PENDULUM) and c:IsAbleToRemoveAsCost()
 end

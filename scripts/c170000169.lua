@@ -32,22 +32,34 @@ function c170000169.initial_effect(c)
 	e4:SetCondition(c170000169.descon)
 	e4:SetOperation(c170000169.desop)
 	c:RegisterEffect(e4)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE)
+	e5:SetCondition(c170000169.atcon)
+	e5:SetValue(1)
+	c:RegisterEffect(e5)
+end
+function c170000169.atfilter(c)
+	return c:IsFaceup() and c:IsCode(7634581)
+end
+function c170000169.atcon(e)
+	return Duel.IsExistingMatchingCard(c170000169.atfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 function c170000169.cbcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
 end
 function c170000169.cbop(e,tp,eg,ep,ev,re,r,rp)
-local c=e:GetHandler()
-Duel.ChangeAttackTarget(c)
-local b=Duel.GetAttacker()
-local def=b:GetAttack()+300
-e:SetLabel(def)
-local e1=Effect.CreateEffect(c)
-e1:SetType(EFFECT_TYPE_SINGLE)
-e1:SetCode(EFFECT_SET_DEFENCE_FINAL)
-e1:SetValue(def)
-e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_DAMAGE)
-c:RegisterEffect(e1)
+	local c=e:GetHandler()
+	Duel.ChangeAttackTarget(c)
+	local b=Duel.GetAttacker()
+	local def=b:GetAttack()+300
+	e:SetLabel(def)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_SET_DEFENCE_FINAL)
+	e1:SetValue(def)
+	e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_DAMAGE)
+	c:RegisterEffect(e1)
 end
 function c170000169.filter(c)
 	return c:IsFaceup() and c:IsCode(7634581) and c:GetAttack()~=0

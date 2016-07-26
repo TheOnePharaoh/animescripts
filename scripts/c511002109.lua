@@ -23,7 +23,7 @@ function c511002109.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c511002109.ffilter(c)
-	return c:IsSetCard(0x20f) or c:IsCode(7391448) or c:IsCode(63364266) or c:IsCode(98637386) or c:IsCode(84305651) 
+	return c:IsSetCard(0x204) or c:IsCode(7391448) or c:IsCode(63364266) or c:IsCode(98637386) or c:IsCode(84305651) 
 		or c:IsCode(58901502) or c:IsCode(59255742)
 end
 function c511002109.atkcon(e,tp,eg,ep,ev,re,r,rp)

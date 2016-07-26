@@ -14,9 +14,11 @@ function c511000362.initial_effect(c)
 end
 function c511000362.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
+	local ct=c:GetFlagEffect(511000362)+1
 	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_MZONE) and chkc:IsAbleToGrave() end
-	if chk==0 then return c:GetAttack()>=500 and c:GetDefence()>=500
+	if chk==0 then return c:GetAttack()>=ct*500 and c:GetDefence()>=ct*500
 		and Duel.IsExistingTarget(Card.IsAbleToGrave,tp,0,LOCATION_MZONE,1,nil) end
+	c:RegisterFlagEffect(511000362,RESET_CHAIN,0,0)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectTarget(tp,Card.IsAbleToGrave,tp,0,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g,g:GetCount(),0,0)

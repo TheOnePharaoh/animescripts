@@ -14,7 +14,7 @@ function c511001283.cfilter(c)
 		and c:GetCode()~=511001283
 end
 function c511001283.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511001283.cfilter,tp,LOCATION_SZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c511001283.cfilter,tp,LOCATION_SZONE,0,1,e:GetHandler()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
 	local g=Duel.SelectMatchingCard(tp,c511001283.cfilter,tp,LOCATION_SZONE,0,1,1,nil)
 	Duel.ConfirmCards(1-tp,g)
@@ -24,6 +24,7 @@ function c511001283.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return true end
 	local tc=e:GetLabelObject()
+	if not tc then return end
 	local te,eg,ep,ev,re,r,rp=tc:CheckActivateEffect(true,true,true)
 	e:SetLabelObject(te)
 	Duel.ClearTargetCard()

@@ -18,7 +18,7 @@ function c100000117.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100000117.con(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetBattleDamage(tp)>0 or Duel.GetBattleDamage(1-tp)>0
+	return Duel.GetBattleDamage(tp)>0
 end
 function c100000117.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,800) end
@@ -26,11 +26,7 @@ function c100000117.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c100000117.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	if Duel.GetBattleDamage(tp)>0 then
-		Duel.SetTargetPlayer(tp)
-	else
-		Duel.SetTargetPlayer(1-tp)
-	end		
+	Duel.SetTargetPlayer(tp)
 end
 function c100000117.op(e,tp,eg,ep,ev,re,r,rp)
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)

@@ -15,5 +15,5 @@ function c511000706.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c511000706.disable(e,c)
-	return c:IsSetCard(0x189c)
+	return c:IsSetCard(0x21e)
 end

@@ -65,6 +65,65 @@ function c511001640.initial_effect(c)
 	e1:SetTarget(c511001640.sctg)
 	e1:SetOperation(c511001640.scop)
 	c:RegisterEffect(e1)
+	if not c511001640.global_check then
+		c511001640.global_check=true
+		--double tuner
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_ADJUST)
+		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		ge1:SetOperation(c511001640.op)
+		Duel.RegisterEffect(ge1,0)
+	end
+end
+function c511001640.op(e,tp,eg,ep,ev,re,r,rp)
+	--Double Tuners
+	if c62242678 and not c62242678.dobtun then --Hot Red Dragon Archfiend King Calamity
+		local mt=c62242678
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsAttribute(ATTRIBUTE_DARK) and mc:IsRace(RACE_DRAGON) 
+			and mc:IsType(TYPE_SYNCHRO) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c511001603 and not c511001603.dobtun then --Hot Red Dragon Archfiend King Calamity (Anime)
+		local mt=c511001603
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsType(TYPE_SYNCHRO) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c97489701 and not c97489701.dobtun then --Red Nova Dragon
+		local mt=c97489701
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsCode(70902743) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c16172067 and not c16172067.dobtun then --Red Dragon Archfiend Tyrant
+		local mt=c16172067
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return true end
+		mt.minntct=1
+		mt.maxntct=99
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c93157004 and not c93157004.dobtun then --Vylon Omega
+		local mt=c93157004
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsSetCard(0x30) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
 end
 function c511001640.ffilter(c,syncard,tp)
 	return c:GetSynchroLevel(syncard)%2==1 or (not c:IsCanBeSynchroMaterial(syncard) and c:IsControler(tp))
@@ -76,15 +135,38 @@ function c511001640.filter(c,e,tp)
 	local nontuner=Duel.GetMatchingGroup(c511001640.matfilter2,tp,LOCATION_MZONE,LOCATION_MZONE,nil,c)
 	if not c:IsType(TYPE_SYNCHRO) or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_SYNCHRO,tp,true,true) 
 		or not mt.sync then return false end
-	if tuner:GetCount()~=1 or nontuner:IsExists(c511001640.ffilter,1,nil,c,tp) 
+	if nontuner:IsExists(c511001640.ffilter,1,nil,c,tp) 
 		or tuner:IsExists(c511001640.ffilter,1,nil,c,tp) then return false end
-	if c:IsSetCard(0x301) then
-		return nontuner:IsExists(c511001640.lvfilter2,1,nil,c,tuner) and nontuner:GetCount()==1
-	--[[elseif mt.dobtun then
-		return mt.syncon and mt.syncon(e,c,nil,nil) and mt.synop]]
+	if tuner:GetCount()==1 then
+		if c:IsSetCard(0x301) then
+			return nontuner:IsExists(c511001640.lvfilter2,1,nil,c,tuner) and nontuner:GetCount()==1
+		else
+			return tuner:IsExists(c511001640.lvfilter,1,nil,c,nontuner)
+		end
+	elseif tuner:GetCount()==2 then
+		return tuner:IsExists(c511001640.dtfilter1,1,nil,c,tuner,nontuner)
 	else
-		return tuner:IsExists(c511001640.lvfilter,1,nil,c,nontuner)
+		return false
 	end
+end
+function c511001640.dtfilter1(c,syncard,tuner,nontuner)
+	local code=syncard:GetOriginalCode()
+	local mt=_G["c" .. code]
+	local lv=syncard:GetLevel()
+	local tlv=c:GetSynchroLevel(syncard)/2
+	if lv-tlv<=0 then return false end
+	return tuner:IsExists(c511001640.dtfilter2,1,c,syncard,lv-tlv,nontuner,c)
+end
+function c511001640.dtfilter2(c,syncard,lv,nontuner,tuner1)
+	local code=syncard:GetOriginalCode()
+	local mt=_G["c" .. code]
+	local tlv=c:GetSynchroLevel(syncard)/2
+	if lv-tlv<=0 then return false end
+	local nt=nontuner:Filter(Card.IsCanBeSynchroMaterial,nil,syncard,tuner1)
+	nt=nt:Filter(Card.IsCanBeSynchroMaterial,nil,syncard,c)
+	if nt:GetCount()~=nontuner:GetCount() then return false end
+	return mt.minntct and mt.maxntct and mt.minntct<=nt:GetCount() and mt.maxntct>=nt:GetCount() 
+		and nt:CheckWithSumEqual(c511001640.lvfilterx,lv-tlv,nt:GetCount(),nt:GetCount(),syncard)
 end
 function c511001640.lvfilterx(c,syncard)
 	return c:GetSynchroLevel(syncard)/2

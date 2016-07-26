@@ -27,7 +27,8 @@ function c511001104.cfilter(c,tp)
 	return c:GetPreviousControler()==tp and c:IsType(TYPE_SYNCHRO) and c:IsRace(RACE_DRAGON)
 end
 function c511001104.condition(e,tp,eg,ep,ev,re,r,rp,chk)
-	return eg:IsExists(c511001104.cfilter,1,nil,tp)
+	local g=eg:Filter(c511001104.cfilter,nil,tp)
+	return g:GetCount()==1
 end
 function c511001104.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

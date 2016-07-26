@@ -23,12 +23,12 @@ function c511000861.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000861.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 		e1:SetValue(0)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
 		local e3=Effect.CreateEffect(e:GetHandler())
 		e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -36,7 +36,7 @@ function c511000861.activate(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetLabel(tp)
 		e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 		e3:SetOperation(c511000861.drop)
-		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e3)
 	end
 end

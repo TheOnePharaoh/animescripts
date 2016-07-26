@@ -17,6 +17,7 @@ function c501000018.initial_effect(c)
 	e2:SetCondition(c501000018.condition)
 	c:RegisterEffect(e2)
 end
+c501000018.illegal=true
 function c501000018.spfilter(c)
 	return c:IsRace(RACE_SPELLCASTER)
 end

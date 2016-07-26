@@ -66,7 +66,7 @@ function c95000029.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
 		and Duel.IsExistingMatchingCard(c95000029.spfilter,tp,LOCATION_HAND,0,1,nil,e,tp) 
 		and e:GetHandler():GetFlagEffect(95000029)==0 end
-	e:GetHandler():RegisterFlagEffect(95000029,RESET_PHASE+RESET_END,0,1)
+	e:GetHandler():RegisterFlagEffect(95000029,RESET_PHASE+PHASE_END,0,1)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function c95000029.spop(e,tp,eg,ep,ev,re,r,rp)
@@ -81,7 +81,7 @@ function c95000029.descon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
 end
 function c95000029.filter(c)
-	return c:IsFaceup() and (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a)) and c:IsDestructable()
+	return c:IsFaceup() and (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a) or c:IsCode(74530899)) and c:IsDestructable()
 end
 function c95000029.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

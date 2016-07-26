@@ -43,7 +43,7 @@ end
 function c810000044.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	if Duel.Recover(p,d,REASON_EFFECT)>0 then
+	if Duel.Recover(p,d,REASON_EFFECT)>0 and tc then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.SelectMatchingCard(tp,c810000044.filter2,tp,LOCATION_DECK,0,1,1,nil,tc:GetCode())
 		if g:GetCount()>0 then

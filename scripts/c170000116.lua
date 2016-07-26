@@ -99,6 +99,7 @@ local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 		Duel.ConfirmCards(1-tp,cg)
 	end
 	Duel.SendtoGrave(g,REASON_COST)
+	c:SetMaterial(g)
 end
 function c170000116.filter(c)
 	return c:IsFaceup() and (c:IsType(0x20000000) or c:IsType(0x40000000))

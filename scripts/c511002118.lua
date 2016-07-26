@@ -33,7 +33,7 @@ function c511002118.op(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetCode(EFFECT_UPDATE_ATTACK)
 			e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 			e1:SetValue(1200)
-			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 			c:RegisterEffect(e1)
 		else
 			Duel.Destroy(c,REASON_EFFECT)

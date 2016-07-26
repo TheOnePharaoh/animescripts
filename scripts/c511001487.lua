@@ -12,8 +12,11 @@ function c511001487.initial_effect(c)
 	e1:SetOperation(c511001487.activate)
 	c:RegisterEffect(e1)
 end
+function c511001487.cfilter(c,tp)
+	return c:IsType(TYPE_XYZ) and c:GetSummonPlayer()~=tp
+end
 function c511001487.condition(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(Card.IsType,1,nil,TYPE_XYZ) and ep~=tp
+	return eg:IsExists(c511001487.cfilter,1,nil,tp)
 end
 function c511001487.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x107b)

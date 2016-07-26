@@ -13,6 +13,7 @@ function c170000158.initial_effect(c)
 	e1:SetOperation(c170000158.operation)
 	c:RegisterEffect(e1)
 end
+c170000158.dark_magician_list=true
 function c170000158.cfilter(c)
 	return c:IsType(TYPE_SPELL) and c:IsAbleToRemove()
 end

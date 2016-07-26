@@ -44,6 +44,5 @@ function c111300001.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoGrave(bc,REASON_BATTLE)
 	end
 	bc:SetStatus(STATUS_BATTLE_DESTROYED,true)
-	Duel.RaiseSingleEvent(c,EVENT_BATTLE_DESTROYING,e,REASON_BATTLE,c:GetControler(),c:GetControler(),0)
 	Duel.RaiseEvent(c,EVENT_BATTLE_DESTROYING,e,REASON_BATTLE,c:GetControler(),c:GetControler(),0)
 end

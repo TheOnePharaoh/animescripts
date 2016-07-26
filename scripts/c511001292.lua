@@ -11,8 +11,7 @@ function c511001292.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001292.condition(e,tp,eg,ep,ev,re,r,rp)
-	local a=Duel.GetAttacker()
-	return a:IsSetCard(0x209) or a:IsCode(79629370) or a:IsCode(33698022)
+	return Duel.GetAttacker():IsSetCard(0xdf)
 end
 function c511001292.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(aux.TRUE,1-tp,LOCATION_MZONE,1,nil) end

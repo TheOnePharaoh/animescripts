@@ -12,7 +12,7 @@ function c511001061.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001061.cfilter(c,tp)
-	return c:GetPreviousControler()==1-tp
+	return c:GetPreviousControler()==1-tp and c:IsType(TYPE_MONSTER)
 end
 function c511001061.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x86)

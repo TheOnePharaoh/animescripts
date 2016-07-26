@@ -49,9 +49,8 @@ end
 function c511000671.cfilter(c)
 	return c:GetTextAttack()>0
 end
-function c511000671.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function c511000671.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local eq=e:GetHandler():GetEquipTarget()
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() end
 	if chk==0 then
 		if e:GetLabel()~=1 then return false end
 		e:SetLabel(0)
@@ -60,7 +59,9 @@ function c511000671.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	e:SetLabel(0)
 	local g=Duel.SelectReleaseGroup(tp,c511000671.cfilter,1,1,eq)
 	Duel.Release(g,REASON_COST)
-	Duel.SetTargetParam(g:GetFirst():GetTextAttack())
+	local atk=g:GetFirst():GetAttack()
+	if atk<0 then atk=0 end
+	Duel.SetTargetParam(atk)
 end
 function c511000671.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local ec=e:GetHandler():GetEquipTarget()
@@ -69,7 +70,7 @@ function c511000671.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM))
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000)
 		ec:RegisterEffect(e1)
 	end
 end

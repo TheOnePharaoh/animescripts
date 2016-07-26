@@ -16,6 +16,7 @@ function c51100561.initial_effect(c)
 	e2:SetValue(c51100561.val)
 	c:RegisterEffect(e2)
 end
+c51100561.illegal=true
 function c51100561.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	local dl=6

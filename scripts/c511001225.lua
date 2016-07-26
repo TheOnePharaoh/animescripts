@@ -1,5 +1,63 @@
 --Xyz Crown
 function c511001225.initial_effect(c)
+	--Synchro monster, 1 tuner + n or more monsters
+	function aux.AddSynchroProcedure(c,f1,f2,ct)
+		local code=c:GetOriginalCode()
+		local mt=_G["c" .. code]
+		if f1 then
+			mt.tuner_filter=function(mc) return mc and f1(mc) end
+		else
+			mt.tuner_filter=function(mc) return true end
+		end
+		if f2 then
+			mt.nontuner_filter=function(mc) return mc and f2(mc) end
+		else
+			mt.nontuner_filter=function(mc) return true end
+		end
+		mt.minntct=ct
+		mt.maxntct=99
+		mt.sync=true
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_SPSUMMON_PROC)
+		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetRange(LOCATION_EXTRA)
+		e1:SetCondition(Auxiliary.SynCondition(f1,f2,ct,99))
+		e1:SetTarget(Auxiliary.SynTarget(f1,f2,ct,99))
+		e1:SetOperation(Auxiliary.SynOperation(f1,f2,ct,99))
+		e1:SetValue(SUMMON_TYPE_SYNCHRO)
+		c:RegisterEffect(e1)
+	end
+	--Synchro monster, 1 tuner + 1 monster
+	function Auxiliary.AddSynchroProcedure2(c,f1,f2)
+		local code=c:GetOriginalCode()
+		local mt=_G["c" .. code]
+		if f1 then
+			mt.tuner_filter=function(mc) return mc and f1(mc) end
+		else
+			mt.tuner_filter=function(mc) return true end
+		end
+		if f2 then
+			mt.nontuner_filter=function(mc) return mc and f2(mc) end
+		else
+			mt.nontuner_filter=function(mc) return true end
+		end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_SPSUMMON_PROC)
+		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetRange(LOCATION_EXTRA)
+		e1:SetCondition(Auxiliary.SynCondition(f1,f2,1,1))
+		e1:SetTarget(Auxiliary.SynTarget(f1,f2,1,1))
+		e1:SetOperation(Auxiliary.SynOperation(f1,f2,1,1))
+		e1:SetValue(SUMMON_TYPE_SYNCHRO)
+		c:RegisterEffect(e1)
+	end
+	
+	
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_EQUIP)
@@ -36,6 +94,11 @@ function c511001225.initial_effect(c)
 	local e8=e5:Clone()
 	e8:SetCode(EFFECT_CHANGE_LEVEL)
 	c:RegisterEffect(e8)
+	--double xyz material
+	local e9=Effect.CreateEffect(c)
+	e9:SetType(EFFECT_TYPE_EQUIP)
+	e9:SetCode(511000538)
+	c:RegisterEffect(e9)
 	if not c511001225.global_check then
 		c511001225.global_check=true
 		local ge2=Effect.CreateEffect(c)

@@ -58,7 +58,7 @@ function c511001867.drop(e,tp,eg,ep,ev,re,r,rp)
 		if tc:IsType(TYPE_MONSTER) then
 			Duel.NegateAttack()
 			Duel.ShuffleHand(tp)
-			tc:RegisterFlagEffect(511001867,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+			tc:RegisterFlagEffect(511001867,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 		else
 			Duel.SendtoGrave(tc,REASON_EFFECT)
 		end

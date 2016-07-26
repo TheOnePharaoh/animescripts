@@ -19,19 +19,17 @@ local e1=Effect.CreateEffect(c)
 	c:RegisterEffect(e2)
 end
 function c511000037.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetAttackTarget()==nil and Duel.GetAttacker():GetAttack()==0
+	return Duel.GetAttackTarget()==nil and Duel.GetAttacker():GetAttack()==0 and Duel.GetAttacker():IsControler(tp)
 end
 function c511000037.target(e,tp,eg,ep,ev,re,r,rp,chk)
-local tg=Duel.GetAttacker()
-	if chkc then return chkc==tg end
-	if chk==0 then return tg:IsOnField() and tg:IsCanBeEffectTarget(e) end
-	Duel.SetTargetCard(tg)
-	local dam=tg:GetDefence()
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dam)
+	local tc=Duel.GetAttacker()
+	if chk==0 then return tc:IsOnField() end
+	Duel.SetTargetCard(tc)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,tc:GetDefence())
 end
 function c511000037.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
+	if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
 		Duel.Damage(1-tp,tc:GetDefence(),REASON_EFFECT)
 	end
 end

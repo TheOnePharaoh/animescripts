@@ -46,7 +46,7 @@ function c511000158.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingMatchingCard(c511000158.filter,tp,LOCATION_DECK,0,1,nil,e,tp) 
 		and e:GetHandler():GetFlagEffect(511000158)==0 end
-	e:GetHandler():RegisterFlagEffect(511000158,RESET_PHASE+RESET_END,0,1)
+	e:GetHandler():RegisterFlagEffect(511000158,RESET_PHASE+PHASE_END,0,1)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function c511000158.spop(e,tp,eg,ep,ev,re,r,rp)

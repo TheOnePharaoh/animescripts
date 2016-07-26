@@ -51,6 +51,7 @@ function c501000079.initial_effect(c)
 	e7:SetCondition(c501000079.con)
 	c:RegisterEffect(e7)
 end
+c501000079.illegal=true
 function c501000079.cfilter(c)
 	return c:IsRace(RACE_BEAST) and c:IsType(TYPE_PENDULUM) and c:IsAbleToRemoveAsCost()
 end

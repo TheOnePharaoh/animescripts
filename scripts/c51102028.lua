@@ -53,7 +53,7 @@ end
 function c51102028.endop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then
 		Duel.Hint(HINT_CARD,0,51102028)
-		local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,0,nil)
+		local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
 		Duel.Destroy(sg,REASON_EFFECT)
 	end
 end

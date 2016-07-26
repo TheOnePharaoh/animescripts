@@ -2,6 +2,7 @@
 function c511001873.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_LEAVE_FIELD)
 	e1:SetCondition(c511001873.condition)

@@ -24,7 +24,7 @@ function c100100132.initial_effect(c)
 end
 function c100100132.con(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFieldCard(e:GetHandler():GetControler(),LOCATION_SZONE,5)
-	return tc and tc:GetCounter(0x91)>2
+	return tc and tc:GetCounter(0x91)>3
 end
 function c100100132.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -41,9 +41,9 @@ function c100100132.condition(e,tp,eg,ep,ev,re,r,rp)
 end
 function c100100132.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-	if chk==0 then return tc:IsCanRemoveCounter(tp,0x91,4,REASON_COST) end	 
+	if chk==0 then return tc and tc:IsCanRemoveCounter(tp,0x91,3,REASON_COST) end	 
 	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
-	tc:RemoveCounter(tp,0x91,4,REASON_COST)	
+	tc:RemoveCounter(tp,0x91,3,REASON_COST)	
 end
 function c100100132.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToHand() end

@@ -45,30 +45,21 @@ function c511000024.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-	Duel.Equip(tp,c,tc)
+		Duel.Equip(tp,c,tc)
 	end
 end
-	-----S/T negate
 function c511000024.lmop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetAttacker()~=e:GetHandler():GetEquipTarget() then return end
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(0,1)
-	e1:SetValue(c511000024.aclimit)
-	e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
-	Duel.RegisterEffect(e1,tp)
-	--disable
-	local e2=Effect.CreateEffect(e:GetHandler())
+	local c=e:GetHandler()
+	if Duel.GetAttacker()~=c:GetEquipTarget() then return end
+	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetCode(EFFECT_DISABLE)
 	e2:SetRange(LOCATION_SZONE)
-	e2:SetTargetRange(0,LOCATION_SZONE)
+	e2:SetTargetRange(0,LOCATION_ONFIELD)
 	e2:SetTarget(c511000024.distg)
 	e2:SetReset(RESET_PHASE+PHASE_DAMAGE)
 	Duel.RegisterEffect(e2,tp)
-	--disable trap monster
-	local e3=Effect.CreateEffect(e:GetHandler())
+	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
 	e3:SetCode(EFFECT_DISABLE_TRAPMONSTER)
 	e3:SetRange(LOCATION_SZONE)
@@ -77,19 +68,9 @@ function c511000024.lmop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetReset(RESET_PHASE+PHASE_DAMAGE)
 	Duel.RegisterEffect(e3,tp)
 end
-function c511000024.aclimit(e,re,tp)
-	return re:IsHasType(EFFECT_TYPE_ACTIVATE)
-end
-
 function c511000024.distg(e,c)
 	return c~=e:GetHandler() and c:IsType(TYPE_TRAP+TYPE_SPELL)
 end
---destroy s/t
-function c511000024.descon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetAttacker()==e:GetHandler():GetEquipTarget()
-end
-
------damage
 function c511000024.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ec=c:GetPreviousEquipTarget()

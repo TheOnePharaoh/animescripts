@@ -17,12 +17,11 @@ function c511000336.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToRemoveAsCost() end
 	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST)
 end
-function c511000336.filter(c,tp)
-	return c:IsLocation(LOCATION_GRAVE) and c:IsReason(REASON_BATTLE) and c:IsControler(tp) and c:GetPreviousControler()==tp
+function c511000336.cfilter(c,tp)
+	return c:IsReason(REASON_BATTLE) and c:IsLocation(LOCATION_GRAVE) and c:GetPreviousControler()==tp
 end
 function c511000336.spcon(e,tp,eg,ep,ev,re,r,rp)
-	local g=eg:Filter(c511000336.filter,nil,tp)
-	return g
+	return eg:IsExists(c511000336.cfilter,1,nil,tp)
 end
 function c511000336.spfilter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsSetCard(0xf)
@@ -36,7 +35,7 @@ function c511000336.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511000336.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
+	if tc and tc:IsRelateToEffect(e) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
 end

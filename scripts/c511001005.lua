@@ -14,7 +14,7 @@ function c511001005.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp and Duel.GetAttackTarget()==nil
 end
 function c511001005.atkfilter(c,e)
-	return c:IsDestructable() and (c:IsType(TYPE_SYNCHRO) or c:IsType(TYPE_RITUAL) or c:IsType(TYPE_FUSION) or c:IsType(TYPE_XYZ))
+	return c:IsDestructable() and (c:IsType(TYPE_RITUAL) or c:IsType(TYPE_FUSION))
 end
 function c511001005.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tg=Duel.GetAttacker()
@@ -25,7 +25,7 @@ end
 function c511001005.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetAttacker()
 	local op=1-tp
-	if tc:IsRelateToEffect(e) and tc:IsAttackable() and not tc:IsStatus(STATUS_ATTACK_CANCELED) then
+	if tc and tc:IsRelateToEffect(e) and tc:IsAttackable() and not tc:IsStatus(STATUS_ATTACK_CANCELED) then
 		if Duel.Destroy(tc,REASON_EFFECT)>0 then
 			local mg=tc:GetMaterial()
 			if mg:IsExists(c511001005.mgfilter,1,nil,e,op,tc) then
@@ -34,7 +34,7 @@ function c511001005.activate(e,tp,eg,ep,ev,re,r,rp)
 					local g=mg:FilterSelect(op,c511001005.mgfilter,ft,ft,nil,e,op,tc)
 					Duel.SpecialSummon(g,0,op,op,false,false,POS_FACEUP)
 				end
-			Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE,1)
+				Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE,1)
 			end
 		end
 	end

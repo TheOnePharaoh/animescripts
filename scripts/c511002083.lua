@@ -1,7 +1,7 @@
 --Assault Blackwing - Onimaru the Divine Swell
 function c511002083.initial_effect(c)
 	--synchro summon
-	aux.AddSynchroProcedure(c,aux.FilterBoolFunction(Card.IsType,TYPE_SYNCHRO),aux.NonTuner(Card.IsType,TYPE_SYNCHRO),1)
+	aux.AddSynchroProcedure(c,nil,aux.NonTuner(nil),1)
 	c:EnableReviveLimit()
 	--atkup
 	local e1=Effect.CreateEffect(c)
@@ -30,7 +30,7 @@ end
 function c511002083.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	if tc:GetSummonType()==SUMMON_TYPE_SYNCHRO then
-		c511002083[ep]=c511002083[ep]+1
+		c511002083[tc:GetSummonPlayer()]=c511002083[tc:GetSummonPlayer()]+1
 	end
 end
 function c511002083.clear(e,tp,eg,ep,ev,re,r,rp)

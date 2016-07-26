@@ -64,7 +64,7 @@ function c511002042.spcon(e,tp,eg,ep,ev,re,r,rp,chk)
 	return e:GetHandler():GetSummonType()==SUMMON_TYPE_SYNCHRO
 end
 function c511002042.filter(c,e,tp)
-	return (c:IsCode(16051717) or c:IsCode(70456282) or c:IsSetCard(0x1033) ) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x1033) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511002042.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c511002042.filter(chkc,e,tp) end

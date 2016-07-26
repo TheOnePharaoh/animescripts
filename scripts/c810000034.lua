@@ -17,7 +17,7 @@ function c810000034.filter(c,e,tp)
 		return Duel.IsPlayerCanSpecialSummonMonster(tp,40703223,0,0x4011,c:GetAttack(),c:GetDefence(),1,RACE_FIEND,ATTRIBUTE_DARK) 
 			and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 	elseif c:IsAttackBelow(500) then
-		return Duel.IsPlayerCanSpecialSummonMonster(tp,c:GetCode(),0,c:GetType(),c:GetAttack(),c:GetDefence(),c:GetLevel(),c:GetRace(),c:GetAttribute()) 
+		return Duel.IsPlayerCanSpecialSummonMonster(tp,c:GetOriginalCode(),0,c:GetType(),c:GetAttack(),c:GetDefence(),c:GetLevel(),c:GetRace(),c:GetAttribute()) 
 			and Duel.GetLocationCount(tp,LOCATION_MZONE)>1
 	else return false 
 	end
@@ -66,10 +66,10 @@ function c810000034.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummonComplete()
 	else
 		if ft<=0 
-			or not Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,0x4011,tc:GetAttack(),tc:GetDefence(),tc:GetLevel(),
+			or not Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetOriginalCode(),0,0x4011,tc:GetAttack(),tc:GetDefence(),tc:GetLevel(),
 			tc:GetRace(),tc:GetAttribute()) then return end
 		for i=1,2 do
-			local token=Duel.CreateToken(tp,tc:GetCode())
+			local token=Duel.CreateToken(tp,tc:GetOriginalCode())
 			Duel.SpecialSummonStep(token,0,tp,tp,false,false,tc:GetPosition())
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)

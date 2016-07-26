@@ -17,6 +17,7 @@ function c511000990.initial_effect(c)
 	e3:SetOperation(c511000990.operation)
 	c:RegisterEffect(e3)
 end
+c511000990.illegal=true
 function c511000990.filter(c)
 	return c:IsCode(80604091) and c:GetFlagEffect(511000990)==0
 end

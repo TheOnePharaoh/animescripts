@@ -18,6 +18,7 @@ function c511000989.initial_effect(c)
 	e2:SetValue(TYPE_NORMAL)
 	c:RegisterEffect(e2)
 end
+c511000989.illegal=true
 function c511000989.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,nil,1,nil) end
 	local sg=Duel.SelectReleaseGroup(tp,nil,1,1,nil)

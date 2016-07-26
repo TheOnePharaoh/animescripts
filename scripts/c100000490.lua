@@ -11,7 +11,7 @@ function c100000490.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100000490.filter(c,e)
-	return c:IsFaceup() and c:IsCanBeEffectTarget(e)
+	return c:IsFaceup() and c:IsCanBeEffectTarget(e) and not c:IsType(TYPE_TOKEN)
 end
 function c100000490.xyzfilter(c,mg)
 	return c:IsXyzSummonable(mg)

@@ -12,7 +12,7 @@ function c511001541.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001541.con(e,tp,eg,ep,ev,re,r,rp)
-	return bit.band(r,0x41)==0x41 and rp~=tp
+	return bit.band(r,REASON_EFFECT)==REASON_EFFECT and rp~=tp
 end
 function c511001541.cfilter(c,fc,e,tp)
 	local fd=c:GetCode()

@@ -1,7 +1,7 @@
 --Moonlight Panther Dancer
 function c511002009.initial_effect(c)
 	--fustion material
-	aux.AddFusionProcCodeFun(c,511001289,aux.FilterBoolFunction(Card.IsSetCard,0x209),1,true,true)
+	aux.AddFusionProcCodeFun(c,51777272,aux.FilterBoolFunction(Card.IsSetCard,0xdf),1,true,true)
 	c:EnableReviveLimit()
 	--attack
 	local e1=Effect.CreateEffect(c)
@@ -58,7 +58,7 @@ function c511002009.unop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetCode(EFFECT_CANNOT_DIRECT_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 		c:RegisterEffect(e1)
 		c:RegisterFlagEffect(511002009,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE,0,1)
 	end
@@ -90,7 +90,7 @@ function c511002009.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(200)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 		c:RegisterEffect(e1)
 	end
 end

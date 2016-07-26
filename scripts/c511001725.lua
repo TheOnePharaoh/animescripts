@@ -21,8 +21,8 @@ end
 function c511001725.filter(c)
 	local re=c:GetReasonEffect()
 	local spchk=bit.band(c:GetSummonType(),SUMMON_TYPE_SPECIAL)
-	return c:GetLevel()==10 and c:IsSetCard(0x20f)
-		and (spchk==0 or (spchk~=0 and (not re or not re:GetHandler():IsSetCard(0x20f) or not re:GetHandler():IsType(TYPE_MONSTER))))
+	return c:GetLevel()==10 and c:IsSetCard(0xe3)
+		and (spchk==0 or (spchk~=0 and (not re or not re:GetHandler():IsSetCard(0xe3) or not re:GetHandler():IsType(TYPE_MONSTER))))
 end
 function c511001725.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,c511001725.filter,1,nil) end
@@ -45,7 +45,7 @@ function c511001725.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Draw(tp,1,REASON_EFFECT)
 		if tc then
 			Duel.ConfirmCards(1-tp,tc)
-			if not tc:IsSetCard(0x20f) or not tc.spcon(tc,tc.spe) then
+			if not tc:IsSetCard(0xe3) or not tc.spcon(tc,tc.spe) then
 				Duel.BreakEffect()
 				Duel.SendtoGrave(tc,REASON_EFFECT)
 			end

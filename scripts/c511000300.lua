@@ -1,5 +1,7 @@
 --マジック·クロニクル
 function c511000300.initial_effect(c)
+	c:EnableCounterPermit(0x25)
+	c:SetCounterLimit(0x25,2)
 	local g=Group.CreateGroup()
 	g:KeepAlive()
 	--Activate

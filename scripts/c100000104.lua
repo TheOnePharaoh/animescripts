@@ -10,6 +10,7 @@ function c100000104.initial_effect(c)
 	e1:SetOperation(c100000104.activate)
 	c:RegisterEffect(e1)
 end
+c100000104.dark_magician_list=true
 function c100000104.filter1(c)
 	return c:IsFaceup() and c:IsCode(46986414)
 end
@@ -36,7 +37,7 @@ function c100000104.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(tc2:GetAttack())
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc1:RegisterEffect(e1)
 	end
 end

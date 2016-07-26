@@ -15,15 +15,18 @@ function c511000168.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511000168.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToHand,tp,0,LOCATION_DECK,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,564)
+	local ac=Duel.AnnounceCard(tp)
+	Duel.SetTargetParam(ac)
+	Duel.SetOperationInfo(0,CATEGORY_ANNOUNCE,nil,0,tp,ANNOUNCE_CARD)
 end
 function c511000168.filter(c,code)
 	return c:IsType(TYPE_MONSTER) and c:IsCode(code) and c:IsAbleToHand() and c:IsLevelAbove(8)
 end
 function c511000168.activate(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,564)
-	local code=Duel.AnnounceCard(tp)
+	local ac=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
 	Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(1-tp,c511000168.filter,1-tp,LOCATION_DECK,0,1,1,nil,code)
+	local g=Duel.SelectMatchingCard(1-tp,c511000168.filter,1-tp,LOCATION_DECK,0,1,1,nil,ac)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.SendtoHand(tc,tp,REASON_EFFECT)

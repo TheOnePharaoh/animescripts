@@ -11,7 +11,7 @@ function c170000115.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c170000115.filter(c)
-	return c:IsSetCard(0x26F4) or c:IsSetCard(0x5F1A62F) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return c:IsType(0x20000000) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function c170000115.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and c170000115.filter(chkc) end
@@ -22,7 +22,7 @@ function c170000115.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c170000115.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
+	if tc and tc:IsRelateToEffect(e) then
 		Duel.SendtoHand(tc,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,tc)
 	end

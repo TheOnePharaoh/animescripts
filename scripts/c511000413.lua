@@ -60,7 +60,7 @@ function c511000413.activate(e,tp,eg,ep,ev,re,r,rp)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 		e1:SetValue(tc1:GetAttack()/2)
 		tc2:RegisterEffect(e1)
 		local a=tc1
@@ -73,4 +73,4 @@ function c511000413.activate(e,tp,eg,ep,ev,re,r,rp)
 			Duel.CalculateDamage(a,d)
 		end		
 	end
-end	
+end

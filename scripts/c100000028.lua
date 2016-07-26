@@ -82,7 +82,7 @@ function c100000028.atop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EFFECT_EXTRA_ATTACK)	
 		e1:SetCondition(c100000028.con)
 		e1:SetValue(1)
-		e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+RESET_BATTLE)
+		e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_BATTLE)
 		c:RegisterEffect(e1)
 	end
 end

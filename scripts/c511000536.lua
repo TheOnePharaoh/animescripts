@@ -57,7 +57,7 @@ function c511000536.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(511000536)
 	e1:SetCondition(c511000536.atkcon)
 	e1:SetOperation(c511000536.atkop)
-	e1:SetReset(RESET_PHASE+RESET_END)
+	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end
 function c511000536.atkcon(e,tp,eg,ep,ev,re,r,rp)

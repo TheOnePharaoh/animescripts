@@ -1,7 +1,7 @@
 --Number 14: Greedy Sarameya
 function c511000184.initial_effect(c)
 	--xyz summon
-	aux.AddXyzProcedure(c,nil,5,3)
+	aux.AddXyzProcedure(c,nil,5,2)
 	c:EnableReviveLimit()
 	--Trick Battle effect
 	local e1=Effect.CreateEffect(c)

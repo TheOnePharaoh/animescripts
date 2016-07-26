@@ -22,25 +22,27 @@ function c100000227.initial_effect(c)
 	e3:SetCondition(c100000227.spcon)
 	e3:SetTarget(c100000227.sptg)
 	e3:SetOperation(c100000227.spop)
-	c:RegisterEffect(e1)
+	c:RegisterEffect(e3)
 	--atk up
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_UPDATE_ATTACK)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e2:SetValue(c100000227.val)
-	c:RegisterEffect(e2)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD)
+	e4:SetCode(EFFECT_UPDATE_ATTACK)
+	e4:SetRange(LOCATION_SZONE)
+	e4:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e4:SetValue(c100000227.val)
+	c:RegisterEffect(e4)
 end
 function c100000227.val(e,c)
 	return c:GetRank()*100
 end
 function c100000227.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetMatchingGroup(Card.IsRace,tp,LOCATION_MZONE,0,nil,RACE_PLANT):GetCount()==1
-		and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==1
+	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
+	local ct=g:GetCount()
+	local tg=g:GetFirst()
+	return ct==1 and tg:IsFaceup() and tg:IsRace(RACE_PLANT)
 end
-function c100000227.filter(c,e,sp)
-	return c:IsRace(RACE_PLANT) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)
+function c100000227.filter(c,e,tp)
+	return c:IsRace(RACE_PLANT) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c100000227.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

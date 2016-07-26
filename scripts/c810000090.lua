@@ -23,13 +23,12 @@ function c810000090.initial_effect(c)
 	e3:SetValue(c810000090.eqlimit)
 	c:RegisterEffect(e3)
 end
+c810000090.dark_magician_list=true
 function c810000090.eqlimit(e,c)
-	local code=c:GetCode()
-	return code==46986414
+	return c:IsCode(46986414)
 end
 function c810000090.filter(c)
-	local code=c:GetCode()
-	return c:IsFaceup() and (code==46986414)
+	return c:IsFaceup() and c:IsCode(46986414)
 end
 function c810000090.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c810000090.filter(chkc) end

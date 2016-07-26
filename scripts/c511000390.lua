@@ -13,11 +13,8 @@ function c511000390.initial_effect(c)
 	e1:SetOperation(c511000390.desop)
 	c:RegisterEffect(e1)
 end
-function c511000390.cfilter(c)
-	return c:IsFaceup() and c:IsCode(511000380)
-end
 function c511000390.descon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c511000390.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+	return Duel.IsPlayerAffectedByEffect(tp,511000380)
 end
 function c511000390.filter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsDestructable()
@@ -30,6 +27,7 @@ function c511000390.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function c511000390.desop(e,tp,eg,ep,ev,re,r,rp)
+	if not Duel.IsPlayerAffectedByEffect(tp,511000380) then return end
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
 		Duel.Destroy(tc,REASON_EFFECT)

@@ -42,4 +42,21 @@ function c511000780.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g1,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g1)
 	end
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetCode(100100090)
+	e1:SetTargetRange(1,0)
+	if Duel.GetTurnPlayer()==tp then
+		e1:SetLabel(Duel.GetTurnCount())
+		e1:SetCondition(c100100108.turncon1)
+		e1:SetReset(RESET_PHASE+PHASE_END,4)
+	else
+		e1:SetReset(RESET_PHASE+PHASE_END,3)
+	end
+	e1:SetValue(1)
+	Duel.RegisterEffect(e1,tp)
+end
+function c100100108.turncon1(e)
+	return Duel.GetTurnCount()~=e:GetLabel()
 end

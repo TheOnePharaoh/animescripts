@@ -42,17 +42,17 @@ function c95000042.initial_effect(c)
 end
 c95000042.mark=3
 function c95000042.atktg(e,c)
-	return c~=e:GetHandler() and (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a))
+	return c~=e:GetHandler() and (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a) or c:IsCode(74530899))
 end
 function c95000042.filter(c)
-	return c:IsFaceup() and (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a))
+	return c:IsFaceup() and (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a) or c:IsCode(74530899))
 end
 function c95000042.atkval(e,c)
 	local g=Duel.GetMatchingGroup(c95000042.filter,c:GetControler(),LOCATION_MZONE,0,nil)
 	return g:GetSum(Card.GetAttack)
 end
 function c95000042.repfilter(c)
-	return (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a)) and not c:IsStatus(STATUS_DESTROY_CONFIRMED+STATUS_BATTLE_DESTROYED)
+	return (c:IsSetCard(0x4bde) or c:IsSetCard(0x4a) or c:IsCode(74530899)) and not c:IsStatus(STATUS_DESTROY_CONFIRMED+STATUS_BATTLE_DESTROYED)
 end
 function c95000042.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

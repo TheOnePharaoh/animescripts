@@ -13,7 +13,8 @@ function c511002093.initial_effect(c)
 end
 function c511002093.condition(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
-	return eg:GetCount()==1 and bit.band(tc:GetSummonType(),SUMMON_TYPE_ADVANCE)==SUMMON_TYPE_ADVANCE
+	return eg:GetCount()==1 and bit.band(tc:GetSummonType(),SUMMON_TYPE_ADVANCE)==SUMMON_TYPE_ADVANCE 
+		and tc:GetSummonPlayer()~=tp
 end
 function c511002093.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=eg:GetFirst()

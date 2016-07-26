@@ -19,9 +19,7 @@ function c170000150.initial_effect(c)
 	e2:SetOperation(c170000150.chkop)
 	c:RegisterEffect(e2)
 end
-function c170000150.critias_filter(c)
-	return c:IsCode(57728570)
-end
+c170000150.material_trap=57728570
 function c170000150.filter(c,g,pg)
 	return c:IsFaceup() and c:GetAttack()>=1500 and c:IsDestructable() and not c:IsCode(170000150)
 end

@@ -6,14 +6,15 @@ function c100100027.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetCondition(c100100027.con)
+	e1:SetCost(c100100027.cost)
 	e1:SetTarget(c100100027.target)
 	e1:SetOperation(c100100027.operation)
 	c:RegisterEffect(e1)
 end
-function c100100027.con(e,tp,eg,ep,ev,re,r,rp)
+function c100100027.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-	return tc and tc:GetCounter(0x91)>1
+	if chk==0 then return tc and tc:IsCanRemoveCounter(tp,0x91,3,REASON_COST) end
+	tc:RemoveCounter(tp,0x91,3,REASON_COST)
 end
 function c100100027.filter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEDOWN_DEFENCE)

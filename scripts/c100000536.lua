@@ -10,12 +10,13 @@ function c100000536.initial_effect(c)
 	e1:SetOperation(c100000536.activate)
 	c:RegisterEffect(e1)
 end
+c100000536.dark_magician_list=true
 function c100000536.cfilter(c,tp)
 	return c:IsLocation(LOCATION_MZONE) and c:IsFaceup() and c:IsCode(46986414) and c:IsControler(tp)
 end
 function c100000536.condition(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetChainInfo(ev-1,CHAININFO_TRIGGERING_EFFECT):IsHasType(EFFECT_TYPE_ACTIVATE) then return false end
-	if not re:IsActiveType(TYPE_MONSTER) or ep~=tp then return false end
+	if not re:IsActiveType(TYPE_MONSTER) or ep==tp then return false end
 	local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(EVENT_BECOME_TARGET,true)
 	if res then
 		if trp==tp and tre:IsActiveType(TYPE_MONSTER) and teg:FilterCount(c100000536.cfilter,nil,tp)==1 then
@@ -30,31 +31,31 @@ function c100000536.condition(e,tp,eg,ep,ev,re,r,rp)
 		e:SetLabelObject(g:GetFirst())
 		return true
 	end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOHAND)
+	ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOHAND)
 	if ex and tg~=nil and tc+tg:FilterCount(c100000536.cfilter,nil,tp)-tg:GetCount()==1 then
 		local g=tg:Filter(c100000536.cfilter,nil,tp)
 		e:SetLabelObject(g:GetFirst())
 		return true
 	end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_REMOVE)
+	ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_REMOVE)
 	if ex and tg~=nil and tc+tg:FilterCount(c100000536.cfilter,nil,tp)-tg:GetCount()==1 then
 		local g=tg:Filter(c100000536.cfilter,nil,tp)
 		e:SetLabelObject(g:GetFirst())
 		return true
 	end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TODECK)
+	ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TODECK)
 	if ex and tg~=nil and tc+tg:FilterCount(c100000536.cfilter,nil,tp)-tg:GetCount()==1 then
 		local g=tg:Filter(c100000536.cfilter,nil,tp)
 		e:SetLabelObject(g:GetFirst())
 		return true
 	end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_RELEASE)
+	ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_RELEASE)
 	if ex and tg~=nil and tc+tg:FilterCount(c100000536.cfilter,nil,tp)-tg:GetCount()==1 then
 		local g=tg:Filter(c100000536.cfilter,nil,tp)
 		e:SetLabelObject(g:GetFirst())
 		return true
 	end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOGRAVE)
+	ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOGRAVE)
 	if ex and tg~=nil and tc+tg:FilterCount(c100000536.cfilter,nil,tp)-tg:GetCount()==1 then
 		local g=tg:Filter(c100000536.cfilter,nil,tp)
 		e:SetLabelObject(g:GetFirst())
@@ -70,7 +71,7 @@ function c100000536.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c100000536.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)

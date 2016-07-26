@@ -27,7 +27,7 @@ end
 function c511001943.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetTargetPlayer(1-tp)
-	local atk=eg:GetFirst():GetBattleTarget():GetAttack()
+	local atk=eg:GetFirst():GetBattleTarget():GetPreviousAttackOnField()
 	if atk<0 then atk=0 end
 	Duel.SetTargetParam(atk)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,atk)

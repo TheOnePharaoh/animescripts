@@ -61,7 +61,7 @@ function c511001714.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetProperty(EFFECT_FLAG_OWNER_RELATE+EFFECT_FLAG_IGNORE_IMMUNE)
 			e3:SetCode(EFFECT_EXTRA_ATTACK)
 			e3:SetValue(1)
-			e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+			e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 			ec:RegisterEffect(e3)
 		end
 	end

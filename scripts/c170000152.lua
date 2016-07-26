@@ -12,7 +12,7 @@ function c170000152.initial_effect(c)
 	e2:SetCode(EFFECT_ADD_TYPE)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetValue(TYPE_EFFECT+TYPE_MONSTER)
+	e2:SetValue(c170000152.monval)
 	c:RegisterEffect(e2)
 end
 function c170000152.filter1(c,e,tp)
@@ -49,10 +49,17 @@ function c170000152.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.BreakEffect()
 	local sc=sg:GetFirst()
 	if sg then
-		sc:SetMaterial(Group.FromCards(tc))
+		sc:SetMaterial(tg)
 		Duel.SendtoGrave(tg,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
 		Duel.BreakEffect()
 		Duel.SpecialSummon(sc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
 		sc:CompleteProcedure()
+	end
+end
+function c170000152.monval(e,c)
+	if (c:IsOnField() and c:IsFacedown()) or c:IsLocation(LOCATION_GRAVE) then
+		return TYPE_EFFECT+TYPE_MONSTER
+	else
+		return 0
 	end
 end

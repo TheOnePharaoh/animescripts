@@ -16,7 +16,7 @@ function c511001666.cfilter(c)
 end
 function c511001666.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tp~=ep and eg:GetCount()==1 and Duel.GetCurrentChain()==0 and eg:GetFirst():GetSummonType()==SUMMON_TYPE_XYZ 
-		and not Duel.IsExistingMatchingCard(c511001665.cfilter,tp,LOCATION_ONFIELD,0,1,e:GetHandler())
+		and not Duel.IsExistingMatchingCard(c511001666.cfilter,tp,LOCATION_ONFIELD,0,1,e:GetHandler())
 end
 function c511001666.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 or eg:IsExists(Card.IsDestructable,1,nil) end

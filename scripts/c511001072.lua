@@ -13,7 +13,7 @@ function c511001072.filter(c)
 	return c:GetAttackAnnouncedCount()==0 and c:IsFaceup() and c:IsSetCard(0x3008) 
 		and Duel.IsExistingMatchingCard(c511001072.dfilter,c:GetControler(),0,LOCATION_MZONE,1,c,c:GetBaseAttack())
 end
-function c511001072.desfilter(c,atk)
+function c511001072.dfilter(c,atk)
 	return c:IsFaceup() and c:IsDestructable() and c:GetBaseAttack()<atk
 end
 function c511001072.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -25,7 +25,7 @@ function c511001072.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511001072.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CANNOT_ATTACK)

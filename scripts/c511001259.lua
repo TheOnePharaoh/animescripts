@@ -35,7 +35,7 @@ function c511001259.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:GetSummonType()==SUMMON_TYPE_PENDULUM and c:IsPreviousLocation(LOCATION_EXTRA)
 end
 function c511001259.afilter(c)
-	return c:IsSetCard(0x206) and c:IsAbleToHand()
+	return c:IsSetCard(0x121e) and c:IsAbleToHand()
 end
 function c511001259.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511001259.afilter,tp,LOCATION_DECK,0,1,nil) end

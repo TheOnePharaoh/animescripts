@@ -12,12 +12,9 @@ function c511000393.initial_effect(c)
 	e1:SetOperation(c511000393.operation)
 	c:RegisterEffect(e1)
 end
-function c511000393.cfilter(c)
-	return c:IsFaceup() and c:IsCode(511000380)
-end
 function c511000393.condition(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsReason(REASON_BATTLE) and Duel.IsExistingMatchingCard(c511000393.cfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
+	return c:IsReason(REASON_BATTLE) and Duel.IsPlayerAffectedByEffect(tp,511000380)
 end
 function c511000393.filter(c)
 	return c:IsSetCard(0x201) and c:IsLevelBelow(3) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
@@ -29,6 +26,7 @@ function c511000393.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,g:GetCount(),0,0)
 end
 function c511000393.operation(e,tp,eg,ep,ev,re,r,rp)
+	if not Duel.IsPlayerAffectedByEffect(tp,511000380) then return end
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
 	local sg=g:Filter(Card.IsRelateToEffect,nil,e)
 	if sg:GetCount()>0 then

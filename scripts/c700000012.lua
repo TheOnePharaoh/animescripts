@@ -41,7 +41,7 @@ function c700000012.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local atk=g:GetFirst():GetAttack()
 	if atk<0 then atk=0 end
 	e:SetLabel(atk)
-	Duel.SendToExtra(g,POS_FACEUP,REASON_COST)
+	Duel.PSendtoExtra(g,nil,REASON_COST)
 end
 function c700000012.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end

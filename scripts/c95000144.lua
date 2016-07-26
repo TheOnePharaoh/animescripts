@@ -1,4 +1,4 @@
---Action Card - Blind Blizzard
+--Action Card - Great Fire Cannon
 function c95000144.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)

@@ -94,6 +94,65 @@ function c511001019.initial_effect(c)
 	e1:SetTarget(c511001019.target)
 	e1:SetOperation(c511001019.activate)
 	c:RegisterEffect(e1)
+	if not c511001019.global_check then
+		c511001019.global_check=true
+		--double tuner
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_ADJUST)
+		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		ge1:SetOperation(c511001019.op)
+		Duel.RegisterEffect(ge1,0)
+	end
+end
+function c511001019.op(e,tp,eg,ep,ev,re,r,rp)
+	--Double Tuners
+	if c62242678 and not c62242678.dobtun then --Hot Red Dragon Archfiend King Calamity
+		local mt=c62242678
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsAttribute(ATTRIBUTE_DARK) and mc:IsRace(RACE_DRAGON) 
+			and mc:IsType(TYPE_SYNCHRO) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c511001603 and not c511001603.dobtun then --Hot Red Dragon Archfiend King Calamity (Anime)
+		local mt=c511001603
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsType(TYPE_SYNCHRO) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c97489701 and not c97489701.dobtun then --Red Nova Dragon
+		local mt=c97489701
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsCode(70902743) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c16172067 and not c16172067.dobtun then --Red Dragon Archfiend Tyrant
+		local mt=c16172067
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return true end
+		mt.minntct=1
+		mt.maxntct=99
+		mt.sync=true
+		mt.dobtun=true
+	end
+	if c93157004 and not c93157004.dobtun then --Vylon Omega
+		local mt=c93157004
+		mt.tuner_filter=function(mc) return true end
+		mt.nontuner_filter=function(mc) return mc and mc:IsSetCard(0x30) end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		mt.dobtun=true
+	end
 end
 function c511001019.filter(c,e,tp)
 	local code=c:GetOriginalCode()
@@ -105,10 +164,27 @@ function c511001019.filter(c,e,tp)
 	if c:IsSetCard(0x301) then
 		return nontuner:IsExists(c511001019.lvfilter2,1,nil,c,tuner)
 	elseif mt.dobtun then
-		return mt.syncon and mt.syncon(e,c,nil,nil) and mt.synop
+		return tuner:IsExists(c511001019.dtfilter1,1,nil,c,tuner,nontuner)
 	else
 		return tuner:IsExists(c511001019.lvfilter,1,nil,c,nontuner)
 	end
+end
+function c511001019.dtfilter1(c,syncard,tuner,nontuner)
+	local code=syncard:GetOriginalCode()
+	local mt=_G["c" .. code]
+	local lv=syncard:GetLevel()
+	local tlv=c:GetSynchroLevel(syncard)
+	if lv-tlv<=0 then return false end
+	return tuner:IsExists(c511001019.dtfilter2,1,c,syncard,lv-tlv,nontuner,c)
+end
+function c511001019.dtfilter2(c,syncard,lv,nontuner,tuner1)
+	local code=syncard:GetOriginalCode()
+	local mt=_G["c" .. code]
+	local tlv=c:GetSynchroLevel(syncard)
+	if lv-tlv<=0 then return false end
+	local nt=nontuner:Filter(Card.IsCanBeSynchroMaterial,nil,syncard,tuner1)
+	nt=nt:Filter(Card.IsCanBeSynchroMaterial,nil,syncard,c)
+	return mt.minntct and mt.maxntct and nt:CheckWithSumEqual(Card.GetSynchroLevel,lv-tlv,mt.minntct,mt.maxntct,syncard)
 end
 function c511001019.lvfilter(c,syncard,nontuner)
 	local code=syncard:GetOriginalCode()
@@ -166,9 +242,18 @@ function c511001019.activate(e,tp,eg,ep,ev,re,r,rp)
 			local mat2=tuner:SelectWithSumEqual(tp,Card.GetSynchroLevel,tc:GetLevel()+tlv,mt.minntct,mt.maxntct,tc)
 			mat1:Merge(mat2)
 		elseif mt.dobtun then
-			if mt.synop then
-				mt.synop(e,tp,eg,ep,ev,re,r,rp,tc,nil,nil)
-			else return end
+			mat1=Group.CreateGroup()
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SMATERIAL)
+			local tuner1=tuner:FilterSelect(tp,c511001019.dtfilter1,1,1,nil,tc,tuner,nontuner):GetFirst()
+			mat1:AddCard(tuner1)
+			local tlv1=tuner1:GetSynchroLevel(tc)
+			local tuner2=tuner:FilterSelect(tp,c511001019.dtfilter2,1,1,tuner1,tc,tc:GetLevel()-tlv1,nontuner,tuner1):GetFirst()
+			mat1:AddCard(tuner2)
+			local nt=nontuner:Filter(Card.IsCanBeSynchroMaterial,nil,tc,tuner1)
+			nt=nt:Filter(Card.IsCanBeSynchroMaterial,nil,tc,tuner2)
+			local tlv2=tuner2:GetSynchroLevel(tc)
+			local m3=nt:SelectWithSumEqual(tp,Card.GetSynchroLevel,tc:GetLevel()-tlv1-tlv2,mt.minntct,mt.maxntct,tc)
+			mat1:Merge(m3)
 		else
 			tuner=tuner:Filter(c511001019.lvfilter,nil,tc,nontuner)
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SMATERIAL)
@@ -179,15 +264,13 @@ function c511001019.activate(e,tp,eg,ep,ev,re,r,rp)
 			local mat2=nontuner:SelectWithSumEqual(tp,Card.GetSynchroLevel,tc:GetLevel()-tlv,mt.minntct,mt.maxntct,tc)
 			mat1:Merge(mat2)
 		end
-		if not mt.dobtun then
-			tc:SetMaterial(mat1)
-			Duel.SendtoGrave(mat1,REASON_EFFECT+REASON_MATERIAL+REASON_SYNCHRO)
-		end
+		tc:SetMaterial(mat1)
+		Duel.SendtoGrave(mat1,REASON_EFFECT+REASON_MATERIAL+REASON_SYNCHRO)
 		Duel.SpecialSummon(tc,SUMMON_TYPE_SYNCHRO,tp,tp,true,true,POS_FACEUP)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_INDESTRUCTABLE)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e1:SetValue(1)
 		tc:RegisterEffect(e1)
 		tc:CompleteProcedure()

@@ -23,7 +23,7 @@ function c511002041.initial_effect(c)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCode(EFFECT_INDESTRUCTABLE_COUNT)
 	e3:SetCountLimit(2)
-	e3:SetValue(1)
+	e3:SetValue(c511002041.valcon)
 	c:RegisterEffect(e3)
 end
 function c511002041.valcheck(e,c)
@@ -46,4 +46,7 @@ function c511002041.tnop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(TYPE_TUNER)
 	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
+end
+function c511002041.valcon(e,re,r,rp)
+	return bit.band(r,REASON_BATTLE)~=0
 end

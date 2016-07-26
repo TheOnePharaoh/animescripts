@@ -5,11 +5,14 @@ function c511001273.initial_effect(c)
 	c:EnableReviveLimit()
 	--atk down
 	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_ATKCHANGE)
 	e1:SetDescription(aux.Stringid(511001273,0))
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCost(c511001273.cost)
+	e1:SetCondition(c511001273.atkcon)
+	e1:SetCost(c511001273.atkcost)
 	e1:SetTarget(c511001273.atktg)
 	e1:SetOperation(c511001273.atkop)
 	c:RegisterEffect(e1)
@@ -42,7 +45,10 @@ function c511001273.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 c511001273.xyz_number=37
-function c511001273.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+function c511001273.atkcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
+end
+function c511001273.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
 end
@@ -78,7 +84,7 @@ function c511001273.regop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511001273.spfilter(c,e,tp,tid)
-	return c:IsReason(REASON_DESTROY) and c:GetTurnID()==tid and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:GetCode()~=511001273
+	return c:IsReason(REASON_DESTROY) and c:GetTurnID()==tid and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:GetCode()~=37279508
 end
 function c511001273.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 

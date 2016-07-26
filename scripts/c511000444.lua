@@ -20,13 +20,6 @@ function c511000444.initial_effect(c)
 	e2:SetValue(400)
 	e2:SetCondition(c511000444.atkcon)
 	c:RegisterEffect(e2)
-	--battle des rep
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_DESTROY_REPLACE)
-	e3:SetCountLimit(1)
-	e3:SetTarget(c511000444.reptg)
-	c:RegisterEffect(e3)
 end
 function c511000444.filter(c)
 	return c:IsRace(RACE_BEASTWARRIOR) and c:IsAbleToHand()
@@ -41,16 +34,8 @@ function c511000444.thop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
-		Duel.ShuffleHand(tp)
 	end
 end
-function c511000444.atkcon(e,tp,eg,ep,ev,re,r,rp)
+function c511000444.atkcon(e)
 	return e:GetHandler():IsAttackPos()
-end
-function c511000444.deffilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_BEASTWARRIOR)
-end
-function c511000444.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511000444.deffilter,tp,LOCATION_MZONE,0,1,nil) end
-	return true
 end

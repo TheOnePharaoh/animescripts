@@ -32,8 +32,7 @@ function c511000277.initial_effect(c)
 	e3:SetCondition(c511000277.spcon)
 	e3:SetTarget(c511000277.sptg)
 	e3:SetOperation(c511000277.spop)
-	c:RegisterEffect(e3)
-	
+	c:RegisterEffect(e3)	
 end
 c511000277.xyz_number=1
 function c511000277.cfilter(c)
@@ -61,6 +60,8 @@ function c511000277.damfilter(c,e)
 	return c:IsFaceup() and c:IsAbleToRemove()
 end
 function c511000277.banop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local chk=c:IsRelateToEffect(e)
 	local g=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local gd=Duel.GetMatchingGroup(c511000277.damfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local atk=0
@@ -70,7 +71,7 @@ function c511000277.banop(e,tp,eg,ep,ev,re,r,rp)
 		bc=gd:GetNext()
 	end
 	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
-	local c=e:GetHandler()
+	if not chk then return end
 	c:RegisterFlagEffect(511000277,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN,0,1)
 	--damage
 	local e4=Effect.CreateEffect(c)
@@ -105,13 +106,6 @@ end
 function c511000277.damcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_BP)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
-	e1:SetTargetRange(1,0)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e1,tp)
 end
 function c511000277.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetSummonType()==SUMMON_TYPE_SPECIAL+1

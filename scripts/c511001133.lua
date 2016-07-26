@@ -4,7 +4,6 @@ function c511001133.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetOperation(c511001133.activate)
 	c:RegisterEffect(e1)
 end
@@ -42,9 +41,9 @@ function c511001133.activate(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE then
 		e5:SetCondition(c511001133.skipcon)
 		e5:SetLabel(Duel.GetTurnCount())
-		e5:SetReset(RESET_PHASE+RESET_BATTLE+RESET_SELF_TURN,2)
+		e5:SetReset(RESET_PHASE+PHASE_BATTLE+RESET_SELF_TURN,2)
 	else
-		e5:SetReset(RESET_PHASE+RESET_BATTLE+RESET_SELF_TURN)
+		e5:SetReset(RESET_PHASE+PHASE_BATTLE+RESET_SELF_TURN)
 	end
 	Duel.RegisterEffect(e5,tp)
 	local e6=e5:Clone()

@@ -75,7 +75,7 @@ function c511001646.lvop(e,tp,eg,ep,ev,re,r,rp)
 			else
 				e1:SetValue(tc2:GetRank())
 			end
-			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 			tc:RegisterEffect(e1)
 		end
 	end
@@ -100,7 +100,7 @@ function c511001646.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 		e1:SetValue(atk)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		c:RegisterEffect(e1)
 	end
 end

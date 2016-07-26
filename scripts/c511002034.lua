@@ -56,7 +56,7 @@ function c511002034.operation(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_UPDATE_ATTACK)
 			e1:SetValue(atk)
-			e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+RESET_END)
+			e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END)
 			c:RegisterEffect(e1)
 		end
 	end

@@ -16,7 +16,7 @@ function c511001957.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:GetFlagEffect(511001957)==0 and eg:GetCount()>0 end
 	if Duel.SelectYesNo(tp,aux.Stringid(61965407,0)) then
-		c:RegisterFlagEffect(511001957,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
+		c:RegisterFlagEffect(511001957,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 		local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
 		local tc=g:GetFirst()
 		if tc then

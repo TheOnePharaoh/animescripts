@@ -50,11 +50,11 @@ function c511000265.initial_effect(c)
 	e6:SetCode(EFFECT_CANNOT_DIRECT_ATTACK)
 	c:RegisterEffect(e6)
 end
-function c511000265.filter(c)
+function c511000265.cfilter(c)
 	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_FIRE)
 end
 function c511000265.val(e,c)
-	return Duel.GetMatchingGroupCount(c511000265.filter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,nil)*500
+	return Duel.GetMatchingGroupCount(c511000265.cfilter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,nil)*500
 end
 function c511000265.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
