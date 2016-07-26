@@ -95,38 +95,8 @@ function self.set_op(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.SelectMatchingCard(tp,self.qui_fil,tp,LOCATION_HAND,0,1,1,nil):GetFirst()
   if tc then
     Duel.SSet(tp,tc)
+    tc:SetStatus(STATUS_SET_TURN,false)
     e:GetHandler():CreateRelation(tc,RESET_EVENT+0x1fe0000)
-    local te=tc:GetActivateEffect()
-    if not te then return end
-    local e1=Effect.CreateEffect(tc)
-    e1:SetType(EFFECT_TYPE_QUICK_O)
-    e1:SetCode(te:GetCode())
-    e1:SetRange(LOCATION_SZONE)
-    e1:SetCountLimit(1)
-    if te:GetCondition() then e1:SetCondition(te:GetCondition()) end
-    e1:SetCost(self.mimic_cs)
-    if te:GetTarget() then e1:SetTarget(te:GetTarget()) end
-    e1:SetOperation(self.mimic_op)
-    e1:SetProperty(bit.bor(te:GetProperty(),EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_UNCOPYABLE))
-    e1:SetCategory(te:GetCategory())
-    e1:SetLabel(te:GetLabel())
-    e1:SetLabelObject(te:GetLabelObject())
-    e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-    tc:RegisterEffect(e1)
+    Duel.RaiseEvent(tc,EVENT_SSET,e,REASON_EFFECT,tp,tp,0)
   end
-end
-
-function self.mimic_cs(e,tp,eg,ep,ev,re,r,rp,chk)
-  local cost=e:GetHandler():GetActivateEffect():GetCost()
-  if chk==0 then return not cost or cost(e,tp,eg,ep,ev,re,r,rp,0) end
-  Duel.ChangePosition(e:GetHandler(),POS_FACEUP)
-  e:SetType(EFFECT_TYPE_ACTIVATE)
-  if cost then cost(e,tp,eg,ep,ev,re,r,rp,chk) end
-end
-
-function self.mimic_op(e,tp,eg,ep,ev,re,r,rp)
-  e:GetHandler():SetStatus(STATUS_ACTIVATED,true)
-  local op=e:GetHandler():GetActivateEffect():GetOperation()
-  if op then op(e,tp,eg,ep,ev,re,r,rp) end
-  e:GetHandler():CancelToGrave(false)
 end
