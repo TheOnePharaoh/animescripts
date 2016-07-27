@@ -22,7 +22,7 @@ function self.initial_effect(c)
     self.['gl_chk']=true
     self.seal_lst={
       25880422,29549364,63102017,
-      511000176
+      58921041,511000176
     }
   end
 end

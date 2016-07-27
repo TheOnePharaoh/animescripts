@@ -32,7 +32,7 @@ function self.det_op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function self.cd(e,tp,eg,ep,ev,re,r,rp)
-  return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE and Duel.GetChainInfo(0,CHAININFO_CHAIN_ID)==self['ev0'] and re:IsActiveType(TYPE_XYZ) and Duel.IsChainNegatable(ev)
+  return Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()>=0x08 and Duel.GetCurrentPhase()<=0x20 and Duel.GetChainInfo(0,CHAININFO_CHAIN_ID)==self['ev0'] and re:IsActiveType(TYPE_XYZ) and Duel.IsChainNegatable(ev)
 end
 
 function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
