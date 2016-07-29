@@ -1,16 +1,15 @@
 --Obelisk the Tormentor
---マイケル・ローレンス・ディーによってスクリプト
 function c511000235.initial_effect(c)
 	--Summon with 3 Tribute
-	c:SetUniqueOnField(1,0,511000235)
+	--c:SetUniqueOnField(1,0,511000235)
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_LIMIT_SUMMON_PROC)
+	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetCondition(c511000235.sumoncon)
 	e1:SetOperation(c511000235.sumonop)
 	e1:SetValue(SUMMON_TYPE_ADVANCE)
-	c:RegisterEffect(e1)
+	--c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_LIMIT_SET_PROC)
@@ -44,7 +43,6 @@ function c511000235.initial_effect(c)
 	e6:SetValue(c511000235.recon)
 	c:RegisterEffect(e6)
 	local e7=e6:Clone()
-	e7:SetCondition(c511000235.recon2)
 	e7:SetCode(EFFECT_UNRELEASABLE_NONSUM)
 	c:RegisterEffect(e7)
 	--cannot be target
@@ -83,10 +81,10 @@ function c511000235.initial_effect(c)
 	--If Special Summoned: Send to Grave
 	local e16=Effect.CreateEffect(c)
 	e16:SetDescription(aux.Stringid(511000235,1))
-	e16:SetCategory(CATEGORY_TOGRAVE+CATEGORY_REMOVE+CATEGORY_TOHAND+CATEGORY_TODECK)
+	e16:SetCategory(CATEGORY_TOGRAVE)
 	e16:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e16:SetRange(LOCATION_MZONE)
-	e16:SetProperty(EFFECT_FLAG_REPEAT+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+	e16:SetProperty(EFFECT_FLAG_REPEAT+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e16:SetCountLimit(1)
 	e16:SetCode(EVENT_PHASE+PHASE_END)
 	e16:SetCondition(c511000235.stgcon)
@@ -113,40 +111,26 @@ function c511000235.initial_effect(c)
 	e18:SetRange(LOCATION_MZONE)
 	e18:SetValue(c511000235.indes)
 	c:RegisterEffect(e18)
-	--redirect attack
-	local red=Effect.CreateEffect(c)
-	red:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	red:SetCode(EVENT_SPSUMMON_SUCCESS)
-	red:SetOperation(c511000235.redatk)
-	c:RegisterEffect(red)
 end
 function c511000235.indes(e,re,rp)
-	return not re:GetOwner():IsCode(10000010)
+	return re:GetOwner():IsCode(10000010)
 end
 function c511000235.recon(e,c)
 	return c:GetControler()~=e:GetHandler():GetControler()
 end
-function c511000235.recon2(e)
-	return Duel.GetTurnPlayer()~=e:GetOwnerPlayer()
-end
 function c511000235.sumoncon(e,c)
 	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>-3 and Duel.GetTributeCount(c)>=3
+	return true
 end
 function c511000235.sumonop(e,tp,eg,ep,ev,re,r,rp,c)
-	local g=Duel.SelectTribute(tp,c,3,3)
-	c:SetMaterial(g)
-	Duel.Release(g,REASON_SUMMON+REASON_MATERIAL)
+	
 end
 function c511000235.setcon(e,c)
 	if not c then return true end
 	return false
 end
 function c511000235.sumsuc(e,tp,eg,ep,ev,re,r,rp)
-	Duel.SetChainLimitTillChainEnd(c511000235.chainlm)
-end
-function c511000235.chainlm(e,rp,tp)
-	return e:GetHandler():IsAttribute(ATTRIBUTE_DEVINE)
+	Duel.SetChainLimitTillChainEnd(aux.FALSE)
 end
 function c511000235.efilter(e,te)
 	return te:IsActiveType(TYPE_EFFECT) and not te:GetHandler():IsAttribute(ATTRIBUTE_DEVINE)
@@ -160,33 +144,13 @@ function c511000235.stgcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511000235.stgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local c=e:GetHandler()
-	if c:IsPreviousLocation(LOCATION_GRAVE) then
-		Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,c,1,0,0)
-	elseif c:IsPreviousLocation(LOCATION_DECK) then
-		Duel.SetOperationInfo(0,CATEGORY_TODECK,c,1,0,0)
-	elseif c:IsPreviousLocation(LOCATION_HAND) then
-		Duel.SetOperationInfo(0,CATEGORY_TOHAND,c,1,0,0)
-	elseif c:IsPreviousLocation(LOCATION_REMOVED) then
-		Duel.SetOperationInfo(0,CATEGORY_REMOVE,c,1,0,0)
-	end
+	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,e:GetHandler(),1,0,0)
 end
 function c511000235.stgop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
-		if c:IsPreviousLocation(LOCATION_GRAVE) then
-			Duel.SendtoGrave(c,REASON_EFFECT)
-		elseif c:IsPreviousLocation(LOCATION_DECK) then
-			Duel.SendtoDeck(c,nil,2,REASON_EFFECT)
-		elseif c:IsPreviousLocation(LOCATION_HAND) then
-			Duel.SendtoHand(c,nil,REASON_EFFECT)
-		elseif c:IsPreviousLocation(LOCATION_REMOVED) then
-			Duel.Remove(c,POS_FACEUP,REASON_EFFECT)
-		end
+		Duel.SendtoGrave(c,REASON_EFFECT)
 	end
-end
-function c511000235.tgg(c,card)
-	return c:GetCardTarget() and c:GetCardTarget():IsContains(card)
 end
 function c511000235.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -194,39 +158,29 @@ function c511000235.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 	e1:SetValue(c:GetBaseAttack())
-	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_SET_DEFENCE_FINAL)
 	e2:SetValue(c:GetBaseDefence())
-	e2:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e2)
-	local eqg=c:GetEquipGroup()
-	local tgg=Duel.GetMatchingGroup(c511000235.tgg,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil,c)
-	eqg:Merge(tgg)
-	if eqg:GetCount()>0 then
-		Duel.Destroy(eqg,REASON_EFFECT)
-	end
 end
 function c511000235.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroup(tp,nil,2,e:GetHandler()) end
-	local g=Duel.SelectReleaseGroup(tp,nil,2,2,e:GetHandler())
+	if chk==0 then return Duel.CheckReleaseGroup(tp,nil,2,nil) end
+	local g=Duel.SelectReleaseGroup(tp,nil,2,2,nil)
 	Duel.Release(g,REASON_COST)
 end
 function c511000235.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE and e:GetHandler():IsAttackable()
+	return Duel.GetCurrentPhase()==PHASE_BATTLE and e:GetHandler():IsAttackPos()
 end
 function c511000235.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,0,LOCATION_MZONE,1,nil) end
+	if chk==0 then return true end
 	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
 end
 function c511000235.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
-		Duel.Destroy(sg,REASON_EFFECT)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
@@ -242,21 +196,8 @@ function c511000235.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetOperation(c511000235.damop)
 		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE+PHASE_END)
 		c:RegisterEffect(e2)
-		if Duel.GetTurnPlayer()==tp then
-			local e1=Effect.CreateEffect(c)
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_FIRST_ATTACK)
-			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE+PHASE_END)
-			c:RegisterEffect(e1)
-			local e2=Effect.CreateEffect(c)
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_MUST_ATTACK)
-			e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE+PHASE_END)
-			c:RegisterEffect(e2)
-		else
-			local tg=Duel.SelectMatchingCard(tp,nil,tp,0,LOCATION_MZONE,1,1,nil):GetFirst()
-			Duel.CalculateDamage(c,tg)
-		end
+		local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
+		Duel.Destroy(sg,REASON_EFFECT)
 	end
 end
 function c511000235.damcon(e,tp,eg,ep,ev,re,r,rp)
@@ -265,10 +206,3 @@ end
 function c511000235.damop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(ep,Duel.GetLP(ep)*100)
 end
-function c511000235.redatk(e,tp,eg,ep,ev,re,r,rp)
-	local a=Duel.GetAttacker()
-	if Duel.CheckEvent(EVENT_ATTACK_ANNOUNCE) and a and a:IsControler(1-tp) and Duel.GetAttackTarget() then
-		Duel.ChangeAttackTarget(e:GetHandler())
-	end
-end
---MLD
