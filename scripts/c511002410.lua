@@ -1,4 +1,6 @@
 --Engine Tuner
+--Fixed faceup remain on field
+
 function c511002410.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -9,12 +11,18 @@ function c511002410.initial_effect(c)
 	e1:SetTarget(c511002410.target)
 	e1:SetOperation(c511002410.operation)
 	c:RegisterEffect(e1)
+  --Trigger--Duplicate of Activate
+  local e1a=e1:Clone()
+  e1a:SetType(EFFECT_TYPE_IGNITION)
+  e1a:SetRange(LOCATION_SZONE)
+  e1a:SetCost(c511002410.trigcs)
+  c:RegisterEffect(e1a)
 	--Equip limit
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_EQUIP_LIMIT)
 	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetValue(1)
+	e2:SetValue(function(e,tc) return tc:IsOnField() end)
 	c:RegisterEffect(e2)
 	--
 	local e3=Effect.CreateEffect(c)
@@ -60,12 +68,16 @@ end
 function c511002410.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local ec=c:GetPreviousEquipTarget()
-	if chk==0 then return c:IsReason(REASON_LOST_TARGET) and ec and ec:IsReason(REASON_DESTROY) and c:IsCanTurnSet() end
+	if chk==0 then return c:IsReason(REASON_LOST_TARGET) and ec and ec:IsReason(REASON_DESTROY) end
 	return true
 end
 function c511002410.desrepop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	c:CancelToGrave()
-	Duel.ChangePosition(c,POS_FACEDOWN)
-	Duel.RaiseEvent(c,EVENT_SSET,e,REASON_EFFECT,tp,tp,0)
+  c:CancelToGrave()
+  c:SetStatus(STATUS_ACTIVATED,false)
+  c:RegisterFlagEffect(511002410,RESET_EVENT+0x1fe0000,0,0)
+end
+function c511002410.trigcs(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return e:GetHandler():GetFlagEffect(511002410)~=0 end
+  e:GetHandler():ResetFlagEffect(511002410)
 end
