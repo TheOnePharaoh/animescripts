@@ -37,7 +37,7 @@ function self.initial_effect(c)
   e4:SetType(EFFECT_TYPE_SINGLE)
   e4:SetCode(EFFECT_EQUIP_LIMIT)
   e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-  e4:SetValue(1)
+  e4:SetValue(self.eq_limit)
   c:RegisterEffect(e4)
 end
 
@@ -56,6 +56,10 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   if tc:IsRelateToEffect(e) and tc:IsFaceup() and e:GetHandler():IsRelateToEffect(e) then
     Duel.Equip(tp,e:GetHandler(),tc)
   end
+end
+
+function self.eq_limit(e,c)
+  return e:GetHandler():GetControler()==c:GetControler()
 end
 
 --Effect 2 Negate/Redirect attack
@@ -108,7 +112,12 @@ function self.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   while tc do
     g:RemoveCard(tc)
     Duel.HintSelection(Group.FromCards(tc))
-    Duel.GetControl(tc,tp)
+    if not Duel.GetControl(tc,tp,PHASE_END,1) then
+      if not tc:IsImmuneToEffect(e) and tc:IsAbleToChangeControler() then
+        Duel.Destroy(tc,REASON_EFFECT)
+      end
+      return
+    end
     tc=cg:GetNext()
   end
 end

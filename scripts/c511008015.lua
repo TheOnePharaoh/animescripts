@@ -17,20 +17,18 @@ function c511008015.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e2:SetCode(EVENT_BE_BATTLE_TARGET)
 	e2:SetRange(LOCATION_SZONE)
-	e2:SetOperation(c511008015.halveatk)
+	e2:SetCondition(c511008015.atkcon)
+	e2:SetOperation(c511008015.atkop)
 	c:RegisterEffect(e2)
 end
 function c511008015.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end
-function c511008015.filter(c)
-	return c:IsFaceup()
-end
 function c511008015.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511008015.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511008015.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	local g=Duel.SelectTarget(tp,c511008015.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+	local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
 function c511008015.operation(e,tp,eg,ep,ev,re,r,rp)
@@ -57,13 +55,16 @@ function c511008015.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e2)
 	end
 end
-function c511008015.halveatk(e,tp,eg,ep,ev,re,r,rp)
+function c511008015.atkcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetAttackTarget()==e:GetHandler():GetEquipTarget()
+end
+function c511008015.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local ac=Duel.GetAttacker()
 	if ac then
-		local e1=Effect.CreateEffect(ac)
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e1:SetValue(-ac:GetAttack()/2)
 		ac:RegisterEffect(e1)
 	end
