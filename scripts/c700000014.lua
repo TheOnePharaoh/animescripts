@@ -31,7 +31,7 @@ function c700000014.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 function c700000014.cfilter(c,tp)
-	return c:IsType(TYPE_PENDULUM) and c:IsSetCard(0x120e) and c:IsAbleToDeckOrExtraAsCost() 
+	return c:IsType(TYPE_PENDULUM) and c:IsSetCard(0x10ec) and c:IsAbleToDeckOrExtraAsCost() 
 		and Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,c)
 end
 function c700000014.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -60,7 +60,7 @@ function c700000014.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c700000014.atkfil(c)
-	return c:IsFaceup() and c:IsSetCard(0x120e)
+	return c:IsFaceup() and c:IsSetCard(0x10ec)
 end
 function c700000014.atkop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

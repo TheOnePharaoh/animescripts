@@ -1,5 +1,4 @@
---Divine Serpent Geh (Anime)
---Fixed by Edo9300
+--Divine Serpent Geh
 function c170000170.initial_effect(c)
 	c:EnableReviveLimit()
 	--cannot special summon
@@ -85,34 +84,6 @@ function c170000170.initial_effect(c)
 	e11:SetRange(LOCATION_MZONE)
 	e11:SetValue(9999999)
 	c:RegisterEffect(e11)
-	if not c170000170.global_check then
-		c170000170.global_check=true
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-		ge1:SetCode(EVENT_ADJUST)
-		ge1:SetOperation(c170000170.chk)
-		Duel.RegisterEffect(ge1,0)
-	end
-end
-function c170000170.atkdeffil(c)
-	return c:IsType(TYPE_MONSTER) and c:GetAttack()>9999999
-end
-function c170000170.chk(e,tp,eg,ep,ev,re,r,rp,c)
-	local g=Duel.GetMatchingGroup(c170000170.atkdeffil,0,LOCATION_MZONE,LOCATION_MZONE,nil)
-	if g:GetCount()>0 then
-		local tc=g:GetFirst()
-		while tc do
-			--atk
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_UPDATE_ATTACK)
-			e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-			e1:SetValue(9999999-tc:GetAttack())
-			tc:RegisterEffect(e1)
-			tc=g:GetNext()
-		end
-	end
 end
 function c170000170.sucop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
