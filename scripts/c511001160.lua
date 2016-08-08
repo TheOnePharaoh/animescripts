@@ -1,12 +1,7 @@
 --Performapal Camelose
 function c511001160.initial_effect(c)
 	--pendulum summon
-	aux.AddPendulumProcedure(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	c:RegisterEffect(e1)
+	aux.EnablePendulumAttribute(c)
 	--pierce
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(511001160,0))

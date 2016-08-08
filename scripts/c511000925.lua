@@ -14,6 +14,7 @@ end
 function c511000925.condition(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
+	if not d then return false end
 	if d:IsControler(1-tp) then a,d=d,a end
 	if not d or d:IsControler(1-tp) or d:IsHasEffect(EFFECT_INDESTRUCTABLE_BATTLE) then return false end
 	e:SetLabelObject(d)

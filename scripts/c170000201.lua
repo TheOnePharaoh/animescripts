@@ -1,5 +1,4 @@
 --Legend of Heart
---By Edo9300
 function c170000201.initial_effect(c)
     --Activate
     local e1=Effect.CreateEffect(c)
@@ -41,15 +40,15 @@ end
 function c170000201.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>1 
 		and Duel.IsExistingMatchingCard(c170000201.spfilter,tp,0x33,0,1,nil,e,tp,80019195)
-		and Duel.IsExistingMatchingCard(c170000201.spfilter,tp,0x33,0,1,nil,e,tp,84565800)
-		and Duel.IsExistingMatchingCard(c170000201.spfilter,tp,0x33,0,1,nil,e,tp,85800949) end
+		and Duel.IsExistingMatchingCard(c170000201.spfilter,tp,0x33,0,1,nil,e,tp,85800949)
+		and Duel.IsExistingMatchingCard(c170000201.spfilter,tp,0x33,0,1,nil,e,tp,84565800) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g1,3,0,0)
 end
 function c170000201.operation(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=2 then return end
 	local g1=Duel.GetMatchingGroup(c170000201.spfilter,tp,0x33,0,nil,e,tp,80019195)
-	local g2=Duel.GetMatchingGroup(c170000201.spfilter,tp,0x33,0,nil,e,tp,84565800)
-	local g3=Duel.GetMatchingGroup(c170000201.spfilter,tp,0x33,0,nil,e,tp,85800949)
+	local g2=Duel.GetMatchingGroup(c170000201.spfilter,tp,0x33,0,nil,e,tp,85800949)
+	local g3=Duel.GetMatchingGroup(c170000201.spfilter,tp,0x33,0,nil,e,tp,84565800)
 	if g1:GetCount()>0 and g2:GetCount()>0 and g3:GetCount()>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg1=g1:Select(tp,1,1,nil)
@@ -80,5 +79,6 @@ function c170000201.operation(e,tp,eg,ep,ev,re,r,rp)
 		tc=g:GetNext()
 	end
 	Duel.BreakEffect()
-	Duel.SendtoGrave(g,REASON_EFFECT+REASON_DESTROY)
+	Duel.Destroy(g,REASON_EFFECT)
+	Duel.SendtoGrave(g,REASON_EFFECT)
 end

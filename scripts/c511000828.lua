@@ -2,21 +2,23 @@
 function c511000828.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_ATKCHANGE)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetHintTiming(0,TIMING_BATTLE_START)
+	e1:SetHintTiming(0,TIMING_BATTLE_START+TIMING_DAMAGE_STEP)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCondition(c511000828.condition)
 	e1:SetCost(c511000828.cost)
 	e1:SetOperation(c511000828.activate)
 	c:RegisterEffect(e1)
 end
 function c511000828.condition(e,tp,eg,ep,ev,re,r,rp)
-	return tp~=Duel.GetTurnPlayer() and Duel.GetCurrentPhase()==PHASE_BATTLE
+	local phase=Duel.GetCurrentPhase()
+	return Duel.GetTurnPlayer()~=tp and (phase==PHASE_BATTLE or (phase==PHASE_DAMAGE and not Duel.IsDamageCalculated()))
 end
 function c511000828.cfilter(c,tp)
-	return c:IsType(TYPE_MONSTER) and ((c:IsAbleToGraveAsCost() and c:IsLocation(LOCATION_HAND))
-		or (c:IsLocation(LOCATION_MZONE) and c:IsReleasable()))
-		and Duel.IsExistingTarget(c511000828.filter,tp,LOCATION_MZONE,0,1,c)
+	return ((c:IsType(TYPE_MONSTER) and c:IsAbleToGraveAsCost() and c:IsLocation(LOCATION_HAND)) or c:IsReleasable()) 
+		and Duel.IsExistingMatchingCard(c511000828.filter,tp,LOCATION_MZONE,0,1,c)
 end
 function c511000828.filter(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR)
