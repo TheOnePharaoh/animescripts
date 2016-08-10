@@ -2,27 +2,27 @@
 --ライフ・エクスチェンジ
 --  By Shad3
 
-local self=c511005073
+local scard=c511005073
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_CHAINING)
   e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-  e1:SetCondition(self.cd)
-  e1:SetOperation(self.op)
+  e1:SetCondition(scard.cd)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.cd(e,tp,eg,ep,ev,re,r,rp)
   local ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_RECOVER)
   if ex and cp~=tp then return true end
   ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_DAMAGE)
   return ex and cp~=tp
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   local cid=Duel.GetChainInfo(ev,CHAININFO_CHAIN_ID)
   local e1=Effect.CreateEffect(c)
@@ -30,21 +30,21 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   e1:SetCode(EFFECT_CHANGE_DAMAGE)
   e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
   e1:SetTargetRange(0,1)
-  e1:SetValue(self.dmgval)
+  e1:SetValue(scard.dmgval)
   e1:SetReset(RESET_CHAIN)
   e1:SetLabel(cid)
   Duel.RegisterEffect(e1,tp)
   local e2=Effect.CreateEffect(c)
   e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
   e2:SetCode(EVENT_RECOVER)
-  e2:SetOperation(self.recop)
+  e2:SetOperation(scard.recop)
   e2:SetReset(RESET_CHAIN)
   e2:SetLabel(cid)
   Duel.RegisterEffect(e2,tp)
   local e3=Effect.CreateEffect(c)
   e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
   e3:SetCode(EVENT_CHAIN_SOLVED)
-  e3:SetOperation(self.solvop)
+  e3:SetOperation(scard.solvop)
   e3:SetReset(RESET_CHAIN)
   e3:SetLabelObject(e1)
   Duel.RegisterEffect(e3,tp)
@@ -52,7 +52,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   e2:SetLabelObject(e3)
 end
 
-function self.dmgval(e,re,val,r,rp,rc)
+function scard.dmgval(e,re,val,r,rp,rc)
   local cc=Duel.GetCurrentChain()
   if e:GetHandler()~=re:GetHandler() and cc~=0 and Duel.GetChainInfo(0,CHAININFO_CHAIN_ID)==e:GetLabel() then
     e:GetLabelObject():SetLabel(val)
@@ -62,7 +62,7 @@ function self.dmgval(e,re,val,r,rp,rc)
   end
 end
 
-function self.recop(e,tp,eg,ep,ev,re,r,rp)
+function scard.recop(e,tp,eg,ep,ev,re,r,rp)
   local cc=Duel.GetCurrentChain()
   if ep~=tp and cc~=0 and Duel.GetChainInfo(cc,CHAININFO_CHAIN_ID)==e:GetLabel() then
     Duel.SetLP(ep,Duel.GetLP(ep)-ev)
@@ -71,7 +71,7 @@ function self.recop(e,tp,eg,ep,ev,re,r,rp)
   end
 end
 
-function self.solvop(e,tp,eg,ep,ev,re,r,rp)
+function scard.solvop(e,tp,eg,ep,ev,re,r,rp)
   Debug.Message("ping")
   local cc=Duel.GetCurrentChain()
   Debug.Message(cc)

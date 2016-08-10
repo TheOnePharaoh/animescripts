@@ -1,27 +1,27 @@
 --Giant Kra-Corn
 --  By Shad3
 
-local self=c511005044
-function self.initial_effect(c)
+local scard=c511005044
+function scard.initial_effect(c)
   --Continual effect
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_FIELD)
   e1:SetCode(EFFECT_UPDATE_ATTACK)
   e1:SetRange(LOCATION_MZONE)
   e1:SetTargetRange(LOCATION_MZONE,0)
-  e1:SetTarget(self.tg)
-  e1:SetValue(self.val)
+  e1:SetTarget(scard.tg)
+  e1:SetValue(scard.val)
   c:RegisterEffect(e1)
 end
 
-function self.fil(c)
+function scard.fil(c)
   return c:IsRace(RACE_PLANT) and c:IsPosition(POS_FACEUP_ATTACK)
 end
 
-function self.tg(e,c)
-  return self.fil(c)
+function scard.tg(e,c)
+  return scard.fil(c)
 end
 
-function self.val(e,c)
-  return Duel.GetMatchingGroup(self.fil,c:GetControler(),LOCATION_MZONE,0,c):GetSum(Card.GetBaseAttack)
+function scard.val(e,c)
+  return Duel.GetMatchingGroup(scard.fil,c:GetControler(),LOCATION_MZONE,0,c):GetSum(Card.GetBaseAttack)
 end

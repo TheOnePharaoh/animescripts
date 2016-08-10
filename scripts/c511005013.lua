@@ -1,21 +1,21 @@
 --Otonari Thunder
 --  By Shad3
 
-local self=c511005013
+local scard=c511005013
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_FIELD)
   e1:SetCode(EVENT_SPSUMMON_PROC)
   e1:SetRange(LOCATION_DECK)
   e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-  e1:SetCondition(self.sum_cd)
-  e1:SetOperation(self.sum_op)
+  e1:SetCondition(scard.sum_cd)
+  e1:SetOperation(scard.sum_op)
   c:RegisterEffect(e1)
 end
 
-if not self.Set_hunder then
-  self.Set_hunder={ --This should be replaced when there's 'hunder' archetype
+if not scard.Set_hunder then
+  scard.Set_hunder={ --This should be replaced when there's 'hunder' archetype
     [21524779]=true, --Mahunder
     [84530620]=true, --Pahunder
     [57019473]=true, --Sishunder
@@ -33,20 +33,20 @@ if not self.Set_hunder then
     77506119,987311,50920465,14089428,
     21817254
   } do
-    self.Set_hunder[i]=true
+    scard.Set_hunder[i]=true
   end
 end
 
-function self.hunder_fil(c)
-  return c:IsFaceup() and self.Set_hunder[c:GetCode()]
+function scard.hunder_fil(c)
+  return c:IsFaceup() and scard.Set_hunder[c:GetCode()]
 end
 
-function self.sum_cd(e,c)
+function scard.sum_cd(e,c)
   if not c then return true end
   local tp=c:GetControler()
-  return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsAnyMatchingCard(tp,self.hunder_fil,LOCATION_MZONE,0,4,nil)
+  return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsAnyMatchingCard(tp,scard.hunder_fil,LOCATION_MZONE,0,4,nil)
 end
 
-function self.sum_op(e,tp,eg,ep,ev,re,r,rp,c)
+function scard.sum_op(e,tp,eg,ep,ev,re,r,rp,c)
   Duel.ShuffleDeck(tp)
 end

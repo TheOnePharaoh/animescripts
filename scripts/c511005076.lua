@@ -2,28 +2,28 @@
 --シャイニング・ホライゾン
 --  By Shad3
 
-local self=c511005076
+local scard=c511005076
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_BATTLE_DESTROYED)
   e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
   e1:SetCategory(CATEGORY_DRAW)
-  e1:SetCondition(self.cd)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetCondition(scard.cd)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.cd(e,tp,eg,ep,ev,re,r,rp)
   local tc=eg:GetFirst()
   local rc=tc:GetReasonCard()
   return tc:IsType(TYPE_MONSTER) and rc:IsRelateToBattle() and rc:IsControler(tp)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>0 end
   e:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
   Duel.SetTargetPlayer(tp)
@@ -31,7 +31,7 @@ function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local p,amt=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
   if Duel.Draw(p,amt,REASON_EFFECT)~=0 then
     local dc=Duel.GetOperatedGroup():GetFirst()

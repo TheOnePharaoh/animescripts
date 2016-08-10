@@ -1,37 +1,37 @@
 --Eternal Bond
 --  By Shad3
 
-local self=c511005043
+local scard=c511005043
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.fil(c,e,tp)
+function scard.fil(c,e,tp)
   return c:IsSetCard(0x55) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.IsExistingMatchingCard(self.fil,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return Duel.IsExistingMatchingCard(scard.fil,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
   Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
 end
 
-function self.ph_fil(c,tp)
+function scard.ph_fil(c,tp)
   return c:IsFaceup() and c:IsSetCard(0x55)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local n=Duel.GetLocationCount(tp,LOCATION_MZONE)
   if n<1 then return end
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-  local g=Duel.SelectMatchingCard(tp,self.fil,tp,LOCATION_GRAVE,0,n,n,nil,e,tp)
+  local g=Duel.SelectMatchingCard(tp,scard.fil,tp,LOCATION_GRAVE,0,n,n,nil,e,tp)
   if g:GetCount()==0 then return end
   local tc=g:GetFirst()
   while tc do
@@ -40,7 +40,7 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   end
   Duel.SpecialSummonComplete()
   Duel.BreakEffect()
-  local ng=Duel.GetFieldGroup(tp,LOCATION_MZONE,LOCATION_MZONE):Filter(self.ph_fil,nil)
+  local ng=Duel.GetFieldGroup(tp,LOCATION_MZONE,LOCATION_MZONE):Filter(scard.ph_fil,nil)
   local tpn=ng:FilterCount(Card.IsControler,nil,tp)
   local npn=ng:FilterCount(Card.IsControler,nil,1-tp)
   if tpn<=npn or tpn+npn==1 then return end

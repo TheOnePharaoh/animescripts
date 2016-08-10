@@ -1,21 +1,21 @@
 --Smoke Mirror
 --  By Shad3
 
-local self=c511005048
+local scard=c511005048
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetCategory(CATEGORY_DEFCHANGE)
-  e1:SetCondition(self.cd)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetCondition(scard.cd)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.cd(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_GRAVE,0,nil,TYPE_MONSTER)
   local cds={}
   local c=g:GetFirst()
@@ -32,7 +32,7 @@ function self.cd(e,tp,eg,ep,ev,re,r,rp)
   return false
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chkc then return chkc:IsOnField() and chkc:IsFaceup() end
   if chk==0 then
     return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil)
@@ -42,7 +42,7 @@ function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.GetFirstTarget()
   if tc:IsRelateToEffect(e) and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) then
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_OPPO)
