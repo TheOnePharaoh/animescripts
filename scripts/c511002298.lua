@@ -10,22 +10,16 @@ function c511002298.initial_effect(c)
 	e1:SetOperation(c511002298.activate)
 	c:RegisterEffect(e1)
 end
---Sphere collection
-c511002299.collection={
-	[60202749]=true;[75886890]=true;[32559361]=true;
-	[14466224]=true;[82693042]=true;[26302522]=true;
-	[29552709]=true;[60417395]=true;[72144675]=true;
-	[66094973]=true;[1992816]=true;[51043053]=true;
-	[70780151]=true;[10000080]=true;
-}
 function c511002298.cfilter(c)
-	return c:IsFaceup() and (c511002299.collection[c:GetCode()] or c:IsSetCard(0x406)) and c:IsType(TYPE_MONSTER)
+	return c:IsFaceup() and (c:IsCode(511002289) or c:IsCode(511002290) or c:IsCode(14466224) or c:IsCode(72144675) 
+		or c:IsCode(66094973) or c:IsCode(511002291) or c:IsCode(511002292))
 end
 function c511002298.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511002298.cfilter,1,nil)
 end
 function c511002298.filter(c,e,tp)
-	return (c511002299.collection[c:GetCode()] or c:IsSetCard(0x406)) and c:IsType(TYPE_MONSTER) and c:IsLevelBelow(4) 
+	return (c:IsCode(511002289) or c:IsCode(511002290) or c:IsCode(14466224) or c:IsCode(72144675) 
+		or c:IsCode(66094973) or c:IsCode(511002291) or c:IsCode(511002292)) and c:IsLevelBelow(4) 
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511002298.target(e,tp,eg,ep,ev,re,r,rp,chk)
