@@ -24,6 +24,8 @@ function scard.initial_effect(c)
     local ge3=ge2:Clone()
     ge3:SetCode(EVENT_MSET)
     Duel.RegisterEffect(ge3,0)
+    --Monarch trigger effect table
+    scard.mon_trg={4929256,9748752,15545291,23064604,26205777,51945556,57666212,60229110,69230391,65612386,69327790,85718645,87288189,87602890,96570609}
   end
   --Activate
   local e1=Effect.CreateEffect(c)
@@ -36,8 +38,16 @@ function scard.initial_effect(c)
   c:RegisterEffect(e1)
 end
 
+function scard.chk_mon_trg(c)
+  if bit.band(c:GetSummonType(),SUMMON_TYPE_ADVANCE)~=SUMMON_TYPE_ADVANCE then return false end
+  for _,i in ipairs(scard.mon_trg) do
+    if c:IsCode(i) then return true end
+  end
+  return false
+end
+
 function scard.reg_cd(e,tp,eg,ep,ev,re,r,rp)
-  return re:IsActiveType(TYPE_MONSTER) and re:GetCode()==EVENT_SUMMON_SUCCESS and re:GetHandler()==re:GetOwner() and bit.band(re:GetHandler():GetSummonType(),SUMMON_TYPE_ADVANCE)==SUMMON_TYPE_ADVANCE
+  return re:IsActiveType(TYPE_MONSTER) and re:GetCode()==EVENT_SUMMON_SUCCESS and re:GetHandler()==re:GetOwner() and scard.chk_mon_trg(re:GetHandler())
 end
 
 function scard.reg_op(e,tp,eg,ep,ev,re,r,rp)
