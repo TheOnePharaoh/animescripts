@@ -24,7 +24,13 @@ function c511000086.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000086.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
-		Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	if tc and tc:IsRelateToEffect(e) then
+		if tc:IsType(TYPE_PENDULUM) then
+			local token=Duel.CreateToken(tp,tc:GetOriginalCode())
+			Duel.MoveToField(token,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+			Duel.SendtoDeck(tc,nil,-2,REASON_EFFECT)
+		else
+			Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+		end
 	end
 end

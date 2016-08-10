@@ -30,7 +30,7 @@ function c700000013.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c700000013.cfilter(c)
-	return c:IsType(TYPE_PENDULUM) and c:IsSetCard(0x120e) and c:IsAbleToDeckOrExtraAsCost()
+	return c:IsType(TYPE_PENDULUM) and c:IsSetCard(0x10ec) and c:IsAbleToDeckOrExtraAsCost()
 end
 function c700000013.rvcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c700000013.cfilter,tp,LOCATION_MZONE,0,1,nil) end
@@ -38,7 +38,7 @@ function c700000013.rvcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.PSendtoExtra(g,nil,REASON_COST)
 end
 function c700000013.thfilter(c)
-	return c:IsType(TYPE_SPELL) and c:IsSetCard(0x220e) and c:IsAbleToHand()
+	return c:IsType(TYPE_SPELL) and c:IsSetCard(0x20ec) and c:IsAbleToHand()
 end
 function c700000013.rvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c700000013.thfilter(chkc) end

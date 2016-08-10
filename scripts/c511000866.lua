@@ -12,7 +12,7 @@ function c511000866.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511000866.filter(c)
-	return c:IsFaceup() and c:GetRank()<=4
+	return c:IsFaceup() and c:GetRank()<=4 and c:GetRank()>0
 end
 function c511000866.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and c511000866.filter(chkc) end
@@ -26,7 +26,7 @@ end
 function c511000866.operation(e,tp,eg,ep,ev,re,r,rp)
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		Duel.Draw(p,tc:GetRank(),REASON_EFFECT)
 	end
 end

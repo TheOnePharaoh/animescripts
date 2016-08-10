@@ -32,6 +32,7 @@ function c511001608.initial_effect(c)
 	e4:SetCode(EFFECT_IMMUNE_EFFECT)
 	e4:SetCondition(c511001608.indcon)
 	e4:SetValue(c511001608.efilter)
+	e4:SetOwnerPlayer(tp)
 	c:RegisterEffect(e4)
 	--no damage
 	local e5=Effect.CreateEffect(c)
@@ -145,7 +146,7 @@ function c511001608.indcon(e)
 	return Duel.IsExistingMatchingCard(c511001608.cfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
 end
 function c511001608.efilter(e,re)
-	return e:GetHandlerPlayer()~=re:GetHandlerPlayer()
+	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
 end
 function c511001608.damval(e,re,val,r,rp,rc)
 	return 0
