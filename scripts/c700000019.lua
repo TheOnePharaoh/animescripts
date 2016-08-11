@@ -11,7 +11,7 @@ function c700000019.initial_effect(c)
 	c:RegisterEffect(e1)	
 end
 function c700000019.filter(c)
-	return c:IsSetCard(0x120e) and c:IsPosition(POS_FACEUP_ATTACK)
+	return c:IsSetCard(0x10ec) and c:IsPosition(POS_FACEUP_ATTACK)
 end
 function c700000019.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c700000019.filter,tp,LOCATION_MZONE,0,1,nil) end

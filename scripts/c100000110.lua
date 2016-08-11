@@ -1,5 +1,4 @@
---Zushin the Sleeping Giant (Anime)
---Fixed by Edo9300
+--眠れる巨人ズシン 
 function c100000110.initial_effect(c)
 	c:EnableReviveLimit()
 	--cannot special summon
@@ -43,33 +42,6 @@ function c100000110.initial_effect(c)
 	e7:SetCode(EFFECT_IMMUNE_EFFECT)
 	e7:SetValue(c100000110.efilter)
 	c:RegisterEffect(e7)
-	if not c100000110.global_check then
-		c100000110.global_check=true
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-		ge1:SetCode(EVENT_ADJUST)
-		ge1:SetOperation(c100000110.chk)
-		Duel.RegisterEffect(ge1,0)
-	end
-end
-function c100000110.atkdeffil(c)
-	return c:IsType(TYPE_MONSTER) and c:GetAttack()>9999999
-end
-function c100000110.chk(e,tp,eg,ep,ev,re,r,rp,c)
-	local g=Duel.GetMatchingGroup(c100000110.atkdeffil,0,LOCATION_MZONE,LOCATION_MZONE,nil)
-	if g:GetCount()>0 then
-		local tc=g:GetFirst()
-		while tc do
-			--atk
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_UPDATE_ATTACK)
-			e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-			e1:SetValue(9999999-tc:GetAttack())
-			tc:RegisterEffect(e1)
-		end
-	end
 end
 function c100000110.spfilter1(c)
 	return c:IsFaceup() and c:GetLevel()==1 and c:IsType(TYPE_NORMAL)
@@ -129,15 +101,10 @@ function c100000110.atkup(e,tp,eg,ep,ev,re,r,rp)
 	local d=Duel.GetAttackTarget()
 	if not d or (a~=c and d~=c) then return end
 	local tc=c:GetBattleTarget()
-	local atk=tc:GetAttack()+1000
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SET_ATTACK_FINAL)
-	if atk>9999999 then
-		e1:SetValue(9999999)
-	else
-		e1:SetValue(atk)
-	end
+	e1:SetValue(tc:GetAttack()+1000)
 	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()

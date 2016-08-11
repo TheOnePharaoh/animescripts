@@ -22,7 +22,7 @@ function c700000020.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_BATTLE 
 end
 function c700000020.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x120e)
+	return c:IsFaceup() and c:IsSetCard(0x10ec)
 end
 function c700000020.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c700000020.filter(chkc) end
