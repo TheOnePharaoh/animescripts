@@ -1,18 +1,17 @@
 --Overlay Marker
 --  By Shad3
 
-local self=c511005059
+local scard=c511005059
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   Duel.EnableGlobalFlag(GLOBALFLAG_DETACH_EVENT)
   --Global Check
-  if not self['gl_chk'] then
-    self['gl_chk']=true
-    local ge1=Effect.CreateEffect(c)
+  if not scard['gl_chk'] then
+    scard['gl_chk']=true
+    local ge1=Effect.GlobalEffect()
     ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
     ge1:SetCode(EVENT_DETACH_MATERIAL)
-    ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-    ge1:SetOperation(self.flag_op)
+    ge1:SetOperation(scard.flag_op)
     Duel.RegisterEffect(ge1,0)
   end
   --Activate
@@ -21,22 +20,22 @@ function self.initial_effect(c)
   e1:SetCode(EVENT_CHAINING)
   e1:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY+CATEGORY_DAMAGE)
   e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-  e1:SetCondition(self.cd)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetCondition(scard.cd)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.flag_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.flag_op(e,tp,eg,ep,ev,re,r,rp)
   local cid=Duel.GetCurrentChain()
-  if cid>0 then self['det_chk']=Duel.GetChainInfo(cid,CHAININFO_CHAIN_ID) end
+  if cid>0 then scard['det_chk']=Duel.GetChainInfo(cid,CHAININFO_CHAIN_ID) end
 end
 
-function self.cd(e,tp,eg,ep,ev,re,r,rp)
-  return Duel.GetAttacker() and Duel.GetAttackTarget() and Duel.GetChainInfo(0,CHAININFO_CHAIN_ID)==self['det_chk'] and re:IsActiveType(TYPE_XYZ) and re:GetHandler():GetOverlayCount()==0 and Duel.IsChainNegatable(ev)
+function scard.cd(e,tp,eg,ep,ev,re,r,rp)
+  return Duel.GetAttacker() and Duel.GetAttackTarget() and Duel.GetChainInfo(0,CHAININFO_CHAIN_ID)==scard['det_chk'] and re:IsActiveType(TYPE_XYZ) and re:GetHandler():GetOverlayCount()==0 and Duel.IsChainNegatable(ev)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return true end
   Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
   if re:GetHandler():IsRelateToEffect(re) then
@@ -47,7 +46,7 @@ function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,val)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   Duel.NegateActivation(ev)
   if re:GetHandler():IsRelateToEffect(re) then
     Duel.Destroy(re:GetHandler(),REASON_EFFECT)

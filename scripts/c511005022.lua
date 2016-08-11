@@ -1,44 +1,44 @@
 --Bond's Reward
 --  By Shad3
 
-local self=c511005022
+local scard=c511005022
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DAMAGE)
-	e1:SetTarget(self.tg)
-	e1:SetOperation(self.op)
+	e1:SetTarget(scard.tg)
+	e1:SetOperation(scard.op)
 	c:RegisterEffect(e1)
 end
 
-function self.fld_fil(c)
+function scard.fld_fil(c)
   return c:IsFaceup() and c:IsType(TYPE_SYNCHRO)
 end
 
-function self.grv_fil(c)
+function scard.grv_fil(c)
   return c:IsAbleToRemove() and c:IsType(TYPE_SYNCHRO)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chkc then return chkc:IsOnField() end
-  if chk==0 then return Duel.IsExistingTarget(self.fld_fil,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(self.grv_fil,tp,LOCATION_GRAVE,0,1,nil) end
-  Duel.SelectTarget(tp,self.fld_fil,tp,LOCATION_MZONE,0,1,1,nil)
+  if chk==0 then return Duel.IsExistingTarget(scard.fld_fil,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(scard.grv_fil,tp,LOCATION_GRAVE,0,1,nil) end
+  Duel.SelectTarget(tp,scard.fld_fil,tp,LOCATION_MZONE,0,1,1,nil)
 end
 
-function self.grv_lvl_sum(c)
+function scard.grv_lvl_sum(c)
   return c:GetLevel()*200
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.GetFirstTarget()
-  local tg=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0):Filter(self.grv_fil,nil)
+  local tg=Duel.GetFieldGroup(tp,LOCATION_GRAVE,0):Filter(scard.grv_fil,nil)
   if tc:IsRelateToEffect(e) and tg:GetCount()>0 then
     if not Duel.Remove(tg,nil,REASON_EFFECT) then return end
-    local i=tg:Filter(Card.IsLocation,nil,LOCATION_REMOVED):GetSum(self.grv_lvl_sum)
+    local i=tg:Filter(Card.IsLocation,nil,LOCATION_REMOVED):GetSum(scard.grv_lvl_sum)
     local e1=Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_SINGLE)
     e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -50,12 +50,12 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
     e2:SetCode(EVENT_PHASE+PHASE_END)
     e2:SetReset(RESET_PHASE+PHASE_END)
     e2:SetCountLimit(1)
-    e2:SetOperation(self.dmg_op)
+    e2:SetOperation(scard.dmg_op)
     e2:SetLabel(i)
     Duel.RegisterEffect(e2,tp)
   end
 end
 
-function self.dmg_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.dmg_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Damage(tp,e:GetLabel(),REASON_EFFECT)
 end
