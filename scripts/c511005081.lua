@@ -55,7 +55,7 @@ function scard.clr_op(e,tp,eg,ep,ev,re,r,rp)
   local c=eg:GetFirst()
   while c do
     if bit.band(c:GetReason(),REASON_TEMPORARY)==0 then
-      if scard.ev_str[c] then table.remove(scard.ev_str,c) end
+      if scard.ev_str[c] then scard.ev_str[c]=nil end
     end
     c=eg:GetNext()
   end
