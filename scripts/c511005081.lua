@@ -21,10 +21,6 @@ function scard.initial_effect(c)
     ge2:SetCode(EVENT_LEAVE_FIELD)
     ge2:SetOperation(scard.clr_op)
     Duel.RegisterEffect(ge2,0)
-    local ge3=ge2:Clone()
-    ge3:SetCode(EVENT_MSET)
-    Duel.RegisterEffect(ge3,0)
-    --Monarch trigger effect table
     scard.mon_trg={4929256,9748752,15545291,23064604,26205777,51945556,57666212,60229110,69230391,65612386,69327790,85718645,87288189,87602890,96570609}
   end
   --Activate
@@ -52,22 +48,22 @@ end
 
 function scard.reg_op(e,tp,eg,ep,ev,re,r,rp)
   local tc=re:GetHandler()
-  scard.ev_str[tc:GetFieldID()]=re
+  scard.ev_str[tc]=re
 end
 
 function scard.clr_op(e,tp,eg,ep,ev,re,r,rp)
   local c=eg:GetFirst()
   while c do
-    local fid=c:GetFieldID()
-    if scard.ev_str[fid] then table.remove(scard.ev_str,fid) end
+    if bit.band(c:GetReason(),REASON_TEMPORARY)==0 then
+      if scard.ev_str[c] then table.remove(scard.ev_str,c) end
+    end
     c=eg:GetNext()
   end
 end
 
 function scard.fil(c,e,tp)
   if bit.band(c:GetSummonType(),SUMMON_TYPE_ADVANCE)~=SUMMON_TYPE_ADVANCE or not c:IsFaceup() then return false end
-  local fid=c:GetFieldID()
-  local te=scard.ev_str[fid]
+  local te=scard.ev_str[c]
   if not te then return false end
   local targ=te:GetTarget()
   return not targ or targ(te,tp,Group.FromCards(c),tp,0,nil,0,tp,0)
@@ -77,7 +73,7 @@ function scard.cs(e,tp,eg,ep,ev,re,r,rp,chk)
   local g=Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil,e,tp)
   if chk==0 then return g:GetCount()>0 end
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SELECT)
-  scard.ch_str[Duel.GetCurrentChain()]=scard.ev_str[g:Select(tp,1,1,nil):GetFirst():GetFieldID()]
+  scard.ch_str[Duel.GetCurrentChain()]=scard.ev_str[g:Select(tp,1,1,nil):GetFirst()]
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
