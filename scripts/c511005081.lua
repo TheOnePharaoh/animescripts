@@ -1,4 +1,5 @@
 --Reawakening of the Emperor
+--帝王の再覚醒
 --  By Shad3
 
 local scard=c511005081
@@ -66,7 +67,7 @@ function scard.fil(c,e,tp)
   local te=scard.ev_str[c]
   if not te then return false end
   local targ=te:GetTarget()
-  return not targ or targ(te,tp,Group.FromCards(c),tp,0,nil,0,tp,0)
+  return not targ or targ(e,tp,Group.FromCards(c),tp,0,nil,0,tp,0)
 end
 
 function scard.cs(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -77,8 +78,10 @@ function scard.cs(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-  local te=scard.ch_str[Duel.GetCurrentChain()]
+  local cn=Duel.GetCurrentChain()
+  local te=scard.ch_str[cn]
   if chkc then
+    if not te then return false end
     local targ=te:GetTarget()
     return targ(e,tp,eg,ep,ev,re,r,rp,0,chkc)
   end
@@ -95,7 +98,14 @@ function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   e:SetLabel(te:GetLabel())
   e:SetLabelObject(te:GetLabelObject())
   local targ=te:GetTarget()
-  if targ then targ(e,tp,Group.FromCards(te:GetHandler()),tp,0,nil,0,tp,1) end
+  if targ then
+    local sg=Group.FromCards(te:GetHandler())
+    if targ(e,tp,sg,tp,0,nil,0,tp,0) then
+      targ(e,tp,sg,tp,0,nil,0,tp,1)
+    else
+      scard.ch_str[cn]=nil
+    end
+  end
 end
 
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
