@@ -22,6 +22,7 @@ function scard.initial_effect(c)
     ge1:SetCondition(scard.reg_cd)
     ge1:SetOperation(scard.reg_op)
     Duel.RegisterEffect(ge1,0)
+  end
 end
 
 function scard.reg_cd(e,tp,eg,ep,ev,re,r,rp)
