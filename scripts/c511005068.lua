@@ -1,43 +1,43 @@
 --Rivals Unite
 --  By Shad3
 
-local self=c511005068
+local scard=c511005068
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_ATTACK_DISABLED)
   e1:SetCategory(CATEGORY_EQUIP)
   e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-  e1:SetCondition(self.cd)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetCondition(scard.cd)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
   --Destroyed
   local e2=Effect.CreateEffect(c)
   e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
   e2:SetCode(EVENT_DESTROYED)
   e2:SetCategory(CATEGORY_CONTROL)
-  e2:SetCondition(self.con_cd)
-  e2:SetOperation(self.con_op)
+  e2:SetCondition(scard.con_cd)
+  e2:SetOperation(scard.con_op)
   c:RegisterEffect(e2)
 end
 
-function self.cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.cd(e,tp,eg,ep,ev,re,r,rp)
   local ac=Duel.GetAttacker()
   local bc=Duel.GetAttackTarget()
   return bc and ac:IsLocation(LOCATION_MZONE) and bc:IsLocation(LOCATION_MZONE) and ac:IsControler(tp)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   local bc=Duel.GetAttackTarget()
   if chk==0 then return bc and bc:IsFaceup() and bc:IsCanBeEffectTarget(e) and bc:IsControlerCanBeChanged() end
   Duel.SetTargetCard(bc)
   Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   local tc=Duel.GetFirstTarget()
   if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) then
@@ -66,27 +66,27 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
     e4:SetCode(EVENT_DESTROYED)
     e4:SetRange(LOCATION_SZONE)
     e4:SetReset(RESET_EVENT+0x1fe0000)
-    e4:SetCondition(self.des_cd)
-    e4:SetOperation(self.des_op)
+    e4:SetCondition(scard.des_cd)
+    e4:SetOperation(scard.des_op)
     c:RegisterEffect(e4)
   end
 end
 
-function self.des_cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.des_cd(e,tp,eg,ep,ev,re,r,rp)
   local rc=e:GetHandler():GetEquipTarget()
   return rc and eg:IsExists(rc)
 end
 
-function self.des_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.des_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end
 
-function self.con_cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.con_cd(e,tp,eg,ep,ev,re,r,rp)
   local rc=e:GetHandler():GetPreviousEquipTarget()
   return rc and rc:IsLocation(LOCATION_ONFIELD) and rc:IsFaceup()
 end
 
-function self.con_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.con_op(e,tp,eg,ep,ev,re,r,rp)
   local rc=e:GetHandler():GetPreviousEquipTarget()
   if not rc or not rc:IsLocation(LOCATION_ONFIELD) or rc:IsFacedown() or rc:IsImmuneToEffect(e) then return end
   rc:ResetEffect(EFFECT_SET_CONTROL,RESET_CODE)

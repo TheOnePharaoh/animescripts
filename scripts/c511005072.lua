@@ -2,20 +2,20 @@
 --クイック・スターレベル３
 --  By Shad3
 
-local self=c511005072
+local scard=c511005072
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetCategory(CATEGORY_LVCHANGE)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.g_slvl(g)
+function scard.g_slvl(g)
   local rg=Group.CreateGroup()
   local eg={}
   local ei={}
@@ -40,14 +40,14 @@ function self.g_slvl(g)
   return rg
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  local g=self.g_slvl(Duel.GetMatchingGroup(self.fil,tp,LOCATION_MZONE,0,nil))
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  local g=scard.g_slvl(Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil))
   if chk==0 then return g:GetCount()>0 end
   Duel.SetOperationInfo(0,CATEGORY_LVCHANGE,g,0,0,3)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
-  local g=self.g_slvl(Duel.GetMatchingGroup(self.fil,tp,LOCATION_MZONE,0,nil))
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
+  local g=scard.g_slvl(Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil))
   if g:GetCount()==0 then return end
   local c=e:GetHandler()
   local tc=g:GetFirst()

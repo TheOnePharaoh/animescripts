@@ -2,31 +2,31 @@
 --シールド・オブ・ボンズ
 --  By Shad3
 
-local self=c511005075
+local scard=c511005075
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetCategory(CATEGORY_ATKCHANGE)
   e1:SetHintTiming(0,TIMING_ATTACK)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.fil(c,e)
+function scard.fil(c,e)
   return c:IsFaceup() and not c:IsImmuneToEffect(e)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.IsExistingMatchingCard(self.fil,tp,LOCATION_MZONE,0,1,nil,e) end
-  Duel.SetOperationInfo(0,CATEGORY_ATKCHANGE,Duel.GetMatchingGroup(self.fil,tp,LOCATION_MZONE,0,nil,e),0,0,0)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return Duel.IsExistingMatchingCard(scard.fil,tp,LOCATION_MZONE,0,1,nil,e) end
+  Duel.SetOperationInfo(0,CATEGORY_ATKCHANGE,Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil,e),0,0,0)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
-  local g=Duel.GetMatchingGroup(self.fil,tp,LOCATION_MZONE,0,nil,e)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
+  local g=Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil,e)
   if g:GetCount()>0 then
     local c=e:GetHandler()
     g:ForEach(function(tc)
