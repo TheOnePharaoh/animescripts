@@ -16,7 +16,7 @@ function c511009143.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Release(g,REASON_COST)
 end
 function c511009143.filter(c,e,tp)
-	return (c:IsCode(511002634) or c:IsCode(511002731)) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
+	return (c:IsCode(511002634) or c:IsCode(511002731) or c:IsCode(511009178) or c:IsCode(511009179)) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 function c511009143.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>-1
