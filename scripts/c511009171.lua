@@ -3,8 +3,7 @@ function c511009171.initial_effect(c)
 	--pos
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(17415895,0))
-	e1:SetCategory(CATEGORY_POSITION)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetCategory(CATEGORY_DAMAGE)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
@@ -12,10 +11,24 @@ function c511009171.initial_effect(c)
 	e1:SetTarget(c511009171.damtg)
 	e1:SetOperation(c511009171.damop)
 	c:RegisterEffect(e1)
+	if not c8785161.global_check then
+		c8785161.global_check=true
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_SUMMON_SUCCESS)
+		ge1:SetLabel(511009171)
+		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		ge1:SetOperation(aux.sumreg)
+		Duel.RegisterEffect(ge1,0)
+		local ge2=ge1:Clone()
+		ge2:SetCode(EVENT_SPSUMMON_SUCCESS)
+		ge2:SetLabel(511009171)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 
 function c511009171.damcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsStatus(STATUS_SUMMON_TURN+STATUS_SPSUMMON_TURN)
+	return e:GetHandler():GetFlagEffect(511009171)>0
 end
 function c511009171.damtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 if chk==0 then return true end

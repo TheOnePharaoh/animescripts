@@ -2,7 +2,7 @@
 function c511002015.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcCode2(c,511002011,511002012,true,true)
+	aux.AddFusionProcFun2(c,c511002015.ffilter1,c511002015.ffilter2,1,true,true)
 	--damage
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DAMAGE)
@@ -14,6 +14,38 @@ function c511002015.initial_effect(c)
 	e1:SetTarget(c511002015.damtg)
 	e1:SetOperation(c511002015.damop)
 	c:RegisterEffect(e1)
+end
+--Earth Collection
+c511002015.collection1={
+[42685062]=true;[76052811]=true;[71564150]=true;
+[77827521]=true;[75375465]=true;[70595331]=true;
+[67987302]=true;[94773007]=true;[45042329]=true;	
+}
+
+--Sky Collection
+c511002015.collection2={
+	[10000020]=true;[79575620]=true;[32559361]=true;
+	[77998771]=true;[15914410]=true;[49771608]=true;
+	[61777313]=true;[40844552]=true;[76348260]=true;
+	[2356994]=true;[53334641]=true;[3629090]=true;
+	[77235086]=true;[16972957]=true;[42216237]=true;
+	[42418084]=true;[59509952]=true;[18378582]=true;
+	[81146288]=true;[85399281]=true;[58601383]=true;
+	[86327225]=true;[41589166]=true;[37910722]=true;
+	[12171659]=true;[75326861]=true;[2519690]=true;
+	[96570609]=true;[95457011]=true;[74841885]=true;
+	[11458071]=true;[48453776]=true;[90122655]=true;
+	[69865139]=true;[32995007]=true;[1992816]=true;
+	[80764541]=true;[87390067]=true;[3072808]=true;
+	[49674183]=true;[42431843]=true;[29146185]=true;
+	[69992868]=true;[96470883]=true;[10028593]=true;
+}
+
+function c511002015.ffilter1(c)
+	return (c511002015.collection1[c:GetCode()] or c:IsSetCard(0x408) or c:IsSetCard(0x21) or c:IsSetCard(0x21f))
+end
+function c511002015.ffilter2(c)
+	return (c511002015.collection2[c:GetCode()] or c:IsSetCard(0x407) or c:IsSetCard(0xef))
 end
 function c511002015.filter(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR)
