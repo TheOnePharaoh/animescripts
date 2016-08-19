@@ -25,9 +25,8 @@ function scard.initial_effect(c)
     scard.tcount={[0]=0,[1]=0}
     local ge1=Effect.GlobalEffect()
     ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    ge1:SetCode(EVENT_PHASE+PHASE_END)
+    ge1:SetCode(EVENT_TURN_END)
     ge1:SetOperation(scard.rst_op)
-    ge1:SetCountLimit(1)
     Duel.RegisterEffect(ge1,0)
   end
 end
