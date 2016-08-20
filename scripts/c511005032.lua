@@ -41,7 +41,6 @@ function scard.line_val(e,c)
 end
 
 function scard.fil(c)
-  Debug.Message(bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE+REASON_REDIRECT)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer())
   return bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE+REASON_REDIRECT)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer()
 end
 
