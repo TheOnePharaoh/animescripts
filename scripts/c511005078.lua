@@ -41,7 +41,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
   if tc then
     local e1=Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_SINGLE)
-    e1:SetCode(EFFECT_UPDATE_DEFENCE)
+    e1:SetCode(EFFECT_UPDATE_DEFENSE)
     e1:SetValue(e:GetLabel())
     e1:SetReset(RESET_EVENT+0x1fe0000)
     tc:RegisterEffect(e1)

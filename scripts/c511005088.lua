@@ -63,7 +63,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
   e1:SetValue(scard.ref_val)
   e1:SetReset(RESET_PHASE+PHASE_END)
   Duel.RegisterEffect(e1,tp)
-  if Duel.GetCurrentPhase()==PHASE_BATTLE then
+  if (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE) then
     Duel.SkipPhase(Duel.GetTurnPlayer(),PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE,1)
   end
 end

@@ -72,7 +72,7 @@ end
 function scard.dbl_cd(e,c)
   if e:GetOwner():IsRelateToCard(e:GetHandler()) then
     local ph=Duel.GetCurrentPhase()
-    return ph>=0x08 and ph<=0x20
+    return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE
   end
   e:Reset()
   return false
