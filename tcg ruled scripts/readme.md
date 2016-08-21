@@ -1,4 +1,4 @@
-TCG ruled cards that need to be made. Would appreciate if any scripters are interested in finishing these. We are working with Salvation so we can have correctly ruled TCG scripts in the game. The ones that are not checked require to be scripted. If a player selects TCG banlist, the game will use a subfolder called 'tcg' inside scripts folder as priority.
+TCG ruled cards that need to be made. Would appreciate if any scripters are interested in finishing these. We are working with Salvation so we can have correctly ruled TCG scripts in the game. The ones that are not checked require to be scripted. If a player selects TCG banlist, the game will use a subfolder called 'tcg' inside scripts folder as priority. Refer to this checklist: https://github.com/SalvationDevelopment/ygopro-tcg-scripts/issues/1
 
 - `Spell Reactor・RE [15175429]` : In the TCG, it is a Trigger Effect and can be activated during the Damage Step.  
 - `Symbol of Friendship [2295831]` : In the TCG, you can reveal this card if you draw it for your normal draw while you control no monsters. In the OCG, you can only reveal it if you control no cards.  
