@@ -19,9 +19,10 @@ function scard.initial_effect(c)
   c:RegisterEffect(e2)
   local e3=Effect.CreateEffect(c)
   e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-  e3:SetCode(EVENT_DESTROYED)
+  e3:SetCode(EFFECT_SEND_REPLACE)
   e3:SetRange(LOCATION_FZONE)
-  e3:SetOperation(scard.swapgrv_op)
+  e3:SetTarget(scard.tg)
+  e3:SetValue(scard.val)
   c:RegisterEffect(e3)
 end
 
@@ -39,40 +40,20 @@ function scard.line_val(e,c)
   return 0
 end
 
-function scard.swapgrv_fil(c,p)
-  return c:IsLocation(LOCATION_GRAVE) and c:GetOwner()~=p
+function scard.fil(c)
+  return bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE+REASON_REDIRECT)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer()
 end
 
-function scard.swapgrv_op(e,tp,eg,ep,ev,re,r,rp)
-  if not re then
-    Debug.Message(eg:GetCount())
-    local c=eg:GetFirst()
-    while c do
-      if not (c:IsLocation(LOCATION_GRAVE) and c:GetPreviousControler()~=c:GetOwner()) then
-        local np=1-c:GetPreviousControler()
-      --local g=eg:Filter(scard.swapgrv_fil,nil,rp)
-      --if g:GetCount()==0 then return end
-        local dg=Duel.GetFieldGroup(np,LOCATION_DECK,0)
-        Duel.Remove(dg,POS_FACEDOWN,REASON_RULE+REASON_TEMPORARY)
-        Duel.SendtoDeck(Duel.GetFieldGroup(np,LOCATION_GRAVE,0),np,0,REASON_RULE)
-        Duel.SendtoDeck(c,np,0,REASON_RULE)
-        Duel.SwapDeckAndGrave(np)
-        Duel.DisableShuffleCheck()
-        Duel.SendtoDeck(dg,np,0,REASON_RULE)
-      end
-      c=eg:GetNext()
-    end
-  else
-    local np=re:GetHandler()
-    if np~=0 and np~=1 then np=np:GetOwner() end
-    local g=eg:Filter(scard.swapgrv_fil,nil,np)
-    if g:GetCount()==0 then return end
-    local dg=Duel.GetFieldGroup(np,LOCATION_DECK,0)
-    Duel.Remove(dg,POS_FACEDOWN,REASON_RULE+REASON_TEMPORARY)
-    Duel.SendtoDeck(Duel.GetFieldGroup(np,LOCATION_GRAVE,0),np,0,REASON_RULE)
-    Duel.SendtoDeck(g,np,0,REASON_RULE)
-    Duel.SwapDeckAndGrave(np)
-    Duel.DisableShuffleCheck()
-    Duel.SendtoDeck(dg,np,0,REASON_RULE)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return eg:IsExists(scard.fil,1,nil) end
+  local c=eg:GetFirst()
+  while c do
+    if scard.fil(c) then Duel.SendtoGrave(c,r+REASON_REDIRECT,c:GetReasonPlayer()) end
+    c=eg:GetNext()
   end
+  return true
+end
+
+function scard.val(e,c)
+  return false
 end

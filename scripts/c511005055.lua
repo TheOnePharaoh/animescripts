@@ -48,7 +48,7 @@ function scard.flag_raise(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   if e:GetLabel()==c:GetAttack() then return end
   local ph=Duel.GetCurrentPhase()
-  if ph>=0x08 and ph<=0x20 then
+  if ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE then
     Duel.RaiseEvent(Group.FromCards(c),511005055,e,REASON_EFFECT,rp,tp,math.abs(e:GetLabel()-c:GetAttack()))
   end
   e:SetLabel(c:GetAttack())
