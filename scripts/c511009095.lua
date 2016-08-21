@@ -1,5 +1,7 @@
 --Clear Wing Fast Dragon
 function c511009095.initial_effect(c)
+	--pendulum summon
+	aux.EnablePendulumAttribute(c,false)
 	--synchro summon
 	aux.AddSynchroProcedure(c,nil,aux.NonTuner(nil),1)
 	c:EnableReviveLimit()
