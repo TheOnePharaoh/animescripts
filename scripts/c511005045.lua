@@ -14,8 +14,8 @@ function scard.initial_effect(c)
   e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
   --Global check
-  if not scard['gl_chk'] then
-    scard['gl_chk']=true
+  if not scard.gl_chk then
+    scard.gl_chk=true
     local ge1=Effect.GlobalEffect()
     ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
     ge1:SetCode(EVENT_DAMAGE)
@@ -44,7 +44,7 @@ function scard.cd(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function scard.sum_fil(c,e,tp)
-  return c:IsSetCard(0x7b) and c:GetDefence()<=scard['dmg'..tp] and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+  return c:IsSetCard(0x7b) and c:GetDefense()<=scard['dmg'..tp] and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)

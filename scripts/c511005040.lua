@@ -15,7 +15,7 @@ function scard.initial_effect(c)
 end
 
 function scard.fd_fil(c)
-  return c:GetPosition()==POS_FACEDOWN_DEFENCE
+  return c:GetPosition()==POS_FACEDOWN_DEFENSE
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -27,5 +27,5 @@ end
 
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.GetFirstTarget()
-  if tc:IsRelateToEffect(e) then Duel.ChangePosition(tc,POS_FACEUP_DEFENCE) end
+  if tc:IsRelateToEffect(e) then Duel.ChangePosition(tc,POS_FACEUP_DEFENSE) end
 end

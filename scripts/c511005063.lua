@@ -110,17 +110,17 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
     e4:SetValue(0)
     stc:RegisterEffect(e4,true)
     local e5=e1:Clone()
-    e5:SetCode(EFFECT_SET_BASE_DEFENCE)
+    e5:SetCode(EFFECT_SET_BASE_DEFENSE)
     e5:SetValue(0)
     stc:RegisterEffect(e5,true)
     stc:SetStatus(STATUS_NO_LEVEL,true)
     stc=sg:GetNext()
   end
-  Duel.SpecialSummon(sg,0,tp,tp,true,false,POS_FACEDOWN_DEFENCE)
+  Duel.SpecialSummon(sg,0,tp,tp,true,false,POS_FACEDOWN_DEFENSE)
   if tc:IsFaceup() then
-    if tc:IsHasEffect(EFFECT_DEVINE_LIGHT) then Duel.ChangePosition(tc,POS_FACEUP_DEFENCE)
+    if tc:IsHasEffect(EFFECT_DEVINE_LIGHT) then Duel.ChangePosition(tc,POS_FACEUP_DEFENSE)
     else
-      Duel.ChangePosition(tc,POS_FACEDOWN_DEFENCE)
+      Duel.ChangePosition(tc,POS_FACEDOWN_DEFENSE)
       tc:ClearEffectRelation()
     end
   end
