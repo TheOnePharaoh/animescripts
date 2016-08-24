@@ -1,7 +1,15 @@
 --Prediction
 --  By Shad3
 
-local scard=c511005054
+local function getID()
+  local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
+  str=string.sub(str,1,string.len(str)-4)
+  local scard=_G[str]
+  local s_id=tonumber(string.sub(str,string.len(str)-1))
+  return scard,s_id
+end
+
+local scard,s_id=getID()
 
 function scard.initial_effect(c)
   --Activate
@@ -41,7 +49,7 @@ function scard.initial_effect(c)
   e6:SetCode(EVENT_SPSUMMON)
   e6:SetCondition(scard.neg3_cd)
   c:RegisterEffect(e6)
-  c:RegisterFlagEffect(511005054,0,0,0)
+  c:RegisterFlagEffect(s_id,0,0,0)
   --Reset Prediction
   local e7=Effect.CreateEffect(c)
   e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -53,20 +61,20 @@ function scard.initial_effect(c)
   c:RegisterEffect(e7)
 end
 
-function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.cont_cd(e,tp,eg,ep,ev,re,r,rp)
   return Duel.GetTurnPlayer()~=tp
 end
 
 function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
   if not e:GetHandler():IsRelateToEffect(e) then return end
   local cde=Duel.AnnounceCard(tp)
-  local act=Duel.SelectOption(tp,aux.Stringid(511005054,0),aux.Stringid(511005054,1),aux.Stringid(511005054,2),aux.Stringid(511005054,3))
+  local act=Duel.SelectOption(tp,aux.Stringid(s_id,0),aux.Stringid(s_id,1),aux.Stringid(s_id,2),aux.Stringid(s_id,3))
   e:SetLabel(act)
-  e:GetHandler():SetFlagEffectLabel(511005054,cde)
+  e:GetHandler():SetFlagEffectLabel(s_id,cde)
 end
 
 function scard.neg_cd(e,tp,eg,ep,ev,re,r,rp)
-  return rp~=tp and e:GetLabelObject():GetLabel()==0 and re:GetHandler():IsCode(e:GetHandler():GetFlagEffectLabel(511005054)) and Duel.IsChainNegatable(ev)
+  return rp~=tp and e:GetLabelObject():GetLabel()==0 and re:GetHandler():IsCode(e:GetHandler():GetFlagEffectLabel(s_id)) and Duel.IsChainNegatable(ev)
 end
 
 function scard.neg_op(e,tp,eg,ep,ev,re,r,rp)
@@ -74,15 +82,15 @@ function scard.neg_op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function scard.neg1_cd(e,tp,eg,ep,ev,re,r,rp)
-  return rp~=tp and Duel.GetCurrentChain()==0 and e:GetLabelObject():GetLabel()==1 and eg:IsExists(Card.IsCode,1,nil,e:GetHandler():GetFlagEffectLabel(511005054))
+  return rp~=tp and Duel.GetCurrentChain()==0 and e:GetLabelObject():GetLabel()==1 and eg:IsExists(Card.IsCode,1,nil,e:GetHandler():GetFlagEffectLabel(s_id))
 end
 
 function scard.neg2_cd(e,tp,eg,ep,ev,re,r,rp)
-  return rp~=tp and Duel.GetCurrentChain()==0 and e:GetLabelObject():GetLabel()==2 and eg:IsExists(Card.IsCode,1,nil,e:GetHandler():GetFlagEffectLabel(511005054))
+  return rp~=tp and Duel.GetCurrentChain()==0 and e:GetLabelObject():GetLabel()==2 and eg:IsExists(Card.IsCode,1,nil,e:GetHandler():GetFlagEffectLabel(s_id))
 end
 
 function scard.neg3_cd(e,tp,eg,ep,ev,re,r,rp)
-  return rp~=tp and Duel.GetCurrentChain()==0 and e:GetLabelObject():GetLabel()==3 and eg:IsExists(Card.IsCode,1,nil,e:GetHandler():GetFlagEffectLabel(511005054))
+  return rp~=tp and Duel.GetCurrentChain()==0 and e:GetLabelObject():GetLabel()==3 and eg:IsExists(Card.IsCode,1,nil,e:GetHandler():GetFlagEffectLabel(s_id))
 end
 
 function scard.negs_op(e,tp,eg,ep,ev,re,r,rp)
@@ -90,6 +98,5 @@ function scard.negs_op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function scard.rst_op(e,tp,eg,ep,ev,re,r,rp)
-  Debug.Message(e:GetHandler():GetFlagEffectLabel(511005054))
-  e:GetHandler():SetFlagEffectLabel(511005054,0)
+  e:GetHandler():SetFlagEffectLabel(s_id,0)
 end

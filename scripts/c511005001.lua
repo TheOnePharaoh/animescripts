@@ -1,7 +1,15 @@
 --Eye of Illusion
 --  By Shad3
 
-local scard=c511005001
+local function getID()
+  local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
+  str=string.sub(str,1,string.len(str)-4)
+  local scard=_G[str]
+  local s_id=tonumber(string.sub(str,2))
+  return scard,s_id
+end
+
+local scard,s_id=getID()
 
 function scard.initial_effect(c)
   --Activate
@@ -18,7 +26,7 @@ function scard.initial_effect(c)
   e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
   e2:SetCode(EVENT_ATTACK_ANNOUNCE)
   e2:SetRange(LOCATION_SZONE)
-  e2:SetDescription(aux.Stringid(511005001,0))
+  e2:SetDescription(aux.Stringid(s_id,0))
   e2:SetCondition(scard.sfx1_cd)
   e2:SetOperation(scard.sfx1_op)
   c:RegisterEffect(e2)
@@ -74,24 +82,24 @@ function scard.sfx1_op(e,tp,eg,ep,ev,re,r,rp)
   local tc=e:GetHandler():GetEquipTarget()
   local ac=Duel.GetAttacker()
   local op=0
-  if Duel.GetAttackTarget()==tc and Duel.IsExistingMatchingCard(Card.IsAttackable,tp,LOCATION_MZONE,0,1,tc) then
-    op=Duel.SelectOption(tp,aux.Stringid(511005001,1),aux.Stringid(511005001,2))
+  if Duel.GetAttackTarget()==tc and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,0,1,tc) then
+    op=Duel.SelectOption(tp,aux.Stringid(s_id,1),aux.Stringid(s_id,2))
   else
-    op=Duel.SelectOption(tp,aux.Stringid(511005001,1))
+    op=Duel.SelectOption(tp,aux.Stringid(s_id,1))
   end
   if ac==tc then ac=Duel.GetAttackTarget() end
   if op==0 then
     Duel.NegateAttack()
-    ac:RegisterFlagEffect(511005001,RESET_PHASE+PHASE_END,0,2)
+    ac:RegisterFlagEffect(s_id,RESET_PHASE+PHASE_END,0,2)
   else
-    Duel.ChangeAttackTarget(Duel.SelectMatchingCard(tp,Card.IsAttackable,tp,LOCATION_MZONE,0,1,1,tc):GetFirst())
+    if ac:IsAttackable() then Duel.ChangeAttackTarget(Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_MZONE,0,1,1,tc):GetFirst()) end
   end
 end
 
 --Effect 3 Take control
 
 function scard.sfx2_fil(c)
-  return c:GetFlagEffect(511005001)~=0 and c:IsControlerCanBeChanged()
+  return c:GetFlagEffect(s_id)~=0 and c:IsControlerCanBeChanged()
 end
 
 function scard.sfx2_tg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -102,7 +110,7 @@ function scard.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   if not e:GetHandler():IsRelateToEffect(e) then return end --(maybe)
   local loc=Duel.GetLocationCount(tp,LOCATION_MZONE)
   local g=Duel.GetMatchingGroup(scard.sfx2_fil,tp,0,LOCATION_MZONE,nil)
-  local cg=nil
+  local cg
   if g:GetCount()>loc and loc>0 then
     cg=g:Select(tc,loc,loc,nil)
   else
@@ -112,12 +120,7 @@ function scard.sfx2_op(e,tp,eg,ep,ev,re,r,rp)
   while tc do
     g:RemoveCard(tc)
     Duel.HintSelection(Group.FromCards(tc))
-    if not Duel.GetControl(tc,tp,PHASE_END,1) then
-      if not tc:IsImmuneToEffect(e) and tc:IsAbleToChangeControler() then
-        Duel.Destroy(tc,REASON_EFFECT)
-      end
-      return
-    end
+    Duel.GetControl(tc,tp,PHASE_END,1)
     tc=cg:GetNext()
   end
 end
