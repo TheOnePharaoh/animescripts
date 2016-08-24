@@ -1,60 +1,63 @@
---Action Field - Athletic Circus
+--AF Acrobatic Circus v1.0
 function c95000043.initial_effect(c)
 	--Activate	
 	local e1=Effect.CreateEffect(c)	
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_PREDRAW)
-	e1:SetCountLimit(1,95000043+EFFECT_COUNT_CODE_DUEL)
-	e1:SetRange(0xff)
+	e1:SetCountLimit(1)
+	e1:SetRange(LOCATION_HAND+LOCATION_DECK)
 	e1:SetOperation(c95000043.op)
 	c:RegisterEffect(e1)
-	--unaffectable
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
-	e2:SetValue(1)
-	c:RegisterEffect(e2)
-	local e3=e2:Clone()
-	e3:SetCode(EFFECT_IMMUNE_EFFECT)
-	e3:SetValue(c95000043.ctcon2)
-	c:RegisterEffect(e3)
-	--cannot set
+	--activation
 	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetCode(EFFECT_CANNOT_SSET)
-	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e4:SetType(EFFECT_TYPE_FIELD)	
+	e4:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_PLAYER_TARGET)
+	e4:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e4:SetRange(LOCATION_SZONE)
 	e4:SetTargetRange(1,1)
-	e4:SetTarget(c95000043.aclimit2)
-	c:RegisterEffect(e4)
-	--cannot activate
+	e4:SetValue(c95000043.aclimit)
+	Duel.RegisterEffect(e4,tp)	
+	--unaffectable
 	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_FIELD)
-	e5:SetCode(EFFECT_CANNOT_ACTIVATE)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e5:SetRange(LOCATION_SZONE)
-	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-	e5:SetTargetRange(1,1)
-	e5:SetValue(c95000043.aclimit)
+	e5:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e5:SetValue(1)
 	c:RegisterEffect(e5)
-	--~ Add Action Card
-	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(95000043,0))
-	e6:SetType(EFFECT_TYPE_QUICK_O)
-	e6:SetRange(LOCATION_SZONE)
-	e6:SetCode(EVENT_FREE_CHAIN)
-	e6:SetCondition(c95000043.condition)
-	e6:SetTarget(c95000043.Acttarget)
-	e6:SetOperation(c95000043.operation)
+	local e6=e5:Clone()
+	e6:SetCode(EFFECT_IMMUNE_EFFECT)
+	e6:SetValue(c95000043.ctcon2)
 	c:RegisterEffect(e6)
-	--cannot change zone
+	--cannot set
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_FIELD)
+	e7:SetCode(EFFECT_CANNOT_SSET)
+	e7:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e7:SetRange(LOCATION_SZONE)
+	e7:SetTargetRange(1,1)
+	e7:SetTarget(c95000043.aclimit2)
+	c:RegisterEffect(e7)
+	
+	-- Add Action Card
+	local e8=Effect.CreateEffect(c)
+	e8:SetDescription(aux.Stringid(95000043,0))
+	e8:SetType(EFFECT_TYPE_QUICK_O)
+	e8:SetRange(LOCATION_SZONE)
+	e8:SetCode(EVENT_FREE_CHAIN)
+	e8:SetCondition(c95000043.condition)
+	e8:SetTarget(c95000043.Acttarget)
+	e8:SetOperation(c95000043.operation)
+	c:RegisterEffect(e8)
+	
+	--
 	local eb=Effect.CreateEffect(c)
-	eb:SetType(EFFECT_TYPE_SINGLE)
+	eb:SetType(EFFECT_TYPE_FIELD)
 	eb:SetCode(EFFECT_CANNOT_TO_DECK)
-	eb:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	eb:SetRange(LOCATION_SZONE)
+	eb:SetTargetRange(LOCATION_SZONE,0)
+	eb:SetTarget(c95000043.tgn)
 	c:RegisterEffect(eb)
 	local ec=eb:Clone()
 	ec:SetCode(EFFECT_CANNOT_TO_HAND)
@@ -65,65 +68,31 @@ function c95000043.initial_effect(c)
 	local ee=eb:Clone()
 	ee:SetCode(EFFECT_CANNOT_REMOVE)
 	c:RegisterEffect(ee)
-	--cheater check
-	local ef=Effect.CreateEffect(c)	
-	ef:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-	ef:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	ef:SetCode(EVENT_PREDRAW)
-	ef:SetCountLimit(1)
-	ef:SetRange(0xff)
-	ef:SetOperation(c95000043.Cheatercheck1)
-	c:RegisterEffect(ef)
-	-- Draw when removed
-	local ef3=Effect.CreateEffect(c)
-	ef3:SetDescription(aux.Stringid(44792253,0))
-	ef3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	ef3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	ef3:SetCode(EVENT_REMOVE)
-	ef3:SetCondition(c95000043.descon)
-	ef3:SetTarget(c95000043.drtarget)
-	ef3:SetOperation(c95000043.drop)
-	c:RegisterEffect(ef3)
 end
-function c95000043.Cheatercheck1(e,c)
-	if Duel.GetMatchingGroupCount(c95000043.Fieldfilter,tp,0,LOCATION_DECK+LOCATION_HAND,nil)>1
-	then
-	local WIN_REASON_ACTION_FIELD=0x55
-	Duel.Win(tp,WIN_REASON_ACTION_FIELD)
-	end
-	
-	local sg=Duel.GetMatchingGroup(c95000043.Fieldfilter,tp,LOCATION_DECK+LOCATION_HAND,LOCATION_DECK+LOCATION_HAND,nil)
-	Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
-end
-function c95000043.Fieldfilter(c)
-	return c:IsSetCard(0xac2)
-end
-function c95000043.descon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsFaceup() and e:GetHandler():IsPreviousLocation(LOCATION_HAND)
-end
-function c95000043.drtarget(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return true end
-	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(1)
-	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
-end
-function c95000043.drop(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	Duel.Draw(p,d,REASON_RULE)
-end
-
 function c95000043.ctcon2(e,re)
 	return re:GetHandler()~=e:GetHandler()
 end
-function c95000043.aclimit2(e,c)
-	return c:IsType(TYPE_FIELD)
+--speed Duel Filter
+function c95000043.SDfilter(c)
+	return c:GetCode()==511004001
 end
-function c95000043.tgn(e,c)
-	return c==e:GetHandler()
+--vanilla mode filter
+function c95000043.Vfilter(c)
+	return c:GetCode()==511004002
 end
 function c95000043.op(e,tp,eg,ep,ev,re,r,rp,chk)
-local tc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+	local tc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
 	local tc2=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)	
+	
+	--check if number of card >20 if speed duel or >40 if other duel
+	if Duel.IsExistingMatchingCard(c95000043.SDfilter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_REMOVED,0,1,nil) and Duel.GetMatchingGroup(nil,tp,LOCATION_HAND+LOCATION_DECK,0,nil):GetCount()<20 then
+	Duel.Win(1-tp,0x55)
+	end
+	if Duel.GetMatchingGroup(nil,tp,LOCATION_HAND+LOCATION_DECK,0,e:GetHandler()):GetCount()<40 and not Duel.IsExistingMatchingCard(c95000043.SDfilter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_REMOVED,0,1,nil) then
+	Duel.Win(1-tp,0x55)
+	end
+	
+	--move to field
 	if tc==nil then
 		Duel.MoveToField(e:GetHandler(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 		if tc2==nil then
@@ -139,11 +108,29 @@ local tc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
 			Duel.MoveToField(token,tp,1-tp,LOCATION_SZONE,POS_FACEUP,true)
 			Duel.SpecialSummonComplete()
 		end
+		-- add ability Yell when Vanilla mode activated
+		-- if Duel.IsExistingMatchingCard(c95000043.Vfilter,tp,LOCATION_DECK+LOCATION_HAND+LOCATION_REMOVED,0,1,nil) then
+			-- c95000043.tableAction.push(95000200)
+		-- end
+	else
+		Duel.SendtoDeck(e:GetHandler(),nil,-2,REASON_EFFECT)
 	end
-	-- if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
-		-- Duel.Draw(tp,1,REASON_RULE)
-	-- end
+	if e:GetHandler():GetPreviousLocation()==LOCATION_HAND then
+		Duel.Draw(tp,1,REASON_RULE)
+	end
 end
+
+function c95000043.aclimit(e,re)
+	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_SPELL) and re:GetHandler():IsType(TYPE_FIELD)
+end
+function c95000043.aclimit2(e,c)
+	return c:IsType(TYPE_FIELD)
+end
+function c95000043.tgn(e,c)
+	return c==e:GetHandler()
+end
+
+
 -- Add Action Card
 function c95000043.Acttarget(e,tp,eg,ep,ev,re,r,rp,chk)
 if chk==0 then return true end
@@ -160,7 +147,7 @@ end
 function c95000043.operation(e,tp,eg,ep,ev,re,r,rp)
 if Duel.SelectYesNo(1-tp,aux.Stringid(95000043,0)) then
 local dc=Duel.TossDice(tp,1)
-if dc==2 or dc==3 or dc==4 or dc==6 then
+if dc==2 or dc==4 or dc==6 then
 e:GetHandler():RegisterFlagEffect(95000043,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 end
 if dc==1 or dc==2 then
@@ -211,12 +198,6 @@ if not Duel.IsExistingMatchingCard(c95000043.cfilter,tp,LOCATION_SZONE+LOCATION_
 		Duel.SpecialSummonComplete()	
 end
 end
-end
-function c95000043.aclimit(e,re,tp)
-	return re:GetHandler():IsType(TYPE_FIELD) and re:IsHasType(EFFECT_TYPE_ACTIVATE)
-end
-function c95000043.aclimit2(e,c)
-	return c:IsType(TYPE_FIELD)
 end
 function c95000043.condition(e,tp,eg,ep,ev,re,r,rp)
 	return not Duel.IsExistingMatchingCard(c95000043.cfilter,tp,LOCATION_SZONE+LOCATION_HAND,0,1,nil) and e:GetHandler():GetFlagEffect(95000043)==0
