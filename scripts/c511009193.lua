@@ -56,7 +56,7 @@ function c511009193.rdop(e,tp,eg,ep,ev,re,r,rp)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_EXTRA_ATTACK)
-		e1:SetValue(c:GetOverlayCount())
+		e1:SetValue(c95100914.val)
 		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		c:RegisterEffect(e1)
 		local e5=Effect.CreateEffect(c)
@@ -70,6 +70,9 @@ function c511009193.rdop(e,tp,eg,ep,ev,re,r,rp)
 		e5:SetTarget(c511009193.tg)
 		e5:SetValue(1)
 		c:RegisterEffect(e5)
+end
+function c511009193.val(e,c)
+	return c:GetOverlayCount()-1
 end
 function c511009193.ocon1(e)
 	local c=e:GetHandler()
