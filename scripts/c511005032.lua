@@ -1,7 +1,15 @@
 --Line World
 --  By Shad3
 
-local scard=c511005032
+local function getID()
+  local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
+  str=string.sub(str,1,string.len(str)-4)
+  local scard=_G[str]
+  local s_id=tonumber(string.sub(str,2))
+  return scard,s_id
+end
+
+local scard,s_id=getID()
 
 function scard.initial_effect(c)
   --Activate
@@ -41,14 +49,18 @@ function scard.line_val(e,c)
 end
 
 function scard.fil(c)
-  return bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE+REASON_REDIRECT)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer()
+  return c:GetFlagEffect(s_id)==0 and bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer() and not c:IsType(TYPE_TOKEN)
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return eg:IsExists(scard.fil,1,nil) end
   local c=eg:GetFirst()
+  local ph=Duel.GetCurrentPhase()
   while c do
-    if scard.fil(c) then Duel.SendtoGrave(c,r+REASON_REDIRECT,c:GetReasonPlayer()) end
+    if scard.fil(c) then
+      c:RegisterFlagEffect(s_id,RESET_EVENT+0x1be0000+RESET_PHASE+ph,0,0)
+      Duel.SendtoGrave(c,r,c:GetReasonPlayer())
+    end
     c=eg:GetNext()
   end
   return true
