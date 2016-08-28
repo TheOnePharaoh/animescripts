@@ -14,7 +14,7 @@ function c511002098.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002098.cfilter(c)
-	return c:IsFaceup() and c:IsCode(132)
+	return c:IsFaceup() and c:IsCode(511009200)
 end
 function c511002098.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(c511002098.cfilter,tp,LOCATION_ONFIELD,0,1,nil)
