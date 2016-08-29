@@ -25,10 +25,10 @@ function c511009066.initial_effect(c)
 end
 
 function c511009066.thfilter1(c)
-	return (c:IsSetCard(0x10ed) or c:IsSetCard(0x120e)) and c:IsFaceup() and c:IsAbleToHand()
+	return c:IsSetCard(0x10ec)  and c:IsFaceup() and c:IsAbleToHand()
 end
 function c511009066.thfilter2(c)
-	return (c:IsSetCard(0x10ed) or c:IsSetCard(0x120e)) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return c:IsSetCard(0x10ec) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function c511009066.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 if chk==0 then return Duel.IsExistingMatchingCard(c511009066.thfilter1,tp,LOCATION_EXTRA,0,1,nil) end
