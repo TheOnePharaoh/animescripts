@@ -10,7 +10,7 @@ function c511002312.initial_effect(c)
 	e1:SetValue(c511002312.atkval)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetCode(EFFECT_UPDATE_DEFENCE)
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e2)
 end
 function c511002312.atkfilter(c)

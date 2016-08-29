@@ -16,7 +16,7 @@ function c511002499.initial_effect(c)
 	e2:SetValue(1500)
 	c:RegisterEffect(e2)
 	local e3=e2:Clone()
-	e3:SetCode(EFFECT_UPDATE_DEFENCE)
+	e3:SetCode(EFFECT_UPDATE_DEFENSE)
 	e3:SetValue(2000)
 	c:RegisterEffect(e3)
 	--Equip limit

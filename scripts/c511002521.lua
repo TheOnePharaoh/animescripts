@@ -1,30 +1,69 @@
---魂のリレー
+--Relay Soul (Anime)
+--By Edo9300
+--Cleaned Up and Fixed by MLD
 function c511002521.initial_effect(c)
 	--Survive
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_CHAINING)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e1:SetCode(511002521)
 	e1:SetCondition(c511002521.condition)
+	e1:SetCost(c511002521.cost)
 	e1:SetTarget(c511002521.target)
 	e1:SetOperation(c511002521.activate)
 	c:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
-	e2:SetCondition(c511002521.condition2)
-	c:RegisterEffect(e2)
+	if not c511002521.global_check then
+		c511002521.global_check=true
+		Duel.RegisterFlagEffect(0,511002521,0,0,1)
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD)
+		ge1:SetCode(EFFECT_CANNOT_LOSE_LP)
+		ge1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		ge1:SetTargetRange(1,0)
+		ge1:SetCondition(c511002521.con)
+		Duel.RegisterEffect(ge1,0)
+		Duel.RegisterFlagEffect(1,511002521,0,0,1)
+		local ge2=ge1:Clone()
+		Duel.RegisterEffect(ge2,1)
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetOperation(c511002521.op)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 function c511002521.condition(e,tp,eg,ep,ev,re,r,rp)
-	local ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_DAMAGE)
-	if not ex then
-		ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_RECOVER)
-		if not ex or not Duel.IsPlayerAffectedByEffect(tp,EFFECT_REVERSE_RECOVER) then return false end
-		if (cp==tp or cp==PLAYER_ALL) and cv>=Duel.GetLP(tp) then return true end
-	else return (cp==tp or cp==PLAYER_ALL) and cv>=Duel.GetLP(tp)
-	end
-	return false
+	return Duel.GetLP(tp)<=0
 end
-function c511002521.condition2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetBattleDamage(tp)>=Duel.GetLP(tp)
+function c511002521.con(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFlagEffect(tp,511002521)>0
+end
+function c511002521.op(e,tp,eg,ep,ev,re,r,rp)
+	local ph=Duel.GetCurrentPhase()
+	if Duel.GetLP(0)<=0 and ph~=PHASE_DAMAGE then
+		Duel.RaiseEvent(Duel.GetMatchingGroup(Card.IsCode,0,LOCATION_ONFIELD,0,nil,511002521),511002521,e,0,0,0,0)
+		Duel.ResetFlagEffect(0,511002521)
+	end
+	if Duel.GetLP(1)<=0 and ph~=PHASE_DAMAGE then
+		Duel.RaiseEvent(Duel.GetMatchingGroup(Card.IsCode,1,LOCATION_ONFIELD,0,nil,511002521),511002521,e,0,0,0,0)
+		Duel.ResetFlagEffect(1,511002521)
+	end
+	if Duel.GetLP(0)>0 and Duel.GetFlagEffect(0,511002521)==0 then
+		Duel.RegisterFlagEffect(0,511002521,0,0,1)
+	end
+	if Duel.GetLP(1)>0 and Duel.GetFlagEffect(1,511002521)==0 then
+		Duel.RegisterFlagEffect(1,511002521,0,0,1)
+	end
+end
+function c511002521.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetReset(RESET_CHAIN)
+	e1:SetCode(EFFECT_CANNOT_LOSE_LP)
+	Duel.RegisterEffect(e1,tp)
 end
 function c511002521.filter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -42,73 +81,62 @@ function c511002521.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
-		local e2=Effect.CreateEffect(c)
-		e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-		e2:SetCode(EVENT_DESTROY)
-		e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-		e2:SetLabel(tp)
-		e2:SetOperation(c511002521.leaveop)
-		tc:RegisterEffect(e2)
+		tc:RegisterFlagEffect(511002521,0,0,1)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EVENT_BE_MATERIAL)
-		e1:SetOperation(c511002521.tfop)
-		e1:SetLabel(tp)
-		e1:SetLabelObject(e2)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+		e1:SetOperation(c511002521.matop)
 		tc:RegisterEffect(e1)
-		local e3=Effect.CreateEffect(c)
-		e3:SetType(EFFECT_TYPE_FIELD)
-		e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-		e3:SetCode(EFFECT_DRAW_COUNT)
-		e3:SetTargetRange(1,0)
-		e3:SetValue(0)
-		e3:SetCondition(c511002521.drcon)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_FIELD)
+		e2:SetCode(EFFECT_CANNOT_LOSE_DECK)
+		e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e2:SetTargetRange(1,0)
+		e2:SetLabelObject(tc)
+		e2:SetCondition(c511002521.lcon)
+		Duel.RegisterEffect(e2,tp)
+		local e3=e2:Clone()
+		e3:SetCode(EFFECT_CANNOT_LOSE_LP)
 		Duel.RegisterEffect(e3,tp)
-		local e4=Effect.CreateEffect(c)
-		e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-		e4:SetCode(EVENT_DAMAGE)
-		e4:SetOperation(c511002521.damop)
+		local e4=e2:Clone()
+		e4:SetCode(EFFECT_CANNOT_LOSE_EFFECT)
 		Duel.RegisterEffect(e4,tp)
 		Duel.SpecialSummonComplete()
 	end
 end
-function c511002521.leaveop(e,tp,eg,ep,ev,re,r,rp)
-	local p=e:GetLabel()
-	if Duel.GetLP(p)==1 then
-		Duel.SetLP(p,0)
-	end
-	e:Reset()
+function c511002521.lcon(e,tp,eg,ep,ev,re,r,rp)
+	return not e:GetLabelObject():IsReason(REASON_DESTROY+REASON_FUSION+REASON_SYNCHRO+REASON_XYZ)
 end
-function c511002521.drcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)==0
+function c511002521.matcon(e,tp,eg,ep,ev,re,r,rp)
+	return r==REASON_FUSION or r==REASON_SYNCHRO or r==REASON_XYZ
 end
-function c511002521.damop(e,tp,eg,ep,ev,re,r,rp)
-	if ep==tp and Duel.GetLP(tp)<=0 then
-		Duel.SetLP(tp,1)
-	end
-end
-function c511002521.tfop(e,tp,eg,ep,ev,re,r,rp)
+function c511002521.matop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local c2=e:GetOwner()
-	local card=c:GetReasonCard()
-	local p=e:GetLabel()
-	local e2=Effect.CreateEffect(c2)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_DESTROY)
-	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-	e2:SetLabel(p)
-	e2:SetOperation(c511002521.leaveop)
-	card:RegisterEffect(e2,true)
-	local e1=Effect.CreateEffect(c2)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_BE_MATERIAL)
-	e1:SetOperation(c511002521.tfop)
-	e1:SetLabel(p)
-	e1:SetLabelObject(e2)
-	card:RegisterEffect(e1,true)
-	e:Reset()
-	if e:GetLabelObject() then
-		e:GetLabelObject():Reset()
+	if c:GetFlagEffect(511002521)>0 then
+		local rc=c:GetReasonCard()
+		rc:RegisterFlagEffect(511002521,0,0,1)
+		c:ResetFlagEffect(511002521)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+		e1:SetCode(EVENT_BE_MATERIAL)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+		e1:SetCondition(c511002521.matcon)
+		e1:SetOperation(c511002521.matop)
+		rc:RegisterEffect(e1)
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_FIELD)
+		e2:SetCode(EFFECT_CANNOT_LOSE_DECK)
+		e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e2:SetTargetRange(1,0)
+		e2:SetLabelObject(rc)
+		e2:SetCondition(c511002521.lcon)
+		Duel.RegisterEffect(e2,tp)
+		local e3=e2:Clone()
+		e3:SetCode(EFFECT_CANNOT_LOSE_LP)
+		Duel.RegisterEffect(e3,tp)
+		local e4=e2:Clone()
+		e4:SetCode(EFFECT_CANNOT_LOSE_EFFECT)
+		Duel.RegisterEffect(e4,tp)
 	end
 end

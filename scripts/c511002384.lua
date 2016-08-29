@@ -31,7 +31,7 @@ function c511002384.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RemoveOverlayCard(tp,1,1,REASON_COST)
 end
 function c511002384.filter(c)
-	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_EARTH) and c:GetDefence()>0
+	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_EARTH) and c:GetDefense()>0
 end
 function c511002384.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511002384.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
@@ -43,7 +43,7 @@ function c511002384.atkop(e,tp,eg,ep,ev,re,r,rp)
 		local def=0
 		local tc=g:GetFirst()
 		while tc do
-			local cdef=tc:GetDefence()
+			local cdef=tc:GetDefense()
 			if cdef<0 then cdef=0 end
 			def=def+cdef
 			tc=g:GetNext()

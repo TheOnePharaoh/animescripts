@@ -13,7 +13,7 @@ function c511002354.cfilter(c)
 	return c:IsSetCard(0x3008) and c:IsFaceup()
 end
 function c511002354.filter(c)
-	return c:IsFaceup() and (c:GetAttack()>0 or c:GetDefence()>0)
+	return c:IsFaceup() and (c:GetAttack()>0 or c:GetDefense()>0)
 end
 function c511002354.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511002354.cfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -30,7 +30,7 @@ function c511002354.activate(e,tp,eg,ep,ev,re,r,rp)
 		if tc:GetAttack()>0 then
 			efchk=efchk+1
 		end
-		if tc:GetDefence()>0 then
+		if tc:GetDefense()>0 then
 			efchk=efchk+2
 		end
 		local op=0
@@ -46,7 +46,7 @@ function c511002354.activate(e,tp,eg,ep,ev,re,r,rp)
 		if op==0 then
 			e1:SetCode(EFFECT_UPDATE_ATTACK)
 		else
-			e1:SetCode(EFFECT_UPDATE_DEFENCE)
+			e1:SetCode(EFFECT_UPDATE_DEFENSE)
 		end
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		e1:SetValue(-val)

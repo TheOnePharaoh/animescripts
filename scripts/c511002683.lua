@@ -21,5 +21,5 @@ function c511002683.operation(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(2)
 	e1:SetReset(RESET_EVENT+0x1ff0000)
 	c:RegisterEffect(e1)
-	Duel.ChangePosition(c,POS_FACEUP_DEFENCE)
+	Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 end

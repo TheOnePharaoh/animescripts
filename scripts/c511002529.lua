@@ -28,8 +28,8 @@ function c511002529.operation(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 			e1:SetValue(tc:GetAttack()/2)
 		else
-			e1:SetCode(EFFECT_SET_DEFENCE_FINAL)
-			e1:SetValue(tc:GetDefence()/2)
+			e1:SetCode(EFFECT_SET_DEFENSE_FINAL)
+			e1:SetValue(tc:GetDefense()/2)
 		end
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		tc:RegisterEffect(e1)

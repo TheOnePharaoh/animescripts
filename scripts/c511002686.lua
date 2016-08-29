@@ -22,6 +22,6 @@ end
 function c511002686.operation(e,tp,eg,ep,ev,re,r,rp)
 	local bc=e:GetHandler():GetBattleTarget()
 	if bc and bc:IsRelateToBattle() and bc:IsFaceup() then
-		Duel.ChangePosition(bc,POS_FACEDOWN_DEFENCE)
+		Duel.ChangePosition(bc,POS_FACEDOWN_DEFENSE)
 	end
 end
