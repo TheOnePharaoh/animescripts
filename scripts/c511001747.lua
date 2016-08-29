@@ -44,7 +44,7 @@ function c511001747.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,511001747,RESET_PHASE+PHASE_END,0,1)
 	local tc=g:GetFirst()
 	while tc do
-		tc:RegisterFlagEffect(511001747,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+		tc:RegisterFlagEffect(511001747,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 		tc=g:GetNext()
 	end
 end

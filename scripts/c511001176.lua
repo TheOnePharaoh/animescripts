@@ -22,14 +22,14 @@ function c511001176.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(tp,tc2)
 		if tc1:IsCanBeSpecialSummoned(e,0,tp,false,false) then
 			Duel.BreakEffect()
-			Duel.SpecialSummon(tc1,0,tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+			Duel.SpecialSummon(tc1,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 			Duel.Recover(tp,tc1:GetAttack(),REASON_EFFECT)
 		else
 			Duel.ShuffleHand(tp)
 		end
 		if tc2:IsCanBeSpecialSummoned(e,0,1-tp,false,false) then
 			Duel.BreakEffect()
-			Duel.SpecialSummon(tc2,0,1-tp,tp,false,false,POS_FACEUP_DEFENCE)
+			Duel.SpecialSummon(tc2,0,1-tp,tp,false,false,POS_FACEUP_DEFENSE)
 			Duel.Recover(1-tp,tc2:GetAttack(),REASON_EFFECT)
 		else
 			Duel.ShuffleHand(1-tp)

@@ -16,7 +16,7 @@ end
 function c511002650.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local d=Duel.GetAttackTarget()
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,d:GetOriginalCode(),0xba,d:GetType(),d:GetAttack(),d:GetDefence(),
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,d:GetOriginalCode(),0xba,d:GetType(),d:GetAttack(),d:GetDefense(),
 		d:GetLevel(),d:GetRace(),d:GetAttribute()) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,0,0)
 end
@@ -34,8 +34,8 @@ function c511002650.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_EVENT+0x1fe0000)
 	token:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetCode(EFFECT_SET_BASE_DEFENCE)
-	e2:SetValue(tc:GetBaseDefence())
+	e2:SetCode(EFFECT_SET_BASE_DEFENSE)
+	e2:SetValue(tc:GetBaseDefense())
 	token:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetCode(EFFECT_CHANGE_LEVEL)
@@ -61,8 +61,8 @@ function c511002650.activate(e,tp,eg,ep,ev,re,r,rp)
 	e7:SetValue(tc:GetAttack())
 	token:RegisterEffect(e7)
 	local e8=e1:Clone()
-	e8:SetCode(EFFECT_SET_DEFENCE_FINAL)
-	e8:SetValue(tc:GetDefence())
+	e8:SetCode(EFFECT_SET_DEFENSE_FINAL)
+	e8:SetValue(tc:GetDefense())
 	token:RegisterEffect(e8)
 	Duel.SpecialSummonComplete()
 end

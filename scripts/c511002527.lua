@@ -15,13 +15,13 @@ function c511002527.spfilter(c,e,tp)
 end
 function c511002527.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>1 
-		and Duel.IsExistingMatchingCard(Card.IsDefencePos,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil)
+		and Duel.IsExistingMatchingCard(Card.IsDefensePos,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil)
 		and Duel.IsExistingMatchingCard(c511002527.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) 
 		and Duel.IsExistingMatchingCard(c511002527.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_DECK+LOCATION_GRAVE)
 end
 function c511002527.activate(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsDefencePos,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(Card.IsDefensePos,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	if g:GetCount()==0 then return end
 	Duel.ChangePosition(g,0,0,POS_FACEUP_ATTACK,POS_FACEDOWN_ATTACK)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=1 then return end

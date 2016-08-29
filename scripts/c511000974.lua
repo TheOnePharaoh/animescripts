@@ -19,5 +19,5 @@ function c511000974.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if ep~=tp then return end
 	local ct=math.floor(ev/100)
-	c:AddCounter(0x100,ct)
+	c:AddCounter(0x1100,ct)
 end

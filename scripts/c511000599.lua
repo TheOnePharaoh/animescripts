@@ -32,10 +32,10 @@ function c511000599.activate(e,tp,eg,ep,ev,re,r,rp)
 			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEUP_ATTACK,true)
 		elseif tc:IsPreviousPosition(POS_FACEDOWN_ATTACK) then
 			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_ATTACK,true)
-		elseif tc:IsPreviousPosition(POS_FACEUP_DEFENCE) then
-			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEUP_DEFENCE,true)
+		elseif tc:IsPreviousPosition(POS_FACEUP_DEFENSE) then
+			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEUP_DEFENSE,true)
 		else
-			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENCE,true)
+			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENSE,true)
 		end
 		tc=g:GetNext()
 	end

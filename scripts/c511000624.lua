@@ -18,13 +18,13 @@ function c511000624.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511000624.cfilter,1,nil,tp)
 end
 function c511000624.filter(c,e,tp)
-	return c:IsAttackBelow(1000)
+	return c:IsAttackBelow(1000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511000624.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(tp) and c511000624.filter(chkc,e,tp) end
+	if chkc then return false end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>1 
-	and Duel.IsExistingTarget(c511000624.filter,tp,LOCATION_HAND,0,1,nil,e,tp) 
-	and Duel.IsExistingTarget(c511000624.filter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
+		and Duel.IsExistingTarget(c511000624.filter,tp,LOCATION_HAND,0,1,nil,e,tp) 
+		and Duel.IsExistingTarget(c511000624.filter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g1=Duel.SelectTarget(tp,c511000624.filter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -36,5 +36,5 @@ function c511000624.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if g:GetCount()~=2 or ft<2 then return end
-	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+	Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 end

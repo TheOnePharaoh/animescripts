@@ -83,7 +83,7 @@ function c511002535.prop(e,tp,eg,ep,ev,re,r,rp)
 	local ec=e:GetHandler():GetEquipTarget()
 	local at=Duel.GetAttackTarget()
 	local tc=Duel.GetAttacker()
-	if tc:IsControler(1-tp) and at and ec and at==ec and ec:IsDefencePos() and tc:IsRelateToBattle() then
+	if tc:IsControler(1-tp) and at and ec and at==ec and ec:IsDefensePos() and tc:IsRelateToBattle() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_PIERCE)

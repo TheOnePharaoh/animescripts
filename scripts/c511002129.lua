@@ -13,7 +13,7 @@ end
 function c511002129.condition(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	return eg:GetCount()==1 and re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev) 
-		and tc:IsPosition(POS_FACEDOWN_DEFENCE) and tc:IsLocation(LOCATION_MZONE)
+		and tc:IsPosition(POS_FACEDOWN_DEFENSE) and tc:IsLocation(LOCATION_MZONE)
 end
 function c511002129.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=eg:GetFirst()

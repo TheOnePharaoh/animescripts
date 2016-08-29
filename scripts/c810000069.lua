@@ -20,7 +20,7 @@ function c810000069.initial_effect(c)
 	--equip effect
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_EQUIP)
-	e3:SetCode(EFFECT_UPDATE_DEFENCE)
+	e3:SetCode(EFFECT_UPDATE_DEFENSE)
 	e3:SetValue(1000)
 	c:RegisterEffect(e3)
 	local e4=Effect.CreateEffect(c)

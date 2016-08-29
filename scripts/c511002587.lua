@@ -30,7 +30,7 @@ function c511002587.initial_effect(c)
 	e4:SetValue(c511002587.val)
 	c:RegisterEffect(e4)
 	local e5=e4:Clone()
-	e5:SetCode(EFFECT_UPDATE_DEFENCE)
+	e5:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e5)
 	--cannot attack
 	local e6=Effect.CreateEffect(c)

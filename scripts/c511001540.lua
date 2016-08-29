@@ -51,7 +51,7 @@ function c511001540.aclimit(e,re,tp)
 	return re:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 function c511001540.ctfilter(c,tp)
-	return c:IsControler(1-tp) and c:GetCounter(0x102)==0
+	return c:IsControler(1-tp) and c:GetCounter(0x1102)==0
 end
 function c511001540.cttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return eg:IsExists(c511001540.ctfilter,1,nil,tp) end
@@ -60,7 +60,7 @@ function c511001540.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local g=eg:Filter(c511001540.ctfilter,nil,tp)
 	local tc=g:GetFirst()
 	while tc do
-		tc:AddCounter(0x102,1)
+		tc:AddCounter(0x1102,1)
 		tc=g:GetNext()
 	end
 end
@@ -69,10 +69,10 @@ function c511001540.descon(e,tp,eg,ep,ev,re,r,rp)
 	local bc=Duel.GetAttackTarget()
 	if not bc then return false end
 	local g=Group.CreateGroup()
-	if tc:GetCounter(0x102)>0 then
+	if tc:GetCounter(0x1102)>0 then
 		g:AddCard(tc)
 	end
-	if bc:GetCounter(0x102)>0 then
+	if bc:GetCounter(0x1102)>0 then
 		g:AddCard(bc)
 	end
 	g:KeepAlive()
@@ -86,7 +86,7 @@ function c511001540.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function c511001540.desfilter(c)
-	return c:IsRelateToBattle() and c:GetCounter(0x102)>0
+	return c:IsRelateToBattle() and c:GetCounter(0x1102)>0
 end
 function c511001540.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=e:GetLabelObject():Filter(c511001540.desfilter,nil)

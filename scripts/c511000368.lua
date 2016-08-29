@@ -144,7 +144,7 @@ function c511000368.postg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511000368.posop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAttackPos,tp,0,LOCATION_MZONE,nil)
-	Duel.ChangePosition(g,POS_FACEUP_DEFENCE,POS_FACEDOWN_DEFENCE,0,0,true)
+	Duel.ChangePosition(g,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,0,0,true)
 	local tc=g:GetFirst()
 	while tc do
 		local e2=Effect.CreateEffect(e:GetHandler())

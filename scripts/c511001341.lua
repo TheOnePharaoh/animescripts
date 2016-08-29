@@ -68,7 +68,7 @@ function c511001341.activate(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 			e1:SetValue(g:GetFirst():GetAttack()/2)
-			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
+			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 			g:GetFirst():RegisterEffect(e1)
 			if Duel.SelectYesNo(tp,aux.Stringid(17313545,0)) then
 				Duel.CalculateDamage(tc,g:GetFirst())

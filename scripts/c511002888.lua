@@ -31,7 +31,7 @@ function c511002888.spop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=g:Select(tp,4,4,nil)
 	local tc=sg:GetFirst()
 	while tc do
-		Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CANNOT_BE_XYZ_MATERIAL)

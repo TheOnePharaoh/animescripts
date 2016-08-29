@@ -28,7 +28,7 @@ function c511001065.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511001065.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAttackPos,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Duel.ChangePosition(g,POS_FACEUP_DEFENCE,POS_FACEUP_DEFENCE,0,0)
+	Duel.ChangePosition(g,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,0,0)
 	local sg=Duel.GetMatchingGroup(c511001065.tdfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
 	Duel.SendtoDeck(sg,nil,2,REASON_EFFECT)
 	local tc=g:GetFirst()

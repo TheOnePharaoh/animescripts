@@ -74,7 +74,7 @@ function c511002095.cop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CHANGE_CODE)
 		e1:SetValue(511002095)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
 		tc=g:GetNext()
 	end

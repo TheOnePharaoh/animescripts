@@ -35,7 +35,7 @@ function c810000084.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end
 function c810000084.filter(c)
-	return c:IsPosition(POS_FACEUP_DEFENCE) and c:IsRace(RACE_INSECT)
+	return c:IsPosition(POS_FACEUP_DEFENSE) and c:IsRace(RACE_INSECT)
 end
 function c810000084.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c810000084.filter(chkc) end
@@ -71,7 +71,7 @@ function c810000084.op(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetValue(c:GetDefence())
+	e1:SetValue(c:GetDefense())
 	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
 end

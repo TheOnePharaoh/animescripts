@@ -82,7 +82,7 @@ function c511002452.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511002452.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,1,tp,tp,true,false,POS_FACEUP_DEFENCE)>0 then
+	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,1,tp,tp,true,false,POS_FACEUP_DEFENSE)>0 then
 		c:CompleteProcedure()
 	end
 end

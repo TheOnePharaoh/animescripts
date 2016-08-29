@@ -50,7 +50,7 @@ end
 function c511002074.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	return d and eg:GetFirst()==a and a:IsControler(tp) and a==e:GetHandler():GetEquipTarget() and d:IsDefencePos()
+	return d and eg:GetFirst()==a and a:IsControler(tp) and a==e:GetHandler():GetEquipTarget() and d:IsDefensePos()
 end
 function c511002074.damtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return true end

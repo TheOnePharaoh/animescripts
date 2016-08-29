@@ -46,8 +46,8 @@ end
 function c511000219.condtion(e)
 	local eq=e:GetHandler():GetEquipTarget()
 	return Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL and Duel.GetAttacker()==eq and Duel.GetAttackTarget()~=nil 
-	and Duel.GetAttackTarget():IsDefencePos()
+	and Duel.GetAttackTarget():IsDefensePos()
 end
 function c511000219.atkval(e,c)
-	return Duel.GetAttackTarget():GetDefence()+100
+	return Duel.GetAttackTarget():GetDefense()+100
 end

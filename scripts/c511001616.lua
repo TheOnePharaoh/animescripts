@@ -57,7 +57,7 @@ function c511001616.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local bc=eq:GetBattleTarget()
 	if not bc or eq:GetEffectCount(EFFECT_INDESTRUCTABLE_BATTLE)>0 then return false end
 	if eq:IsAttackPos() and bc:IsAttackPos() and eq:GetAttack()<=bc:GetAttack() then return true end
-	if eq:IsDefencePos() and eq:GetDefence()<bc:GetAttack() then return true end
+	if eq:IsDefensePos() and eq:GetDefense()<bc:GetAttack() then return true end
 	return false
 end
 function c511001616.afilter(c)

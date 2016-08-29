@@ -31,9 +31,9 @@ end
 function c511002143.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsPosition(POS_FACEUP_ATTACK) then
-		Duel.ChangePosition(c,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 	end
 end
 function c511002143.valcon(e,re,r,rp)
-	return e:GetHandler():IsDefencePos() and bit.band(r,REASON_BATTLE)~=0
+	return e:GetHandler():IsDefensePos() and bit.band(r,REASON_BATTLE)~=0
 end

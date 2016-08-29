@@ -14,20 +14,20 @@ function c511002345.condition(e,tp,eg,ep,ev,re,r,rp)
 	local d=Duel.GetAttackTarget()
 	if not d or not d:IsRace(RACE_INSECT) or d:IsHasEffect(EFFECT_INDESTRUCTABLE_BATTLE) then return false end
 	e:SetLabelObject(d)
-	if a:IsPosition(POS_FACEUP_DEFENCE) then
-		if not a:IsHasEffect(EFFECT_DEFENCE_ATTACK) then return false end
-		if a:IsHasEffect(EFFECT_DEFENCE_ATTACK) then
-			if a:GetEffectCount(EFFECT_DEFENCE_ATTACK)==1 then
+	if a:IsPosition(POS_FACEUP_DEFENSE) then
+		if not a:IsHasEffect(EFFECT_DEFENSE_ATTACK) then return false end
+		if a:IsHasEffect(EFFECT_DEFENSE_ATTACK) then
+			if a:GetEffectCount(EFFECT_DEFENSE_ATTACK)==1 then
 				if d:IsAttackPos() then
-					if a:GetDefence()==d:GetAttack() and not d:IsHasEffect(EFFECT_INDESTRUCTABLE_BATTLE) then
-						return a:GetDefence()~=0
+					if a:GetDefense()==d:GetAttack() and not d:IsHasEffect(EFFECT_INDESTRUCTABLE_BATTLE) then
+						return a:GetDefense()~=0
 					else
-						return a:GetDefence()>=d:GetAttack()
+						return a:GetDefense()>=d:GetAttack()
 					end
 				else
-					return a:GetDefence()>d:GetDefence()
+					return a:GetDefense()>d:GetDefense()
 				end
-			elseif a:IsHasEffect(EFFECT_DEFENCE_ATTACK) then
+			elseif a:IsHasEffect(EFFECT_DEFENSE_ATTACK) then
 				if d:IsAttackPos() then
 					if a:GetAttack()==d:GetAttack() and not a:IsHasEffect(EFFECT_INDESTRUCTABLE_BATTLE) then
 						return a:GetAttack()~=0
@@ -35,7 +35,7 @@ function c511002345.condition(e,tp,eg,ep,ev,re,r,rp)
 						return a:GetAttack()>=d:GetAttack()
 					end
 				else
-					return a:GetAttack()>d:GetDefence()
+					return a:GetAttack()>d:GetDefense()
 				end
 			end
 		end
@@ -47,7 +47,7 @@ function c511002345.condition(e,tp,eg,ep,ev,re,r,rp)
 				return a:GetAttack()>=d:GetAttack()
 			end
 		else
-			return a:GetAttack()>d:GetDefence()
+			return a:GetAttack()>d:GetDefense()
 		end
 	end
 end

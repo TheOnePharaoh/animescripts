@@ -29,7 +29,7 @@ function c511002554.initial_effect(c)
 end
 function c511002554.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local at=Duel.GetAttackTarget()
-	if at and at:IsRelateToBattle() and not at:IsStatus(STATUS_BATTLE_DESTROYED) and at:IsDefencePos() then
+	if at and at:IsRelateToBattle() and not at:IsStatus(STATUS_BATTLE_DESTROYED) and at:IsDefensePos() then
 		c511002554[at:GetControler()]=true
 	end
 end

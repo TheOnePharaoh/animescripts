@@ -57,7 +57,7 @@ function c95000025.desop(e,tp,eg,ep,ev,re,r,rp)
 		if not dg:IsExists(c95000025.mgfilter,1,nil,e,tp) and dg:GetCount()<=Duel.GetLocationCount(tp,LOCATION_MZONE) 
 			and Duel.SelectYesNo(tp,aux.Stringid(95000025,1)) then
 			Duel.BreakEffect()
-			Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+			Duel.SpecialSummon(dg,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		end
 	end
 end

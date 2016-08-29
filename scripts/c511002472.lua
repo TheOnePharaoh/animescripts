@@ -81,11 +81,11 @@ function c511002472.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 	local g=Duel.GetMatchingGroup(c511002472.filter,tp,LOCATION_MZONE,0,nil)
 	if g:GetCount()>0 then
-		Duel.ChangePosition(g,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
 	end
 end
 function c511002472.filter(c)
-	return not c:IsPosition(POS_FACEUP_DEFENCE)
+	return not c:IsPosition(POS_FACEUP_DEFENSE)
 end
 function c511002472.refcon(e,re,val,r,rp,rc)
 	local cc=Duel.GetCurrentChain()

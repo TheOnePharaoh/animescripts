@@ -62,7 +62,7 @@ function c511000954.revcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511000954.revcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFlagEffect(tp,511000954)==0 end
-	Duel.RegisterFlagEffect(tp,511000954,RESET_EVENT+0x1ff0000+RESET_PHASE+RESET_END,0,0)
+	Duel.RegisterFlagEffect(tp,511000954,RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END,0,0)
 end
 function c511000954.revop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DisableShuffleCheck()

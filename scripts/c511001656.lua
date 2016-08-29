@@ -23,13 +23,14 @@ function c511001656.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511001656.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
-		Duel.ChangeAttackTarget(tc)
+	if tc and tc:IsRelateToEffect(e) then
+		--Duel.ChangeAttackTarget(tc)
+		Duel.CalculateDamage(Duel.GetAttacker(),tc)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 		e1:SetValue(1)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
 	end
 end

@@ -46,7 +46,7 @@ end
 function c511002467.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsAttackPos() end
-	Duel.ChangePosition(c,POS_FACEUP_DEFENCE)
+	Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 end
 function c511002467.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and c511002467.filter(chkc,e,tp) end

@@ -31,7 +31,7 @@ function c511000172.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,c511000172.filter,tp,LOCATION_HAND,0,1,ft,nil,e,tp)
 	if g:GetCount()~=0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		local tc=g:GetFirst()
 		while tc do
 			local e1=Effect.CreateEffect(e:GetHandler())

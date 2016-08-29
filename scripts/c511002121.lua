@@ -49,7 +49,7 @@ function c511002121.activate(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e1,true)
 		tc=g:GetNext()
 	end
-	c:RegisterFlagEffect(511002121,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+	c:RegisterFlagEffect(511002121,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 end
 function c511002121.rcon(e)
 	return e:GetOwner():IsHasCardTarget(e:GetHandler())

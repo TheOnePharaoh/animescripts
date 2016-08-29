@@ -34,6 +34,6 @@ function c810000016.activate(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()==0 then return end
 	if c:IsRelateToEffect(e) then
 		Duel.Release(g,REASON_COST)
-		Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
 end

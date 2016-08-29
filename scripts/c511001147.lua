@@ -13,7 +13,7 @@ function c511001147.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCode(EFFECT_UPDATE_DEFENCE)
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e2:SetTarget(c511001147.target)
 	e2:SetValue(c511001147.val2)
@@ -38,7 +38,7 @@ function c511001147.val1(e,c)
 	return c:GetBaseAttack()*0.1
 end
 function c511001147.val2(e,c)
-	return c:GetBaseDefence()*0.1
+	return c:GetBaseDefense()*0.1
 end
 function c511001147.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
@@ -57,8 +57,8 @@ function c511001147.atkop(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetValue(tc:GetBaseAttack()*0.1)
 			tc:RegisterEffect(e1,true)
 	    	local e2=e1:Clone()
-			e2:SetCode(EFFECT_UPDATE_DEFENCE)
-			e2:SetValue(tc:GetBaseDefence()*0.1)
+			e2:SetCode(EFFECT_UPDATE_DEFENSE)
+			e2:SetValue(tc:GetBaseDefense()*0.1)
 			tc:RegisterEffect(e2,true)
 		end
 	end
@@ -73,8 +73,8 @@ function c511001147.atkop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetValue(tc:GetBaseAttack()*0.1)
 			tc:RegisterEffect(e2,true)
 			local e3=e2:Clone()
-			e3:SetCode(EFFECT_UPDATE_DEFENCE)
-			e3:SetValue(tc:GetBaseDefence()*0.1)
+			e3:SetCode(EFFECT_UPDATE_DEFENSE)
+			e3:SetValue(tc:GetBaseDefense()*0.1)
 			tc:RegisterEffect(e3,true)
 		end
 	end

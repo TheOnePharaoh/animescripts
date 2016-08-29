@@ -19,7 +19,7 @@ function c511002379.atkup(e,tp,eg,ep,ev,re,r,rp,chk)
 	if a:IsControler(1-tp) then
 		a,d=d,a
 	end
-	if not d or a:IsControler(1-tp) then return end
+	if not d or not a or a:IsControler(1-tp) then return end
 	if not a:IsSetCard(0x3008) then return end
 	if d:GetAttack()>a:GetAttack() then
 		local e1=Effect.CreateEffect(e:GetHandler())

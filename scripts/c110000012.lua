@@ -47,7 +47,7 @@ function c110000012.initial_effect(c)
 	e6:SetValue(c110000012.adval)
 	c:RegisterEffect(e6)
 	local e7=e6:Clone()
-	e7:SetCode(EFFECT_SET_DEFENCE)
+	e7:SetCode(EFFECT_SET_DEFENSE)
 	c:RegisterEffect(e7)
 	--destroy
 	local e8=Effect.CreateEffect(c)
@@ -99,7 +99,7 @@ function c110000012.adval(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_HAND,0)*1000
 end
 function c110000012.filter(c,e,tp)
-	return c:IsControler(1-tp) and c:IsFaceup() and c:IsDefenceBelow(2000) and (not e or c:IsRelateToEffect(e))
+	return c:IsControler(1-tp) and c:IsFaceup() and c:IsDefenseBelow(2000) and (not e or c:IsRelateToEffect(e))
 end
 function c110000012.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsRelateToEffect(e) and eg:IsExists(c110000012.filter,1,nil,nil,tp)  end

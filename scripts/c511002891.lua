@@ -15,7 +15,7 @@ function c511002891.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.PayLPCost(tp,1000)
 end
 function c511002891.filter(c)
-	return ((c:IsPosition(POS_FACEUP_DEFENCE) and c:IsDefenceBelow(1000)) or (c:IsPosition(POS_FACEUP_ATTACK) and c:IsAttackBelow(1000))) 
+	return ((c:IsPosition(POS_FACEUP_DEFENSE) and c:IsDefenseBelow(1000)) or (c:IsPosition(POS_FACEUP_ATTACK) and c:IsAttackBelow(1000))) 
 		and c:IsDestructable()
 end
 function c511002891.target(e,tp,eg,ep,ev,re,r,rp,chk)
