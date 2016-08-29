@@ -12,7 +12,7 @@ function c511000958.initial_effect(c)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
 	e2:SetCondition(c511000958.indcon)
-	e2:SetTarget(aux.TargetBoolFunction(Card.IsDefencePos))
+	e2:SetTarget(aux.TargetBoolFunction(Card.IsDefensePos))
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
 	--self destroy

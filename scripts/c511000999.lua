@@ -37,7 +37,7 @@ function c511000999.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511000999.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local def=c:GetDefence()
+	local def=c:GetDefense()
 	if ep~=tp then
 		Duel.Damage(1-tp,def,REASON_EFFECT)
 	end

@@ -25,7 +25,7 @@ function c511000508.initial_effect(c)
 	e2:SetValue(c511000508.value)
 	c:RegisterEffect(e2)
 	local e3=e2:Clone()
-	e3:SetCode(EFFECT_SET_DEFENCE)
+	e3:SetCode(EFFECT_SET_DEFENSE)
 	c:RegisterEffect(e3)
 end
 function c511000508.target(e,tp,eg,ep,ev,re,r,rp,chk)

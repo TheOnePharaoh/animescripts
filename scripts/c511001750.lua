@@ -26,7 +26,7 @@ function c511001750.activate(e,tp,eg,ep,ev,re,r,rp)
 		rg:KeepAlive()
 		local tc=rg:GetFirst()
 		while tc do
-			tc:RegisterFlagEffect(511001750,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
+			tc:RegisterFlagEffect(511001750,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 			tc=rg:GetNext()
 		end
 		if Duel.GetTurnPlayer()==tp then
@@ -39,7 +39,7 @@ function c511001750.activate(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetLabelObject(rg)
 			e1:SetCondition(c511001750.drcon1)
 			e1:SetOperation(c511001750.drop1)
-			e1:SetReset(RESET_PHASE+RESET_END)
+			e1:SetReset(RESET_PHASE+PHASE_END)
 			c:RegisterEffect(e1)
 		end
 		local e2=Effect.CreateEffect(c)
@@ -81,7 +81,7 @@ function c511001750.retfilter(c,tp,tpe)
 end
 function c511001750.drop1(e,tp,eg,ep,ev,re,r,rp,c,og)
 	local g=e:GetLabelObject()
-	c:RegisterFlagEffect(511001749,RESET_PHASE+RESET_END,0,1)
+	c:RegisterFlagEffect(511001749,RESET_PHASE+PHASE_END,0,1)
 	local tc=Duel.GetDecktopGroup(tp,1):GetFirst()
 	Duel.Hint(HINT_CARD,0,511001750)
 	Duel.Draw(tp,1,REASON_EFFECT)
@@ -128,7 +128,7 @@ end
 function c511001750.drop2(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.SelectYesNo(tp,aux.Stringid(30461781,0)) then return end
 	local g=e:GetLabelObject()
-	e:GetHandler():RegisterFlagEffect(511001749,RESET_PHASE+RESET_END,0,1)
+	e:GetHandler():RegisterFlagEffect(511001749,RESET_PHASE+PHASE_END,0,1)
 	local tc=Duel.GetDecktopGroup(tp,1):GetFirst()
 	Duel.Hint(HINT_CARD,0,511001750)
 	Duel.Draw(tp,1,REASON_EFFECT)

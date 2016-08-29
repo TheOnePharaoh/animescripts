@@ -53,7 +53,7 @@ function c511001347.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if atkg:GetCount()>0 then
 		atk=atkg:GetSum(Card.GetAttack)
 	end
-	local defg=Duel.GetMatchingGroup(Card.IsPosition,tp,0,LOCATION_MZONE,nil,POS_FACEUP_DEFENCE)
+	local defg=Duel.GetMatchingGroup(Card.IsPosition,tp,0,LOCATION_MZONE,nil,POS_FACEUP_DEFENSE)
 	local def=default
 	if defg:GetCount()>0 then
 		def=defg:GetSum(Card.GetAttack)

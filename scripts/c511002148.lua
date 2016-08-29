@@ -23,7 +23,7 @@ function c511002148.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511002148.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_COUNTER,g,1,0x101,1)
+	Duel.SetOperationInfo(0,CATEGORY_COUNTER,g,1,0x1101,1)
 end
 function c511002148.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
@@ -31,6 +31,6 @@ function c511002148.op(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.HintSelection(g)
-		tc:AddCounter(0x101,1)
+		tc:AddCounter(0x1101,1)
 	end
 end

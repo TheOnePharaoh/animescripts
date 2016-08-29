@@ -24,7 +24,7 @@ function c511001174.activate(e,tp,eg,ep,ev,re,r,rp)
 		e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 		e4:SetCode(EVENT_ATTACK_ANNOUNCE)
 		e4:SetOperation(c511001174.atkop)
-		e4:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e4:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e4)
 		--destroy
 		local e5=Effect.CreateEffect(c)
@@ -36,7 +36,7 @@ function c511001174.activate(e,tp,eg,ep,ev,re,r,rp)
 		e5:SetCondition(c511001174.descon)
 		e5:SetTarget(c511001174.destg)
 		e5:SetOperation(c511001174.desop)
-		e5:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e5:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e5)
 	end
 end

@@ -14,12 +14,12 @@ function c511000096.spcon(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
 	return Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp)>1 and Duel.GetLocationCount(tp,LOCATION_MZONE,tp)>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,511000097,0xf,0x4011,1200,1200,2,RACE_WARRIOR,ATTRIBUTE_LIGHT,POS_FACEUP_DEFENCE,1-tp)
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,511000097,0xf,0x4011,1200,1200,2,RACE_WARRIOR,ATTRIBUTE_LIGHT,POS_FACEUP_DEFENSE,1-tp)
 end
 function c511000096.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	for i=1,2 do
 		local token=Duel.CreateToken(tp,511000097)
-		Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 	end
 	Duel.SpecialSummonComplete()
 end

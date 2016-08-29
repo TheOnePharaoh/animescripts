@@ -11,7 +11,7 @@ function c511000181.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511000181.filter(c)
-	return c:IsDefencePos() and c:IsRace(RACE_MACHINE)
+	return c:IsDefensePos() and c:IsRace(RACE_MACHINE)
 end
 function c511000181.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511000181.filter,tp,0,LOCATION_MZONE,1,nil) end

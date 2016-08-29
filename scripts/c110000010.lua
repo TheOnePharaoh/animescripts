@@ -120,7 +120,7 @@ function c110000010.valcheck(e,c)
 	local def=0
 	while tc do
 		local catk=tc:GetTextAttack()
-		local cdef=tc:GetTextDefence()
+		local cdef=tc:GetTextDefense()
 		atk=atk+(catk>=0 and catk or 0)
 		def=def+(cdef>=0 and cdef or 0)
 		tc=g:GetNext()
@@ -136,7 +136,7 @@ function c110000010.valcheck(e,c)
 		e1:SetReset(RESET_EVENT+0xff0000)
 		c:RegisterEffect(e1)
 		local e2=e1:Clone()
-		e2:SetCode(EFFECT_SET_DEFENCE)
+		e2:SetCode(EFFECT_SET_DEFENSE)
 		e2:SetValue(def)
 		c:RegisterEffect(e2)
 	end
@@ -180,7 +180,7 @@ function c110000010.adop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+0x1ff0000)
 		c:RegisterEffect(e1)
 		local e2=e1:Clone()
-		e2:SetCode(EFFECT_UPDATE_DEFENCE)
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
 		c:RegisterEffect(e2)
 	end
 end

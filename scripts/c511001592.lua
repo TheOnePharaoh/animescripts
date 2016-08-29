@@ -44,7 +44,7 @@ function c511001592.condition(e,tp,eg,ep,ev,re,r,rp)
 		e:SetLabelObject(g)
 		return true
 	end
-	if d:IsDefencePos() and a:GetAttack()>d:GetDefence() and d:GetEffectCount(EFFECT_INDESTRUCTABLE_BATTLE)==0 then
+	if d:IsDefensePos() and a:GetAttack()>d:GetDefense() and d:GetEffectCount(EFFECT_INDESTRUCTABLE_BATTLE)==0 then
 		local g=Group.FromCards(d)
 		g:KeepAlive()
 		e:SetLabelObject(g)

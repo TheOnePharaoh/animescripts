@@ -3,10 +3,10 @@ function c511000770.initial_effect(c)
 	--synchro summon
 	aux.AddSynchroProcedure(c,nil,aux.NonTuner(Card.IsSetCard,0x9a),1)
 	c:EnableReviveLimit()
-	--defence attack
+	--defense attack
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_DEFENCE_ATTACK)
+	e1:SetCode(EFFECT_DEFENSE_ATTACK)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
 	--set
@@ -31,7 +31,7 @@ function c511000770.filter(c)
 	return c:IsType(TYPE_SPELL)
 end
 function c511000770.accon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsDefencePos() and not Duel.IsExistingMatchingCard(c511000770.filter,tp,LOCATION_GRAVE,0,1,nil)
+	return e:GetHandler():IsDefensePos() and not Duel.IsExistingMatchingCard(c511000770.filter,tp,LOCATION_GRAVE,0,1,nil)
 end
 function c511000770.acfilter(c,tp)
 	return c:IsType(TYPE_SPELL) and c:IsSSetable(true) and (c:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0)

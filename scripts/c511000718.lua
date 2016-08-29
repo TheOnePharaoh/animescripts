@@ -36,7 +36,7 @@ function c511000718.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 function c511000718.posfilter(c)
-	return c:IsPosition(POS_FACEUP_DEFENCE)
+	return c:IsPosition(POS_FACEUP_DEFENSE)
 end
 function c511000718.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return eg:IsExists(c511000718.posfilter,1,nil) end

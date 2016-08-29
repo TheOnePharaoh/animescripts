@@ -25,12 +25,12 @@ function c511001282.con(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511001282.op(e,tp,eg,ep,ev,re,r,rp,chk)
 	if e:GetHandler():IsRelateToEffect(e) then
-		Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(e:GetHandler(),POS_FACEUP_DEFENSE)
 	end
 end
 function c511001282.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return bit.band(c:GetPreviousPosition(),POS_ATTACK)~=0 and c:IsFaceup() and c:IsDefencePos()
+	return bit.band(c:GetPreviousPosition(),POS_ATTACK)~=0 and c:IsFaceup() and c:IsDefensePos()
 		and re and re:GetOwner()==e:GetOwner()
 end
 function c511001282.filter(c)
@@ -48,7 +48,7 @@ function c511001282.atkop(e,tp,eg,ep,ev,re,r,rp)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e1:SetValue(800)
 		tc:RegisterEffect(e1)
 	end

@@ -40,17 +40,17 @@ function c511000226.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511000226.filter,tp,LOCATION_MZONE,0,1,nil) end
 	local c=e:GetHandler()
 	local ct=Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)
-	c:AddCounter(0x98,ct)
+	c:AddCounter(0x1098,ct)
 end
 function c511000226.descon(e)
-	return e:GetHandler():GetCounter(0x98)==0
+	return e:GetHandler():GetCounter(0x1098)==0
 end
 function c511000226.remcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp and e:GetHandler():GetCounter(0x98)~=0
+	return Duel.GetTurnPlayer()~=tp and e:GetHandler():GetCounter(0x1098)~=0
 end
 function c511000226.remop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		c:RemoveCounter(tp,0x98,1,REASON_EFFECT)
+		c:RemoveCounter(tp,0x1098,1,REASON_EFFECT)
 	end
 end

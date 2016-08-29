@@ -14,7 +14,7 @@ function c511002027.condition(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	local bc=tc:GetBattleTarget()
 	return eg:GetCount()==1 and tc:IsControler(tp) and tc:IsSetCard(0x213) and tc:IsLevelAbove(4) 
-		and bc and bit.band(bc:GetBattlePosition(),POS_DEFENCE)~=0
+		and bc and bit.band(bc:GetBattlePosition(),POS_DEFENSE)~=0
 end
 function c511002027.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=eg:GetFirst()

@@ -23,6 +23,6 @@ end
 function c511001451.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.ChangePosition(tc,POS_FACEDOWN_DEFENCE)
+		Duel.ChangePosition(tc,POS_FACEDOWN_DEFENSE)
 	end
 end

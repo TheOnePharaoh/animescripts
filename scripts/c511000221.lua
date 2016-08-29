@@ -23,7 +23,7 @@ end
 function c511000221.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ec=eg:GetFirst()
 	if chk==0 then return eg:IsExists(c511000221.cfilter,1,nil,tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
-	and Duel.IsPlayerCanSpecialSummonMonster(tp,511000222,0,0x4011,ec:GetBaseAttack(),ec:GetBaseDefence(),
+	and Duel.IsPlayerCanSpecialSummonMonster(tp,511000222,0,0x4011,ec:GetBaseAttack(),ec:GetBaseDefense(),
 			ec:GetOriginalLevel(),ec:GetOriginalRace(),ec:GetOriginalAttribute()) end
 	ec:CreateEffectRelation(e)
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
@@ -33,7 +33,7 @@ function c511000221.operation(e,tp,eg,ep,ev,re,r,rp)
 	local ec=eg:GetFirst()
 	if not ec:IsRelateToEffect(e) then return end
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0
-		or not Duel.IsPlayerCanSpecialSummonMonster(tp,511000222,0,0x4011,ec:GetBaseAttack(),ec:GetBaseDefence(),
+		or not Duel.IsPlayerCanSpecialSummonMonster(tp,511000222,0,0x4011,ec:GetBaseAttack(),ec:GetBaseDefense(),
 			ec:GetOriginalLevel(),ec:GetOriginalRace(),ec:GetOriginalAttribute()) then return end
 	local token=Duel.CreateToken(tp,511000222)
 	local e1=Effect.CreateEffect(e:GetHandler())
@@ -43,8 +43,8 @@ function c511000221.operation(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_EVENT+0xfe0000)
 	token:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetCode(EFFECT_SET_BASE_DEFENCE)
-	e2:SetValue(ec:GetBaseDefence())
+	e2:SetCode(EFFECT_SET_BASE_DEFENSE)
+	e2:SetValue(ec:GetBaseDefense())
 	token:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetCode(EFFECT_CHANGE_LEVEL)

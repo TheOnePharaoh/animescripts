@@ -52,7 +52,7 @@ function c140000083.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	if not Duel.IsPlayerCanSpecialSummonMonster(tp,140000085,0,0x4011,0,0,1,RACE_MACHINE,ATTRIBUTE_WIND) then return end
 	local token=Duel.CreateToken(tp,140000085)
-	Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+	Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function c140000083.atcon(e)
 	return Duel.IsExistingMatchingCard(Card.IsCode,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,nil,140000085)

@@ -9,7 +9,7 @@ function c800000009.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c800000009.con(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsDefencePos() and ep==tp
+	return e:GetHandler():IsDefensePos() and ep==tp
 end
 function c800000009.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(ep,0)
