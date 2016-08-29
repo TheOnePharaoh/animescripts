@@ -82,7 +82,7 @@ function c511000262.unaffectedval(e,te)
 	return (te:IsActiveType(TYPE_SPELL) or te:IsActiveType(TYPE_TRAP)) and te:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
 function c511000262.nobattlephasecon(e)
-	return e:GetHandler():IsPosition(POS_FACEUP_DEFENCE) and Duel.IsExistingMatchingCard(c511000262.havefieldfilter,0,LOCATION_SZONE,LOCATION_SZONE,1,e:GetHandler())
+	return e:GetHandler():IsPosition(POS_FACEUP_DEFENSE) and Duel.IsExistingMatchingCard(c511000262.havefieldfilter,0,LOCATION_SZONE,LOCATION_SZONE,1,e:GetHandler())
 end
 function c511000262.dmgcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():GetAttackAnnouncedCount()==0 end
@@ -95,14 +95,14 @@ function c511000262.dmgcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511000262.dmgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local Dmg=e:GetHandler():GetDefence()
+	local Dmg=e:GetHandler():GetDefense()
 	Duel.SetTargetPlayer(1-tp)
 	Duel.SetTargetParam(Dmg/2)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,Dmg)
 end
 function c511000262.dmgop(e,tp,eg,ep,ev,re,r,rp)
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
-	Duel.Damage(p,e:GetHandler():GetDefence()/2,REASON_EFFECT)
+	Duel.Damage(p,e:GetHandler():GetDefense()/2,REASON_EFFECT)
 end
 function c511000262.nofieldcon(e)
 	local f1=Duel.GetFieldCard(0,LOCATION_SZONE,5)
@@ -110,13 +110,5 @@ function c511000262.nofieldcon(e)
 	return (f1==nil or not f1:IsFaceup()) and (f2==nil or not f2:IsFaceup())
 end
 function c511000262.nofieldop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCode(EFFECT_SELF_DESTROY)
-	e1:SetCondition(c511000262.nofieldcon)
-	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-	c:RegisterEffect(e1)
+	Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end

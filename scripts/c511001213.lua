@@ -74,5 +74,5 @@ function c511001213.hspop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511001213.atcon(e)
-	return e:GetHandler():IsDefencePos()
+	return e:GetHandler():IsDefensePos()
 end

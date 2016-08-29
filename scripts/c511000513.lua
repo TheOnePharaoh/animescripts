@@ -21,6 +21,16 @@ function c511000513.initial_effect(c)
 	e2:SetCode(EFFECT_SEND_REPLACE)
 	e2:SetTarget(c511000513.reptg)
 	c:RegisterEffect(e2)
+	if not c511000513.global_check then
+		c511000513.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511000513.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 c511000513.xyz_number=77
 function c511000513.cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -51,4 +61,8 @@ function c511000513.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 		c:RemoveOverlayCard(tp,1,1,REASON_COST)
 		return true
 	else return false end
+end
+function c511000513.numchk(e,tp,eg,ep,ev,re,r,rp)
+	Duel.CreateToken(tp,62541668)
+	Duel.CreateToken(1-tp,62541668)
 end

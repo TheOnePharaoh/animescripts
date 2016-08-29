@@ -48,7 +48,7 @@ function c511001377.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	local tc=eg:GetFirst()
 	local bc=tc:GetBattleTarget()
-	local dam=bc:GetDefence()
+	local dam=bc:GetDefense()
 	if dam<0 then dam=0 end
 	Duel.SetTargetPlayer(1-tp)
 	Duel.SetTargetParam(dam)

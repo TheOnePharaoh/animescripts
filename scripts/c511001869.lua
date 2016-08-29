@@ -65,7 +65,7 @@ function c511001869.activate(e,tp,eg,ep,ev,re,r,rp)
 			local g=Duel.SelectMatchingCard(tp,c511001869.filter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
 			if g:GetCount()>0 then
 				Duel.BreakEffect()
-				Duel.SpecialSummon(g,0,tp,tp,true,false,POS_FACEUP_DEFENCE)
+				Duel.SpecialSummon(g,0,tp,tp,true,false,POS_FACEUP_DEFENSE)
 			end
 		end
 	end

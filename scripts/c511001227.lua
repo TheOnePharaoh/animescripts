@@ -20,7 +20,7 @@ function c511001227.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,Card.IsPosition,tp,LOCATION_MZONE,0,1,1,nil,POS_FACEUP_ATTACK)
 	if g:GetCount()>0 then
 		Duel.HintSelection(g)
-		Duel.ChangePosition(g,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
 		Duel.Draw(tp,1,REASON_EFFECT)	
 	end
 end

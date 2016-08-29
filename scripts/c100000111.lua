@@ -13,10 +13,10 @@ function c100000111.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
 	e2:SetCondition(c100000111.con)
-	e2:SetTarget(aux.TargetBoolFunction(Card.IsDefencePos))
+	e2:SetTarget(aux.TargetBoolFunction(Card.IsDefensePos))
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
 end
 function c100000111.con(e)
-	return Duel.IsExistingMatchingCard(Card.IsDefencePos,e:GetHandlerPlayer(),LOCATION_MZONE,0,2,nil)
+	return Duel.IsExistingMatchingCard(Card.IsDefensePos,e:GetHandlerPlayer(),LOCATION_MZONE,0,2,nil)
 end

@@ -1,12 +1,7 @@
 --Performapal Camelose
 function c511001160.initial_effect(c)
 	--pendulum summon
-	aux.AddPendulumProcedure(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	c:RegisterEffect(e1)
+	aux.EnablePendulumAttribute(c)
 	--pierce
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(511001160,0))
@@ -61,7 +56,7 @@ function c511001160.op(e,tp,eg,ep,ev,re,r,rp)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetCode(EFFECT_UPDATE_DEFENCE)
+		e1:SetCode(EFFECT_UPDATE_DEFENSE)
 		e1:SetValue(-800)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		t:RegisterEffect(e1)

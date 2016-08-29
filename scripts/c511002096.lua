@@ -1,12 +1,65 @@
 --相克の魔術師
 function c511002096.initial_effect(c)
+	--Synchro monster, 1 tuner + n or more monsters
+	function aux.AddSynchroProcedure(c,f1,f2,ct)
+		local code=c:GetOriginalCode()
+		local mt=_G["c" .. code]
+		if f1 then
+			mt.tuner_filter=function(mc) return mc and f1(mc) end
+		else
+			mt.tuner_filter=function(mc) return true end
+		end
+		if f2 then
+			mt.nontuner_filter=function(mc) return mc and f2(mc) end
+		else
+			mt.nontuner_filter=function(mc) return true end
+		end
+		mt.minntct=ct
+		mt.maxntct=99
+		mt.sync=true
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_SPSUMMON_PROC)
+		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetRange(LOCATION_EXTRA)
+		e1:SetCondition(Auxiliary.SynCondition(f1,f2,ct,99))
+		e1:SetTarget(Auxiliary.SynTarget(f1,f2,ct,99))
+		e1:SetOperation(Auxiliary.SynOperation(f1,f2,ct,99))
+		e1:SetValue(SUMMON_TYPE_SYNCHRO)
+		c:RegisterEffect(e1)
+	end
+	--Synchro monster, 1 tuner + 1 monster
+	function Auxiliary.AddSynchroProcedure2(c,f1,f2)
+		local code=c:GetOriginalCode()
+		local mt=_G["c" .. code]
+		if f1 then
+			mt.tuner_filter=function(mc) return mc and f1(mc) end
+		else
+			mt.tuner_filter=function(mc) return true end
+		end
+		if f2 then
+			mt.nontuner_filter=function(mc) return mc and f2(mc) end
+		else
+			mt.nontuner_filter=function(mc) return true end
+		end
+		mt.minntct=1
+		mt.maxntct=1
+		mt.sync=true
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_SPSUMMON_PROC)
+		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetRange(LOCATION_EXTRA)
+		e1:SetCondition(Auxiliary.SynCondition(f1,f2,1,1))
+		e1:SetTarget(Auxiliary.SynTarget(f1,f2,1,1))
+		e1:SetOperation(Auxiliary.SynOperation(f1,f2,1,1))
+		e1:SetValue(SUMMON_TYPE_SYNCHRO)
+		c:RegisterEffect(e1)
+	end
+	
+	
 	--pendulum summon
-	aux.AddPendulumProcedure(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	c:RegisterEffect(e1)
+	aux.EnablePendulumAttribute(c)
 	--xyz level
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
@@ -26,6 +79,20 @@ function c511002096.initial_effect(c)
 	e3:SetTarget(c511002096.distg)
 	e3:SetOperation(c511002096.disop)
 	c:RegisterEffect(e3)
+	if not c511002096.global_check then
+		c511002096.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511002096.synchk)
+		Duel.RegisterEffect(ge2,0)
+	end
+end
+function c511002096.synchk(e,tp,eg,ep,ev,re,r,rp)
+	Duel.CreateToken(tp,419)
+	Duel.CreateToken(1-tp,419)
 end
 function c511002096.xyzfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_XYZ)

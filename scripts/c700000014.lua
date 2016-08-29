@@ -2,12 +2,7 @@
 --Abyss Actor - Funky Comedian
 function c700000014.initial_effect(c)
 	--Pendulum Summon
-	aux.AddPendulumProcedure(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	c:RegisterEffect(e1)
+	aux.EnablePendulumAttribute(c)
 	--Increase ATK (P)
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_ATKCHANGE)
@@ -31,7 +26,7 @@ function c700000014.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 function c700000014.cfilter(c,tp)
-	return c:IsType(TYPE_PENDULUM) and c:IsSetCard(0x120e) and c:IsAbleToDeckOrExtraAsCost() 
+	return c:IsType(TYPE_PENDULUM) and c:IsSetCard(0x10ec) and c:IsAbleToDeckOrExtraAsCost() 
 		and Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,c)
 end
 function c700000014.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -40,7 +35,7 @@ function c700000014.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local atk=g:GetFirst():GetAttack()
 	if atk<0 then atk=0 end
 	e:SetLabel(atk)
-	Duel.PSendtoExtra(g,nil,REASON_COST)
+	Duel.SendtoExtraP(g,nil,REASON_COST)
 end
 function c700000014.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
@@ -60,7 +55,7 @@ function c700000014.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c700000014.atkfil(c)
-	return c:IsFaceup() and c:IsSetCard(0x120e)
+	return c:IsFaceup() and c:IsSetCard(0x10ec)
 end
 function c700000014.atkop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

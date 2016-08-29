@@ -19,7 +19,7 @@ function c511002381.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATTACK)
 	local g=Duel.SelectMatchingCard(tp,c511002381.cfilter,tp,LOCATION_MZONE,0,1,1,nil)
 	g:AddCard(c)
-	Duel.ChangePosition(g,POS_FACEUP_DEFENCE)
+	Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
 end
 function c511002381.filter(c)
 	return c:IsType(TYPE_PENDULUM) and c:IsAbleToHand()

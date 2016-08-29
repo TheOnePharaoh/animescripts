@@ -37,7 +37,7 @@ function c810000112.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 		--def up
 		local e2=e1:Clone()
-		e2:SetCode(EFFECT_UPDATE_DEFENCE)
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
 		c:RegisterEffect(e2)
 		--Equip limit
 		local e3=Effect.CreateEffect(c)

@@ -11,7 +11,7 @@ function c511000455.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511000455.filter(c)
-	return c:IsDefencePos() and c:IsDestructable()
+	return c:IsDefensePos() and c:IsDestructable()
 end
 function c511000455.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingTarget(nil,tp,LOCATION_MZONE,0,1,nil) and Duel.IsExistingMatchingCard(c511000455.filter,tp,0,LOCATION_MZONE,1,nil) end
@@ -23,7 +23,7 @@ end
 function c511000455.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
-		if Duel.ChangePosition(tc,POS_FACEUP_DEFENCE,POS_FACEDOWN_DEFENCE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)~=0 then
+		if Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)~=0 then
 			local g=Duel.GetMatchingGroup(c511000455.filter,tp,0,LOCATION_MZONE,nil)
 			if g:GetCount()>0 then
 				Duel.Destroy(g,REASON_EFFECT)

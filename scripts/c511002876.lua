@@ -13,10 +13,10 @@ function c511002876.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetBattleDamage(tp)>0
 end
 function c511002876.cfilter(c)
-	return c:IsDefencePos() and c:IsDestructable()
+	return c:IsDefensePos() and c:IsDestructable()
 end
 function c511002876.filter(c)
-	return (c:IsFacedown() or c:IsDefencePos()) and c:IsDestructable()
+	return (c:IsFacedown() or c:IsDefensePos()) and c:IsDestructable()
 end
 function c511002876.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511002876.cfilter,tp,LOCATION_MZONE,0,1,nil) end
@@ -28,7 +28,7 @@ function c511002876.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(c511002876.filter,tp,LOCATION_ONFIELD,0,nil)
 	if Duel.Destroy(g,REASON_EFFECT)>0 then
 		local dg=Duel.GetOperatedGroup()
-		local sum=dg:GetSum(Card.GetDefence)
+		local sum=dg:GetSum(Card.GetDefense)
 		local a=Duel.GetAttacker()
 		if sum>a:GetAttack() then
 			local e1=Effect.CreateEffect(c)

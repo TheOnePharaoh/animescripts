@@ -60,7 +60,7 @@ function c511001427.activate(e,tp,eg,ep,ev,re,r,rp)
 		local g2=Duel.SelectMatchingCard(tp,c511001427.spfilter,tp,LOCATION_EXTRA,0,ct,ct,nil,e,tp)
 		local tc2=g2:GetFirst()
 		while tc2 do
-			Duel.SpecialSummonStep(tc2,0,tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+			Duel.SpecialSummonStep(tc2,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_DISABLE)

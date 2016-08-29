@@ -13,7 +13,7 @@ function c511001627.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EVENT_REMOVE)
 	e1:SetCondition(c511001627.spcon)
 	e1:SetOperation(c511001627.spop)
-	e1:SetReset(RESET_PHASE+RESET_END)
+	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end
 function c511001627.filter(c,tp)

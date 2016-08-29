@@ -35,7 +35,7 @@ function c511001206.operation(e,tp,eg,ep,ev,re,r,rp)
 		if e:GetHandler():IsPreviousPosition(POS_FACEUP_ATTACK) then
 			bp=POS_FACEUP_ATTACK
 		else
-			bp=POS_FACEUP_DEFENCE
+			bp=POS_FACEUP_DEFENSE
 		end
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,bp)
 		Duel.ChangeAttackTarget(tc)

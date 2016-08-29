@@ -20,7 +20,7 @@ function c511002818.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=e:GetHandler():GetReasonCard()
 	local p=e:GetHandler():GetOwner()
 	local ct=1
-	if tc:IsDefencePos() then ct=ct+1 end
+	if tc:IsDefensePos() then ct=ct+1 end
 	Duel.SetTargetPlayer(p)
 	Duel.SetTargetParam(ct)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,p,ct)

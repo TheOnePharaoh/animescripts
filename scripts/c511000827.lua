@@ -43,5 +43,5 @@ function c511000827.op(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511000827.con(e)
-	return e:GetHandler():IsDefencePos()
+	return e:GetHandler():IsDefensePos()
 end

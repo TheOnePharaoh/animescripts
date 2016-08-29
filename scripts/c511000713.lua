@@ -30,7 +30,7 @@ end
 function c511000713.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		if tc:IsDefencePos() then
+		if tc:IsDefensePos() then
 			Duel.ChangePosition(tc,POS_FACEUP_ATTACK)
 		end
 		if Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_MZONE,0)==0 then

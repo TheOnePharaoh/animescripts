@@ -30,7 +30,7 @@ function c511000781.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EVENT_PHASE+PHASE_END)
 		e1:SetCountLimit(1)
-		e1:SetReset(RESET_PHASE+RESET_END)
+		e1:SetReset(RESET_PHASE+PHASE_END)
 		e1:SetOperation(c511000781.rmop)
 		Duel.RegisterEffect(e1,tp)
 	end

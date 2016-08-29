@@ -1,17 +1,17 @@
 --Mokusatsu
 --  By Shad3
 
-local self=c511005009
+local scard=c511005009
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_DRAW)
   e1:SetCategory(CATEGORY_HANDES+CATEGORY_DRAW)
-  e1:SetCondition(self.cont_cd)
-  e1:SetTarget(self.cont_tg)
-  e1:SetOperation(self.cont_op)
+  e1:SetCondition(scard.cont_cd)
+  e1:SetTarget(scard.cont_tg)
+  e1:SetOperation(scard.cont_op)
   c:RegisterEffect(e1)
   --Continuous
   local e2=Effect.CreateEffect(c)
@@ -19,39 +19,39 @@ function self.initial_effect(c)
   e2:SetCode(EVENT_DRAW)
   e2:SetRange(LOCATION_SZONE)
   e2:SetCategory(CATEGORY_HANDES+CATEGORY_DRAW)
-  e2:SetCondition(self.cont_cd)
-  e2:SetTarget(self.cont_tg)
-  e2:SetOperation(self.cont_op)
+  e2:SetCondition(scard.cont_cd)
+  e2:SetTarget(scard.cont_tg)
+  e2:SetOperation(scard.cont_op)
   c:RegisterEffect(e2)
 end
 
-function self.cont_cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.cont_cd(e,tp,eg,ep,ev,re,r,rp)
   return ep~=tp and r==REASON_RULE
 end
 
-function self.cont_fil1(c)
+function scard.cont_fil1(c)
   return c:IsLocation(LOCATION_HAND)
 end
 
-function self.cont_fil2(c,i)
+function scard.cont_fil2(c,i)
   return c:IsCode(i)
 end
 
-function self.cont_tg(e,tp,eg,ep,ev,re,r,rp,chk)
+function scard.cont_tg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return true end
   e:SetLabel(Duel.AnnounceCard(tp))
   Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,1,1-tp,0)
   Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,1,1-tp,0)
 end
 
-function self.cont_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
   if not e:GetHandler():IsRelateToEffect(e) then return end
-  local tg=eg:Filter(self.cont_fil1,nil)
+  local tg=eg:Filter(scard.cont_fil1,nil)
   if tg:GetCount()>0 then
     local i=e:GetLabel()
     Duel.ConfirmCards(tp,tg)
-    if tg:IsExists(self.cont_fil2,1,nil,i) then
-      local ng=tg:Filter(self.cont_fil2,nil,i)
+    if tg:IsExists(scard.cont_fil2,1,nil,i) then
+      local ng=tg:Filter(scard.cont_fil2,nil,i)
       Duel.HintSelection(ng)
       Duel.SendtoGrave(ng,REASON_EFFECT+REASON_DISCARD)
       Duel.ShuffleHand(1-tp)

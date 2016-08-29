@@ -15,7 +15,7 @@ function c511001561.cfilter(c,tp)
 end
 function c511001561.filter(c,tp)
 	return c:IsFaceup() and c:GetLevel()>0 and c:IsCode(76812113) 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001562,0,0x4011,c:GetAttack(),c:GetDefence(),c:GetLevel(),c:GetRace(),c:GetAttribute())
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001562,0,0x4011,c:GetAttack(),c:GetDefense(),c:GetLevel(),c:GetRace(),c:GetAttribute())
 end
 function c511001561.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=eg:Filter(c511001561.cfilter,nil,tp)
@@ -32,7 +32,7 @@ function c511001561.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if not tc:IsRelateToEffect(e) or tc:IsFacedown() then return end
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<g:GetCount()
-		or not Duel.IsPlayerCanSpecialSummonMonster(tp,511001562,0,0x4011,tc:GetAttack(),tc:GetDefence(),
+		or not Duel.IsPlayerCanSpecialSummonMonster(tp,511001562,0,0x4011,tc:GetAttack(),tc:GetDefense(),
 			tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end
 	for i=1,g:GetCount() do
 		local token=Duel.CreateToken(tp,511001562)
@@ -43,8 +43,8 @@ function c511001561.operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+0xfe0000)
 		token:RegisterEffect(e1)
 		local e2=e1:Clone()
-		e2:SetCode(EFFECT_SET_BASE_DEFENCE)
-		e2:SetValue(tc:GetBaseDefence())
+		e2:SetCode(EFFECT_SET_BASE_DEFENSE)
+		e2:SetValue(tc:GetBaseDefense())
 		token:RegisterEffect(e2)
 		local e3=e1:Clone()
 		e3:SetCode(EFFECT_CHANGE_LEVEL)

@@ -102,8 +102,8 @@ function c100000150.operation(e,tp,eg,ep,ev,re,r,rp)
 	while wbc do
 		local code=wbc:GetOriginalCode()
 		if c:IsFaceup() and c:GetFlagEffect(code)==0 then
-			c:CopyEffect(code,RESET_EVENT+0x1ff0000+RESET_PHASE+RESET_END,1)
-			c:RegisterFlagEffect(code,RESET_EVENT+0x1ff0000+RESET_PHASE+RESET_END,0,1)
+			c:CopyEffect(code,RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END,1)
+			c:RegisterFlagEffect(code,RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END,0,1)
 		end
 		wbc=wg:GetNext()
 	end		

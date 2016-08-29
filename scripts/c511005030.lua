@@ -1,14 +1,14 @@
 --Ojamachine Yellow
 --  By Shad3
 
-local self=c511005030
+local scard=c511005030
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
   e1:SetCode(EVENT_SUMMON_SUCCESS)
   e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
-  e1:SetOperation(self.op)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
   local e2=e1:Clone()
   e2:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -19,7 +19,7 @@ function self.initial_effect(c)
   local e4=Effect.CreateEffect(c)
   e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
   e4:SetCode(EVENT_DESTROYED)
-  e4:SetOperation(self.des_op)
+  e4:SetOperation(scard.des_op)
   c:RegisterEffect(e4)
   local e5=Effect.CreateEffect(c)
   e5:SetType(EFFECT_TYPE_SINGLE)
@@ -28,7 +28,7 @@ function self.initial_effect(c)
   c:RegisterEffect(e5)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local n=Duel.GetLocationCount(tp,LOCATION_MZONE)
   if n<1 then return end
   if not Duel.IsPlayerCanSpecialSummonMonster(tp,511005031,0xf,0x4011,0,1000,3,RACE_MACHINE,ATTRIBUTE_LIGHT) then return end
@@ -50,19 +50,19 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   local e2=Effect.CreateEffect(e:GetHandler())
   e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
   e2:SetCode(EVENT_DESTROYED)
-  e2:SetCondition(self.tdes_cd)
-  e2:SetOperation(self.tdes_op)
+  e2:SetCondition(scard.tdes_cd)
+  e2:SetOperation(scard.tdes_op)
   e2:SetLabelObject(g)
   Duel.RegisterEffect(e2,tp)
 end
 
-function self.tdes_fil(c,g)
+function scard.tdes_fil(c,g)
   return g:IsContains(c)
 end
 
-function self.tdes_cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.tdes_cd(e,tp,eg,ep,ev,re,r,rp)
   local g=e:GetLabelObject()
-  if eg:IsExists(self.tdes_fil,1,nil,g) then
+  if eg:IsExists(scard.tdes_fil,1,nil,g) then
     return true
   elseif not g:IsExists(Card.IsLocation,1,nil,LOCATION_MZONE) then
     g:DeleteGroup()
@@ -71,7 +71,7 @@ function self.tdes_cd(e,tp,eg,ep,ev,re,r,rp)
   return false
 end
 
-function self.tdes_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.tdes_op(e,tp,eg,ep,ev,re,r,rp)
   local g=e:GetLabelObject()
   local tc=eg:GetFirst()
   while tc do
@@ -83,6 +83,6 @@ function self.tdes_op(e,tp,eg,ep,ev,re,r,rp)
   end
 end
 
-function self.des_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.des_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Damage(1-e:GetHandler():GetPreviousControler(),300,REASON_EFFECT)
 end

@@ -19,7 +19,7 @@ function c511000816.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EVENT_TO_HAND)
 	e1:SetCondition(c511000816.damcon)
 	e1:SetOperation(c511000816.damop)
-	e1:SetReset(RESET_PHASE+RESET_END)
+	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end
 function c511000816.damcon(e,tp,eg,ep,ev,re,r,rp)

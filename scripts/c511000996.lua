@@ -31,7 +31,7 @@ function c511000996.atktarget(e,c)
 	return c:IsAttackBelow(1000)
 end
 function c511000996.cfilter(c)
-	return c:IsPosition(POS_FACEUP_DEFENCE)
+	return c:IsPosition(POS_FACEUP_DEFENSE)
 end
 function c511000996.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp and Duel.IsExistingMatchingCard(Card.IsAttackPos,tp,LOCATION_MZONE,0,1,nil)

@@ -13,7 +13,7 @@ function c511002504.atkop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 and g:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(23603403,0)) then
 		Duel.Hint(HINT_CARD,0,511002504)
 		local sc=g:Select(tp,1,1,nil):GetFirst()
-		Duel.MoveToField(sc,sc:GetControler(),sc:GetControler(),LOCATION_MZONE,POS_FACEDOWN_DEFENCE,true)
+		Duel.MoveToField(sc,sc:GetControler(),sc:GetControler(),LOCATION_MZONE,POS_FACEDOWN_DEFENSE,true)
 		Duel.BreakEffect()
 		if sc:IsControler(tp) then
 			Duel.GetControl(sc,1-tp,PHASE_END)

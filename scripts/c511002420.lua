@@ -41,7 +41,7 @@ function c511002420.activate(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.HintSelection(g)
-		Duel.ChangePosition(tc,0,0,POS_FACEUP_DEFENCE,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(tc,0,0,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE)
 		if tc:IsLocation(LOCATION_SZONE) and c511002420.filter(tc,e,tp,eg,ep,ev,re,r,rp) then
 			local tpe=tc:GetType()
 			local te=tc:GetActivateEffect()

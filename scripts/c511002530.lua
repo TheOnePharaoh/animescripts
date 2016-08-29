@@ -12,7 +12,7 @@ function c511002530.initial_effect(c)
 end
 function c511002530.con(e,tp,eg,ep,ev,re,r,rp)
 	local at=Duel.GetAttackTarget()
-	return Duel.GetAttacker():IsControler(tp) and at and at:IsControler(1-tp) and at:IsDefencePos()
+	return Duel.GetAttacker():IsControler(tp) and at and at:IsControler(1-tp) and at:IsDefensePos()
 end
 function c511002530.op(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetAttacker()

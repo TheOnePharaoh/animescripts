@@ -124,7 +124,7 @@ function c100000155.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c100000155.spop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) then
-		Duel.SpecialSummon(e:GetHandler(),0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummon(e:GetHandler(),0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
 end
 function c100000155.condition(e,tp,eg,ep,ev,re,r,rp)
@@ -132,7 +132,7 @@ function c100000155.condition(e,tp,eg,ep,ev,re,r,rp)
 end
 function c100000155.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tg=Duel.GetAttacker()
-	tg:RegisterFlagEffect(100000155,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1) 
+	tg:RegisterFlagEffect(100000155,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1) 
 end
 function c100000155.cfilter(c)
 	return c:GetFlagEffect(100000155)>0 and c:IsFaceup() and c:IsDestructable()

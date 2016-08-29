@@ -1,5 +1,4 @@
 --Number 100: Numeron Dragon
---By Edo9300
 function c511000369.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,1,2)
@@ -44,22 +43,6 @@ function c511000369.initial_effect(c)
 	e4:SetCost(c511000369.regcost)
 	e4:SetOperation(c511000369.regop)
 	c:RegisterEffect(e4)
-	--battle indestructable
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_SINGLE)
-	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e5:SetValue(c511000369.indes)
-	c:RegisterEffect(e5)
-	if not c511000369.global_check then
-		c511000369.global_check=true
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetCode(EVENT_DESTROYED)
-		ge1:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
-		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-		ge1:SetTarget(c511000369.stcheck)
-		Duel.RegisterEffect(ge1,0)
-	end
 end
 function c511000369.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local at=Duel.GetAttacker()
@@ -90,25 +73,21 @@ function c511000369.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511000369.retfilter(c)
-	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:GetFlagEffect(511000369)>0
+	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToDeck() 
 end
 function c511000369.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) 
-	or Duel.IsExistingMatchingCard(c511000369.retfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_HAND+LOCATION_DECK,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_HAND+LOCATION_DECK,1,nil) end
+	or Duel.IsExistingMatchingCard(c511000369.retfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 	local sg1=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg1,sg1:GetCount(),0,0)
-	local sg2=Duel.GetMatchingGroup(c511000369.retfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_HAND+LOCATION_DECK,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_HAND+LOCATION_DECK,nil)
-	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,sg2,sg2:GetCount(),0,0)
+	local sg2=Duel.GetMatchingGroup(c511000369.retfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,sg2,sg2:GetCount(),0,0)
 end
 function c511000369.desop(e,tp,eg,ep,ev,re,r,rp)
 	local sg1=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	Duel.Destroy(sg1,REASON_EFFECT)
-	local sg2=Duel.GetMatchingGroup(c511000369.retfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_HAND+LOCATION_DECK,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_HAND+LOCATION_DECK,nil)
-	local tc=sg2:GetFirst()
-	while tc do
-	Duel.MoveToField(tc,tp,tc:GetControler(),LOCATION_SZONE,tc:GetFlagEffectLabel(511000369),true)
-	tc=sg2:GetNext()
-	end
+	local sg2=Duel.GetMatchingGroup(c511000369.retfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+	Duel.SendtoDeck(sg2,nil,2,REASON_EFFECT)
 end
 function c511000369.regcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
@@ -140,18 +119,4 @@ function c511000369.atkupop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 	e1:SetValue(atk)
 	c:RegisterEffect(e1)
-end
-function c511000369.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
-function c511000369.stcheck(e,tp,eg,ep,ev,re,r,rp)
-	if chk==0 then return eg:IsExists(Card.IsType,1,nil,TYPE_SPELL+TYPE_TRAP) end
-	local g=eg:Filter(Card.IsType,nil,TYPE_SPELL+TYPE_TRAP)
-	if g:GetCount()>0 then
-		local tc=g:GetFirst()
-		while tc do
-			tc:RegisterFlagEffect(511000369,RESET_PHASE+PHASE_END,0,1,tc:GetPreviousPosition())
-			tc=g:GetNext()
-		end
-	end
 end
