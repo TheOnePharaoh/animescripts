@@ -11,8 +11,7 @@ function c511001242.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001242.condition(e,tp,eg,ep,ev,re,r,rp)
-	local ph=Duel.GetCurrentPhase()
-	return ph==PHASE_BATTLE
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 function c511001242.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:GetLocation()==LOCATION_HAND and chkc:GetControler()==tp and chkc:IsAbleToHand() end

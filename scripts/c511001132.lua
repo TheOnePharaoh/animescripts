@@ -57,7 +57,8 @@ function c511001132.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tp~=Duel.GetTurnPlayer()
 end
 function c511001132.descon(e,tp,eg,ep,ev,re,r,rp)
-	return c511001132[4]>0 and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0 and Duel.GetCurrentPhase()==PHASE_BATTLE
+	return c511001132[4]>0 and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0 
+		and Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 function c511001132.checkop(e,tp,eg,ep,ev,re,r,rp)
     c511001132[0]=c511001132[0]+Duel.GetLP(tp)

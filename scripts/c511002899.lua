@@ -12,7 +12,7 @@ function c511002899.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002899.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 function c511002899.filter(c,e,tp,tid)
 	return bit.band(c:GetReason(),REASON_BATTLE)~=0 and c:GetTurnID()==tid and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
