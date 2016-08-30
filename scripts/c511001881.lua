@@ -43,7 +43,7 @@ end
 function c511001881.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	local bc=tc:GetBattleTarget()
-	return bc and bc:IsDefencePos() and tc:GetFlagEffect(511001881)>0 and e:GetLabelObject()==tc
+	return bc and bc:IsDefensePos() and tc:GetFlagEffect(511001881)>0 and e:GetLabelObject()==tc
 end
 function c511001881.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=eg:GetFirst()

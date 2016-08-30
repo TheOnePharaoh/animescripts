@@ -38,7 +38,7 @@ end
 function c511002883.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
-		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
 end
 function c511002883.indcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -69,7 +69,7 @@ function c511002883.indop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002883.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return c:IsReason(REASON_BATTLE) and c:IsFaceup() and c:GetAttack()>=800 and c:GetDefence()>=800 end
+	if chk==0 then return c:IsReason(REASON_BATTLE) and c:IsFaceup() and c:GetAttack()>=800 and c:GetDefense()>=800 end
 	if Duel.SelectYesNo(tp,aux.Stringid(40945356,0)) then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
@@ -80,7 +80,7 @@ function c511002883.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetReset(RESET_EVENT+0x1fe0000)
-		e2:SetCode(EFFECT_UPDATE_DEFENCE)
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
 		e2:SetValue(-800)
 		c:RegisterEffect(e2)
 		return true

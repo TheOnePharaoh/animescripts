@@ -16,10 +16,10 @@ function c511002584.initial_effect(c)
 	--Double DEF
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetCode(EFFECT_SET_DEFENCE_FINAL)
+	e4:SetCode(EFFECT_SET_DEFENSE_FINAL)
 	e4:SetRange(LOCATION_SZONE)
 	e4:SetTargetRange(LOCATION_MZONE,0)
-	e4:SetTarget(aux.TargetBoolFunction(Card.IsPosition,POS_FACEUP_DEFENCE))
+	e4:SetTarget(aux.TargetBoolFunction(Card.IsPosition,POS_FACEUP_DEFENSE))
 	e4:SetValue(c511002584.defval)
 	c:RegisterEffect(e4)
 end
@@ -28,7 +28,7 @@ function c511002584.cfilter(c,tp)
 		and Duel.IsExistingMatchingCard(c511002584.filter,tp,LOCATION_MZONE,0,1,nil,c:GetAttack())
 end
 function c511002584.filter(c,atk)
-	return c:IsFaceup() and atk>c:GetDefence()
+	return c:IsFaceup() and atk>c:GetDefense()
 end
 function c511002584.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511002584.cfilter,1,nil,tp)
@@ -62,5 +62,5 @@ function c511002584.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511002584.defval(e,c)
-	return c:GetDefence()*2
+	return c:GetDefense()*2
 end

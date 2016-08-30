@@ -14,7 +14,7 @@ function c511001978.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001978.descon(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp and eg:GetFirst():IsControler(tp) and Duel.GetAttackTarget()==nil and e:GetHandler():IsPosition(POS_FACEUP_DEFENCE)
+	return ep~=tp and eg:GetFirst():IsControler(tp) and Duel.GetAttackTarget()==nil and e:GetHandler():IsPosition(POS_FACEUP_DEFENSE)
 end
 function c511001978.filter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsDestructable()

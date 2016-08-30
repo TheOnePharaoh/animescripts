@@ -59,7 +59,7 @@ function c511000620.con(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511000620.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local eq=e:GetHandler():GetEquipTarget()
-	if chk==0 then return eq:GetAttack()>0 and eq:GetDefence()>0 end
+	if chk==0 then return eq:GetAttack()>0 and eq:GetDefense()>0 end
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SET_ATTACK_FINAL)
@@ -68,7 +68,7 @@ function c511000620.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	eq:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(e:GetHandler())
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_SET_DEFENCE_FINAL)
+	e2:SetCode(EFFECT_SET_DEFENSE_FINAL)
 	e2:SetValue(0)
 	e2:SetReset(RESET_EVENT+0x1fe0000)
 	eq:RegisterEffect(e2)

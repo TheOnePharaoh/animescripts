@@ -16,7 +16,7 @@ function c511002874.initial_effect(c)
 	c:RegisterEffect(e2)
 	--Def
 	local e3=e2:Clone()
-	e3:SetCode(EFFECT_UPDATE_DEFENCE)
+	e3:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e3)
 	--immune
 	local e4=e2:Clone()
@@ -44,6 +44,6 @@ end
 function c511002874.cbop(e,tp,eg,ep,ev,re,r,rp)
 	local at=eg:GetFirst()
 	if at:IsAttackPos() and at:IsRelateToBattle() then
-		Duel.ChangePosition(at,POS_FACEUP_DEFENCE,POS_FACEDOWN_DEFENCE,0,0)
+		Duel.ChangePosition(at,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,0,0)
 	end
 end

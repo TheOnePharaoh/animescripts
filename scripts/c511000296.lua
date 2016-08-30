@@ -97,7 +97,7 @@ function c511000296.winop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnPlayer()~=tp and Duel.GetFieldGroupCount(e:GetHandlerPlayer(),0,LOCATION_MZONE)>0 
 		and Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_MZONE,0)>1 and Duel.GetFlagEffect(tp,511000296)==0 then
 		
-		local g=Duel.GetMatchingGroup(Card.IsDefencePos,tp,0,LOCATION_MZONE,nil)
+		local g=Duel.GetMatchingGroup(Card.IsDefensePos,tp,0,LOCATION_MZONE,nil)
 		Duel.ChangePosition(g,0,0,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK,true)
 		local g2=Duel.GetMatchingGroup(c511000296.fdfilter,tp,0,LOCATION_MZONE,nil)
 		Duel.ChangePosition(g2,POS_FACEUP_ATTACK)

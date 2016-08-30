@@ -1,4 +1,4 @@
---Sacred Defence Barrier
+--Sacred Defense Barrier
 function c511000129.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -48,13 +48,13 @@ function c511000129.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=eg:GetFirst()
 	if chk==0 then return c511000129.filter(tc,tp,ep) end
 	Duel.SetTargetCard(eg)
-	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x96)
+	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x1096)
 end
 function c511000129.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=eg:GetFirst()
 	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() and tc:IsRace(RACE_ROCK) then
-		tc:AddCounter(0x96,1)
+		tc:AddCounter(0x1096,1)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EFFECT_DESTROY_REPLACE)
@@ -65,9 +65,9 @@ function c511000129.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511000129.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():GetCounter(0x96)>0 end
+	if chk==0 then return e:GetHandler():GetCounter(0x1096)>0 end
 	return true
 end
 function c511000129.repop(e,tp,eg,ep,ev,re,r,rp,chk)
-	e:GetHandler():RemoveCounter(tp,0x96,1,REASON_EFFECT)
+	e:GetHandler():RemoveCounter(tp,0x1096,1,REASON_EFFECT)
 end

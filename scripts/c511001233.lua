@@ -54,7 +54,7 @@ function c511001233.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 		regc=51101234
 	end
 	if chk==0 then return c:GetFlagEffect(regc)==0 end
-	c:RegisterFlagEffect(regc,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
+	c:RegisterFlagEffect(regc,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 end
 function c511001233.filter(c,e,tp)
 	return c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -94,12 +94,12 @@ function c511001233.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:GetFlagEffect(51101233)==0 or c:GetFlagEffect(51101234)==0 end
 	if c:GetFlagEffect(51101233)==0 then
-		c:RegisterFlagEffect(51101233,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
-		c:RegisterFlagEffect(33,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
+		c:RegisterFlagEffect(51101233,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+		c:RegisterFlagEffect(33,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 	end
 	if c:GetFlagEffect(51101234)==0 then
-		c:RegisterFlagEffect(51101234,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
-		c:RegisterFlagEffect(34,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,1)
+		c:RegisterFlagEffect(51101234,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+		c:RegisterFlagEffect(34,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 	end
 end
 function c511001233.sptg(e,tp,eg,ep,ev,re,r,rp,chk)

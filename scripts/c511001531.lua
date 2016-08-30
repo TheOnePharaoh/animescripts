@@ -29,7 +29,7 @@ function c511001531.condition(e,tp,eg,ep,ev,re,r,rp)
 		return true
 	end
 	if d:IsFaceup() and d:IsType(TYPE_XYZ) and cd 
-		and ((d:GetAttack()<=a:GetAttack() and d:IsAttackPos()) or (d:GetDefence()<a:GetAttack() and d:IsDefencePos()))
+		and ((d:GetAttack()<=a:GetAttack() and d:IsAttackPos()) or (d:GetDefense()<a:GetAttack() and d:IsDefensePos()))
 		and d:GetEffectCount(EFFECT_INDESTRUCTABLE_BATTLE)==0 then
 		e:SetLabelObject(d)
 		return true

@@ -1,5 +1,6 @@
 --Full Moon Mirror
 function c511000919.initial_effect(c)
+	c:EnableCounterPermit(0x99)
 	c:SetCounterLimit(0x99,10)
 	--Activate
 	local e1=Effect.CreateEffect(c)

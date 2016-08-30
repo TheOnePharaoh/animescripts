@@ -14,7 +14,7 @@ function c511002127.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002127.condition(e,tp,eg,ep,ev,re,r,rp)
-	return tp==Duel.GetTurnPlayer() and e:GetHandler():IsDefencePos()
+	return tp==Duel.GetTurnPlayer() and e:GetHandler():IsDefensePos()
 end
 function c511002127.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -24,7 +24,7 @@ end
 function c511002127.operation(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and c:IsPosition(POS_FACEUP_DEFENCE) then
+	if c:IsRelateToEffect(e) and c:IsPosition(POS_FACEUP_DEFENSE) then
 		Duel.SetLP(p,Duel.GetLP(p)+d)
 	end
 end

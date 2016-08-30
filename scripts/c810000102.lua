@@ -25,5 +25,5 @@ end
 function c810000102.spop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
 	local sg=g:Filter(Card.IsRelateToEffect,nil,e)
-	Duel.SpecialSummon(sg:GetFirst(),0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+	Duel.SpecialSummon(sg:GetFirst(),0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 end

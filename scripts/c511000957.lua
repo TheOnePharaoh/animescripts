@@ -23,13 +23,13 @@ function c511000957.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511000957.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local d=Duel.GetAttackTarget()
-	if chk==0 then return d:IsDefencePos() and d:IsControler(tp) end
+	if chk==0 then return d:IsDefensePos() and d:IsControler(tp) end
 	Duel.SetTargetCard(d)
 end
 function c511000957.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsDefencePos() then
-		Duel.ChangePosition(tc,POS_FACEUP_DEFENCE,0,POS_FACEUP_ATTACK,0)
+	if tc:IsRelateToEffect(e) and tc:IsDefensePos() then
+		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,0,POS_FACEUP_ATTACK,0)
 		Duel.ChangeAttackTarget(tc)
 	end
 end

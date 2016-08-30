@@ -50,9 +50,9 @@ function c810000012.initial_effect(c)
 	c:RegisterEffect(e12)
 end
 function c810000012.sumlimit(e,c,sump,sumtype,sumpos,targetp)
-	local p=c:GetControler()
-	return Duel.GetActivityCount(p,ACTIVITY_SUMMON)>0 or Duel.GetActivityCount(p,ACTIVITY_FLIPSUMMON)>0 
-		or Duel.GetActivityCount(p,ACTIVITY_SPSUMMON)>0
+	--local p=c:GetControler()
+	return Duel.GetActivityCount(targetp,ACTIVITY_SUMMON)>0 or Duel.GetActivityCount(targetp,ACTIVITY_FLIPSUMMON)>0 
+		or Duel.GetActivityCount(targetp,ACTIVITY_SPSUMMON)>0 or Duel.GetActivityCount(targetp,ACTIVITY_NORMALSUMMON)>0
 end
 function c810000012.descon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)>=2 or Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>=2

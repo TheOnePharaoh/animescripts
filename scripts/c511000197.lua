@@ -50,7 +50,7 @@ function c511000197.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
 	if not d then return false end
-	return ep~=tp and (eq==Duel.GetAttacker() or eq==Duel.GetAttackTarget()) and d:IsDefencePos() and eq:GetEffectCount(EFFECT_PIERCE)==1
+	return ep~=tp and (eq==Duel.GetAttacker() or eq==Duel.GetAttackTarget()) and d:IsDefensePos() and eq:GetEffectCount(EFFECT_PIERCE)==1
 end
 function c511000197.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=ev/2

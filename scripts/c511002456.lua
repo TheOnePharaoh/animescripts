@@ -17,7 +17,7 @@ function c511002456.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)-1
 	local tc=Duel.GetFieldGroup(tp,LOCATION_MZONE,0):GetFirst()
 	if chk==0 then return ct>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>=ct and tc 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,tc:GetType(),tc:GetAttack(),tc:GetDefence()
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,tc:GetType(),tc:GetAttack(),tc:GetDefense()
 		,tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,ct,0,0)
 end
@@ -27,7 +27,7 @@ function c511002456.activate(e,tp,eg,ep,ev,re,r,rp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	local tc=g:GetFirst()
 	if ct<=0 or ft<ct or g:GetCount()~=1 
-		or not Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,tc:GetType(),tc:GetAttack(),tc:GetDefence()
+		or not Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,tc:GetType(),tc:GetAttack(),tc:GetDefense()
 		,tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end
 	for i=1,ct do
 		local token=Duel.CreateToken(tp,tc:GetCode())
@@ -39,8 +39,8 @@ function c511002456.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		token:RegisterEffect(e1)
 		local e2=e1:Clone()
-		e2:SetCode(EFFECT_SET_BASE_DEFENCE)
-		e2:SetValue(tc:GetDefence())
+		e2:SetCode(EFFECT_SET_BASE_DEFENSE)
+		e2:SetValue(tc:GetDefense())
 		token:RegisterEffect(e2)
 		local e3=e1:Clone()
 		e3:SetCode(EFFECT_CHANGE_LEVEL)

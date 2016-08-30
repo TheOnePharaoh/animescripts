@@ -42,8 +42,8 @@ function c511001341.clear(e,tp,eg,ep,ev,re,r,rp)
 	c511001341[0]:Clear()
 end
 function c511001341.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE
-		and (Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated())
+	local ph=Duel.GetCurrentPhase()
+	return ph>=0x08 and ph<=0x20and (ph~=PHASE_DAMAGE or not Duel.IsDamageCalculated())
 end
 function c511001341.filter(c,e,tp)
 	return c:IsCanBeEffectTarget(e) and c:IsFaceup() and c:IsControler(tp)
@@ -68,7 +68,7 @@ function c511001341.activate(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 			e1:SetValue(g:GetFirst():GetAttack()/2)
-			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_BATTLE)
+			e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE)
 			g:GetFirst():RegisterEffect(e1)
 			if Duel.SelectYesNo(tp,aux.Stringid(17313545,0)) then
 				Duel.CalculateDamage(tc,g:GetFirst())

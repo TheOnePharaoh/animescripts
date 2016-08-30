@@ -73,7 +73,7 @@ function c810000007.ddop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.DiscardDeck(1-tp,1,REASON_EFFECT)
 end
 function c810000007.flipfilter(c)
-	return c:IsPosition(POS_FACEDOWN_DEFENCE)
+	return c:IsPosition(POS_FACEDOWN_DEFENSE)
 end
 function c810000007.fliptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:GetLocation()==LOCATION_MZONE and chkc:IsFacedown() and chkc:IsControler(1-tp) end

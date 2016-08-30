@@ -90,13 +90,13 @@ function c511000246.dmgop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Damage(p,d,REASON_EFFECT)
 end
 function c511000246.protectcon(e)
-	return e:GetHandler():IsDefencePos()
+	return e:GetHandler():IsDefensePos()
 end
 function c511000246.protecttg(e,c)
 	return c~=e:GetHandler()
 end
 function c511000246.nodmgcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousPosition(POS_FACEUP_DEFENCE) and e:GetHandler():IsReason(REASON_DESTROY)
+	return e:GetHandler():IsPreviousPosition(POS_FACEUP_DEFENSE) and e:GetHandler():IsReason(REASON_DESTROY)
 end
 function c511000246.nodmgop(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())

@@ -37,7 +37,7 @@ function c100000580.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
 end
 function c100000580.filter(c)
-	return c:IsDestructable() and c:IsPosition(POS_DEFENCE)
+	return c:IsDestructable() and c:IsPosition(POS_DEFENSE)
 end
 function c100000580.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100000580.filter,tp,0,LOCATION_MZONE,1,nil) end

@@ -63,12 +63,12 @@ function c511001410.refcon(e,re,val,r,rp,rc)
 end
 function c511001410.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return c:GetDefence()>=1000 end
+	if chk==0 then return c:GetDefense()>=1000 end
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_COPY_INHERIT)
 	e1:SetReset(RESET_EVENT+0x1ef0000)
-	e1:SetCode(EFFECT_UPDATE_DEFENCE)
+	e1:SetCode(EFFECT_UPDATE_DEFENSE)
 	e1:SetValue(-1000)
 	c:RegisterEffect(e1)
 	return true

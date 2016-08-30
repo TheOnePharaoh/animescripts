@@ -23,7 +23,7 @@ function c511000658.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,c511000658.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.HintSelection(g)
-		local def=g:GetFirst():GetDefence()
+		local def=g:GetFirst():GetDefense()
 		if Duel.Destroy(g,REASON_EFFECT)>0 then
 			Duel.Recover(tp,def,REASON_EFFECT)
 			Duel.Recover(1-tp,def,REASON_EFFECT)
