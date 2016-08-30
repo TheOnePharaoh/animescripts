@@ -13,7 +13,8 @@ function c511002637.cfilter(c)
 	return c:IsSetCard(0x21a) or c:IsCode(82382815)
 end
 function c511002637.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE and Duel.IsExistingMatchingCard(c511002637.cfilter,tp,LOCATION_GRAVE,0,2,nil)
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE 
+		and Duel.IsExistingMatchingCard(c511002637.cfilter,tp,LOCATION_GRAVE,0,2,nil)
 end
 function c511002637.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return true end

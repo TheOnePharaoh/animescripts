@@ -11,7 +11,7 @@ function c511002957.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002957.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE and not e:GetHandler():IsStatus(STATUS_CHAINING) 
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE and not e:GetHandler():IsStatus(STATUS_CHAINING) 
 		and Duel.GetTurnCount()==e:GetHandler():GetTurnID() and not e:GetHandler():IsReason(REASON_RETURN)
 end
 function c511002957.operation(e,tp,eg,ep,ev,re,r,rp)
