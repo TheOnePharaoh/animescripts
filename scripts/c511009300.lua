@@ -2,7 +2,7 @@
 function c511009300.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,77642288,aux.FilterBoolFunction(Card.IsFusionSetCard,0x19),2,true,true)
+	aux.AddFusionProcCodeFun(c,7573135,aux.FilterBoolFunction(Card.IsFusionSetCard,0x19),2,true,true)
 	--spsummon condition
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -58,7 +58,7 @@ function c511009300.splimit(e,se,sp,st)
 	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
 end
 function c511009300.spfilter1(c,tp)
-	return c:IsFusionCode(77642288) and c:IsAbleToDeckOrExtraAsCost() and c:IsCanBeFusionMaterial(nil,true)
+	return c:IsFusionCode(7573135) and c:IsAbleToDeckOrExtraAsCost() and c:IsCanBeFusionMaterial(nil,true)
 		and Duel.IsExistingMatchingCard(c511009300.spfilter2,tp,LOCATION_MZONE,0,2,c)
 end
 function c511009300.spfilter2(c)
@@ -109,7 +109,7 @@ function c511009300.hspop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EVENT_DAMAGE_STEP_END)
 		e1:SetCountLimit(1)
 		e1:SetLabelObject(tc)
-		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE)
+		e1:SetReset(RESET_EVENT+0x1fe0000)
 		e1:SetCondition(c511009300.retcon)
 		e1:SetOperation(c511009300.retop)
 		Duel.RegisterEffect(e1,tp)
