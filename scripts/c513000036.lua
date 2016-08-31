@@ -98,9 +98,9 @@ function c513000036.disop(e,tp,eg,ep,ev,re,r,rp)
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_SINGLE)
 		e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e2:SetCode(EFFECT_SET_BASE_DEFENCE)
+		e2:SetCode(EFFECT_SET_BASE_DEFENSE)
 		e2:SetReset(RESET_EVENT+0x1fe0000)
-		e2:SetValue(c:GetBaseDefence()/2)
+		e2:SetValue(c:GetBaseDefense()/2)
 		c:RegisterEffect(e2)
 	end
 end

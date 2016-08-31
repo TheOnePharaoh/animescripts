@@ -1,7 +1,7 @@
 --Total Defense Shogun (DM)
 --Scripted by edo9300
 function c511000560.initial_effect(c)
-	--to defence
+	--to defense
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(75372290,0))
 	e1:SetCategory(CATEGORY_POSITION)
@@ -16,7 +16,7 @@ function c511000560.initial_effect(c)
 	--
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_DEFENCE_ATTACK)
+	e3:SetCode(EFFECT_DEFENSE_ATTACK)
 	c:RegisterEffect(e3)
 	--destroy
 	local e4=Effect.CreateEffect(c)
@@ -53,7 +53,7 @@ end
 function c511000560.posop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsAttackPos() and c:IsRelateToEffect(e) then
-		Duel.ChangePosition(c,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 	end
 end
 function c511000560.descost(e,tp,eg,ep,ev,re,r,rp,chk)

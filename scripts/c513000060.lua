@@ -7,6 +7,7 @@ function c513000060.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_IMMUNE_EFFECT)
+	e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(LOCATION_ONFIELD,0)
 	e1:SetValue(c513000060.efilter)
@@ -46,7 +47,7 @@ function c513000060.initial_effect(c)
 end
 c513000060.xyz_number=39
 function c513000060.efilter(e,re)
-	return e:GetHandlerPlayer()~=re:GetHandlerPlayer()
+	return re:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
 function c513000060.atkcon(e)
 	local ph=Duel.GetCurrentPhase()

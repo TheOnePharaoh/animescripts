@@ -35,7 +35,7 @@ function c513000038.initial_effect(c)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetTargetRange(0,1)
 	e4:SetTarget(c513000038.sumlimit)
-	c:RegisterEffect(e3)
+	c:RegisterEffect(e4)
 end
 function c513000038.con(e)
 	return Duel.GetCurrentPhase()~=PHASE_DRAW
