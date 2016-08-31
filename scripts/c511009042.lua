@@ -12,7 +12,7 @@ function c511009042.initial_effect(c)
 	--Atk
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_EQUIP)
-	e2:SetCode(EFFECT_UPDATE_DEFENCE)
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
 	e2:SetValue(1200)
 	c:RegisterEffect(e2)
 	--Indes

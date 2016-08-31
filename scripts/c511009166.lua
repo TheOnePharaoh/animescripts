@@ -215,7 +215,7 @@ end
 function c511009166.desop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.Destroy(e:GetHandler(),REASON_EFFECT) then
 		local g=Duel.GetMatchingGroup(Card.IsPosition,tp,0,LOCATION_MZONE,nil,POS_FACEUP_ATTACK)
-		Duel.ChangePosition(g,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(g,POS_FACEUP_DEFENSE)
 	end
 end
 
