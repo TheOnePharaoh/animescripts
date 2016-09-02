@@ -16,7 +16,7 @@ function c511000422.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	return true
 end
 function c511000422.cfilter(c,e,tp)
-	return c:GetTextDefence()>0 and Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,c)
+	return c:GetTextDefense()>0 and Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,c)
 end
 function c511000422.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() end
@@ -29,7 +29,7 @@ function c511000422.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,c511000422.cfilter,tp,LOCATION_MZONE,0,1,1,nil,e,tp)
 	Duel.Release(g,REASON_COST)
-	Duel.SetTargetParam(g:GetFirst():GetTextDefence())
+	Duel.SetTargetParam(g:GetFirst():GetTextDefense())
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
 end

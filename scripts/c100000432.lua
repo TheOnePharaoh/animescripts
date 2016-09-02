@@ -30,8 +30,7 @@ function c100000432.condition(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetTurnPlayer()==tp
 end
 function c100000432.ctop(e,tp,eg,ep,ev,re,r,rp)
-	local sg=Duel.GetMatchingGroupCount(Card.IsPosition,tp,LOCATION_MZONE,LOCATION_MZONE,nil,POS_FACEUP_DEFENCE)
-	if sg==0 then return end
+	local sg=Duel.GetMatchingGroupCount(Card.IsPosition,tp,LOCATION_MZONE,LOCATION_MZONE,nil,POS_FACEUP_DEFENSE)
 	e:GetHandler():AddCounter(0x94,sg)
 end
 function c100000432.cost(e,tp,eg,ep,ev,re,r,rp,chk)

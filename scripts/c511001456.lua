@@ -42,7 +42,7 @@ function c511001456.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_STANDBY then
 		e3:SetCondition(c511001456.damcon1)
 		e3:SetLabel(Duel.GetTurnCount())
-		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_STANDBY+RESET_SELF_TURN,2)
+		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN,2)
 	else
 		e3:SetCondition(c511001456.damcon2)
 		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN)

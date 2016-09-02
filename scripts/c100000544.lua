@@ -29,7 +29,7 @@ function c100000544.spop(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.Release(g,REASON_COST)
 end
 function c100000544.filter(c)
-	return c:IsFaceup() and c:IsDestructable() and c:GetDefence()==0
+	return c:IsFaceup() and c:IsDestructable() and c:GetDefense()==0
 end
 function c100000544.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and c100000544.filter(chkc) end

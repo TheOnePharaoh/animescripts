@@ -1,5 +1,6 @@
 --Beast-borg Medal of the White Sword
 function c511001559.initial_effect(c)
+	c:EnableCounterPermit(0x103)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)

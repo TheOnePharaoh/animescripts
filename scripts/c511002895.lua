@@ -37,7 +37,7 @@ end
 function c511002895.setop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	Duel.MoveToField(c,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENCE,true)
+	Duel.MoveToField(c,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENSE,true)
 	Duel.RaiseEvent(c,EVENT_MSET,e,REASON_EFFECT,tp,tp,0)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)

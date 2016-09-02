@@ -33,7 +33,8 @@ end
 function c511000948.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local ph=Duel.GetCurrentPhase()
 	e:SetLabelObject(re)
-	return eg:IsExists(c511000948.cfilter,1,nil,re) and (ph==PHASE_BATTLE or (ph==PHASE_DAMAGE and not Duel.IsDamageCalculated()))
+	return eg:IsExists(c511000948.cfilter,1,nil,re) and 
+		((Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE) or (ph==PHASE_DAMAGE and not Duel.IsDamageCalculated()))
 end
 function c511000948.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

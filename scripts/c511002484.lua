@@ -22,7 +22,7 @@ function c511002484.initial_effect(c)
 	end
 end
 function c511002484.cfilter(c,tp)
-	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_DEFENCE) and c:GetPreviousControler()==tp
+	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_DEFENSE) and c:GetPreviousControler()==tp
 end
 function c511002484.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local ct1=eg:FilterCount(c511002484.cfilter,nil,tp)

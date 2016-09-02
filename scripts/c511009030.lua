@@ -27,7 +27,7 @@ function c511009030.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.IsPlayerCanSpecialSummonMonster(tp,511009031,0,0x4011,1,1,1,RACE_WARRIOR,ATTRIBUTE_DARK) then return end
 	for i=1,ct do
 		local token=Duel.CreateToken(tp,511009031)
-		Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		local de=Effect.CreateEffect(e:GetHandler())
 		de:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		de:SetRange(LOCATION_MZONE)

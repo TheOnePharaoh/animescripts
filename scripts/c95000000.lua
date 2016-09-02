@@ -31,12 +31,12 @@ function c95000000.initial_effect(c)
 	c:RegisterEffect(e4)
 	--cannot lose for draw
 	local e5=Effect.CreateEffect(c)
-	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_PLAYER_TARGET)
-	e5:SetCode(EFFECT_DRAW_COUNT)
 	e5:SetType(EFFECT_TYPE_FIELD)
+	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_PLAYER_TARGET)
+	e5:SetCode(EFFECT_CANNOT_LOSE_DECK)
 	e5:SetRange(LOCATION_REMOVED)
 	e5:SetTargetRange(1,0)
-	e5:SetValue(c95000000.dc)
+	e5:SetValue(1)
 	c:RegisterEffect(e5)
 	--rearrange
 	local e6=Effect.CreateEffect(c)
@@ -166,14 +166,6 @@ function c95000000.thop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then 
 		Duel.Hint(HINT_CARD,0,95000000)
 		Duel.SendtoHand(g,nil,REASON_RULE)
-	end
-end
-function c95000000.dc(e)
-	local tp=e:GetHandlerPlayer()
-	if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>0 then
-		return 1
-	else
-		return 0
 	end
 end
 function c95000000.ordercon(e,tp,eg,ep,ev,re,r,rp)

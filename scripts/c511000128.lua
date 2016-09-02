@@ -16,7 +16,7 @@ function c511000128.descon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsRelateToBattle() and c:GetBattleTarget():IsType(TYPE_MONSTER)
 end
 function c511000128.desfilter(c)
-	return c:IsDefencePos() and c:IsDestructable()
+	return c:IsDefensePos() and c:IsDestructable()
 end
 function c511000128.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

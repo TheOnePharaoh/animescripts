@@ -10,7 +10,7 @@ function c511002771.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002771.filter(c)
-	return not c:IsPosition(POS_FACEUP_DEFENCE) and c:IsControlerCanBeChanged()
+	return not c:IsPosition(POS_FACEUP_DEFENSE) and c:IsControlerCanBeChanged()
 end
 function c511002771.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511002771.filter,tp,0,LOCATION_MZONE,1,nil) end
@@ -24,7 +24,7 @@ function c511002771.sumop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.HintSelection(g)
-		if Duel.ChangePosition(tc,POS_FACEUP_DEFENCE)>0 then
+		if Duel.ChangePosition(tc,POS_FACEUP_DEFENSE)>0 then
 			if not Duel.GetControl(tc,tp) then
 				if not tc:IsImmuneToEffect(e) and tc:IsAbleToChangeControler() then
 					Duel.Destroy(tc,REASON_EFFECT)

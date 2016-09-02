@@ -13,7 +13,7 @@ function c511001007.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001007.con(e)
-	return e:GetHandler():IsDefencePos()
+	return e:GetHandler():IsDefensePos()
 end
 function c511001007.tglimit(e,c)
 	return c~=e:GetHandler()

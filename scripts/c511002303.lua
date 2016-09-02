@@ -11,7 +11,7 @@ end
 function c511002303.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tg=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	if chk==0 then return tg:IsControler(tp) and tg:IsOnField() and d and d:IsDefencePos() end
+	if chk==0 then return tg:IsControler(tp) and tg:IsOnField() and d and d:IsDefensePos() end
 	Duel.SetTargetCard(tg)
 end
 function c511002303.activate(e,tp,eg,ep,ev,re,r,rp)

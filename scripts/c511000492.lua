@@ -22,7 +22,7 @@ function c511000492.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c511000492.spfilter(c,e,tp)
-	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsType(TYPE_NORMAL) and c:IsAttackBelow(1000) and c:IsDefenceBelow(1000)
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsType(TYPE_NORMAL) and c:IsAttackBelow(1000) and c:IsDefenseBelow(1000)
 end
 function c511000492.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_DECK) and chkc:IsControler(tp) and c511000492.spfilter(chkc,e,tp) end

@@ -55,7 +55,7 @@ function c511002410.poscon(e)
 	return e:GetHandler():GetEquipTarget():IsPosition(POS_FACEUP_ATTACK)
 end
 function c511002410.value(e,c)
-	return e:GetHandler():GetEquipTarget():GetDefence()/2
+	return e:GetHandler():GetEquipTarget():GetDefense()/2
 end
 function c511002410.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

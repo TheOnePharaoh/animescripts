@@ -23,6 +23,6 @@ function c511009075.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511009075.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAttackPos,tp,0,LOCATION_MZONE,nil)
-	local dam=Duel.ChangePosition(g,POS_FACEUP_DEFENCE,POS_FACEDOWN_DEFENCE,0,0)
+	local dam=Duel.ChangePosition(g,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,0,0)
 	Duel.Damage(1-tp,dam*200,REASON_EFFECT)
 end

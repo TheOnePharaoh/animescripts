@@ -28,7 +28,7 @@ function c513000090.activate(e,tp,eg,ep,ev,re,r,rp)
 	if g:FilterCount(Card.IsLocation,nil,LOCATION_HAND)==2 then
 		local tc=g:GetFirst()
 		while tc do
-			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENCE,true)
+			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENSE,true)
 			tc:SetStatus(STATUS_SUMMON_TURN,true)
 			tc=g:GetNext()
 		end

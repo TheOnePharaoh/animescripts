@@ -104,15 +104,15 @@ function c513000052.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
 	if not bc or c:GetEffectCount(EFFECT_INDESTRUCTABLE_BATTLE)>0 then return false end
-	if bc==Duel.GetAttackTarget() and bc:IsDefencePos() then return false end
-	if c:IsAttackPos() and bc:IsDefencePos() and bc:GetEffectCount(EFFECT_DEFENCE_ATTACK)==1 
-		and c:GetAttack()<=bc:GetDefence() then return true end
-	if c:IsAttackPos() and (bc:IsAttackPos() or bc:IsHasEffect(EFFECT_DEFENCE_ATTACK)) 
+	if bc==Duel.GetAttackTarget() and bc:IsDefensePos() then return false end
+	if c:IsAttackPos() and bc:IsDefensePos() and bc:GetEffectCount(EFFECT_DEFENSE_ATTACK)==1 
+		and c:GetAttack()<=bc:GetDefense() then return true end
+	if c:IsAttackPos() and (bc:IsAttackPos() or bc:IsHasEffect(EFFECT_DEFENSE_ATTACK)) 
 		and c:GetAttack()<=bc:GetAttack() then return true end
-	if c:IsDefencePos() and bc:IsDefencePos() and bc:GetEffectCount(EFFECT_DEFENCE_ATTACK)==1 
-		and c:GetDefence()<bc:GetDefence() then return true end
-	if c:IsDefencePos() and (bc:IsAttackPos() or bc:IsHasEffect(EFFECT_DEFENCE_ATTACK)) 
-		and c:GetDefence()<bc:GetAttack() then return true end
+	if c:IsDefensePos() and bc:IsDefensePos() and bc:GetEffectCount(EFFECT_DEFENSE_ATTACK)==1 
+		and c:GetDefense()<bc:GetDefense() then return true end
+	if c:IsDefensePos() and (bc:IsAttackPos() or bc:IsHasEffect(EFFECT_DEFENSE_ATTACK)) 
+		and c:GetDefense()<bc:GetAttack() then return true end
 	return false
 end
 function c513000052.repfilter(c)

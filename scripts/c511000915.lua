@@ -24,7 +24,7 @@ function c511000915.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511000915.cfilter(c,tp)
 	return c:GetSummonPlayer()==1-tp 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,c:GetCode(),0,0x4011,c:GetAttack(),c:GetDefence(),c:GetLevel(),c:GetRace(),c:GetAttribute())
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,c:GetCode(),0,0x4011,c:GetAttack(),c:GetDefense(),c:GetLevel(),c:GetRace(),c:GetAttribute())
 end
 function c511000915.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511000915.cfilter,1,nil,tp)
@@ -40,7 +40,7 @@ function c511000915.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if not tc then return end
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	if not Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,0x4011,tc:GetAttack(),tc:GetDefence(),tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end	
+	if not Duel.IsPlayerCanSpecialSummonMonster(tp,tc:GetCode(),0,0x4011,tc:GetAttack(),tc:GetDefense(),tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end	
 	if g:GetCount()>1 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 		tc=g:Select(tp,1,1,nil):GetFirst()

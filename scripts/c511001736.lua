@@ -10,12 +10,12 @@ function c511001736.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001736.filter(c)
-	return c:IsPosition(POS_FACEUP_DEFENCE) and c:GetLevel()>0
+	return c:IsPosition(POS_FACEUP_DEFENSE) and c:GetLevel()>0
 end
 function c511001736.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c511001736.filter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(c511001736.filter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUPDEFENCE)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUPDEFENSE)
 	Duel.SelectTarget(tp,c511001736.filter,tp,LOCATION_MZONE,0,1,1,nil)
  end
 function c511001736.operation(e,tp,eg,ep,ev,re,r,rp)

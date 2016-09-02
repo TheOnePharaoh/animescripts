@@ -15,7 +15,7 @@ function c511002868.cfilter(c)
 	return bit.band(c:GetSummonType(),SUMMON_TYPE_SPECIAL)==SUMMON_TYPE_SPECIAL
 end
 function c511002868.xyzcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE 
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE  
 		and Duel.IsExistingMatchingCard(c511002868.cfilter,tp,0,LOCATION_MZONE,1,nil)
 end
 function c511002868.xyzfilter(c)

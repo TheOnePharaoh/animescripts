@@ -21,7 +21,7 @@ function c511001925.condition(e,tp,eg,ep,ev,re,r,rp)
 	return c511001925.check()
 end
 function c511001925.filter(c)
-	return c:IsPosition(POS_FACEUP_DEFENCE) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsDestructable()
+	return c:IsPosition(POS_FACEUP_DEFENSE) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsDestructable()
 end
 function c511001925.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511001925.filter,tp,0,LOCATION_MZONE,1,nil) end

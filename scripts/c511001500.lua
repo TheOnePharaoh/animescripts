@@ -22,7 +22,7 @@ end
 function c511001500.con(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local at=Duel.GetAttackTarget()
-	return at:IsDefencePos() and not Duel.IsExistingMatchingCard(c511001500.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,a:GetAttack())
+	return at:IsDefensePos() and not Duel.IsExistingMatchingCard(c511001500.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,a:GetAttack())
 end
 function c511001500.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,0,511001500)

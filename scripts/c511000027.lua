@@ -14,7 +14,7 @@ function c511000027.initial_effect(c)
 	e2:SetCode(EFFECT_SET_POSITION)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
-	e2:SetValue(POS_FACEUP_DEFENCE)
+	e2:SetValue(POS_FACEUP_DEFENSE)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
@@ -26,7 +26,7 @@ function c511000027.initial_effect(c)
 	--Double DEF
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetCode(EFFECT_SET_DEFENCE_FINAL)
+	e4:SetCode(EFFECT_SET_DEFENSE_FINAL)
 	e4:SetRange(LOCATION_SZONE)
 	e4:SetTargetRange(LOCATION_MZONE,0)
 	e4:SetTarget(c511000027.target)
@@ -37,8 +37,8 @@ function c511000027.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2
 end
 function c511000027.target(e,c)
-	return c:IsPosition(POS_FACEUP_DEFENCE)
+	return c:IsPosition(POS_FACEUP_DEFENSE)
 end
 function c511000027.defval(e,c)
-	return c:GetDefence()*2
+	return c:GetDefense()*2
 end
