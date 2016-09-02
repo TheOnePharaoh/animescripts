@@ -1,7 +1,7 @@
 --Name Erasure
 --  By Shad3
 
-local scard=c511005010
+local scard,s_id=c511005010,511005010
 
 function scard.initial_effect(c)
   --Activate
@@ -14,10 +14,14 @@ function scard.initial_effect(c)
   e2:SetType(EFFECT_TYPE_IGNITION)
   e2:SetRange(LOCATION_SZONE)
   e2:SetCategory(CATEGORY_HANDES+CATEGORY_DAMAGE)
+  e2:SetCondition(scard.cd)
   e2:SetTarget(scard.tg)
   e2:SetOperation(scard.op)
-  e2:SetCountLimit(1)
   c:RegisterEffect(e2)
+end
+
+function scard.tg(e,tp,eg,ep,ev,re,r,rp)
+  return Duel.GetFlagEffect(tp,s_id)==0
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -34,14 +38,15 @@ end
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
   if not e:GetHandler():IsRelateToEffect(e) then return end
   local g=Duel.GetMatchingGroup(Card.IsDiscardable,tp,0,LOCATION_HAND,nil)
-  local i=e:GetLabel()
-  Duel.ConfirmCards(tp,g)
-  local tg=g:Filter(scard.code_fil,nil,i)
+  -- Revision with OCG ruling
+  -- Duel.ConfirmCards(tp,g)
+  local tg=g:Filter(scard.code_fil,nil,e:GetLabel())
   if tg:GetCount()>0 then
     Duel.HintSelection(tg)
     Duel.SendtoGrave(tg,REASON_EFFECT+REASON_DISCARD)
   else
     Duel.Damage(tp,1000,REASON_EFFECT)
+    Duel.RegisterFlagEffect(tp,s_id,RESET_PHASE+PHASE_END,0,1)
   end
   Duel.ShuffleHand(1-tp)
 end
