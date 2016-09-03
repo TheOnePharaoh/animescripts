@@ -1,9 +1,17 @@
 --Line World
 --  By Shad3
 
-local self=c511005032
+local function getID()
+  local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
+  str=string.sub(str,1,string.len(str)-4)
+  local scard=_G[str]
+  local s_id=tonumber(string.sub(str,2))
+  return scard,s_id
+end
 
-function self.initial_effect(c)
+local scard,s_id=getID()
+
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -15,18 +23,19 @@ function self.initial_effect(c)
   e2:SetCode(EFFECT_UPDATE_ATTACK)
   e2:SetRange(LOCATION_FZONE)
   e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-  e2:SetValue(self.line_val)
+  e2:SetValue(scard.line_val)
   c:RegisterEffect(e2)
   local e3=Effect.CreateEffect(c)
   e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-  e3:SetCode(EVENT_DESTROYED)
+  e3:SetCode(EFFECT_SEND_REPLACE)
   e3:SetRange(LOCATION_FZONE)
-  e3:SetOperation(self.swapgrv_op)
+  e3:SetTarget(scard.tg)
+  e3:SetValue(scard.val)
   c:RegisterEffect(e3)
 end
 
-if not self.SetLineW then
-  self.setLineW={
+if not scard.SetLineW then
+  scard.setLineW={
     [41493640]=true,
     [32476434]=true,
     [75253697]=true,
@@ -34,45 +43,29 @@ if not self.SetLineW then
   }
 end
 
-function self.line_val(e,c)
-  if self.setLineW[c:GetCode()] then return 500 end
+function scard.line_val(e,c)
+  if scard.setLineW[c:GetCode()] then return 500 end
   return 0
 end
 
-function self.swapgrv_fil(c,p)
-  return c:IsLocation(LOCATION_GRAVE) and c:GetOwner()~=p
+function scard.fil(c)
+  return c:GetFlagEffect(s_id)==0 and bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer() and not c:IsType(TYPE_TOKEN)
 end
 
-function self.swapgrv_op(e,tp,eg,ep,ev,re,r,rp)
-  if not re then
-    Debug.Message(eg:GetCount())
-    local c=eg:GetFirst()
-    while c do
-      if not (c:IsLocation(LOCATION_GRAVE) and c:GetPreviousControler()~=c:GetOwner()) then
-        local np=1-c:GetPreviousControler()
-      --local g=eg:Filter(self.swapgrv_fil,nil,rp)
-      --if g:GetCount()==0 then return end
-        local dg=Duel.GetFieldGroup(np,LOCATION_DECK,0)
-        Duel.Remove(dg,POS_FACEDOWN,REASON_RULE+REASON_TEMPORARY)
-        Duel.SendtoDeck(Duel.GetFieldGroup(np,LOCATION_GRAVE,0),np,0,REASON_RULE)
-        Duel.SendtoDeck(c,np,0,REASON_RULE)
-        Duel.SwapDeckAndGrave(np)
-        Duel.DisableShuffleCheck()
-        Duel.SendtoDeck(dg,np,0,REASON_RULE)
-      end
-      c=eg:GetNext()
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return eg:IsExists(scard.fil,1,nil) end
+  local c=eg:GetFirst()
+  local ph=Duel.GetCurrentPhase()
+  while c do
+    if scard.fil(c) then
+      c:RegisterFlagEffect(s_id,RESET_EVENT+0x1be0000+RESET_PHASE+ph,0,0)
+      Duel.SendtoGrave(c,r,c:GetReasonPlayer())
     end
-  else
-    local np=re:GetHandler()
-    if np~=0 and np~=1 then np=np:GetOwner() end
-    local g=eg:Filter(self.swapgrv_fil,nil,np)
-    if g:GetCount()==0 then return end
-    local dg=Duel.GetFieldGroup(np,LOCATION_DECK,0)
-    Duel.Remove(dg,POS_FACEDOWN,REASON_RULE+REASON_TEMPORARY)
-    Duel.SendtoDeck(Duel.GetFieldGroup(np,LOCATION_GRAVE,0),np,0,REASON_RULE)
-    Duel.SendtoDeck(g,np,0,REASON_RULE)
-    Duel.SwapDeckAndGrave(np)
-    Duel.DisableShuffleCheck()
-    Duel.SendtoDeck(dg,np,0,REASON_RULE)
+    c=eg:GetNext()
   end
+  return true
+end
+
+function scard.val(e,c)
+  return false
 end

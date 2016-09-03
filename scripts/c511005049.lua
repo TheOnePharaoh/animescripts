@@ -1,16 +1,16 @@
 --Haunted Lance
 --  By Shad3
 
-local self=c511005049
-function self.initial_effect(c)
+local scard=c511005049
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetProperty(EVENT_FLAG_CARD_TARGET)
   e1:SetCategory(CATEGORY_EQUIP)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
   --Equip limit
   local e2=Effect.CreateEffect(c)
@@ -32,7 +32,7 @@ function self.initial_effect(c)
   c:RegisterEffect(e4)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chkc then return chkc:GetLocation()==LOCATION_MZONE and chkc:IsFaceup() end
   if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
@@ -40,7 +40,7 @@ function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   local tc=Duel.GetFirstTarget()
   if tc:IsRelateToEffect(e) and tc:IsFaceup() and c:IsRelateToEffect(e) then

@@ -15,10 +15,10 @@ function c511001161.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end
 function c511001161.filter(c)
-	return c:IsFaceup() and c:GetDefence()>0
+	return c:IsFaceup() and c:GetDefense()>0
 end
 function c511001161.damfilter(c)
-	return c:IsFaceup() and c:GetDefence()==0
+	return c:IsFaceup() and c:GetDefense()==0
 end
 function c511001161.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511001161.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
@@ -31,7 +31,7 @@ function c511001161.activate(e,tp,eg,ep,ev,re,r,rp)
 	while tc do
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_SET_DEFENCE_FINAL)
+		e1:SetCode(EFFECT_SET_DEFENSE_FINAL)
 		e1:SetValue(0)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		tc:RegisterEffect(e1)

@@ -4,21 +4,21 @@ Notes
 SetCode ("King" archetype) subject to change. Or maybe change to alt method.
 ]]
 
-local self=c511005002
+local scard=c511005002
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_ATTACK_ANNOUNCE)
   e1:SetCategory(CATEGORY_SPSUMMON)
-  e1:SetCondition(self.cd)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetCondition(scard.cd)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-if not self.Set_King then
-  self.Set_King={ --replace when "King" archetype available
+if not scard.Set_King then
+  scard.Set_King={ --replace when "King" archetype available
 [70406920]=true,
 [46700124]=true,
 [89222931]=true,
@@ -156,23 +156,23 @@ end
 
 --Main effect
 
-function self.cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.cd(e,tp,eg,ep,ev,re,r,rp)
   local c=Duel.GetAttackTarget()
-  return c and self.Set_King[c:GetCode()] --and c:IsFaceup()
+  return c and scard.Set_King[c:GetCode()] --and c:IsFaceup()
 end
 
-function self.fil(c,e,tp)
-  return self.Set_King[c:GetCode()] and c:GetLevel()<=4 and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_ATTACK)
+function scard.fil(c,e,tp)
+  return scard.Set_King[c:GetCode()] and c:GetLevel()<=4 and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_ATTACK)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>=3 and Duel.IsExistingMatchingCard(self.fil,tp,LOCATION_DECK,0,3,nil,e,tp) end
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>=3 and Duel.IsExistingMatchingCard(scard.fil,tp,LOCATION_DECK,0,3,nil,e,tp) end
   Duel.SetOperationInfo(0,CATEGORY_SPSUMMON,nil,3,tp,LOCATION_DECK)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   if Duel.GetLocationCount(tp,LOCATION_MZONE)<3 then return end
-  local g=Duel.GetMatchingGroup(self.fil,tp,LOCATION_DECK,0,nil,e,tp)
+  local g=Duel.GetMatchingGroup(scard.fil,tp,LOCATION_DECK,0,nil,e,tp)
   if g:GetCount()<3 then return end
   local c=e:GetHandler()
   local lbl=c:GetFieldID()
@@ -200,27 +200,27 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   e2:SetCountLimit(1)
   e2:SetLabel(lbl)
   e2:SetLabelObject(sg)
-  e2:SetCondition(self.des_cd)
-  e2:SetOperation(self.des_op)
+  e2:SetCondition(scard.des_cd)
+  e2:SetOperation(scard.des_op)
   Duel.RegisterEffect(e2,tp)
 end
 
 --End Phase Destruction effect
 
-function self.des_fil(c,lbl)
+function scard.des_fil(c,lbl)
   return lbl==c:GetFlagEffectLabel(511005002)
 end
 
-function self.des_cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.des_cd(e,tp,eg,ep,ev,re,r,rp)
   local g=e:GetLabelObject()
-  if g:IsExists(self.des_fil,1,nil,e:GetLabel()) then return true end
+  if g:IsExists(scard.des_fil,1,nil,e:GetLabel()) then return true end
   g:DeleteGroup()
   e:Reset()
   return false
 end
 
-function self.des_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.des_op(e,tp,eg,ep,ev,re,r,rp)
   local g=e:GetLabelObject()
-  local tg=g:Filter(self.des_fil,nil,e:GetLabel())
+  local tg=g:Filter(scard.des_fil,nil,e:GetLabel())
   Duel.Destroy(tg,REASON_EFFECT)
 end

@@ -13,7 +13,7 @@ function c511002862.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsReason(REASON_BATTLE) and c:IsPosition(POS_FACEUP_ATTACK) end
 	if Duel.SelectYesNo(tp,aux.Stringid(423585,0)) then
-		Duel.ChangePosition(c,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 		return true
 	else return false end
 end

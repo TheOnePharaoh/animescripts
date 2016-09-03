@@ -45,14 +45,14 @@ end
 function c511000587.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(c511000587.filter,tp,LOCATION_MZONE,0,nil)
 	if g:GetCount()>0 then
-		Duel.ChangePosition(g,POS_FACEDOWN_DEFENCE)
+		Duel.ChangePosition(g,POS_FACEDOWN_DEFENSE)
 	end
 end
 function c511000587.con(e,tp,eg,ep,ev,re,r,rp)
 	return tp~=Duel.GetTurnPlayer()
 end
 function c511000587.filter2(c)
-	return c:IsFacedown() and c:IsDefencePos()
+	return c:IsFacedown() and c:IsDefensePos()
 end
 function c511000587.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511000587.filter2,tp,LOCATION_MZONE,0,1,nil) end

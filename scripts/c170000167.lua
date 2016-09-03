@@ -74,11 +74,11 @@ end
 function c170000167.statcon2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if bc==nil then return false end
-	return bc:GetPosition()==POS_FACEUP_DEFENCE or bc:GetPosition()==POS_FACEDOWN_DEFENCE
+	return bc:GetPosition()==POS_FACEUP_DEFENSE or bc:GetPosition()==POS_FACEDOWN_DEFENSE
 end
 function c170000167.statop2(e,tp,eg,ep,ev,re,r,rp)
 	local bc=e:GetHandler():GetBattleTarget()
-	local def=bc:GetDefence()
+	local def=bc:GetDefense()
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)

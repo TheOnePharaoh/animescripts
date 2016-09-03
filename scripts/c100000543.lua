@@ -56,10 +56,10 @@ function c100000543.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c100000543.operation(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetMatchingGroup(c100000543.filter,tp,0,LOCATION_MZONE,nil)
-	Duel.ChangePosition(sg,POS_FACEUP_DEFENCE,0,0,0)
+	Duel.ChangePosition(sg,POS_FACEUP_DEFENSE,0,0,0)
 end
 function c100000543.deffilter(c)
-	return c:IsPreviousPosition(POS_FACEUP_ATTACK) and c:IsPosition(POS_FACEUP_DEFENCE)
+	return c:IsPreviousPosition(POS_FACEUP_ATTACK) and c:IsPosition(POS_FACEUP_DEFENSE)
 end
 function c100000543.defcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c100000543.deffilter,1,e:GetHandler())
@@ -68,10 +68,10 @@ function c100000543.defop(e,tp,eg,ep,ev,re,r,rp)
 	local g=eg:Filter(c100000543.deffilter,e:GetHandler())
 	local tc=g:GetFirst()
 	while tc do
-		if tc:GetDefence()>0 then
+		if tc:GetDefense()>0 then
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_SET_DEFENCE_FINAL)
+			e1:SetCode(EFFECT_SET_DEFENSE_FINAL)
 			e1:SetValue(0)
 			e1:SetReset(RESET_EVENT+0x1fe0000)
 			tc:RegisterEffect(e1)

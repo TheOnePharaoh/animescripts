@@ -32,7 +32,7 @@ function c511000605.damop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_STANDBY then
 		e1:SetCondition(c511000605.skipcon)
 		e1:SetLabel(Duel.GetTurnCount())
-		e1:SetReset(RESET_PHASE+RESET_STANDBY+RESET_SELF_TURN,2)
+		e1:SetReset(RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN,2)
 	else
 		e1:SetReset(RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN)
 	end

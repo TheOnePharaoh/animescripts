@@ -20,6 +20,7 @@ function c511002051.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc then
 		Duel.HintSelection(g)
-		Duel.ChangeAttackTarget(tc)
+		--Duel.ChangeAttackTarget(tc)
+		Duel.CalculateDamage(Duel.GetAttacker(),tc)
 	end
 end

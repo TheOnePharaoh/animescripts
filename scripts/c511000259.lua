@@ -29,7 +29,7 @@ function c511000259.initial_effect(c)
 	e4:SetValue(c511000259.atkval)
 	c:RegisterEffect(e4)
 	local e5=e4:Clone()
-	e5:SetCode(EFFECT_SET_DEFENCE_FINAL)
+	e5:SetCode(EFFECT_SET_DEFENSE_FINAL)
 	e5:SetValue(c511000259.defval)
 	c:RegisterEffect(e5)
 	--Summon Cannot be Negated
@@ -101,7 +101,7 @@ function c511000259.atkval(e,c)
 	return c:GetAttack()/2
 end
 function c511000259.defval(e,c)
-	return c:GetDefence()/2
+	return c:GetDefense()/2
 end
 function c511000259.sumsuc(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SetChainLimitTillChainEnd(c511000259.chainlm)
@@ -129,8 +129,8 @@ function c511000259.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_SET_DEFENCE_FINAL)
-	e2:SetValue(c:GetBaseDefence())
+	e2:SetCode(EFFECT_SET_DEFENSE_FINAL)
+	e2:SetValue(c:GetBaseDefense())
 	e2:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e2)
 	local eqg=c:GetEquipGroup()

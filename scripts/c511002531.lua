@@ -42,10 +42,10 @@ function c511002531.activate(e,tp,eg,ep,ev,re,r,rp)
 	local oc=g:GetFirst()
 	if oc and oc==sc then oc=g:GetNext() end
 	if sc and sc:IsRelateToEffect(e) then
-		Duel.SpecialSummonStep(sc,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(sc,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
 	if oc and oc:IsRelateToEffect(e) then
-		Duel.SpecialSummonStep(oc,0,1-tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(oc,0,1-tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 	end
 	Duel.SpecialSummonComplete()
 end

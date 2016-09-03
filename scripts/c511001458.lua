@@ -30,7 +30,7 @@ function c511001458.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_POSCHANGE)
 	local tc=g:Select(tp,1,1,nil)
 	Duel.SetTargetCard(tc)
-	if not tc:GetFirst():IsPosition(POS_FACEUP_DEFENCE) then
+	if not tc:GetFirst():IsPosition(POS_FACEUP_DEFENSE) then
 		Duel.SetOperationInfo(0,CATEGORY_POSITION,tc,1,0,0)
 	end
 end
@@ -38,7 +38,7 @@ function c511001458.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and c:IsRelateToEffect(e) then
-		Duel.ChangePosition(tc,POS_FACEUP_DEFENCE,POS_FACEUP_DEFENCE,POS_FACEUP_DEFENCE,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE)
 		c:SetCardTarget(tc)
 	end
 end

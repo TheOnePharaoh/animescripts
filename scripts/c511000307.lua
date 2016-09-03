@@ -16,7 +16,7 @@ function c511000307.initial_effect(c)
 	e2:SetCondition(c511000307.condtion)
 	e2:SetValue(c511000307.atkval)
 	c:RegisterEffect(e2)
-	--to defence
+	--to defense
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_PHASE+PHASE_BATTLE)
@@ -47,7 +47,7 @@ end
 function c511000307.posop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsAttackPos() then
-		Duel.ChangePosition(c,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(c,POS_FACEUP_DEFENSE)
 	end
 end
 function c511000307.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)

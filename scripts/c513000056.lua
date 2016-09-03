@@ -166,15 +166,15 @@ function c513000056.condition(e,tp,eg,ep,ev,re,r,rp)
 	if not d then return false end
 	if d:IsControler(1-tp) then a,d=d,a end
 	if d:IsControler(1-tp) or not d:IsCode(24696097) or d:GetEffectCount(EFFECT_INDESTRUCTABLE_BATTLE)>0 then return false end
-	if d==Duel.GetAttackTarget() and d:IsDefencePos() then return false end
-	if d:IsAttackPos() and a:IsDefencePos() and a:GetEffectCount(EFFECT_DEFENCE_ATTACK)==1 
-		and d:GetAttack()<=a:GetDefence() then return true end
-	if d:IsAttackPos() and (a:IsAttackPos() or a:IsHasEffect(EFFECT_DEFENCE_ATTACK)) 
+	if d==Duel.GetAttackTarget() and d:IsDefensePos() then return false end
+	if d:IsAttackPos() and a:IsDefensePos() and a:GetEffectCount(EFFECT_DEFENSE_ATTACK)==1 
+		and d:GetAttack()<=a:GetDefense() then return true end
+	if d:IsAttackPos() and (a:IsAttackPos() or a:IsHasEffect(EFFECT_DEFENSE_ATTACK)) 
 		and d:GetAttack()<=a:GetAttack() then return true end
-	if d:IsDefencePos() and a:IsDefencePos() and a:GetEffectCount(EFFECT_DEFENCE_ATTACK)==1 
-		and d:GetDefence()<a:GetDefence() then return true end
-	if d:IsDefencePos() and (a:IsAttackPos() or a:IsHasEffect(EFFECT_DEFENCE_ATTACK)) 
-		and d:GetDefence()<a:GetAttack() then return true end
+	if d:IsDefensePos() and a:IsDefensePos() and a:GetEffectCount(EFFECT_DEFENSE_ATTACK)==1 
+		and d:GetDefense()<a:GetDefense() then return true end
+	if d:IsDefensePos() and (a:IsAttackPos() or a:IsHasEffect(EFFECT_DEFENSE_ATTACK)) 
+		and d:GetDefense()<a:GetAttack() then return true end
 	return false
 end
 function c513000056.target(e,tp,eg,ep,ev,re,r,rp,chk)

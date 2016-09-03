@@ -11,7 +11,7 @@ end
 function c511001691.condition(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	return eg:GetCount()==1 and tc:IsType(TYPE_XYZ) and tc:IsFaceup() 
-		and tc:GetBattleTarget():IsDefenceAbove(2000)
+		and tc:GetBattleTarget():IsDefenseAbove(2000)
 end
 function c511001691.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()

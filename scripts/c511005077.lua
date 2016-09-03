@@ -2,16 +2,16 @@
 --パサー・チェンジ・バリア
 --  By Shad3
 
-local self=c511005077
+local scard=c511005077
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
   --Negate, Decrease ATK
   local e2=Effect.CreateEffect(c)
@@ -19,8 +19,8 @@ function self.initial_effect(c)
   e2:SetCode(EVENT_CHAIN_ACTIVATING)
   e2:SetRange(LOCATION_SZONE)
   e2:SetCategory(CATEGORY_DISABLE)
-  e2:SetCondition(self.neg_cd)
-  e2:SetOperation(self.neg_op)
+  e2:SetCondition(scard.neg_cd)
+  e2:SetOperation(scard.neg_op)
   c:RegisterEffect(e2)
   e1:SetLabelObject(e2)
   --Self Destruct
@@ -28,17 +28,17 @@ function self.initial_effect(c)
   e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
   e3:SetCode(EVENT_PHASE+PHASE_END)
   e3:SetRange(LOCATION_SZONE)
-  e3:SetOperation(self.des_op)
+  e3:SetOperation(scard.des_op)
   c:RegisterEffect(e3)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chkc then return chkc:IsOnField() and chkc:IsFaceup() end
   if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
   Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   local tc=Duel.GetFirstTarget()
   if not (c:IsRelateToEffect(e) and tc:IsRelateToEffect(e)) then return end
@@ -53,18 +53,18 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   e:GetLabelObject():SetLabelObject(e1)
 end
 
-function self.neg_cd(e,tp,eg,ep,ev,re,r,rp)
+function scard.neg_cd(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
   local tc=e:GetHandler():GetFirstCardTarget()
   return re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) and g:IsContains(tc)
 end
 
-function self.neg_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.neg_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.NegateEffect(ev)
   local ne=e:GetLabelObject()
   ne:SetLabel(ne:GetLabel()-600)
 end
 
-function self.des_op(e,tp,eg,ep,ev,re,r,rp)
+function scard.des_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end

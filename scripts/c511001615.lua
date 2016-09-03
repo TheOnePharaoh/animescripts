@@ -30,7 +30,7 @@ function c511001615.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local d=Duel.GetAttackTarget()
 	if not d then return false end
 	return Duel.GetTurnPlayer()==tp and Duel.GetBattleDamage(1-tp)>0 and a:IsType(TYPE_XYZ) 
-		and a:IsHasEffect(EFFECT_PIERCE) and d:IsDefencePos()
+		and a:IsHasEffect(EFFECT_PIERCE) and d:IsDefensePos()
 end
 function c511001615.damop(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()

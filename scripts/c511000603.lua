@@ -22,7 +22,7 @@ function c511000603.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c511000603.cfilter(c,tp)
-	return c:IsControler(tp) and c:IsPreviousPosition(POS_ATTACK) and c:IsPosition(POS_DEFENCE)
+	return c:IsControler(tp) and c:IsPreviousPosition(POS_ATTACK) and c:IsPosition(POS_DEFENSE)
 end
 function c511000603.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511000603.cfilter,1,nil,1-tp)

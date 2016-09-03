@@ -1,24 +1,24 @@
 --Magic Blade - Ice Sword
 --  By Shad3
 
-local self=c511005029
+local scard=c511005029
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Act
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetProperty(EVENT_FLAG_CARD_TARGET)
   e1:SetCategory(CATEGORY_EQUIP)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
   --Equip limit
   local e2=Effect.CreateEffect(c)
   e2:SetType(EFFECT_TYPE_SINGLE)
   e2:SetCode(EFFECT_EQUIP_LIMIT)
   e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-  e2:SetValue(self.eq_lmt)
+  e2:SetValue(scard.eq_lmt)
   c:RegisterEffect(e2)
   --Inc ATK
   local e3=Effect.CreateEffect(c)
@@ -28,19 +28,19 @@ function self.initial_effect(c)
   c:RegisterEffect(e3)
 end
 
-function self.fil(c)
+function scard.fil(c)
   return c:IsFaceup() and c:IsRace(RACE_WARRIOR)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-  if chkc then return chkc:GetLocation()==LOCATION_MZONE and self.fil(chkc) end
-  if chk==0 then return Duel.IsExistingTarget(self.fil,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+  if chkc then return chkc:GetLocation()==LOCATION_MZONE and scard.fil(chkc) end
+  if chk==0 then return Duel.IsExistingTarget(scard.fil,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
   Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-  Duel.SelectTarget(tp,self.fil,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+  Duel.SelectTarget(tp,scard.fil,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
   Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   local tc=Duel.GetFirstTarget()
   if tc:IsRelateToEffect(e) and tc:IsFaceup() and c:IsRelateToEffect(e) then
@@ -48,6 +48,6 @@ function self.op(e,tp,eg,ep,ev,re,r,rp)
   end
 end
 
-function self.eq_lmt(e,c)
+function scard.eq_lmt(e,c)
   return c:IsRace(RACE_WARRIOR)
 end

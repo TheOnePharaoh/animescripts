@@ -32,8 +32,8 @@ function c511002019.activate(e,tp,eg,ep,ev,re,r,rp)
 		local tc2=sg2:GetFirst()
 		sg1:Merge(sg2)
 		Duel.HintSelection(sg1)
-		Duel.SpecialSummonStep(tc1,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
-		Duel.SpecialSummonStep(tc2,0,1-tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(tc1,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
+		Duel.SpecialSummonStep(tc2,0,1-tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 		Duel.SpecialSummonComplete()
 	end
 end

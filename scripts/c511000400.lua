@@ -22,6 +22,7 @@ end
 function c511000400.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
-		Duel.ChangeAttackTarget(tc)
+		--Duel.ChangeAttackTarget(tc)
+		Duel.CalculateDamage(Duel.GetAttacker(),tc)
 	end
 end

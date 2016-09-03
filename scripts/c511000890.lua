@@ -12,7 +12,7 @@ function c511000890.initial_effect(c)
 end
 function c511000890.filter(c,e,tp)
 	return c:IsFaceup() and c:IsLevelBelow(3) and c:IsRace(RACE_INSECT)
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,511000891,0,0x4011,c:GetBaseAttack(),c:GetBaseDefence(),c:GetOriginalLevel(),c:GetOriginalRace(),c:GetOriginalAttribute())
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,511000891,0,0x4011,c:GetBaseAttack(),c:GetBaseDefense(),c:GetOriginalLevel(),c:GetOriginalRace(),c:GetOriginalAttribute())
 end
 function c511000890.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and c511000890.filter(chkc,e,tp) end
@@ -25,7 +25,7 @@ function c511000890.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511000890.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,511000891,0,0x4011,tc:GetBaseAttack(),tc:GetBaseDefence(),
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,511000891,0,0x4011,tc:GetBaseAttack(),tc:GetBaseDefense(),
 			tc:GetOriginalLevel(),tc:GetOriginalRace(),tc:GetOriginalAttribute()) then return end
 	if not tc:IsRelateToEffect(e) or tc:IsFacedown() then return end
 	local token=Duel.CreateToken(tp,511000891)
@@ -36,8 +36,8 @@ function c511000890.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_EVENT+0xfe0000)
 	token:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetCode(EFFECT_SET_BASE_DEFENCE)
-	e2:SetValue(tc:GetBaseDefence())
+	e2:SetCode(EFFECT_SET_BASE_DEFENSE)
+	e2:SetValue(tc:GetBaseDefense())
 	token:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetCode(EFFECT_CHANGE_LEVEL)

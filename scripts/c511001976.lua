@@ -29,8 +29,8 @@ function c511001976.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e)
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,511001976,0,0x11,0,800,4,RACE_WARRIOR,ATTRIBUTE_DARK) then
-		c:AddTrapMonsterAttribute(TYPE_NORMAL,ATTRIBUTE_DARK,RACE_WARRIOR,4,0,800)
-		Duel.SpecialSummon(c,0,tp,tp,true,false,POS_FACEUP_DEFENCE)
-		c:TrapMonsterBlock()
+		c:AddMonsterAttribute(TYPE_NORMAL+TYPE_TRAP)
+		Duel.SpecialSummon(c,0,tp,tp,true,false,POS_FACEUP_DEFENSE)
+		c:AddMonsterAttributeComplete()
 	end
 end

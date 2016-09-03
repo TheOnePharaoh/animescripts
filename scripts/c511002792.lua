@@ -31,6 +31,6 @@ function c511002792.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,c511002792.filter,tp,LOCATION_MZONE,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.HintSelection(g)
-		Duel.ChangePosition(g,0,POS_FACEUP_ATTACK,0,POS_FACEUP_DEFENCE)
+		Duel.ChangePosition(g,0,POS_FACEUP_ATTACK,0,POS_FACEUP_DEFENSE)
 	end
 end

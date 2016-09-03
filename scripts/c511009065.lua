@@ -27,7 +27,7 @@ function c511009065.initial_effect(c)
 	--defence attack
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_DEFENCE_ATTACK)
+	e3:SetCode(EFFECT_DEFENSE_ATTACK)
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
 end

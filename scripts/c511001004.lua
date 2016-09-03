@@ -55,35 +55,15 @@ function c511001004.initial_effect(c)
 	local e8=e6:Clone()
 	e8:SetCode(EVENT_DAMAGE_STEP_END)
 	c:RegisterEffect(e8)
-	--lp check
+	--
 	local e9=Effect.CreateEffect(c)
-	e9:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e9:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e9:SetCode(EVENT_ADJUST)
+	e9:SetType(EFFECT_TYPE_FIELD)
+	e9:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e9:SetCode(EFFECT_CANNOT_LOSE_LP)
 	e9:SetRange(LOCATION_SZONE)
-	e9:SetOperation(c511001004.surop2)
+	e9:SetTargetRange(1,0)
+	e9:SetValue(1)
 	c:RegisterEffect(e9)
-	local e10=Effect.CreateEffect(c)	
-	e10:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
-	e10:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e10:SetCode(EVENT_CHAIN_SOLVED)
-	e10:SetRange(LOCATION_SZONE)
-	e10:SetOperation(c511001004.surop2)
-	c:RegisterEffect(e10)
-	--lose
-	local e11=Effect.CreateEffect(c)
-	e11:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_SET_AVAILABLE)
-	e11:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e11:SetCode(EVENT_CHANGE_POS)
-	e11:SetOperation(c511001004.flipop)
-	c:RegisterEffect(e11)
-	--lose (leave)
-	local e12=Effect.CreateEffect(c)
-	e12:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e12:SetCode(EVENT_LEAVE_FIELD)
-	e12:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_DAMAGE_STEP)
-	e12:SetOperation(c511001004.leaveop)
-	c:RegisterEffect(e12)
 end
 function c511001004.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLP(tp)==1000 and Duel.GetLP(1-tp)==1000
@@ -121,37 +101,5 @@ function c511001004.winop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Win(tp,0x54)
 	elseif Duel.GetFlagEffect(1-tp,511001004)>1 then
 		Duel.Win(1-tp,0x54)
-	end
-end
-function c511001004.surop2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if Duel.GetLP(tp)<=0 and not c:IsStatus(STATUS_DISABLED) then
-		Duel.SetLP(tp,1)
-	end
-	if Duel.GetLP(1-tp)<=0 and not c:IsStatus(STATUS_DISABLED) then
-		Duel.SetLP(1-tp,1)
-	end
-	if Duel.GetLP(tp)==1 and c:IsStatus(STATUS_DISABLED) then
-		Duel.SetLP(tp,0)
-	end
-	if Duel.GetLP(1-tp)==1 and c:IsStatus(STATUS_DISABLED) then
-		Duel.SetLP(1-tp,0)
-	end
-end
-function c511001004.flipop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsFacedown() and Duel.GetLP(tp)==1 then
-		Duel.SetLP(tp,0)
-	end
-	if c:IsFacedown() and Duel.GetLP(1-tp)==1 then
-		Duel.SetLP(1-tp,0)
-	end
-end
-function c511001004.leaveop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLP(tp)==1 then
-		Duel.SetLP(tp,0)
-	end
-	if Duel.GetLP(1-tp)==1 then
-		Duel.SetLP(1-tp,0)
 	end
 end

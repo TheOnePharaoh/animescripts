@@ -243,8 +243,8 @@ function c511001603.desop(e,tp,eg,ep,ev,re,r,rp)
 			else
 				g=Group.CreateGroup()
 			end
-		elseif a:IsAttackPos() and d:IsDefencePos() then
-			if a:GetAttack()>d:GetDefence() then
+		elseif a:IsAttackPos() and d:IsDefensePos() then
+			if a:GetAttack()>d:GetDefense() then
 				g=g:Filter(c511001603.desfilter,nil,d)
 			else
 				g=Group.CreateGroup()

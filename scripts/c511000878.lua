@@ -30,7 +30,7 @@ function c511000878.operation(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,511000879,0,0x4011,0,0,1,RACE_WINDBEAST,ATTRIBUTE_WIND) then
 		for i=1,2 do
 			local token=Duel.CreateToken(tp,511000879)
-			Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
+			Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		end
 		Duel.SpecialSummonComplete()
 		local e2=Effect.CreateEffect(e:GetHandler())

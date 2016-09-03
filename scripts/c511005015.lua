@@ -1,23 +1,23 @@
 --Sneak Attack
 --  By Shad3
 
-local self=c511005015
+local scard=c511005015
 
-function self.initial_effect(c)
+function scard.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
   e1:SetCode(EVENT_FREE_CHAIN)
-  e1:SetTarget(self.tg)
-  e1:SetOperation(self.op)
+  e1:SetTarget(scard.tg)
+  e1:SetOperation(scard.op)
   c:RegisterEffect(e1)
 end
 
-function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)
+function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAttackable,tp,LOCATION_MZONE,0,1,nil) end
 end
 
-function self.op(e,tp,eg,ep,ev,re,r,rp)
+function scard.op(e,tp,eg,ep,ev,re,r,rp)
   if not Duel.IsExistingMatchingCard(Card.IsAttackable,tp,LOCATION_MZONE,0,1,nil) then return end
   Duel.Hint(HINT_SELECTMSG,tp,524)
   local ac=Duel.SelectMatchingCard(tp,Card.IsAttackable,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()

@@ -1,4 +1,4 @@
-#List of cards that work differently in the TCG than in the OCG
+TCG ruled cards that need to be made. Would appreciate if any scripters are interested in finishing these. We are working with Salvation so we can have correctly ruled TCG scripts in the game. The ones that are not checked require to be scripted. If a player selects TCG banlist, the game will use a subfolder called 'tcg' inside scripts folder as priority. Refer to this checklist: https://github.com/SalvationDevelopment/ygopro-tcg-scripts/issues/1
 
 - `Spell Reactor・RE [15175429]` : In the TCG, it is a Trigger Effect and can be activated during the Damage Step.  
 - `Symbol of Friendship [2295831]` : In the TCG, you can reveal this card if you draw it for your normal draw while you control no monsters. In the OCG, you can only reveal it if you control no cards.  
@@ -26,4 +26,3 @@
 - `Amorphactor Pain, the Imagination Dracoverlord [98287529]` : In the TCG, the effect "Your opponent skips their next Main Phase 1." starts a Chain Link. In the OCG, it does not start a Chain Link.
 - `Infernity Archfiend [99177923]` : In the TCG, "Infernity Archfiend" cannot Special Summon itself from the hand during the Damage Step.  
 - `Interrupted Kaiju Slumber [99330325]` : In the TCG, can activate if there's a Kaiju monster on the field  
-

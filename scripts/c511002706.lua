@@ -71,7 +71,7 @@ function c511002706.atkop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002706.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetFlagEffect(511002706)>0 
-		and Duel.GetCurrentPhase()==PHASE_BATTLE
+		and Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 function c511002706.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return not e:GetHandler():IsStatus(STATUS_CHAINING) 

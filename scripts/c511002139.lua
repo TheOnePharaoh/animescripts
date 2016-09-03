@@ -11,8 +11,7 @@ function c511002139.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002139.condition(e,tp,eg,ep,ev,re,r,rp)
-	local ph=Duel.GetCurrentPhase()
-	return ph>=0x08 and ph<=0x20
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 function c511002139.filter(c,tp)
 	return c:IsFaceup() and c:IsControler(1-tp) and c:IsOnField() and c:IsDestructable()

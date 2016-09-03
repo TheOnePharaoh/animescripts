@@ -71,7 +71,7 @@ end
 function c511002435.posop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=e:GetHandler():GetCardTarget()
 	local g=Duel.GetMatchingGroup(c511002435.posfilter,tp,LOCATION_MZONE,0,nil,sg)
-	Duel.ChangePosition(g,POS_FACEUP_DEFENCE,POS_FACEDOWN_DEFENCE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)
+	Duel.ChangePosition(g,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)
 end
 function c511002435.atop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

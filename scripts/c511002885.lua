@@ -53,7 +53,7 @@ function c511002885.activate(e,tp,eg,ep,ev,re,r,rp)
 		sg1:Merge(sg3)
 		local tc=sg1:GetFirst()
 		while tc do
-			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENCE,true)
+			Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEDOWN_DEFENSE,true)
 			Duel.RaiseEvent(tc,EVENT_MSET,e,REASON_EFFECT,tp,tp,0)
 			local e2=Effect.CreateEffect(e:GetHandler())
 			e2:SetType(EFFECT_TYPE_SINGLE)

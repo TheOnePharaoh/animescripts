@@ -30,7 +30,7 @@ function c511002877.refval(e,re,val,r,rp,rc)
 end
 function c511002877.surop2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if Duel.GetLP(tp)<=0 and not c:IsStatus(STATUS_DISABLED) and not c:IsStatus(STATUS_BATTLE_DESTROYED) and c:IsDefencePos() 
+	if Duel.GetLP(tp)<=0 and not c:IsStatus(STATUS_DISABLED) and not c:IsStatus(STATUS_BATTLE_DESTROYED) and c:IsDefensePos() 
 		and Duel.GetFlagEffect(tp,511002877)==0 then
 		Duel.Hint(HINT_CARD,0,511002877)
 		Duel.RegisterFlagEffect(tp,511002877,0,0,0)
