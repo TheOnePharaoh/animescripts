@@ -39,7 +39,7 @@ function c300.initial_effect(c)
 		e5:SetCode(EVENT_PHASE+PHASE_STANDBY)
 		Duel.RegisterEffect(e5,0)
 		local e6=e4:Clone()
-		e6:SetCode(EVENT_PHASE_START+PHASE_BATTLE)
+		e6:SetCode(EVENT_PHASE_START+PHASE_BATTLE_START)
 		Duel.RegisterEffect(e6,0)
 		local e7=e4:Clone()
 		e7:SetCode(EVENT_PHASE+PHASE_BATTLE)
@@ -59,6 +59,33 @@ function c300.initial_effect(c)
 		e10:SetCondition(c300.rvcon)
 		e10:SetOperation(c300.rvop)
 		Duel.RegisterEffect(e10,0)
+		--description
+		local e11=Effect.CreateEffect(c)
+		e11:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+		e11:SetCode(EVENT_ADJUST)
+		e11:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+		e11:SetCondition(c300.dcon)
+		e11:SetOperation(c300.dop)
+		Duel.RegisterEffect(e11,0)
+	end
+end
+function c300.dcon(e,tp,eg,ep,ev,re,r,rp)
+    return Duel.IsExistingMatchingCard(function(c)return c:GetFlagEffect(300)>0 and not c:IsHasEffect(300) end,tp,0xff,0xff,1,nil)
+end
+function c300.dop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(function(c)return c:GetFlagEffect(300)>0 and not c:IsHasEffect(300) end,tp,0xff,0xff,nil)
+	if g:GetCount()>0 then
+		local tc=g:GetFirst()
+		while tc do
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetDescription(aux.Stringid(51100567,14))
+			e1:SetProperty(EFFECT_FLAG_CLIENT_HINT)
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(300)
+			e1:SetReset(RESET_EVENT+0x1fe0000)
+			tc:RegisterEffect(e1,true)
+			tc=g:GetNext()
+		end
 	end
 end
 function c300.con(e,tp,eg,ep,ev,re,r,rp)
@@ -69,7 +96,7 @@ function c300.accon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c300.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(c300.filterx,tp,0xff,0xff,nil)
+	local g=Duel.GetMatchingGroup(function(c) return c.dm end,tp,0xff,0xff,nil)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
 		while tc do
@@ -93,7 +120,7 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 			end
 			tc=g:GetNext()
 		end
-		if Duel.GetMatchingGroupCount(c300.filterx11,tp,0xff,0,nil)>0 and Duel.GetMatchingGroupCount(c300.filterx11,tp,0,0xff,nil)>0 then
+		if Duel.GetMatchingGroupCount(function(c) return c.dm and not c.dm_no_activable and c:GetFlagEffect(300+4)==0 end,tp,0xff,0,nil)>0 and Duel.GetMatchingGroupCount(function(c) return c.dm and not c.dm_no_activable and c:GetFlagEffect(300+4)==0 end,tp,0,0xff,nil)>0 then
 			Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(51100570,1))
 			sel1=Duel.SelectOption(tp,aux.Stringid(51100570,2),aux.Stringid(51100570,3),aux.Stringid(51100570,4))
 			Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(51100570,1))
@@ -112,27 +139,28 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 			else
 				b=0
 			end
+			local aaa=Group.CreateGroup()
 			if b==1 then
 				if c>0 then
 					local size=tableDm_size
 					while size>0 do
 						local token=Duel.CreateToken(tp,tableDm[size])
 						Duel.SendtoGrave(token,nil,REASON_RULE)
-						token:RegisterFlagEffect(300+4,RESET_CHAIN,0,1)
+						aaa:AddCard(token)
 						size=size-1
 					end
 				end
-				local g4=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 				if c>0 then
 					if c==1 then
 						Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(51100570,5))
-						tcc1=g4:Select(tp,1,1,nil):GetFirst()
+						tcc1=aaa:Select(tp,1,1,nil):GetFirst()
 					end
 					Duel.Hint(HINT_SELECTMSG,1-tp,aux.Stringid(51100570,5))
-					tcc2=g4:Select(1-tp,1,1,nil):GetFirst()
+					tcc2=aaa:Select(1-tp,1,1,nil):GetFirst()
 				end
+				Duel.SendtoDeck(aaa,nil,-2,REASON_RULE)
 				for a=0,1 do
-					local g1=Duel.GetMatchingGroup(c300.filterx11,a-tp,0xff,0,nil)
+					local g1=Duel.GetMatchingGroup(function(c) return c.dm and not c.dm_no_activable and c:GetFlagEffect(300+4)==0 end,a-tp,0xff,0,nil)
 					if g1:GetCount()>1 then 
 						Duel.Hint(HINT_SELECTMSG,a-tp,aux.Stringid(51100567,0))
 						tc=g1:Select(a-tp,1,1,nil):GetFirst()
@@ -174,32 +202,13 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 					end
 					local tc=g3:GetFirst()
 					while tc do
-						if tc:GetFlagEffect(300+3)==0 then
-							--Remove Pendulum
-							local e1=Effect.CreateEffect(tc)
-							e1:SetType(EFFECT_TYPE_SINGLE)
-							e1:SetCode(EFFECT_REMOVE_TYPE)
-							e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-							e1:SetValue(TYPE_PENDULUM)
-							e1:SetRange(0xff)
-							tc:RegisterEffect(e1)
-							--Cannot to Extra
-							local e2=Effect.CreateEffect(tc)
-							e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-							e2:SetType(EFFECT_TYPE_SINGLE)
-							e2:SetCode(EFFECT_CANNOT_TO_DECK)
-							e2:SetCondition(c300.recon)
-							tc:RegisterEffect(e2)
-							tc:RegisterFlagEffect(300+3,RESET_PHASE+PHASE_DRAW,0,1)
-						end
 						tc:RegisterFlagEffect(300,0,0,1)
-						local g=Group.FromCards(tc)
-						if not g:IsExists(c300.filterx8,1,nil,nil) then
+						if not tc.dm_custom_activate then
 							--Activate
 							local e1=Effect.CreateEffect(tc)
 							e1:SetType(EFFECT_TYPE_ACTIVATE)
 							e1:SetCode(EVENT_FREE_CHAIN)
-							e1:SetCondition(c300.accon)
+							e1:SetReset(RESET_CHAIN)
 							tc:RegisterEffect(e1)
 						end
 						local tc1=Duel.GetFieldCard(a-tp,LOCATION_SZONE,6)
@@ -221,8 +230,8 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 							Duel.BreakEffect()
 							if op then op(te,tp,eg,ep,ev,re,r,rp) end
 							tc:ReleaseEffectRelation(te)
-							if not g:IsExists(c300.filterx2,1,nil,nil) then
-								if not g:IsExists(c300.filterx3,1,nil,nil) then
+							if not tc.dm_custom then
+								if not tc.dm_no_spsummon then
 								--spsummon
 								local e1=Effect.CreateEffect(tc)
 								e1:SetDescription(aux.Stringid(51100567,1))
@@ -234,7 +243,7 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 								e1:SetOperation(c300.spop)
 								tc:RegisterEffect(e1)
 								end
-								if not g:IsExists(c300.filterx5,1,nil,nil) then
+								if not tc.dm_no_splimit then
 									--splimit
 									local e2=Effect.CreateEffect(tc)
 									e2:SetType(EFFECT_TYPE_FIELD)
@@ -242,11 +251,10 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 									e2:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
 									e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 									e2:SetTargetRange(1,0)
-									e2:SetCondition(aux.nfbdncon)
 									e2:SetTarget(c300.splimit)
 									tc:RegisterEffect(e2)
 								end
-								if not g:IsExists(c300.filterx6,1,nil,nil) then
+								if not tc.dm_no_immune then
 									--Immune
 									local e3=Effect.CreateEffect(tc)
 									e3:SetType(EFFECT_TYPE_SINGLE)
@@ -264,11 +272,10 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 						tc=g3:GetNext()
 					end
 				end
-				Duel.SendtoDeck(g4,nil,-2,REASON_RULE)
 			else
 				Duel.RegisterFlagEffect(tp,300+2,0,0,1)
 				Duel.RegisterFlagEffect(1-tp,300+2,0,0,1)
-				local g=Duel.GetMatchingGroup(c300.filterx10,tp,0xff,0xff,nil)
+				local g=Duel.GetMatchingGroup(function(c)return c.dm_replace_original end,tp,0xff,0xff,nil)
 				if g:GetCount()>0 then
 					local tc=g:GetFirst()
 					while tc do
@@ -288,7 +295,7 @@ function c300.op(e,tp,eg,ep,ev,re,r,rp)
 		else
 			Duel.RegisterFlagEffect(tp,300+2,0,0,1)
 			Duel.RegisterFlagEffect(1-tp,300+2,0,0,1)
-			local g=Duel.GetMatchingGroup(c300.filterx10,tp,0xff,0xff,nil)
+			local g=Duel.GetMatchingGroup(function(c)return c.dm_replace_original end,tp,0xff,0xff,nil)
 			if g:GetCount()>0 then
 				local tc=g:GetFirst()
 				while tc do
@@ -332,36 +339,9 @@ end
 function c300.dmfilter(c,code)
 	return c:GetOriginalCode()==code and c:GetFlagEffect(300+2)==0
 end
-function c300.filterx(c)
-	return c.dm
-end
-function c300.filterx2(c)
-	return c.dm_custom
-end
-function c300.filterx3(c)
-	return c.dm_no_spsummon
-end
-function c300.filterx5(c)
-	return c.dm_np_splimit
-end
-function c300.filterx6(c)
-	return c.dm_no_immune
-end
-function c300.filterx8(c)
-	return c.dm_custom_activate
-end
-function c300.filterx9(c)
-	return c.dm_no_activable
-end
-function c300.filterx10(c)
-	return c.dm_replace_original
-end
-function c300.filterx11(c)
-	return c.dm and not c.dm_no_activable and c:GetFlagEffect(300+4)==0
-end
 function c300.recon(e)
 	local c=e:GetHandler()
-	return c:GetDestination()==LOCATION_GRAVE
+	return c:GetDestination()==LOCATION_GRAVE and c:IsLocation(LOCATION_ONFIELD)
 end
 function c300.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -410,6 +390,8 @@ function c300.target2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tc:GetControler(),300+2,0,0,1)
 	end
 	if Duel.GetMatchingGroupCount(c300.fil2,tc:GetControler(),0xff,0,nil)==0 then
+	local ph=Duel.GetCurrentPhase()
+	if ph>0x08 and ph<0x80 then ph=0x80 end
 	--New dm on summon
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -418,7 +400,7 @@ function c300.target2(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
 	e1:SetLabel(tc:GetControler())
 	e1:SetOperation(c300.checkop)
-	e1:SetReset(RESET_PHASE+Duel.GetCurrentPhase())
+	e1:SetReset(RESET_PHASE+ph)
 	Duel.RegisterEffect(e1,tc:GetControler())
 	Duel.RegisterFlagEffect(tc:GetControler(),300+1,0,0,1)
 	end
@@ -443,6 +425,9 @@ function c300.checkop(e,tp,eg,ep,ev,re,r,rp)
 		tc=g:GetNext()
 	end
 	Duel.ResetFlagEffect(tp,300+1)
+	if Duel.GetFlagEffect(tp,300+2) then
+		Duel.ResetFlagEffect(tp,300+2)
+	end
 	end
 	end
 end
@@ -472,12 +457,12 @@ end
 function c300.rvop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(c300.rvfil,tp,LOCATION_EXTRA,LOCATION_EXTRA,nil)
 	if g:GetCount()>0 then
-	local tc=g:GetFirst()
-	while tc do
-	tc:EnableReviveLimit()
-	tc:RegisterFlagEffect(300+4,0,0,1)
-	tc=g:GetNext()
-	end
+		local tc=g:GetFirst()
+		while tc do
+			tc:EnableReviveLimit()
+			tc:RegisterFlagEffect(300+4,0,0,1)
+			tc=g:GetNext()
+		end
 	end
 end
 tableDm = {
