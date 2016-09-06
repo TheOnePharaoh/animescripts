@@ -39,9 +39,9 @@ function c513000032.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e2)
 		local e3=Effect.CreateEffect(c)
 		e3:SetType(EFFECT_TYPE_SINGLE)
-		e3:SetCode(EFFECT_SET_DEFENCE_FINAL)
+		e3:SetCode(EFFECT_SET_DEFENSE_FINAL)
 		e3:SetReset(RESET_EVENT+0x1ff0000)
-		e3:SetValue(tc:GetDefence())
+		e3:SetValue(tc:GetDefense())
 		c:RegisterEffect(e3)
 	end
 end

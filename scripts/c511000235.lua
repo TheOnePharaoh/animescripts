@@ -95,6 +95,7 @@ function c511000235.initial_effect(c)
 	c:RegisterEffect(e16)
 	--FINISH IT
 	local e17=Effect.CreateEffect(c)
+	e17:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e17:SetDescription(aux.Stringid(511000235,2))
 	e17:SetCategory(CATEGORY_DESTROY)
 	e17:SetType(EFFECT_TYPE_QUICK_O)
@@ -149,7 +150,7 @@ function c511000235.chainlm(e,rp,tp)
 	return e:GetHandler():IsAttribute(ATTRIBUTE_DEVINE)
 end
 function c511000235.efilter(e,te)
-	return te:IsActiveType(TYPE_EFFECT) and not te:GetHandler():IsAttribute(ATTRIBUTE_DEVINE)
+	return te:GetOwner()~=e:GetOwner() and te:IsActiveType(TYPE_EFFECT) and not te:GetOwner():IsAttribute(ATTRIBUTE_DEVINE)
 end
 function c511000235.tgfilter(e,re)
 	if not re or not re:IsActiveType(TYPE_SPELL+TYPE_TRAP) then return false end
@@ -198,8 +199,8 @@ function c511000235.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_SET_DEFENCE_FINAL)
-	e2:SetValue(c:GetBaseDefence())
+	e2:SetCode(EFFECT_SET_DEFENSE_FINAL)
+	e2:SetValue(c:GetBaseDefense())
 	e2:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e2)
 	local eqg=c:GetEquipGroup()
@@ -215,7 +216,7 @@ function c511000235.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Release(g,REASON_COST)
 end
 function c511000235.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE and e:GetHandler():IsAttackable()
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE and e:GetHandler():IsAttackable()
 end
 function c511000235.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,0,LOCATION_MZONE,1,nil) end

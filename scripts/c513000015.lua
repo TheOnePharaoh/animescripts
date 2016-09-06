@@ -106,7 +106,7 @@ end
 function c513000015.banop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsFaceup() and Duel.Remove(c,POS_FACEUP,REASON_EFFECT+REASON_TEMPORARY)>0 then
-		c:RegisterFlagEffect(513000015,RESET_EVENT+0x1fe0000+RESET_PHASE+RESET_END,0,0)
+		c:RegisterFlagEffect(513000015,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,0)
 	end
 end
 function c513000015.rettg(e,tp,eg,ep,ev,re,r,rp,chk)

@@ -11,8 +11,7 @@ function c511002369.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002369.condition(e,tp,eg,ep,ev,re,r,rp)
-	local ph=Duel.GetCurrentPhase()
-	return ph==PHASE_BATTLE or (ph==PHASE_DAMAGE and not Duel.IsDamageCalculated())
+	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 end
 function c511002369.tfilter(c,att,e,tp)
 	return c:IsSetCard(0xa008) and c:GetLevel()==8 and c:IsAttribute(att) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
