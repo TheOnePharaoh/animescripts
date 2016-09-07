@@ -5,11 +5,12 @@ local function getID()
   local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
   str=string.sub(str,1,string.len(str)-4)
   local scard=_G[str]
-  local s_id=tonumber(string.sub(str,string.len(str)-1))
+  local s_id=tonumber(string.sub(str,2))
   return scard,s_id
 end
 
 local scard,s_id=getID()
+local _str=4001
 
 function scard.initial_effect(c)
   --Activate
@@ -68,7 +69,7 @@ end
 function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
   if not e:GetHandler():IsRelateToEffect(e) then return end
   local cde=Duel.AnnounceCard(tp)
-  local act=Duel.SelectOption(tp,aux.Stringid(s_id,0),aux.Stringid(s_id,1),aux.Stringid(s_id,2),aux.Stringid(s_id,3))
+  local act=Duel.SelectOption(tp,aux.Stringid(_str,5),aux.Stringid(_str,6),aux.Stringid(_str,7),aux.Stringid(_str,8))
   e:SetLabel(act)
   e:GetHandler():SetFlagEffectLabel(s_id,cde)
 end
