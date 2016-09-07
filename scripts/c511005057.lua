@@ -1,7 +1,15 @@
 --Remember Attack
 --  By Shad3
 
-local scard=c511005057
+local function getID()
+  local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
+  str=string.sub(str,1,string.len(str)-4)
+  local scard=_G[str]
+  local s_id=tonumber(string.sub(str,2))
+  return scard,s_id
+end
+
+local scard,s_id=getID()
 
 function scard.initial_effect(c)
   --Flag to avoid infinite loop
@@ -27,15 +35,15 @@ end
 function scard.flag_op(e,tp,eg,ep,ev,re,r,rp)
   if re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:GetCode()==EVENT_FREE_CHAIN then
     local c=re:GetHandler()
-    if c:GetOriginalCode()==511005057 then return end
-    if c:GetFlagEffect(511005057)~=0 then c:ResetFlagEffect(511005057) end
-    c:RegisterFlagEffect(511005057,RESET_PHASE+PHASE_END,0,3)
-    c:RegisterFlagEffect(511005057,RESET_PHASE+PHASE_END,0,1)
+    if c:GetOriginalCode()==s_id then return end
+    if c:GetFlagEffect(s_id)~=0 then c:ResetFlagEffect(s_id) end
+    c:RegisterFlagEffect(s_id,RESET_PHASE+PHASE_END,0,3)
+    c:RegisterFlagEffect(s_id,RESET_PHASE+PHASE_END,0,1)
   end
 end
 
 function scard.rpl_fil(c,e,tp,eg,ep,ev,re,r,rp)
-  if c:GetFlagEffect(511005057)==1 and not 
+  if c:GetFlagEffect(s_id)==1 and not 
   scard['no_react_ev'] and c:IsCanBeEffectTarget(e) then
     local te=c:GetActivateEffect()
     if not te then return false end
@@ -62,7 +70,7 @@ function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
     return loc and g:GetCount()>0
   end
   e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-  Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(511005057,1))
+  Duel.Hint(HINT_SELECTMSG,tp,550)
   local tc=g:Select(tp,1,1,nil)
   Duel.SetTargetCard(tc)
 end

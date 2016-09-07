@@ -65,7 +65,7 @@ function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
       Duel.RegisterEffect(e1,tp)
     else
       Duel.ShuffleHand(1-tp)
-      if Duel.SelectYesNo(1-tp,aux.Stringid(511005009,0)) then Duel.Draw(1-tp,1,REASON_EFFECT) end
+      if Duel.SelectYesNo(1-tp,aux.Stringid(4001,3)) then Duel.Draw(1-tp,1,REASON_EFFECT) end
     end
   end
 end

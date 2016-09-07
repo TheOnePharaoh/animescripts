@@ -10,6 +10,7 @@ local function getID()
 end
 
 local scard,s_id=getID()
+local _str=4001
 
 function scard.initial_effect(c)
   --Activate
@@ -26,7 +27,7 @@ function scard.initial_effect(c)
   e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
   e2:SetCode(EVENT_ATTACK_ANNOUNCE)
   e2:SetRange(LOCATION_SZONE)
-  e2:SetDescription(aux.Stringid(s_id,0))
+  e2:SetDescription(aux.Stringid(_str,0))
   e2:SetCondition(scard.sfx1_cd)
   e2:SetOperation(scard.sfx1_op)
   c:RegisterEffect(e2)
@@ -83,9 +84,9 @@ function scard.sfx1_op(e,tp,eg,ep,ev,re,r,rp)
   local ac=Duel.GetAttacker()
   local op=0
   if Duel.GetAttackTarget()==tc and Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,0,1,tc) then
-    op=Duel.SelectOption(tp,aux.Stringid(s_id,1),aux.Stringid(s_id,2))
+    op=Duel.SelectOption(tp,aux.Stringid(_str,1),aux.Stringid(_str,2))
   else
-    op=Duel.SelectOption(tp,aux.Stringid(s_id,1))
+    op=Duel.SelectOption(tp,aux.Stringid(_str,1))
   end
   if ac==tc then ac=Duel.GetAttackTarget() end
   if op==0 then

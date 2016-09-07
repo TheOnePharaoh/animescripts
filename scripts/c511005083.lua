@@ -5,6 +5,7 @@
 local scard=c511005083
 local s_id=511005083
 local t_id=511005082
+local _str=4001
 
 function scard.initial_effect(c)
   --Activate
@@ -35,7 +36,7 @@ function scard.initial_effect(c)
   e4:SetRange(LOCATION_SZONE)
   e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
   e4:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
-  e4:SetDescription(aux.Stringid(s_id,1))
+  e4:SetDescription(aux.Stringid(_str,15))
   e4:SetCondition(scard.des_cd)
   e4:SetTarget(scard.des_tg)
   e4:SetOperation(scard.des_op)
@@ -97,7 +98,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function scard.dam_op(e,tp,eg,ep,ev,re,r,rp)
-  if Duel.SelectYesNo(tp,aux.Stringid(s_id,0)) then
+  if Duel.SelectYesNo(tp,aux.Stringid(_str,14)) then
     Duel.ChangeBattleDamage(tp,0)
     Duel.ChangeBattleDamage(1-tp,0)
   end
