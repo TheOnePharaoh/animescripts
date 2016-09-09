@@ -2,7 +2,7 @@
 function c511002808.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcFun2(c,c511002808.ffilter,aux.FilterBoolFunction(Card.IsRace,RACE_BEAST),true)
+	aux.AddFusionProcFun2(c,aux.FilterBoolFunction(Card.IsFusionSetCard,0xf1),aux.FilterBoolFunction(Card.IsRace,RACE_BEAST),true)
 	--damage
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_DAMAGE)
@@ -20,9 +20,6 @@ function c511002808.initial_effect(c)
 	e4:SetOperation(c511002808.valcheck)
 	e4:SetLabelObject(e3)
 	c:RegisterEffect(e4)
-end
-function c511002808.ffilter(c)
-	return c:IsCode(16178681) or c:IsCode(1516510) or c:IsCode(72378329) or c:GetFlagEffect(700000011)>0
 end
 function c511002808.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

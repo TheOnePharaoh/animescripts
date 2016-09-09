@@ -2,13 +2,7 @@
 function c511002228.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCode(EFFECT_FUSION_MATERIAL)
-	e1:SetCondition(c511002228.fscon)
-	e1:SetOperation(c511002228.fsop)
-	c:RegisterEffect(e1)
+	aux.AddFusionProcFunFunRep(c,c511002228.mfilter1,c511002228.mfilter2,1,63,true)
 	--spsummon
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -36,24 +30,11 @@ function c511002228.initial_effect(c)
 	e3:SetOperation(c511002228.efop)
 	c:RegisterEffect(e3)
 end
-function c511002228.mfilter1(c,mg)
-	return c:IsSetCard(0xad) and  c:IsLevelAbove(6) and mg:IsExists(c511002228.mfilter2,1,c)
+function c511002228.mfilter1(c)
+	return c:IsFusionSetCard(0xad) and c:IsLevelAbove(6)
 end
 function c511002228.mfilter2(c)
-	return c:IsSetCard(0xa9) or c:IsSetCard(0xc3)
-end
-function c511002228.fscon(e,mg,gc)
-	if mg==nil then return true end
-	if gc then return false end
-	return mg:IsExists(c511002228.mfilter1,1,nil,mg)
-end
-function c511002228.fsop(e,tp,eg,ep,ev,re,r,rp,gc)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
-	local g1=eg:FilterSelect(tp,c511002228.mfilter1,1,1,nil,eg)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
-	local g2=eg:FilterSelect(tp,c511002228.mfilter2,1,63,g1:GetFirst())
-	g1:Merge(g2)
-	Duel.SetFusionMaterial(g1)
+	return c:IsFusionSetCard(0xa9) or c:IsFusionSetCard(0xc3)
 end
 function c511002228.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return bit.band(e:GetHandler():GetSummonType(),SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
