@@ -38,7 +38,7 @@ function c511001520.actcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511001520.cost1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	if Duel.GetCurrentPhase()==PHASE_BATTLE and Duel.GetTurnPlayer()~=tp 
+	if (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE) and Duel.GetTurnPlayer()~=tp 
 		and Duel.SelectYesNo(tp,aux.Stringid(61965407,0)) then
 		Duel.PayLPCost(tp,math.floor(Duel.GetLP(tp)/2))
 		e:SetLabel(1)
@@ -51,7 +51,7 @@ function c511001520.operation1(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511001520.condition2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE and Duel.GetTurnPlayer()~=tp 
+	return (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE) and Duel.GetTurnPlayer()~=tp 
 end
 function c511001520.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

@@ -19,27 +19,34 @@ function c100000622.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100000622.splimit(e,se,sp,st)
-	return bit.band(st,SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
+	return bit.band(st,SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION and se:GetHandler():IsCode(100000025)
 end
 function c100000622.filter1(c,tp)
-	return c:IsRace(RACE_ROCK) and c:IsLocation(LOCATION_GRAVE) and c:IsControler(tp)
+	return (c:IsRace(RACE_ROCK) and c:IsLocation(LOCATION_GRAVE) and c:IsControler(tp)) or c:IsHasEffect(511002961)
 end
 function c100000622.filter2(c,tp)
-	return (c:GetLevel()==5 or c:GetLevel()==6) and c:IsRace(RACE_MACHINE) and c:IsLocation(LOCATION_GRAVE) and c:IsControler(1-tp)
+	return ((c:GetLevel()==5 or c:GetLevel()==6) and c:IsRace(RACE_MACHINE) and c:IsLocation(LOCATION_GRAVE) and c:IsControler(1-tp)) 
+		or c:IsHasEffect(511002961)
 end
-function c100000622.fcon(e,g,gc,chkf)
+function c100000622.fcon(e,g,gc,chkfnf)
 	local tp=e:GetHandlerPlayer()
-	if g==nil then return false end
+	local chkf=bit.band(chkfnf,0xff)
+	if g==nil then return true end
 	if gc then return (c100000622.filter1(gc,tp) and g:IsExists(c100000622.filter2,1,gc,tp))
 		or (c100000622.filter2(gc,tp) and g:IsExists(c100000622.filter1,1,gc,tp)) end
-	local g1=Group.CreateGroup() local g2=Group.CreateGroup()
+	local b1=0 local b2=0 local b3=0 local ct=0
 	local tc=g:GetFirst()
 	while tc do
-		if c100000622.filter1(tc,tp) then g1:AddCard(tc) end
-		if c100000622.filter2(tc,tp) then g2:AddCard(tc) end
+		local match=false
+		if tc:IsHasEffect(511002961) then b3=b3+1 match=true 
+		else
+			if c100000622.filter1(tc,tp) then b1=1 match=true end
+			if c100000622.filter2(tc,tp) then b2=1 match=true end
+		end
+		if match==true then ct=ct+1 end
 		tc=g:GetNext()
 	end
-	return g1:GetCount()>0 and g2:GetCount()>0
+	return b1+b2+b3>1 and ct>1 and chkf==PLAYER_NONE
 end
 function c100000622.fop(e,tp,eg,ep,ev,re,r,rp,gc,chkf)
 	local tp=e:GetHandlerPlayer()
@@ -54,10 +61,15 @@ function c100000622.fop(e,tp,eg,ep,ev,re,r,rp,gc,chkf)
 	end
 	local g1=eg:Filter(c100000622.filter1,nil,tp)
 	local g2=eg:Filter(c100000622.filter2,nil,tp)
+	if g1:GetCount()==1 and g2:GetCount()>1 then
+		g2:Sub(g1)
+	elseif g2:GetCount()==1 and g1:GetCount()>1 then
+		g1:Sub(g2)
+	end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
 	local tc1=g1:Select(tp,1,1,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
-	local tc2=g2:Select(tp,1,1,nil)
+	local tc2=g2:Select(tp,1,1,tc1:GetFirst())
 	tc1:Merge(tc2)
 	Duel.SetFusionMaterial(tc1)
 end
