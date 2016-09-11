@@ -25,6 +25,7 @@ function c511009306.initial_effect(c)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e3:SetTarget(c511009306.indtg)
+	e3:SetValue(1)
 	c:RegisterEffect(e3)
 	--disable
 	local e4=Effect.CreateEffect(c)
