@@ -8,9 +8,9 @@ function c511009305.initial_effect(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCountLimit(1)
-	e1:SetTarget(c511009305.distg)
+	e1:SetTarget(c511009305.target)
 	e1:SetCondition(c511009305.condition)
-	e1:SetOperation(c511009305.disop)
+	e1:SetOperation(c511009305.operation)
 	c:RegisterEffect(e1)
 	if not c511009305.global_check then
 		c511009305.global_check=true
