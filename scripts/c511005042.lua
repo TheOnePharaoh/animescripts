@@ -9,7 +9,7 @@ function scard.initial_effect(c)
   e1:SetCode(EVENT_SUMMON_PROC)
   e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
   e1:SetCondition(scard.sum_cd)
-  e1:SetDescription(aux.Stringid(511005042,0))
+  e1:SetDescription(aux.Stringid(4001,4))
   c:RegisterEffect(e1)
 end
 

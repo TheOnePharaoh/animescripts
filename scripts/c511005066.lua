@@ -1,4 +1,4 @@
---Knight Hunger Monger
+--Triple Belly Knight (Manga)
 --  By Shad3
 
 local scard=c511005066
@@ -24,7 +24,7 @@ function scard.mat_op(e,tp,eg,ep,ev,re,r,rp)
   e1:SetCode(EVENT_LEAVE_FIELD)
   e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
   e1:SetReset(RESET_EVENT+0x5000000)
-  e1:SetDescription(aux.Stringid(511005066,0))
+  e1:SetDescription(aux.Stringid(4001,12))
   e1:SetCondition(scard.cd)
   e1:SetTarget(scard.tg)
   e1:SetOperation(scard.op)

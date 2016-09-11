@@ -110,7 +110,7 @@ function c511000238.initial_effect(c)
 	e18:SetValue(c511000238.adval)
 	c:RegisterEffect(e18)
 	local e19=e18:Clone()
-	e19:SetCode(EFFECT_UPDATE_DEFENCE)
+	e19:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e19)
 	--atkdown
 	local e20=Effect.CreateEffect(c)
@@ -217,7 +217,7 @@ function c511000238.atkdefresetop(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_SET_DEFENCE_FINAL)
+	e2:SetCode(EFFECT_SET_DEFENSE_FINAL)
 	e2:SetValue(c511000238.adval)
 	e2:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e2)
@@ -253,15 +253,15 @@ function c511000238.atkop(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetReset(RESET_EVENT+0x1fe0000)
 			tc:RegisterEffect(e1)
 			if preatk~=0 and tc:GetAttack()==0 then dg:AddCard(tc) end
-		elseif tc:IsPosition(POS_FACEUP_DEFENCE) then
-			local predef=tc:GetDefence()
+		elseif tc:IsPosition(POS_FACEUP_DEFENSE) then
+			local predef=tc:GetDefense()
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_UPDATE_DEFENCE)
+			e1:SetCode(EFFECT_UPDATE_DEFENSE)
 			e1:SetValue(-2000)
 			e1:SetReset(RESET_EVENT+0x1fe0000)
 			tc:RegisterEffect(e1)
-			if predef~=0 and tc:GetDefence()==0 then dg:AddCard(tc) end
+			if predef~=0 and tc:GetDefense()==0 then dg:AddCard(tc) end
 		end
 		tc=g:GetNext()
 	end

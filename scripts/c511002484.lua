@@ -32,7 +32,7 @@ function c511002484.checkop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002484.condition(e,tp,eg,ep,ev,re,r,rp)
 	return c511002484[tp]>0 and Duel.GetTurnPlayer()==tp
-		and (Duel.IsAbleToEnterBP() or Duel.GetCurrentPhase()==PHASE_BATTLE)
+		and (Duel.IsAbleToEnterBP() or (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE))
 end
 function c511002484.filter(c)
 	return c:IsFaceup() and c:GetEffectCount(EFFECT_EXTRA_ATTACK)==0

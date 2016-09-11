@@ -79,7 +79,7 @@ function c511000590.spop(e,tp,eg,ep,ev,re,r,rp)
 	if ct>ft then ct=ft end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,c511000590.spfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,ct,nil,e,tp)
-	if Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENCE) then
+	if Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENSE) then
 	Duel.ChangeAttackTarget(g:Select(tp,1,1,nil):GetFirst())
 	end
 end

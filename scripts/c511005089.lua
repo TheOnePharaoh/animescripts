@@ -11,6 +11,7 @@ local function getID()
 end
 
 local scard,s_id=getID()
+local _str=4002
 
 function scard.initial_effect(c)
   --Activate
@@ -34,7 +35,7 @@ function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   local tc=Duel.SelectTarget(tp,scard.fil,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
   if Duel.CheckEvent(EVENT_ATTACK_ANNOUNCE) and tc:IsRelateToBattle() then
     local bc=tc:GetBattleTarget()
-    if bc and tc:GetFlagEffect(s_id)==0 and bc:IsFaceup() and tc:GetAttack()==bc:GetAttack() and Duel.SelectYesNo(tp,aux.Stringid(s_id,0)) then
+    if bc and tc:GetFlagEffect(s_id)==0 and bc:IsFaceup() and tc:GetAttack()==bc:GetAttack() and Duel.SelectYesNo(tp,aux.Stringid(_str,0)) then
       tc:RegisterFlagEffect(s_id,RESET_PHASE+PHASE_DAMAGE,0,0)
       e:SetLabel(1)
       e:SetLabelObject(bc)

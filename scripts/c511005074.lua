@@ -50,7 +50,7 @@ function scard.neg_op(e,tp,eg,ep,ev,re,r,rp)
   local c=e:GetHandler()
   local tc=c:GetEquipTarget()
   local tep=tc:GetControler()
-  if Duel.GetFlagEffect(tep,511005074)==0 and c:GetFlagEffect(511005074)==0 and not tc:IsDisabled() and Duel.SelectYesNo(tep,aux.Stringid(511005074,0)) then
+  if Duel.GetFlagEffect(tep,511005074)==0 and c:GetFlagEffect(511005074)==0 and not tc:IsDisabled() and Duel.SelectYesNo(tep,aux.Stringid(4001,13)) then
     Duel.Hint(HINT_CARD,0,tc:GetOriginalCode())
     Duel.NegateAttack()
     Duel.RegisterFlagEffect(tep,511005074,RESET_PHASE+PHASE_DAMAGE,0,0)

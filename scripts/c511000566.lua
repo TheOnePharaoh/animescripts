@@ -1,6 +1,7 @@
 --Flame Swordsman (DM)
 --Scripted by edo9300
 function c511000566.initial_effect(c)
+	c:EnableCounterPermit(0xda,LOCATION_PZONE+LOCATION_MZONE)
 	--immune to counter cleaner
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
@@ -57,6 +58,10 @@ end
 c511000566.dm=true
 c511000566.dm_no_spsummon=true
 c511000566.dm_custom_activate=true
+function c511000566.ctpermit(e)
+	local c=e:GetHandler()
+	return c:IsLocation(LOCATION_SZONE) and not c:IsStatus(STATUS_DISABLED)
+end
 function c511000566.chk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,300)
 	Duel.CreateToken(1-tp,300)

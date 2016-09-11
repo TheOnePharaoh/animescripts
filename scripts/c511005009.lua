@@ -49,7 +49,8 @@ function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
   local tg=eg:Filter(scard.cont_fil1,nil)
   if tg:GetCount()>0 then
     local i=e:GetLabel()
-    Duel.ConfirmCards(tp,tg)
+    -- Revision with OCG ruling
+    -- Duel.ConfirmCards(tp,tg)
     if tg:IsExists(scard.cont_fil2,1,nil,i) then
       local ng=tg:Filter(scard.cont_fil2,nil,i)
       Duel.HintSelection(ng)
@@ -64,7 +65,7 @@ function scard.cont_op(e,tp,eg,ep,ev,re,r,rp)
       Duel.RegisterEffect(e1,tp)
     else
       Duel.ShuffleHand(1-tp)
-      if Duel.SelectYesNo(1-tp,aux.Stringid(511005009,0)) then Duel.Draw(1-tp,1,REASON_EFFECT) end
+      if Duel.SelectYesNo(1-tp,aux.Stringid(4001,3)) then Duel.Draw(1-tp,1,REASON_EFFECT) end
     end
   end
 end

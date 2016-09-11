@@ -41,7 +41,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
   if loc<1 then return end
   local gg=Duel.GetMatchingGroup(scard.sum_fil,tp,LOCATION_DECK,0,nil,e,tp)
   local sg=Group.CreateGroup()
-  if gg:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(511005063,1)) then
+  if gg:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(4001,10)) then
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
     sg:Merge(gg:Select(tp,1,loc,nil))
   end
@@ -162,7 +162,7 @@ function scard.mimicb_cd(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function scard.mimicb_op(e,tp,eg,ep,ev,re,r,rp)
-  if not Duel.SelectYesNo(tp,aux.Stringid(511005063,0)) then return end
+  if not Duel.SelectYesNo(tp,aux.Stringid(4001,9)) then return end
   local c=e:GetHandler()
   Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEDOWN,true)
   c:ResetEffect(EFFECT_CHANGE_TYPE,RESET_CODE)
