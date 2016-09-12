@@ -4,49 +4,45 @@
 local scard,s_id=c511005010,511005010
 
 function scard.initial_effect(c)
-  --Activate
-  local e1=Effect.CreateEffect(c)
-  e1:SetType(EFFECT_TYPE_ACTIVATE)
-  e1:SetCode(EVENT_FREE_CHAIN)
-  c:RegisterEffect(e1)
-  --Effect
-  local e2=Effect.CreateEffect(c)
-  e2:SetType(EFFECT_TYPE_IGNITION)
-  e2:SetRange(LOCATION_SZONE)
-  e2:SetCategory(CATEGORY_HANDES+CATEGORY_DAMAGE)
-  e2:SetCondition(scard.cd)
-  e2:SetTarget(scard.tg)
-  e2:SetOperation(scard.op)
-  c:RegisterEffect(e2)
+	--Activate
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	c:RegisterEffect(e1)
+	--Effect
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetCategory(CATEGORY_HANDES+CATEGORY_DAMAGE)
+	e2:SetCondition(scard.cd)
+	e2:SetTarget(scard.tg)
+	e2:SetOperation(scard.op)
+	c:RegisterEffect(e2)
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp)
-  return Duel.GetFlagEffect(tp,s_id)==0
+	return Duel.GetFlagEffect(tp,s_id)==0
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,0,LOCATION_HAND,1,nil) end
-  e:SetLabel(Duel.AnnounceCard(tp))
-  Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,1,1-tp,0)
-  Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,1000,tp,0)
-end
-
-function scard.code_fil(c,i)
-  return c:IsCode(i)
+	if chk==0 then return Duel.GetFieldGroupCount(1-tp,LOCATION_HAND)>0 end
+	Duel.SetTargetParam(Duel.AnnounceCard(tp))
+	Duel.SetOperationInfo(0,CATEGORY_HANDES,nil,1,1-tp,0)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,1000,tp,0)
 end
 
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
-  if not e:GetHandler():IsRelateToEffect(e) then return end
-  local g=Duel.GetMatchingGroup(Card.IsDiscardable,tp,0,LOCATION_HAND,nil)
-  -- Revision with OCG ruling
-  -- Duel.ConfirmCards(tp,g)
-  local tg=g:Filter(scard.code_fil,nil,e:GetLabel())
-  if tg:GetCount()>0 then
-    Duel.HintSelection(tg)
-    Duel.SendtoGrave(tg,REASON_EFFECT+REASON_DISCARD)
-  else
-    Duel.Damage(tp,1000,REASON_EFFECT)
-    Duel.RegisterFlagEffect(tp,s_id,RESET_PHASE+PHASE_END,0,1)
-  end
-  Duel.ShuffleHand(1-tp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	local g=Duel.GetFieldGroup(1-tp,LOCATION_HAND)
+	-- Revision with OCG ruling
+	-- Duel.ConfirmCards(tp,g)
+	local tg=g:Filter(Card.IsCode,nil,Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM))
+	if tg:GetCount()>0 then
+		Duel.HintSelection(tg)
+		Duel.SendtoGrave(tg,REASON_EFFECT+REASON_DISCARD)
+	else
+		Duel.Damage(tp,1000,REASON_EFFECT)
+		Duel.RegisterFlagEffect(tp,s_id,RESET_PHASE+PHASE_END,0,1)
+	end
+	Duel.ShuffleHand(1-tp)
 end
