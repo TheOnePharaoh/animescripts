@@ -6,15 +6,16 @@ function c511009039.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e1:SetValue(c511009039.splimit)
 	c:RegisterEffect(e1)
 	--damage
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(37457534,0))
 	e2:SetCategory(CATEGORY_DAMAGE)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e2:SetCode(EVENT_TO_GRAVE)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCondition(c511009039.condition)
 	e2:SetTarget(c511009039.target)
 	e2:SetOperation(c511009039.operation)
 	c:RegisterEffect(e2)
@@ -23,20 +24,16 @@ function c511009039.initial_effect(c)
     e3:SetType(EFFECT_TYPE_SINGLE)
     e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
     e3:SetRange(LOCATION_MZONE)
-    e3:SetCode(EFFECT_SET_ATTACK)
+    e3:SetCode(EFFECT_SET_ATTACK_FINAL)
     e3:SetCondition(c511009039.con)
     e3:SetValue(0)
     c:RegisterEffect(e3)
 end
+function c511009039.splimit(e,se,sp,st)
+	return se:GetHandler():IsCode(511009037)
+end
 function c511009039.con(e)
-	local p=e:GetHandlerPlayer()
-	return not Duel.IsExistingMatchingCard(Card.IsCode,p,LOCATION_GRAVE,0,1,nil,95100666)
-end
-function c511009039.filter(c,tp)
-	return c:GetControler()==1-tp or c:GetControler()==tp
-end
-function c511009039.condition(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(c511009039.filter,1,nil,tp)
+	return not Duel.IsExistingMatchingCard(Card.IsCode,e:GetHandlerPlayer(),LOCATION_GRAVE,0,1,nil,511009037)
 end
 function c511009039.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsRelateToEffect(e) end
@@ -45,7 +42,6 @@ function c511009039.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,0,0,1-tp,600)
 end
 function c511009039.operation(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Damage(p,d,REASON_EFFECT)
 end

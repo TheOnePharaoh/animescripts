@@ -10,7 +10,7 @@ function c511009172.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511009172.spfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x410)
+	return c:IsFaceup() and c:IsSetCard(0xf0)
 end
 function c511009172.spcon(e,c)
 	if c==nil then return true end
