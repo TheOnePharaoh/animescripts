@@ -1,4 +1,5 @@
 --coded by Lyris
+--fix by MLD
 --Cursed Ivy
 function c511007021.initial_effect(c)
 	--Activate
@@ -39,7 +40,7 @@ function c511007021.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
 function c511007021.eqlimit(e,c)
-	return e:GetLabelObject()==c
+	return e:GetOwner()==c
 end
 function c511007021.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -54,13 +55,11 @@ function c511007021.operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		e1:SetValue(c511007021.eqlimit)
-		e1:SetLabelObject(tc)
 		c:RegisterEffect(e1)
 	end
 end
 function c511007021.desop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=c:GetFirstCardTarget()
+	local tc=e:GetHandler():GetFirstCardTarget()
 	if tc and tc:IsLocation(LOCATION_MZONE) then
 		Duel.Destroy(tc,REASON_EFFECT)
 	end
@@ -75,10 +74,10 @@ function c511007021.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511007021.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(1-tp,LOCATION_MZONE)<=1 then return end
-	if not Duel.IsPlayerCanSpecialSummonMonster(tp,30069399,0,0x4011,0,0,1,RACE_PLANT,ATTRIBUTE_EARTH,POS_FACEUP_DEFENCE,1-tp) then return end
+	if not Duel.IsPlayerCanSpecialSummonMonster(tp,30069399,0,0x4011,0,0,1,RACE_PLANT,ATTRIBUTE_EARTH,POS_FACEUP_DEFENSE,1-tp) then return end
 	for i=1,2 do
 		local token=Duel.CreateToken(tp,30069399)
-		if Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP_DEFENCE) then
+		if Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE) then
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 			e1:SetCode(EVENT_DESTROYED)

@@ -23,34 +23,34 @@ function c511009067.initial_effect(c)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
-	--damage
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(79068663,0))
-	e4:SetCategory(CATEGORY_DAMAGE)
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e4:SetCode(EVENT_BATTLE_DESTROYED)
-	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e4:SetRange(LOCATION_SZONE)
-	e4:SetCountLimit(1)
-	e4:SetCondition(c511009067.damcon1)
-	e4:SetTarget(c511009067.damtg1)
-	e4:SetOperation(c511009067.damop1)
-	c:RegisterEffect(e4)
 	--Equip limit
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_SINGLE)
-	e5:SetCode(EFFECT_EQUIP_LIMIT)
-	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e5:SetValue(c511009067.eqlimit)
-	c:RegisterEffect(e5)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_EQUIP_LIMIT)
+	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e4:SetValue(c511009067.eqlimit)
+	c:RegisterEffect(e4)
 	--damage
+	local e5=Effect.CreateEffect(c)
+	e5:SetCategory(CATEGORY_DAMAGE)
+	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e5:SetCode(EVENT_BATTLE_DESTROYING)
+	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e5:SetRange(LOCATION_SZONE)
+	e5:SetCondition(c511009067.damcon)
+	e5:SetCost(c511009067.damcost)
+	e5:SetTarget(c511009067.damtg)
+	e5:SetOperation(c511009067.damop)
+	c:RegisterEffect(e5)
+	--destroy
 	local e6=Effect.CreateEffect(c)
-	e6:SetCategory(CATEGORY_DAMAGE)
-	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e6:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
+	e6:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e6:SetCode(EVENT_LEAVE_FIELD)
-	e6:SetCondition(c511009067.damcon2)
-	e6:SetTarget(c511009067.damtg2)
-	e6:SetOperation(c511009067.damop2)
+	e6:SetCondition(c511009067.descon)
+	e6:SetTarget(c511009067.destg)
+	e6:SetOperation(c511009067.desop)
 	c:RegisterEffect(e6)
 	--disable summon
 	local e7=Effect.CreateEffect(c)
@@ -84,46 +84,50 @@ function c511009067.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function c511009067.damcon1(e,tp,eg,ep,ev,re,r,rp)
-	local eqc=e:GetHandler():GetEquipTarget()
-	local des=eg:GetFirst()
-	return des:IsLocation(LOCATION_GRAVE) and des:GetReasonCard()==eqc and des:IsType(TYPE_MONSTER)
+function c511009067.damcon(e,tp,eg,ep,ev,re,r,rp)
+	local ec=eg:GetFirst()
+	local bc=ec:GetBattleTarget()
+	return e:GetHandler():GetEquipTarget()==ec and ec:IsControler(tp)
+		and bc:GetPreviousControler()==1-tp and bc:IsReason(REASON_BATTLE)
 end
-function c511009067.damtg1(e,tp,eg,ep,ev,re,r,rp,chk)
+function c511009067.damcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return e:GetHandler():GetFlagEffect(511009067)==0 end
+	e:GetHandler():RegisterFlagEffect(511009067,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_BATTLE,0,1)
+end
+function c511009067.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	eg:GetFirst():CreateEffectRelation(e)
+	local ec=e:GetHandler():GetEquipTarget()
+	local bc=ec:GetBattleTarget()
+	local dam=bc:GetPreviousAttackOnField()
+	if dam<0 then dam=0 end
 	Duel.SetTargetPlayer(1-tp)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,0)
+	Duel.SetTargetParam(dam)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dam)
 end
-function c511009067.damop1(e,tp,eg,ep,ev,re,r,rp)
-	local des=eg:GetFirst()
-	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
-	if des:IsRelateToEffect(e) then
-		local dam=des:GetPreviousAttackOnField()
-		if dam<0 then dam=0 end
-		Duel.Damage(p,dam,REASON_EFFECT)
-	end
+function c511009067.damop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Damage(p,d,REASON_EFFECT)
 end
-
-function c511009067.damcon2(e,tp,eg,ep,ev,re,r,rp)
+function c511009067.descon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ec=c:GetPreviousEquipTarget()
-	return c:IsReason(REASON_LOST_TARGET) and ec and ec:IsReason(REASON_BATTLE) and ec:GetReasonCard():IsRelateToBattle()
+	return c:IsReason(REASON_LOST_TARGET) and ec:IsReason(REASON_BATTLE)
 end
-function c511009067.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	local tc=e:GetHandler():GetPreviousEquipTarget():GetReasonCard()
-	if tc:IsRelateToBattle() then
-		Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,0,0)
-		Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,tc:GetAttack())
-	end
+function c511009067.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local ec=e:GetHandler():GetPreviousEquipTarget()
+	local rc=ec:GetReasonCard()
+	if chk==0 then return rc and rc:IsDestructable() end
+	Duel.SetTargetCard(rc)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,rc,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,rc:GetAttack())
 end
-function c511009067.damop2(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetHandler():GetPreviousEquipTarget():GetReasonCard()
-	if not tc:IsRelateToBattle() then return end
-	local atk=tc:GetAttack()
-	if atk<0 then atk=0 end
-	if Duel.Destroy(tc,REASON_EFFECT)~=0 then
-		Duel.Damage(1-tp,atk,REASON_EFFECT)
+function c511009067.desop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) then
+		local atk=tc:GetAttack()
+		if atk<0 or tc:IsFacedown() then atk=0 end
+		if Duel.Destroy(tc,REASON_EFFECT)~=0 then
+			Duel.Damage(1-tp,atk,REASON_EFFECT)
+		end
 	end
 end

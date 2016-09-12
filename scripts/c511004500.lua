@@ -1,34 +1,28 @@
 --Realize Defense
-local id,ref=GIR()
-
-function ref.start(c)
-  --Change Position
-  local e1=c:AddActivateProc()
-  e1:SetCategory(CATEGORY_POSITION)
-  e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-  e1:SetTarget(CCF(ref.tg,ref.tg_check,ref.tg_target))
-  e1:SetOperation(ref.op)
+function c511004500.initial_effect(c)
+	--Activate
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_POSITION)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetTarget(c511004500.target)
+	e1:SetOperation(c511004500.activate)
+	c:RegisterEffect(e1)
 end
-
---Change Position
-local function check(c) return c:IsBaseDefenceAbove(c:GetBaseAttack()+1) end
-ref.filter=AndFunctions(check,Card.IsFaceup,Card.IsAttackPos)
-
-function ref.tg_target(e,tp,eg,ep,ev,re,r,rp,chkc)
-  return chkc:TargetFilterCheck(ref.filter,tp,LOCATION_MZONE)
+function c511004500.filter(c)
+	return c:IsPosition(POS_FACEUP_ATTACK) and c:GetBaseDefense()>c:GetBaseAttack()
 end
-
-function ref.tg_check(e,tp,eg,ep,ev,re,r,rp)
-  return Duel.PlayerFilterTargetCheck(ref.filter,tp,LOCATION_MZONE)
+function c511004500.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c511004500.filter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(c511004500.filter,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	local g=Duel.SelectTarget(tp,c511004500.filter,tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_POSITION,g,1,0,0)
 end
-
-function ref.tg(e,tp,eg,ep,ev,re,r,rp)
-  Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUPATTACK)
-  local g=Duel.SelectTarget(tp,ref.filter,tp,LOCATION_MZONE)
-  Duel.SetOperationInfo(0,CATEGORY_POSITION,g,1,0,0)
-end
-
-function ref.op(e,tp,eg,ep,ev,re,r,rp)
-  local m=Duel.MaybeUncheckedTarget(e)
-  m:OnValue(Duel.ChangePosition,POS_FACEUP_DEFENCE)
+function c511004500.activate(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) and tc:IsPosition(POS_FACEUP_ATTACK) then
+		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE)
+	end
 end
