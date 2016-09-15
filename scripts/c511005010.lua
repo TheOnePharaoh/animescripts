@@ -33,7 +33,7 @@ end
 
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
-	local g=Duel.GetFieldGroup(1-tp,LOCATION_HAND)
+	local g=Duel.GetFieldGroup(1-tp,LOCATION_HAND,0)
 	-- Revision with OCG ruling
 	-- Duel.ConfirmCards(tp,g)
 	local tg=g:Filter(Card.IsCode,nil,Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM))
