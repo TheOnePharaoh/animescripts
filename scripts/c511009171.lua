@@ -5,6 +5,7 @@ function c511009171.initial_effect(c)
 	e1:SetDescription(aux.Stringid(17415895,0))
 	e1:SetCategory(CATEGORY_DAMAGE)
 	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
 	e1:SetCondition(c511009171.damcon)
@@ -28,10 +29,10 @@ function c511009171.initial_effect(c)
 end
 
 function c511009171.damcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():GetFlagEffect(511009171)>0
+	return e:GetHandler():GetFlagEffect(c:GetOriginalCode())>0
 end
 function c511009171.damtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-if chk==0 then return true end
+	if chk==0 then return true end
 	Duel.SetTargetPlayer(1-tp)
 	Duel.SetTargetParam(500)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,500)

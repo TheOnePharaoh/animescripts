@@ -2,9 +2,7 @@
 function c511009029.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,10979723,aux.FilterBoolFunction(Card.IsFusionSetCard,0x4),1,true,false)
-	
-	
+	aux.AddFusionProcCodeFun(c,10979723,aux.FilterBoolFunction(Card.IsFusionSetCard,0x4),1,true,true)
 	--atkup
 	local e1=Effect.CreateEffect(c)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -14,59 +12,54 @@ function c511009029.initial_effect(c)
 	e1:SetCondition(c511009029.cond)
 	e1:SetValue(500)
 	c:RegisterEffect(e1)
-	
-	--destroy
+	--attack
 	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_DESTROY)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
-	e2:SetCode(EVENT_BATTLED)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCondition(c511009029.descon)
-	e2:SetOperation(c511009029.desop)
+	e2:SetOperation(c511009029.negop)
 	c:RegisterEffect(e2)
-	
-	--disable attack
+	--lose atk
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(84013237,0))
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_BATTLED)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e3:SetCondition(c511009029.condition)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
+	e3:SetCondition(c511009029.atkcon)
+	e3:SetTarget(c511009029.atktg)
 	e3:SetOperation(c511009029.atkop)
 	c:RegisterEffect(e3)
-	
 end
 function c511009029.cond(e)
 	local phase=Duel.GetCurrentPhase()
-	return (phase==PHASE_DAMAGE or phase==PHASE_DAMAGE_CAL)
-		and Duel.GetAttacker()==e:GetHandler()
+	return (phase==PHASE_DAMAGE or phase==PHASE_DAMAGE_CAL) and Duel.GetAttacker()==e:GetHandler()
 end
-function c511009029.descon(e,tp,eg,ep,ev,re,r,rp)
+function c511009029.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
 	if not d then return false end
-	return a:IsSetCard(0x4) and d:IsControler(1-tp)
+	return a:IsControler(tp) and d:IsControler(1-tp) and a:IsSetCard(0x4)
 end
-
-function c511009029.desop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=Duel.GetAttackTarget()
-	if tc:IsFacedown() or not tc:IsRelateToBattle() then return end
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetValue(-800)
-	e1:SetReset(RESET_EVENT+0x1fe0000)
-	tc:RegisterEffect(e1)
-end
-
-function c511009029.condition(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local a=Duel.GetAttacker()
-	if c==Duel.GetAttackTarget() or a:IsControler(tp) then return end
-	return true
+function c511009029.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsControler(1-tp) and chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 end
 function c511009029.atkop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateAttack()
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetReset(RESET_EVENT+0x1fe0000)
+		e1:SetValue(-800)
+		tc:RegisterEffect(e1)
+	end
 end
-
+function c511009029.negop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetAttacker():IsControler(1-tp) and Duel.GetAttackTarget()~=e:GetHandler() 
+		and Duel.SelectYesNo(tp,aux.Stringid(8279188,0)) then
+		Duel.NegateAttack()
+	end
+end

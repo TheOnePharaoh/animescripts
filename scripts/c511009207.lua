@@ -1,10 +1,13 @@
 --Iron Resolve
 --Scripted by eclair11
+--fixed by MLD
 function c511009207.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetHintTiming(TIMING_DAMAGE_STEP)
 	e1:SetCost(c511009207.cost)
 	e1:SetOperation(c511009207.activate)
 	c:RegisterEffect(e1)
@@ -22,5 +25,6 @@ function c511009207.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(1)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
+	Duel.BreakEffect()
 	Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE,1)
 end
