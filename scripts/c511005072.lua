@@ -41,13 +41,13 @@ function scard.g_slvl(g)
 end
 
 function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  local g=scard.g_slvl(Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil))
+  local g=scard.g_slvl(Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil))
   if chk==0 then return g:GetCount()>0 end
   Duel.SetOperationInfo(0,CATEGORY_LVCHANGE,g,0,0,3)
 end
 
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
-  local g=scard.g_slvl(Duel.GetMatchingGroup(scard.fil,tp,LOCATION_MZONE,0,nil))
+  local g=scard.g_slvl(Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil))
   if g:GetCount()==0 then return end
   local c=e:GetHandler()
   local tc=g:GetFirst()

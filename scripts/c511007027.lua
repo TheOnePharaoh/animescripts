@@ -1,16 +1,26 @@
 --Coded by Lyris
+--fixed by MLD
 --Devoted Love
 function c511007027.initial_effect(c)
-	--During your opponent's Battle Phase: End the Battle Phase, then your opponent draws 1 card. [Electromagnetic Turtle & Dark Bribe]
+	--Activate
 	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_DRAW)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetHintTiming(0,TIMING_BATTLE_START+TIMING_DAMAGE_STEP)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCondition(c511007027.condition)
+	e1:SetTarget(c511007027.target)
 	e1:SetOperation(c511007027.operation)
 	c:RegisterEffect(e1)
 end
 function c511007027.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetTurnPlayer()~=tp and Duel.GetCurrentPhase()==PHASE_BATTLE
+	local ph=Duel.GetCurrentPhase()
+	return ph>=0x08 and ph<=0x20 and Duel.GetTurnPlayer()~=tp
+end
+function c511007027.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,1-tp,1)
 end
 function c511007027.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE,1)
@@ -26,5 +36,6 @@ function c511007027.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e2,tp)
 end
 function c511007027.damop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,0,511007027)
 	Duel.SetLP(tp,0)
 end

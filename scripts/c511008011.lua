@@ -12,28 +12,31 @@ function c511008011.initial_effect(c)
 	e1:SetOperation(c511008011.activate)
 	c:RegisterEffect(e1)
 end
-function c511008011.hfilter(c)
-	return c:IsCode(34796454) and not c:IsPublic()
-end
-function c511008011.cfilter(c)
-	return c:IsAttackPos()
-end
 function c511008011.condition(e,tp,eg,ep,ev,re,r,rp)
-	return tp~=Duel.GetTurnPlayer() and Duel.GetLocationCount(tp,LOCATION_MZONE)>2
-		and Duel.IsExistingMatchingCard(c511008011.hfilter,tp,LOCATION_HAND,0,3,nil)
+	return Duel.GetAttacker():IsControler(1-tp)
+end
+function c511008011.filter(c,e,tp)
+	return c:IsCode(34796454) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511008011.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.IsExistingTarget(c511008011.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	local g=Duel.SelectTarget(tp,c511008011.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsAttackPos() end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>2 
+		and Duel.IsExistingTarget(Card.IsAttackPos,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) 
+		and Duel.IsExistingMatchingCard(c511008011.filter,tp,LOCATION_HAND,0,3,nil,e,tp) end
+	local g=Duel.SelectTarget(tp,Card.IsAttackPos,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_POSITION,g,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,3,tp,LOCATION_HAND)
 end
 function c511008011.activate(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.IsExistingMatchingCard(c511008011.hfilter,tp,LOCATION_HAND,0,3,nil)
-		and Duel.GetLocationCount(tp,LOCATION_MZONE)<3 then return end
 	local tc=Duel.GetFirstTarget()
-	local hc=Duel.GetMatchingGroup(c511008011.hfilter,tp,LOCATION_HAND,0,nil)
-	if tc:IsRelateToEffect(e) and tc:IsPosition(POS_FACEUP_ATTACK) then
-		Duel.ChangePosition(tc,POS_FACEUP_DEFENCE)
-		Duel.SpecialSummon(hc,0,tp,tp,false,false,POS_FACEUP)
+	if tc and tc:IsRelateToEffect(e) and tc:IsAttackPos() then
+		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,0,0)
+		if Duel.GetLocationCount(tp,LOCATION_MZONE)<=2 then return end
+		local g=Duel.GetMatchingGroup(c511008011.filter,tp,LOCATION_HAND,0,nil,e,tp)
+		if g:GetCount()>=3 then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+			local sg=g:Select(tp,3,3,nil)
+			Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
+		end
 	end
 end
