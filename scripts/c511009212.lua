@@ -1,5 +1,5 @@
 --Spell Search
---remade by MLD
+--remade by MLD with tips from Shad3
 function c511009212.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
