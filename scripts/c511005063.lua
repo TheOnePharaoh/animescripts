@@ -3,6 +3,34 @@
 
 local scard=c511005063
 
+--Jack specific card effects -_-
+if not scard.gl_chk then
+	scard.gl_chk=true
+	local regeff=Card.RegisterEffect
+	Card.RegisterEffect=function(c,e,f)
+		local tc=e:GetOwner()
+		if tc then
+			local tg=e:GetTarget()
+			if tg then
+				if c35803249 and tg==c35803249.distg then --Jinzo - Lord
+					--Debug.Message('"Jinzo - Lord" detected')
+					e:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
+				elseif c51452091 and tg==c51452091.distarget then --Royal Decree
+					--Debug.Message('"Royal Decree" detected')
+					e:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
+				elseif c77585513 and tg==c77585513.distg then --Jinzo
+					--Debug.Message('"Jinzo" detected')
+					e:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
+				elseif c84636823 and tg==c84636823.distg then --Spell Canceller
+					--Debug.Message('"Spell Canceller" detected')
+					e:SetTargetRange(LOCATION_ONFIELD,LOCATION_ONFIELD)
+				end
+			end
+		end
+		return regeff(c,e,f)
+	end
+end
+
 function scard.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -72,6 +100,14 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 				se1:SetLabelObject(te:GetLabelObject())
 				se1:SetReset(RESET_EVENT+0x47c0000)
 				stc:RegisterEffect(se1)
+				local se2=Effect.CreateEffect(stc)
+				se2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+				se2:SetCode(EVENT_FLIP)
+				se2:SetCondition(scard.mimica_cd)
+				se2:SetOperation(scard.mimica_rst)
+				se1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+				se1:SetReset(RESET_EVENT+0x47c0000)
+				stc:RegisterEffect(se2)
 				if stc:IsType(TYPE_TRAP) then
 					local te1=Effect.CreateEffect(stc)
 					te1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -127,59 +163,68 @@ function scard.mimica_cd(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_DAMAGE or (re and e:GetHandler()==re:GetHandler())
 end
 
+function scard.mimica_rst(e,tp,eg,ep,ev,re,r,rp)
+	e:GetHandler():ResetEffect(EFFECT_CHANGE_TYPE,RESET_CODE)
+end
+
 function scard.mimica_cs(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	c:AssumeProperty(ASSUME_TYPE,c:GetOriginalType())
 	local te=c:GetActivateEffect()
 	local tprop=te:GetProperty()
-	te:SetProperty(bit.band(tprop,EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL))
+	te:SetProperty(bit.bor(tprop,EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL))
 	local act=te:IsActivatable(tp)
 	te:SetProperty(tprop)
 	if chk==0 then return act end
-	local ote,ceg,cep,cev,cre,cr,crp=Duel.CheckEvent(te:GetCode(),true)
-	c:ResetEffect(EFFECT_CHANGE_TYPE,RESET_CODE)
 	e:SetType(EFFECT_TYPE_ACTIVATE)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_CHAIN_END)
+	e1:SetOperation(scard.mimica_endop)
+	c:CreateEffectRelation(e1)
+	Duel.RegisterEffect(e1,tp)
 	local cost=te:GetCost()
-	if cost then cost(te,tp,ceg,cep,cev,cre,cr,crp,1) end
+	if cost then cost(te,tp,eg,ep,ev,re,r,rp,1) end
 end
 
 function scard.mimica_tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local te=e:GetHandler():GetActivateEffect()
-	local ote,ceg,cep,cev,cre,cr,crp=Duel.CheckEvent(te:GetCode(),true)
 	local targ=te:GetTarget()
-	if chkc then return targ and targ(te,tp,ceg,cep,cev,cre,cr,crp,0,chkc) end
-	if chk==0 then return not targ or targ(te,tp,ceg,cep,cev,cre,cr,crp,0) end
+	if chkc then return targ and targ(tp,eg,ep,ev,re,r,rp,0,chkc) end
+	if chk==0 then return not targ or targ(te,tp,eg,ep,ev,re,r,rp,0) end
 	e:GetHandler():SetStatus(STATUS_ACTIVATED,true)
-	if targ then targ(te,tp,ceg,cep,cev,cre,cr,crp,1) end
+	if targ then targ(te,tp,eg,ep,ev,re,r,rp,1) end
 end
 
 function scard.mimica_op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local te=c:GetActivateEffect()
-	local ote,ceg,cep,cev,cre,cr,crp=Duel.CheckEvent(te:GetCode(),true)
+	--local ote,ceg,cep,cev,cre,cr,crp=Duel.CheckEvent(te:GetCode(),true)
 	local oper=te:GetOperation()
-	if Duel.GetCurrentPhase()==PHASE_DAMAGE and bit.band(c:GetOriginalType(),TYPE_CONTINUOUS)==TYPE_CONTINUOUS then return end
-	if oper then oper(e,tp,ceg,cep,cev,cre,cr,crp) end
+	if oper then oper(e,tp,eg,ep,ev,re,r,rp) end
+end
+
+function scard.mimica_endop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	if Duel.GetCurrentPhase()~=PHASE_DAMAGE and c:IsRelateToEffect(e) then
 		if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and c:IsType(TYPE_CONTINUOUS) then
 			Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
-		else
+		elseif not (c:IsType(TYPE_EQUIP) and c:GetEquipTarget()) then
 			Duel.SendtoGrave(c,REASON_RULE)
 		end
 	end
+	e:Reset()
 end
 
 function scard.mimicb_cd(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	c:AssumeProperty(ASSUME_TYPE,c:GetOriginalType())
 	local te=c:GetActivateEffect()
-	Debug.Message(te:IsActivatable(tp))
 	return te:IsActivatable(tp)
 end
 
 function scard.mimicb_op(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.SelectYesNo(tp,aux.Stringid(4001,9)) then return end
 	local c=e:GetHandler()
-	c:ResetEffect(EFFECT_CHANGE_TYPE,RESET_CODE)
-	Duel.ChangePosition(c,POS_FACEUP_ATTACK,POS_FACEUP_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_DEFENSE)
+	Duel.ChangePosition(c,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE)
 end
