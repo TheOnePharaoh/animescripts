@@ -106,6 +106,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 				se2:SetCondition(scard.mimica_cd)
 				se2:SetOperation(scard.mimica_rst)
 				se1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+				se1:SetReset(RESET_EVENT+0x47c0000)
 				stc:RegisterEffect(se2)
 				if stc:IsType(TYPE_TRAP) then
 					local te1=Effect.CreateEffect(stc)
@@ -212,6 +213,7 @@ function scard.mimica_endop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoGrave(c,REASON_RULE)
 		end
 	end
+	e:Reset()
 end
 
 function scard.mimicb_cd(e,tp,eg,ep,ev,re,r,rp)
