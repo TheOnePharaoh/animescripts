@@ -67,21 +67,21 @@ function c511009212.filter(c)
 end
 function c511009212.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(c511009212.filter,tp,LOCATION_SZONE,LOCATION_SZONE,nil)
-	local g2=Group.CreateGroup()
+	--local g2=Group.CreateGroup()
 	local tc=g:GetFirst()
 	while tc do
 		local te=tc:GetActivateEffect()
 		te:SetCondition(aux.TRUE)
 		if te:IsActivatable(tc:GetControler()) and Duel.SelectYesNo(tc:GetControler(),aux.Stringid(28265983,0)) then
 			Duel.ChangePosition(tc,POS_FACEUP)
+			--g2:AddCard(tc)
 		end
 		te:SetCondition(aux.FALSE)
-		g2:AddCard(tc)
 		tc=g:GetNext()
 	end
-	if g2:GetCount()>0 then
+	--[[if g2:GetCount()>0 then
 		Duel.RaiseEvent(g2,EVENT_PREDRAW,e,REASON_EFFECT,Duel.GetTurnPlayer(),Duel.GetTurnPlayer(),0)
-	end
+	end]]
 end
 function c511009212.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp and Duel.GetDrawCount(1-tp)>0
