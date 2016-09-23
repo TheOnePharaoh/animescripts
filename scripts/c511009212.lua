@@ -25,8 +25,9 @@ function c511009212.initial_effect(c)
 		c511009212.global_check=true
 		local ge1=Effect.CreateEffect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetCode(EVENT_PREDRAW)
+		ge1:SetCode(EVENT_ADJUST)
 		ge1:SetOperation(c511009212.checkop)
+		ge1:SetCountLimit(1)
 		Duel.RegisterEffect(ge1,0)
 	end
 end
