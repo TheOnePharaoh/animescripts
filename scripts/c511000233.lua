@@ -21,8 +21,17 @@ function c511000233.initial_effect(c)
 	e2:SetTarget(c511000233.tg)
 	e2:SetOperation(c511000233.op)
 	c:RegisterEffect(e2)
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511000233.indes)
+	c:RegisterEffect(e3)
 end
 c511000233.xyz_number=4
+function c511000233.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000233.valcon(e,re,r,rp)
 	return bit.band(r,REASON_BATTLE)~=0
 end

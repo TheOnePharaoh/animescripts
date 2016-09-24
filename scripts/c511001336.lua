@@ -31,8 +31,17 @@ function c511001336.initial_effect(c)
 	e3:SetOperation(c511001336.op)
 	e3:SetLabelObject(e2)
 	c:RegisterEffect(e3)
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511001336.indes)
+	c:RegisterEffect(e4)
 end
 c511001336.xyz_number=4
+function c511001336.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001336.desfilter(c)
 	return c:IsFaceup() and c:IsAttribute(ATTRIBUTE_WATER) and c:IsDestructable()
 end

@@ -12,8 +12,17 @@ function c511000184.initial_effect(c)
 	e1:SetCost(c511000184.tbcost)
 	e1:SetOperation(c511000184.tbop)
 	c:RegisterEffect(e1)
+	--number generic effect
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511000184.indes)
+	c:RegisterEffect(e2)
 end
 c511000184.xyz_number=14
+function c511000184.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000184.tbcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=Duel.GetAttacker()

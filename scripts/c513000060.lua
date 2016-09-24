@@ -21,6 +21,12 @@ function c513000060.initial_effect(c)
 	e2:SetCondition(c513000060.atkcon)
 	e2:SetValue(0)
 	c:RegisterEffect(e2)
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c513000060.indes)
+	c:RegisterEffect(e3)
 	--spsummon
 	local e6=Effect.CreateEffect(c)
 	e6:SetDescription(aux.Stringid(21521304,1))
@@ -46,6 +52,9 @@ function c513000060.initial_effect(c)
 	end
 end
 c513000060.xyz_number=39
+function c513000060.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c513000060.efilter(e,re)
 	return re:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end

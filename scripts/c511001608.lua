@@ -89,8 +89,17 @@ function c511001608.initial_effect(c)
 		ge3:SetOperation(c511001608.numchk)
 		Duel.RegisterEffect(ge3,0)
 	end
+	--number generic effect
+	local e8=Effect.CreateEffect(c)
+	e8:SetType(EFFECT_TYPE_SINGLE)
+	e8:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e8:SetValue(c511001608.indes)
+	c:RegisterEffect(e8)
 end
 c511001608.xyz_number=93
+function c511001608.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001608.chkfilter(c,tp,re)
 	return c:IsSetCard(0x48) and c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp
 end

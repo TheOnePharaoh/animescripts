@@ -37,8 +37,17 @@ function c511002727.initial_effect(c)
 		ge3:SetOperation(c511002727.numchk)
 		Duel.RegisterEffect(ge3,0)
 	end
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511002727.indes)
+	c:RegisterEffect(e4)
 end
 c511002727.xyz_number=54
+function c511002727.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002727.indcon(e)
 	return e:GetHandler():IsPosition(POS_FACEUP_ATTACK)
 end

@@ -67,8 +67,17 @@ function c511002090.initial_effect(c)
 		ge1:SetOperation(c511002090.lpchk)
 		Duel.RegisterEffect(ge1,0)
 	end
+	--number generic effect
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_SINGLE)
+	e6:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e6:SetValue(c511002090.indes)
+	c:RegisterEffect(e6)
 end
 c511002090.xyz_number=6
+function c511002090.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002090.eqcon(e,tp,eg,ep,ev,re,r,rp)
 	return bit.band(e:GetHandler():GetSummonType(),SUMMON_TYPE_XYZ)==SUMMON_TYPE_XYZ
 end

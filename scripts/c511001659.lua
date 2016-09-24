@@ -53,8 +53,17 @@ function c511001659.initial_effect(c)
 		ge2:SetOperation(c511001659.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511001659.indes)
+	c:RegisterEffect(e5)
 end
 c511001659.xyz_number=9
+function c511001659.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001659.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,1992816)
 end

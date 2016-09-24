@@ -20,8 +20,17 @@ function c511001339.initial_effect(c)
 	e2:SetCode(EFFECT_DISABLE)
 	e2:SetTarget(c511001339.distg)
 	c:RegisterEffect(e2)
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511001339.indes)
+	c:RegisterEffect(e3)
 end
 c511001339.xyz_number=2
+function c511001339.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001339.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local a=e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST)
 	local b=Duel.GetAttacker():GetCounter(0x1101)>0

@@ -33,8 +33,17 @@ function c511000294.initial_effect(c)
 	e3:SetTarget(c511000294.destg)
 	e3:SetOperation(c511000294.desop)
 	c:RegisterEffect(e3)
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511000294.indes)
+	c:RegisterEffect(e4)
 end
 c511000294.xyz_number=1000
+function c511000294.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000294.negfilter(c)
 	return c:IsSetCard(0x1048) or c:IsSetCard(0x1073) or c:IsCode(511000296)
 end

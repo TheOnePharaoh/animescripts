@@ -32,8 +32,17 @@ function c511001431.initial_effect(c)
 		ge2:SetOperation(c511001431.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511001431.indes)
+	c:RegisterEffect(e3)
 end
 c511001431.xyz_number=106
+function c511001431.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001431.damval(e,re,val,r,rp,rc)
 	if e:GetHandler():IsPosition(POS_FACEUP_ATTACK) and bit.band(r,REASON_EFFECT)~=0 then return 0
 	else return val end

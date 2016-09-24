@@ -55,8 +55,17 @@ function c511000296.initial_effect(c)
 	e6:SetCost(c511000296.nacost)
 	e6:SetOperation(c511000296.naop)
 	c:RegisterEffect(e6)
+	--number generic effect
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_SINGLE)
+	e7:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e7:SetValue(c511000296.indes)
+	c:RegisterEffect(e7)
 end
 c511000296.xyz_number=1000
+function c511000296.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000296.cfilter(c,tp,code)
 	return c:IsCode(code) and c:GetPreviousControler()==tp and c:IsReason(REASON_DESTROY) and c:GetOverlayCount()==0
 end

@@ -37,8 +37,17 @@ function c511002111.initial_effect(c)
 		ge2:SetOperation(c511002111.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511002111.indes)
+	c:RegisterEffect(e3)
 end
 c511002111.xyz_number=106
+function c511002111.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002111.condition(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and re:IsActiveType(TYPE_MONSTER)
 		and Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)==LOCATION_MZONE

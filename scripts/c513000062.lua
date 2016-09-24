@@ -35,8 +35,17 @@ function c513000062.initial_effect(c)
 		ge2:SetOperation(c513000062.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c513000062.indes)
+	c:RegisterEffect(e3)
 end
 c513000062.xyz_number=80
+function c513000062.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c513000062.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() and chkc~=e:GetHandler() end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
@@ -68,7 +77,7 @@ function c513000062.eqop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetReset(RESET_EVENT+0x1fe0000)
 	e2:SetLabelObject(tc)
 	c:RegisterEffect(e2)
-	local e3=Effect.CreateEffect(c)	
+	local e3=Effect.CreateEffect(c) 
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
 	e3:SetCondition(c513000062.btcon)
