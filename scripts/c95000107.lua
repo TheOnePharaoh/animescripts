@@ -248,7 +248,7 @@ function c95000107.adup(c,oc)
 	e1:SetValue(c:GetRank()*100)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
-	e2:SetCode(EFFECT_UPDATE_DEFENCE)
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e2)
 end
 function c95000107.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)

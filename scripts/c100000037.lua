@@ -1,4 +1,4 @@
---カブレラ・ストーン
+﻿--カブレラ・ストーン
 function c100000037.initial_effect(c)
 	--self destroy
 	local e1=Effect.CreateEffect(c)
@@ -19,7 +19,7 @@ function c100000037.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100000037.sdcon(e)
-	return e:GetHandler():IsPosition(POS_FACEUP_DEFENCE)
+	return e:GetHandler():IsPosition(POS_FACEUP_DEFENSE)
 end
 function c100000037.dmcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

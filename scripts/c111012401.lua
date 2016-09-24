@@ -1,4 +1,4 @@
---ギミック・シールド
+﻿--ギミック・シールド
 function c111012401.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -55,7 +55,7 @@ function c111012401.operation(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_EQUIP)
-		e2:SetCode(EFFECT_SET_DEFENCE)
+		e2:SetCode(EFFECT_SET_DEFENSE)
 		e2:SetValue(def)
 		e2:SetReset(RESET_EVENT+0x1fe0000)
 		c:RegisterEffect(e2)

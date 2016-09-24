@@ -13,7 +13,7 @@ function c450000110.initial_effect(c)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e2:SetTarget(c450000110.target)
-	e2:SetValue(POS_FACEUP_DEFENCE+NO_FLIP_EFFECT)
+	e2:SetValue(POS_FACEUP_DEFENSE+NO_FLIP_EFFECT)
 	c:RegisterEffect(e2)
 end
 function c450000110.target(e,c)

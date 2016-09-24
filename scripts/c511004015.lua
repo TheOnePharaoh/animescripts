@@ -107,7 +107,7 @@ function c511004015.filter2(c,tp,e)
 	return Duel.IsExistingTarget(c511004015.filter3,tp,0,LOCATION_MZONE,1,nil,c:GetAttack()+600) and c:IsReleasableByEffect() and c:IsCanBeEffectTarget(e)
 end
 function c511004015.filter3(c,atk)
-	return c:IsDestructable() and c:IsPosition(POS_FACEUP_DEFENCE) and c:GetDefense()<atk
+	return c:IsDestructable() and c:IsPosition(POS_FACEUP_DEFENSE) and c:GetDefense()<atk
 end
 function c511004015.target3(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

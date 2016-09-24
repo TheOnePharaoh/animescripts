@@ -52,7 +52,7 @@ function c95000082.initial_effect(c)
 	--Def
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_FIELD)
-	e7:SetCode(EFFECT_UPDATE_DEFENCE)
+	e7:SetCode(EFFECT_UPDATE_DEFENSE)
 	e7:SetRange(LOCATION_SZONE)
 	e7:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e7:SetTarget(aux.TargetBoolFunction(Card.IsAttribute,ATTRIBUTE_WIND))
