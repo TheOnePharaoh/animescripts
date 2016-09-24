@@ -1,4 +1,4 @@
---ダークネス・スライム
+﻿--ダークネス・スライム
 function c100000705.initial_effect(c)
 	--special summon
 	local e1=Effect.CreateEffect(c)
@@ -36,7 +36,7 @@ function c100000705.atkop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) or not c:IsFaceup() then return end
 	local tc=Duel.GetFirstTarget()
 	local atk=tc:GetAttack()
-	local def=tc:GetDefence()
+	local def=tc:GetDefense()
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_ATTACK)

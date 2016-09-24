@@ -1,4 +1,4 @@
---エクシーズ弁当
+﻿--エクシーズ弁当
 function c100000263.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -15,7 +15,7 @@ function c100000263.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100000263.filter1(c)
-	return c:GetDefence()>=2000
+	return c:GetDefense()>=2000
 end
 function c100000263.con1(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c100000263.filter1,1,nil) and re:GetHandler():IsType(TYPE_XYZ)
@@ -28,7 +28,7 @@ function c100000263.activate1(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c100000263.filter2(c)
-	return c:GetDefence()>=2000 and c:GetBattleTarget():IsType(TYPE_XYZ)
+	return c:GetDefense()>=2000 and c:GetBattleTarget():IsType(TYPE_XYZ)
 end
 function c100000263.con2(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c100000263.filter2,1,nil)
