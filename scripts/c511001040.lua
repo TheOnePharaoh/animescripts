@@ -4,7 +4,8 @@ function c511001040.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_ADJUST)
-	e1:SetRange(LOCATION_MZONE)	
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(c511001040.condition)
 	e1:SetOperation(c511001040.operation)
 	c:RegisterEffect(e1)
 	--detach
@@ -15,6 +16,12 @@ function c511001040.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e2:SetOperation(c511001040.flipop)
 	c:RegisterEffect(e2)
+end
+function c511001040.filter2(c,fid)
+	return c:IsFaceup() and c:IsCode(50045299) and c:GetFieldID()<fid
+end
+function c511001040.condition(e,tp,eg,ep,ev,re,r,rp)
+	return not Duel.IsExistingMatchingCard(c511001040.filter2,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,e:GetHandler():GetFieldID)
 end
 function c511001040.filter(c)
 	return c:IsRace(RACE_DRAGON) and c:IsFaceup() and not c:IsCode(50045299)
