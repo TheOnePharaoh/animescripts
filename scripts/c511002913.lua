@@ -27,8 +27,17 @@ function c511002913.initial_effect(c)
 		ge2:SetOperation(c511002913.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511002913.indes)
+	c:RegisterEffect(e2)
 end
 c511002913.xyz_number=94
+function c511002913.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002913.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end

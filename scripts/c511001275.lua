@@ -54,8 +54,17 @@ function c511001275.initial_effect(c)
 	e5:SetTarget(c511001275.atktg2)
 	e5:SetOperation(c511001275.atkop2)
 	c:RegisterEffect(e5)
+	--number generic effect
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_SINGLE)
+	e6:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e6:SetValue(c511001275.indes)
+	c:RegisterEffect(e6)
 end
 c511001275.xyz_number=38
+function c511001275.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001275.condition(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and rp~=tp
 		and re:IsActiveType(TYPE_SPELL) and Duel.IsChainDisablable(ev)

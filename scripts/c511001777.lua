@@ -26,7 +26,7 @@ function c511001777.initial_effect(c)
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
 	--Negates Battle Damage
-   	local e3=Effect.CreateEffect(c)
+	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
@@ -53,8 +53,17 @@ function c511001777.initial_effect(c)
 		ge2:SetOperation(c511001777.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511001777.indes)
+	c:RegisterEffect(e5)
 end
 c511001777.xyz_number=43
+function c511001777.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001777.cfilter(c,lp)
 	return c:IsFaceup() and c:GetAttack()>lp
 end

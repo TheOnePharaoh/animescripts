@@ -32,9 +32,18 @@ function c511000277.initial_effect(c)
 	e3:SetCondition(c511000277.spcon)
 	e3:SetTarget(c511000277.sptg)
 	e3:SetOperation(c511000277.spop)
-	c:RegisterEffect(e3)	
+	c:RegisterEffect(e3)
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511000277.indes)
+	c:RegisterEffect(e4)	
 end
 c511000277.xyz_number=1
+function c511000277.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000277.cfilter(c)
 	return c:IsFaceup() and c:IsCode(511000275)
 end

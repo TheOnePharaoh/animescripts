@@ -44,8 +44,17 @@ function c511001372.initial_effect(c)
 		ge2:SetOperation(c511001372.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511001372.indes)
+	c:RegisterEffect(e5)
 end
 c511001372.xyz_number=88
+function c511001372.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001372.efilter(e,te)
 	return te:IsActiveType(TYPE_MONSTER) and te:GetOwner()~=e:GetOwner()
 end

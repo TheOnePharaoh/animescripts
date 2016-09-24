@@ -43,8 +43,17 @@ function c511001273.initial_effect(c)
 	e4:SetTarget(c511001273.numsptg)
 	e4:SetOperation(c511001273.numspop)
 	c:RegisterEffect(e4)
+	--number generic effect
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511001273.indes)
+	c:RegisterEffect(e5)
 end
 c511001273.xyz_number=37
+function c511001273.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001273.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end

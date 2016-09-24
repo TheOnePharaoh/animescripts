@@ -44,8 +44,17 @@ function c513000059.initial_effect(c)
 		ge2:SetOperation(c513000059.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c513000059.indes)
+	c:RegisterEffect(e4)
 end
 c513000059.xyz_number=101
+function c513000059.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c513000059.filter(c)
 	return not c:IsType(TYPE_TOKEN) and c:IsAbleToChangeControler()
 end
@@ -93,7 +102,7 @@ end
 function c513000059.spcost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	local g=e:GetHandler():GetOverlayGroup()
-	Duel.SendtoGrave(g,REASON_COST)	
+	Duel.SendtoGrave(g,REASON_COST) 
 end
 function c513000059.spfilter(c,e,tp)
 	return c:IsCode(48739166) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)

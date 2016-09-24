@@ -36,8 +36,17 @@ function c511002871.initial_effect(c)
 		ge2:SetOperation(c511002871.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511002871.indes)
+	c:RegisterEffect(e3)
 end
 c511002871.xyz_number=104
+function c511002871.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002871.desfilter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsDestructable()
 end

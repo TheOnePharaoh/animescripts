@@ -46,8 +46,17 @@ function c511001997.initial_effect(c)
 		ge2:SetOperation(c511001997.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511001997.indes)
+	c:RegisterEffect(e4)
 end
-c511001997.xyz_number=44	
+c511001997.xyz_number=44
+function c511001997.indes(e,c)
+	return not c:IsSetCard(0x48)
+end	
 function c511001997.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return tp~=ep
 end

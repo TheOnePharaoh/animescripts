@@ -33,8 +33,17 @@ function c511002749.initial_effect(c)
 		ge2:SetOperation(c511002749.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511002749.indes)
+	c:RegisterEffect(e4)
 end
 c511002749.xyz_number=66
+function c511002749.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002749.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)

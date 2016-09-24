@@ -52,8 +52,17 @@ function c511000369.initial_effect(c)
 		ge2:SetOperation(c511000369.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511000369.indes)
+	c:RegisterEffect(e5)
 end
 c511000369.xyz_number=100
+function c511000369.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000369.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,57314798)
 	Duel.CreateToken(1-tp,57314798)

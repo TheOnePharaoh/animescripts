@@ -56,8 +56,17 @@ function c511001998.initial_effect(c)
 		ge2:SetOperation(c511001998.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_SINGLE)
+	e6:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e6:SetValue(c511001998.indes)
+	c:RegisterEffect(e6)
 end
 c511001998.xyz_number=46
+function c511001998.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511001998.cfilter(c)
 	return c:IsFaceup() and c:IsRace(RACE_DRAGON)
 end

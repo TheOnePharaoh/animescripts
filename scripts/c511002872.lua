@@ -37,8 +37,17 @@ function c511002872.initial_effect(c)
 		ge2:SetOperation(c511002872.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511002872.indes)
+	c:RegisterEffect(e3)
 end
 c511002872.xyz_number=105
+function c511002872.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511002872.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()

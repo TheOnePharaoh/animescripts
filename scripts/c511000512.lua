@@ -16,8 +16,17 @@ function c511000512.initial_effect(c)
 	e1:SetTarget(c511000512.target)
 	e1:SetOperation(c511000512.operation)
 	c:RegisterEffect(e1)
+	--number generic effect
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511000512.indes)
+	c:RegisterEffect(e2)
 end
 c511000512.xyz_number=28
+function c511000512.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000512.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttackTarget()==nil and Duel.GetAttacker()==e:GetHandler()
 end
