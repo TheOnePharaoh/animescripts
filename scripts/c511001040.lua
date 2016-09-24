@@ -21,7 +21,7 @@ function c511001040.filter2(c,fid)
 	return c:IsFaceup() and c:IsCode(50045299) and c:GetFieldID()<fid
 end
 function c511001040.condition(e,tp,eg,ep,ev,re,r,rp)
-	return not Duel.IsExistingMatchingCard(c511001040.filter2,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,e:GetHandler():GetFieldID())
+	return not Duel.IsExistingMatchingCard(c511001040.filter2,tp,LOCATION_MZONE,LOCATION_MZONE,1,e:GetHandler(),e:GetHandler():GetFieldID())
 end
 function c511001040.filter(c)
 	return c:IsRace(RACE_DRAGON) and c:IsFaceup() and not c:IsCode(50045299)
