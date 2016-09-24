@@ -32,7 +32,6 @@ function c511001608.initial_effect(c)
 	e4:SetCode(EFFECT_IMMUNE_EFFECT)
 	e4:SetCondition(c511001608.indcon)
 	e4:SetValue(c511001608.efilter)
-	e4:SetOwnerPlayer(tp)
 	c:RegisterEffect(e4)
 	--no damage
 	local e5=Effect.CreateEffect(c)
@@ -89,17 +88,24 @@ function c511001608.initial_effect(c)
 		ge3:SetOperation(c511001608.numchk)
 		Duel.RegisterEffect(ge3,0)
 	end
-	--number generic effect
+	--battle indestructable
 	local e8=Effect.CreateEffect(c)
 	e8:SetType(EFFECT_TYPE_SINGLE)
 	e8:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e8:SetValue(c511001608.indes)
 	c:RegisterEffect(e8)
+	if not c511001608.global_check then
+		c511001608.global_check=true
+		local ge4=Effect.CreateEffect(c)
+		ge4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge4:SetCode(EVENT_ADJUST)
+		ge4:SetCountLimit(1)
+		ge4:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge4:SetOperation(c511001608.numchk)
+		Duel.RegisterEffect(ge4,0)
+	end
 end
 c511001608.xyz_number=93
-function c511001608.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c511001608.chkfilter(c,tp,re)
 	return c:IsSetCard(0x48) and c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp
 end
@@ -155,7 +161,7 @@ function c511001608.indcon(e)
 	return Duel.IsExistingMatchingCard(c511001608.cfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
 end
 function c511001608.efilter(e,re)
-	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
+	return e:GetHandlerPlayer()~=re:GetHandlerPlayer()
 end
 function c511001608.damval(e,re,val,r,rp,rc)
 	return 0
@@ -202,4 +208,7 @@ end
 function c511001608.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,23187256)
 	Duel.CreateToken(1-tp,23187256)
+end
+function c511001608.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

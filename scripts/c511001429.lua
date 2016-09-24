@@ -43,17 +43,24 @@ function c511001429.initial_effect(c)
 		ge2:SetOperation(c511001429.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
-	--number generic effect
+	--battle indestructable
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_SINGLE)
 	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e4:SetValue(c511001429.indes)
 	c:RegisterEffect(e4)
+	if not c511001429.global_check then
+		c511001429.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c511001429.numchk)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 c511001429.xyz_number=102
-function c511001429.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c511001429.con(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,49678559)
 end
@@ -131,4 +138,7 @@ end
 function c511001429.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,67173574)
 	Duel.CreateToken(1-tp,67173574)
+end
+function c511001429.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

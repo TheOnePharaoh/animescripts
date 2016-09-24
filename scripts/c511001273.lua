@@ -43,17 +43,24 @@ function c511001273.initial_effect(c)
 	e4:SetTarget(c511001273.numsptg)
 	e4:SetOperation(c511001273.numspop)
 	c:RegisterEffect(e4)
-	--number generic effect
+	--battle indestructable
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
 	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e5:SetValue(c511001273.indes)
 	c:RegisterEffect(e5)
+	if not c511001273.global_check then
+		c511001273.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511001273.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 c511001273.xyz_number=37
-function c511001273.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c511001273.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end
@@ -144,4 +151,7 @@ function c511001273.numspop(e,tp,eg,ep,ev,re,r,rp)
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
+end
+function c511001273.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

@@ -37,17 +37,24 @@ function c511002111.initial_effect(c)
 		ge2:SetOperation(c511002111.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
-	--number generic effect
+	--battle indestructable
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e3:SetValue(c511002111.indes)
 	c:RegisterEffect(e3)
+	if not c511002111.global_check then
+		c511002111.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c511002111.numchk)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 c511002111.xyz_number=106
-function c511002111.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c511002111.condition(e,tp,eg,ep,ev,re,r,rp)
 	return rp~=tp and re:IsActiveType(TYPE_MONSTER)
 		and Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)==LOCATION_MZONE
@@ -104,4 +111,7 @@ function c511002111.desop(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.Destroy(tc,REASON_EFFECT)>0 then
 		Duel.Damage(1-tp,tc:GetPreviousAttackOnField(),REASON_EFFECT)
 	end
+end
+function c511002111.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

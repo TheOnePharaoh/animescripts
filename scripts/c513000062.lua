@@ -35,17 +35,24 @@ function c513000062.initial_effect(c)
 		ge2:SetOperation(c513000062.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
-	--number generic effect
+	--battle indestructable
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e3:SetValue(c513000062.indes)
 	c:RegisterEffect(e3)
+	if not c513000062.global_check then
+		c513000062.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c513000062.numchk)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 c513000062.xyz_number=80
-function c513000062.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c513000062.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() and chkc~=e:GetHandler() end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
@@ -77,12 +84,13 @@ function c513000062.eqop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetReset(RESET_EVENT+0x1fe0000)
 	e2:SetLabelObject(tc)
 	c:RegisterEffect(e2)
-	local e3=Effect.CreateEffect(c) 
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+	local e3=Effect.CreateEffect(c)	
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
+	e3:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
 	e3:SetCondition(c513000062.btcon)
 	e3:SetCost(c513000062.btcost)
 	e3:SetOperation(c513000062.btop)
+	e3:SetRange(LOCATION_SZONE)
 	e3:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e3)
 	local e4=Effect.CreateEffect(c)
@@ -110,17 +118,41 @@ function c513000062.rmfilter(c,ty)
 	return c:IsType(ty) and c:IsAbleToRemove()
 end
 function c513000062.rmop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,0,LOCATION_GRAVE,nil,typ)
+	local a=g:IsExists(Card.IsType,1,nil,TYPE_MONSTER)
+	local b=g:IsExists(Card.IsType,1,nil,TYPE_SPELL)
+	local c=g:IsExists(Card.IsType,1,nil,TYPE_TRAP)
+	local op=3
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(53839837,5))
-	local op=Duel.SelectOption(tp,aux.Stringid(53839837,1),aux.Stringid(53839837,2),aux.Stringid(53839837,3))
-	local typ=0
-	if op==0 then typ=TYPE_MONSTER
-	elseif op==1 then typ=TYPE_SPELL
-	else typ=TYPE_TRAP end
-	local g=Duel.GetMatchingGroup(c513000062.rmfilter,tp,0,LOCATION_GRAVE,nil,typ)
-	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+	if a and b and c then
+		op=Duel.SelectOption(tp,aux.Stringid(53839837,1),aux.Stringid(53839837,2),aux.Stringid(53839837,3))
+	elseif a and b then
+		op=Duel.SelectOption(tp,aux.Stringid(53839837,1),aux.Stringid(53839837,2))
+	elseif b and c then
+		op=Duel.SelectOption(tp,aux.Stringid(53839837,2),aux.Stringid(53839837,3))
+		op=op+1
+	elseif a and c then
+		op=Duel.SelectOption(tp,aux.Stringid(53839837,1),aux.Stringid(53839837,3))
+		if op==1 then op=op+1 end
+	elseif a then
+		Duel.SelectOption(tp,aux.Stringid(53839837,1))
+		op=0
+	elseif b then
+		Duel.SelectOption(tp,aux.Stringid(53839837,2))
+		op=1
+	elseif c then
+		Duel.SelectOption(tp,aux.Stringid(53839837,3))
+		op=2
+	end
+	local type=0
+	if op==0 then type=TYPE_MONSTER
+	elseif op==1 then type=TYPE_SPELL
+	elseif op==2 then type=TYPE_TRAP end
+	local sg=g:Filter(c513000062.rmfilter,nil,type)
+	Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
 end
 function c513000062.btcon(e,tp,eg,ep,ev,re,r,rp)
-	return ep==tp and ev>=1000
+	return Duel.GetBattleDamage(tp)>=1000
 end
 function c513000062.btcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
@@ -140,7 +172,15 @@ function c513000062.btcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RegisterEffect(e1)
 end
 function c513000062.btop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ChangeBattleDamage(ep,ev/2)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+	e1:SetOperation(c513000062.damop)
+	e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
+	Duel.RegisterEffect(e1,tp)
+end
+function c513000062.damop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.ChangeBattleDamage(tp,ev/2)
 end
 function c513000062.con(e,tp,eg,ep,ev,re,r,rp)
 	local ex,cg,ct,cp,cv=Duel.GetOperationInfo(ev,CATEGORY_DAMAGE)
@@ -187,4 +227,7 @@ end
 function c513000062.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,93568288)
 	Duel.CreateToken(1-tp,93568288)
+end
+function c513000062.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

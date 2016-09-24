@@ -34,17 +34,24 @@ function c511001338.initial_effect(c)
 	e3:SetTarget(c511001338.destg)
 	e3:SetOperation(c511001338.desop)
 	c:RegisterEffect(e3)
-	--number generic effect
+	--battle indestructable
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_SINGLE)
 	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e4:SetValue(c511001338.indes)
 	c:RegisterEffect(e4)
+	if not c511001338.global_check then
+		c511001338.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511001338.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 c511001338.xyz_number=1
-function c511001338.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c511001338.tgcon(e,tp,eg,ep,ev,re,r,rp)
 	return bit.band(e:GetHandler():GetSummonType(),SUMMON_TYPE_XYZ)==SUMMON_TYPE_XYZ
 end
@@ -101,4 +108,7 @@ function c511001338.desop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.Damage(1-tp,atk,REASON_EFFECT)
 		end
 	end
+end
+function c511001338.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

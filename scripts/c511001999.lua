@@ -1,4 +1,4 @@
---No.15 ギミック・パペット－ジャイアントキラー
+--Number 15: Gimmick Puppet Giant Grinder (Anime)
 function c511001999.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,8,2)
@@ -21,18 +21,25 @@ function c511001999.initial_effect(c)
 		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
 		ge2:SetOperation(c511001999.numchk)
 		Duel.RegisterEffect(ge2,0)
-	end
-	--number generic effect
+		end
+	--battle indestructable
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e2:SetValue(c511001999.indes)
 	c:RegisterEffect(e2)
+	if not c511001999.global_check then
+		c511001999.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c511001999.numchk)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 c511001999.xyz_number=15
-function c511001999.indes(e,c)
-	return not c:IsSetCard(0x48)
-end
 function c511001999.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
@@ -64,4 +71,7 @@ end
 function c511001999.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,88120966)
 	Duel.CreateToken(1-tp,88120966)
+end
+function c511001999.indes(e,c)
+	return not c:IsSetCard(0x48)
 end
