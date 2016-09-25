@@ -63,7 +63,7 @@ function c95000109.initial_effect(c)
 	e7:SetValue(100)
 	c:RegisterEffect(e7)
 	local e8=e7:Clone()
-	e8:SetCode(EFFECT_UPDATE_DEFENCE)
+	e8:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e8)
 	
 	--

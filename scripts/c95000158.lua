@@ -227,7 +227,7 @@ function c95000158.IRLcondition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp
 end
 function c95000158.dcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:GetFirst():IsDefencePos() and eg:GetFirst():IsRace(RACE_ROCK) and Duel.GetTurnPlayer()==tp
+	return eg:GetFirst():IsDefensePos() and eg:GetFirst():IsRace(RACE_ROCK) and Duel.GetTurnPlayer()==tp
 end
 function c95000158.dop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(ep,ev*2)

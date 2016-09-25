@@ -23,7 +23,7 @@ function c511009141.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(c511009141.cfilter,tp,LOCATION_GRAVE,0,5,nil)
 end
 function c511009141.filter(c)
-	return c:IsFacedown() and c:IsDefencePos() and c:IsDestructable()
+	return c:IsFacedown() and c:IsDefensePos() and c:IsDestructable()
 end
 function c511009141.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:GetLocation()==LOCATION_MZONE and c511009141.filter(chkc) end

@@ -17,6 +17,22 @@ function c810000081.initial_effect(c)
 	e1:SetTarget(c810000081.distg)
 	e1:SetOperation(c810000081.disop)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c810000081.indes)
+	c:RegisterEffect(e2)
+	if not c810000081.global_check then
+		c810000081.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c810000081.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 function c810000081.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
@@ -50,10 +66,13 @@ function c810000081.disop(e,tp,eg,ep,ev,re,r,rp)
 		rc:RegisterEffect(e2)
 		local e3=Effect.CreateEffect(c)
 		e3:SetType(EFFECT_TYPE_SINGLE)
-		e3:SetCode(EFFECT_UPDATE_DEFENSE)
+		e3:SetCode(EFFECT_UPDATE_DEFENCE)
 		e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e3:SetReset(RESET_EVENT+0x1fe0000)
 		e3:SetValue(500)
 		c:RegisterEffect(e3)
 	end
+end
+function c810000081.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

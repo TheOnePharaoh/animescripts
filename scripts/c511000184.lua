@@ -12,6 +12,22 @@ function c511000184.initial_effect(c)
 	e1:SetCost(c511000184.tbcost)
 	e1:SetOperation(c511000184.tbop)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511000184.indes)
+	c:RegisterEffect(e2)
+	if not c511000184.global_check then
+		c511000184.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511000184.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 c511000184.xyz_number=14
 function c511000184.tbcon(e,tp,eg,ep,ev,re,r,rp)
@@ -58,4 +74,7 @@ function c511000184.tbop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511000184.dfilter(c,atk)
 	return c:IsFaceup() and c:IsDestructable() and c:GetAttack()<=atk
+end
+function c511000184.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

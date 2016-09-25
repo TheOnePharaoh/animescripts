@@ -1,4 +1,4 @@
---No.6 先史遺産アトランタル
+--Number 6: Chronomaly Atlandis (Anime)
 function c511002090.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,6,2)
@@ -66,6 +66,22 @@ function c511002090.initial_effect(c)
 		ge1:SetCode(EVENT_ADJUST)
 		ge1:SetOperation(c511002090.lpchk)
 		Duel.RegisterEffect(ge1,0)
+	end
+	--battle indestructable
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_SINGLE)
+	e6:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e6:SetValue(c511002090.indes)
+	c:RegisterEffect(e6)
+	if not c511002090.global_check then
+		c511002090.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c511002090.numchk)
+		Duel.RegisterEffect(ge3,0)
 	end
 end
 c511002090.xyz_number=6
@@ -148,4 +164,7 @@ function c511002090.lpchk(e,tp,eg,ep,ev,re,r,rp)
 	end
 	c511002090[tp]=Duel.GetLP(tp)
 	c511002090[1-tp]=Duel.GetLP(1-tp)
+end
+function c511002090.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

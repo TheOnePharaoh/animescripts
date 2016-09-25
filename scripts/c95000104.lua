@@ -50,7 +50,7 @@ function c95000104.initial_effect(c)
 	e6:SetValue(250)
 	c:RegisterEffect(e6)
 	local e7=e6:Clone()
-	e7:SetCode(EFFECT_UPDATE_DEFENCE)
+	e7:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e7)
 	--destroy
 	local e8=Effect.CreateEffect(c)

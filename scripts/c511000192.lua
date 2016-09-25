@@ -14,16 +14,16 @@ function c511000192.initial_effect(c)
 	--rank
 	c:SetStatus(STATUS_NO_LEVEL,true)
 	--indes
-    local e3=Effect.CreateEffect(c)
-    e3:SetType(EFFECT_TYPE_SINGLE)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
 	--damage val
-    local e4=Effect.CreateEffect(c)
-    e4:SetType(EFFECT_TYPE_SINGLE)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
 	e4:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
 	e4:SetValue(1)
 	c:RegisterEffect(e4)
@@ -72,13 +72,23 @@ function c511000192.initial_effect(c)
 		ge2:SetOperation(c511000192.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--number generic effect
+	local e9=Effect.CreateEffect(c)
+	e9:SetType(EFFECT_TYPE_SINGLE)
+	e9:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e9:SetValue(c511000192.indes)
+	c:RegisterEffect(e9)
 end
 c511000192.xyz_number=0
-c511000192.xyz_count=2
+c511000192.minxyzct=2
+c511000192.maxxyzct=2
 c511000192.maintain_overlay=true
+function c511000192.indes(e,c)
+	return not c:IsSetCard(0x48)
+end
 function c511000192.ovfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_XYZ)
-end	
+end 
 function c511000192.xyzcon(e,c,og)
 	if c==nil then return true end
 	local tp=c:GetControler()
@@ -106,7 +116,7 @@ function c511000192.xyzop(e,tp,eg,ep,ev,re,r,rp,c,og)
 			Duel.Overlay(c,mg2)
 		end
 		c:SetMaterial(og)
-		Duel.Overlay(c,g2:GetFirst())	
+		Duel.Overlay(c,g2:GetFirst())   
 	end
 end
 function c511000192.atktg(e,tp,eg,ep,ev,re,r,rp,chk)

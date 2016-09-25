@@ -44,6 +44,22 @@ function c513000060.initial_effect(c)
 		ge2:SetOperation(c513000060.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--battle indestructable
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_SINGLE)
+	e7:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e7:SetValue(c513000060.indes)
+	c:RegisterEffect(e7)
+	if not c513000060.global_check then
+		c513000060.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c513000060.numchk)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 c513000060.xyz_number=39
 function c513000060.efilter(e,re)
@@ -51,11 +67,12 @@ function c513000060.efilter(e,re)
 end
 function c513000060.atkcon(e)
 	local ph=Duel.GetCurrentPhase()
-	return Duel.GetTurnPlayer()==e:GetHandlerPlayer() and ph>=0x08 and ph<=0x20 
+	return Duel.GetTurnPlayer()==e:GetHandlerPlayer() and ph>=0x08 and ph<=0x80 
 		and e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,84013237)
 end
 function c513000060.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE and e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,84013237)
+	local ph=Duel.GetCurrentPhase()
+	return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE and e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,84013237)
 end
 function c513000060.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
@@ -92,4 +109,7 @@ end
 function c513000060.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,21521304)
 	Duel.CreateToken(1-tp,21521304)
+end
+function c513000060.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

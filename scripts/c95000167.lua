@@ -69,7 +69,7 @@ function c95000167.initial_effect(c)
 	--defup
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
-	e3:SetCode(EFFECT_UPDATE_DEFENCE)
+	e3:SetCode(EFFECT_UPDATE_DEFENSE)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e3:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_FIEND))

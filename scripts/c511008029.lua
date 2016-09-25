@@ -16,7 +16,7 @@ end
 
 function self.desg(p) return Duel.GetMatchingGroup(Card.IsDestructable,p,0,LOCATION_MZONE,nil) end
 function self.exist(p) return Duel.IsExistingMatchingCard(Card.IsDestructable,p,0,LOCATION_MZONE,1,nil) end
-function self.cf(c,p) return c:GetPreviousControler()==p and c:IsPreviousLocation(LOCATION_MZONE) and c:IsType(TYPE_MONSTER) and c:GetPreviousDefenceOnField()>=2000 end
+function self.cf(c,p) return c:GetPreviousControler()==p and c:IsPreviousLocation(LOCATION_MZONE) and c:IsType(TYPE_MONSTER) and c:GetPreviousDefenseOnField()>=2000 end
 
 function self.cd(e,tp,eg) return eg:IsExists(self.cf,1,nil,tp) end
 function self.tg(e,tp,eg,ep,ev,re,r,rp,chk)

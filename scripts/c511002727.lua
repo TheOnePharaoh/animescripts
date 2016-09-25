@@ -37,6 +37,22 @@ function c511002727.initial_effect(c)
 		ge3:SetOperation(c511002727.numchk)
 		Duel.RegisterEffect(ge3,0)
 	end
+	--battle indestructable
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511002727.indes)
+	c:RegisterEffect(e4)
+	if not c511002727.global_check then
+		c511002727.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511002727.numchk)
+		Duel.RegisterEffect(ge2,0)
+	end
 end
 c511002727.xyz_number=54
 function c511002727.indcon(e)
@@ -70,4 +86,7 @@ function c511002727.surop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002727.damopx(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(tp,0)
+end
+function c511002727.indes(e,c)
+	return not c:IsSetCard(0x48)
 end
