@@ -323,7 +323,7 @@ function scard.redraw_op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(Duel.GetDecktopGroup(p,handnum[p]),nil,REASON_RULE)
 	end
 	for p=0,1 do
-		if Duel.SelectYesNo(p,aux.Stringid(s_id,0)) then
+		if Duel.SelectYesNo(p,aux.Stringid(4001,2)) then
 			local sg=Duel.GetFieldGroup(p,LOCATION_HAND,0)
 			local ct=sg:GetCount()
 			Duel.SendtoDeck(sg,nil,0,REASON_RULE)
