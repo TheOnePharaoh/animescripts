@@ -269,8 +269,14 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	--note hand card
 	handnum[0]=Duel.GetFieldGroupCount(0,LOCATION_HAND,0)
 	handnum[1]=Duel.GetFieldGroupCount(1,LOCATION_HAND,0)
+	--FOR RANDOOM
+	local fg=Duel.GetFieldGroup(0,0x43,0x43)
+	local rseed=fg:RandomSelect(0,1):GetFirst():GetCode()
+	rseed=1+(rseed%7)
+	rseed=math.ceil(fg:RandomSelect(0,1):GetFirst():GetCode()/rseed)
+	math.randomseed(rseed)
 	--remove all cards
-	Duel.SendtoDeck(Duel.GetFieldGroup(0,0x43,0x43),nil,-2,REASON_RULE)
+	Duel.SendtoDeck(fg,nil,-2,REASON_RULE)
 	--Open packs (let's keep it at 10 for now)
 	local numpack=10
 	for np=1,numpack do
