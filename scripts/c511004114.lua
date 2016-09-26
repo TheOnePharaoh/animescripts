@@ -54,7 +54,7 @@ local ft=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
 	local g=Group.CreateGroup()
 	for i=1,ft do
 		local token=Duel.CreateToken(1-tp,511004107)
-		Duel.SpecialSummonStep(token,0,1-tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(token,0,1-tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 		token:RegisterFlagEffect(511004114,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1,fid)
 		g:AddCard(token)
 	end

@@ -1,4 +1,4 @@
---No.17 リバイス・ドラゴン
+--Number 17: Leviathan Dragon (anime)
 function c511002077.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,3,2)
@@ -23,6 +23,22 @@ function c511002077.initial_effect(c)
 		ge2:SetOperation(c511002077.numchk)
 		Duel.RegisterEffect(ge2,0)
 	end
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511002077.indes)
+	c:RegisterEffect(e2)
+	if not c511002077.global_check then
+		c511002077.global_check=true
+		local ge3=Effect.CreateEffect(c)
+		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge3:SetCode(EVENT_ADJUST)
+		ge3:SetCountLimit(1)
+		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge3:SetOperation(c511002077.numchk)
+		Duel.RegisterEffect(ge3,0)
+	end
 end
 c511002077.xyz_number=17
 function c511002077.cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -44,4 +60,7 @@ end
 function c511002077.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,69610924)
 	Duel.CreateToken(1-tp,69610924)
+end
+function c511002077.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

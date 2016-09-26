@@ -17,7 +17,7 @@ function c511004122.con2(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511004122.op2(e,tp,eg,ep,ev,re,r,rp)
 local bt=Duel.GetAttackTarget()
-	if bt:IsRelateToBattle() and not bt:IsPosition(POS_FACEUP_DEFENCE) then
-	Duel.ChangePosition(bt,POS_FACEUP_DEFENCE,REASON_EFFECT)
+	if bt:IsRelateToBattle() and not bt:IsPosition(POS_FACEUP_DEFENSE) then
+	Duel.ChangePosition(bt,POS_FACEUP_DEFENSE,REASON_EFFECT)
 	end
 end

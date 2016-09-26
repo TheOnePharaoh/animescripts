@@ -1,4 +1,4 @@
---CNo.9 天蓋妖星カオス・ダイソン・スフィア
+--Number C9: Chaos Dyson Sphere (anime)
 function c511001659.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,10,3)
@@ -52,6 +52,22 @@ function c511001659.initial_effect(c)
 		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
 		ge2:SetOperation(c511001659.numchk)
 		Duel.RegisterEffect(ge2,0)
+	end
+    --battle indestructable
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511001659.indes)
+	c:RegisterEffect(e5)
+	if not c511001659.global_check then
+		c511001659.global_check=true
+		local ge5=Effect.CreateEffect(c)
+		ge5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge5:SetCode(EVENT_ADJUST)
+		ge5:SetCountLimit(1)
+		ge5:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge5:SetOperation(c511001659.numchk)
+		Duel.RegisterEffect(ge5,0)
 	end
 end
 c511001659.xyz_number=9
@@ -113,4 +129,7 @@ end
 function c511001659.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,32559361)
 	Duel.CreateToken(1-tp,32559361)
+end
+function c511001659.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

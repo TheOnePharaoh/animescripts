@@ -94,8 +94,8 @@ function c511008016.tokop(e,tp,eg,ep,ev,re,r,rp)
 	if c511008016.tokcheck then
 		local sToken=Duel.CreateToken(tp,511008017)
 		local oToken=Duel.CreateToken(1-tp,511008017)
-		Duel.SpecialSummonStep(sToken,0,tp,tp,false,false,POS_FACEUP_DEFENCE)
-		Duel.SpecialSummonStep(oToken,0,tp,1-tp,false,false,POS_FACEUP_DEFENCE)
+		Duel.SpecialSummonStep(sToken,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
+		Duel.SpecialSummonStep(oToken,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE)
 		Duel.SpecialSummonComplete()
 		--immune
 		local e1=Effect.CreateEffect(c)

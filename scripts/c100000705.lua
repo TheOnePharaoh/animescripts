@@ -1,4 +1,4 @@
---ダークネス・スライム
+﻿--ダークネス・スライム
 function c100000705.initial_effect(c)
 	--special summon
 	local e1=Effect.CreateEffect(c)
@@ -6,7 +6,7 @@ function c100000705.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SPSUM_PARAM)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetTargetRange(POS_FACEUP_DEFENCE,0)
+	e1:SetTargetRange(POS_FACEUP_DEFENSE,0)
 	e1:SetCondition(c100000705.spcon)
 	c:RegisterEffect(e1)
 	--atkup
@@ -36,7 +36,7 @@ function c100000705.atkop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) or not c:IsFaceup() then return end
 	local tc=Duel.GetFirstTarget()
 	local atk=tc:GetAttack()
-	local def=tc:GetDefence()
+	local def=tc:GetDefense()
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_ATTACK)
@@ -45,7 +45,7 @@ function c100000705.atkop(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_SET_DEFENCE)
+		e2:SetCode(EFFECT_SET_DEFENSE)
 		e2:SetValue(def)
 		e2:SetReset(RESET_EVENT+0x1ff0000)
 		c:RegisterEffect(e2)
