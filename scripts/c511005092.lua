@@ -270,11 +270,15 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	handnum[0]=Duel.GetFieldGroupCount(0,LOCATION_HAND,0)
 	handnum[1]=Duel.GetFieldGroupCount(1,LOCATION_HAND,0)
 	--FOR RANDOOM
-	local fg=Duel.GetFieldGroup(0,0x43,0x43)
-	local rseed=fg:RandomSelect(0,1):GetFirst():GetCode()
-	rseed=1+(rseed%7)
-	rseed=math.ceil(fg:RandomSelect(0,1):GetFirst():GetCode()/rseed)
+	local rseed=0
+	for i=1,6 do
+		local r={Duel.TossCoin(i%2,5)}
+		for n=1,5 do
+			rseed=bit.lshift(rseed,1)+r[n]
+		end
+	end
 	math.randomseed(rseed)
+	local fg=Duel.GetFieldGroup(0,0x43,0x43)
 	--remove all cards
 	Duel.SendtoDeck(fg,nil,-2,REASON_RULE)
 	--Open packs (let's keep it at 10 for now)
@@ -329,7 +333,7 @@ function scard.redraw_op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(Duel.GetDecktopGroup(p,handnum[p]),nil,REASON_RULE)
 	end
 	for p=0,1 do
-		if Duel.SelectYesNo(p,aux.Stringid(4001,2)) then
+		if Duel.SelectYesNo(p,aux.Stringid(4002,2)) then
 			local sg=Duel.GetFieldGroup(p,LOCATION_HAND,0)
 			local ct=sg:GetCount()
 			Duel.SendtoDeck(sg,nil,0,REASON_RULE)
