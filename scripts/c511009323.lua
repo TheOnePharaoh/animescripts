@@ -60,5 +60,5 @@ function c511009323.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511009323.filter(e,c)
-	return c:IsSetCard(0x10d9)
+	return c:IsSetCard(0x10db)
 end
