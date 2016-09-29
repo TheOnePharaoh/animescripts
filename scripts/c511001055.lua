@@ -10,7 +10,7 @@ function c511001055.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001055.filter(c)
-	return c:IsFaceup() and (c:IsSetCard(0x10d9) or c:IsCode(77462146)) and c:GetLevel()==3
+	return c:IsFaceup() and c:IsSetCard(0x10db) and c:GetLevel()==3
 end
 function c511001055.spcon(e,c)
 	if c==nil then return true end
