@@ -14,15 +14,30 @@ local scard,s_id=getID()
 --before anything
 if not scard.rc_ovr then
 	scard.rc_ovr=true
-	local cardisrace=Card.IsRace
-	Card.IsRace=function(c,r)
-		if c:IsType(TYPE_MONSTER) then return true end
-		return cardisrace(c,r)
-	end
-	local cardgetrace=Card.GetRace
+	local c_getrace=Card.GetRace
 	Card.GetRace=function(c)
 		if c:IsType(TYPE_MONSTER) then return 0xffffff end
-		return cardgetrace(c)
+		return c_getrace(c)
+	end
+	local c_getorigrace=Card.GetOriginalRace
+	Card.GetOriginalRace=function(c)
+		if c:IsType(TYPE_MONSTER) then return 0xffffff end
+		return c_getorigrace(c)
+	end
+	local c_getprevraceonfield=Card.GetPreviousRaceOnField
+	Card.GetPreviousRaceOnField=function(c)
+		if bit.band(c:GetPreviousTypeOnField(),TYPE_MONSTER)~=0 then return 0xffffff end
+		return c_getprevraceonfield(c)
+	end
+	local c_israce=Card.IsRace
+	Card.IsRace=function(c,r)
+		if c:IsType(TYPE_MONSTER) then return true end
+		return c_israce(c,r)
+	end
+	local d_ispcanspsummonster=Duel.IsPlayerCanSpecialSummonMonster
+	Duel.IsPlayerCanSpecialSummonMonster=function(...)
+		if arg[8] then arg[8]=0xffffff end
+		return d_ispcanspsummonster(table.unpack(arg))
 	end
 end
 
