@@ -34,11 +34,6 @@ if not scard.rc_ovr then
 		if c:IsType(TYPE_MONSTER) then return true end
 		return c_israce(c,r)
 	end
-	local d_ispcanspsummonster=Duel.IsPlayerCanSpecialSummonMonster
-	Duel.IsPlayerCanSpecialSummonMonster=function(...)
-		if arg[8] then arg[8]=0xffffff end
-		return d_ispcanspsummonster(table.unpack(arg))
-	end
 end
 
 function scard.initial_effect(c)
