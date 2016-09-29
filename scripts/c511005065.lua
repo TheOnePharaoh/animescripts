@@ -36,10 +36,5 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
     if Duel.SendtoGrave(tg,REASON_EFFECT)~=0 then
       --Special Summon the nonexisting Deep Anglerfish Jr.
     end
-  else
-    local dg=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
-    Duel.ConfirmCards(tp,dg)
-    Duel.ConfirmCards(1-tp,dg)
-    Duel.ShuffleDeck(tp)
   end
 end

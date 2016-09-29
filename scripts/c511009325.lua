@@ -27,7 +27,7 @@ function c511009325.condition(e,tp,eg,ep,ev,re,r,rp)
 	return ep==tp
 end
 function c511009325.filter(c,e)
-	return c:IsFaceup() and c:IsSetCard(0x10d9) and c:IsCanBeEffectTarget(e)
+	return c:IsFaceup() and c:IsSetCard(0x10db) and c:IsCanBeEffectTarget(e)
 end
 function c511009325.xyzfilter(c,mg)
 	return c:IsXyzSummonable(mg,2,2)

@@ -32,7 +32,7 @@ function c511009328.initial_effect(c)
 	end
 end
 function c511009328.cfilter(c)
-	return c:IsSetCard(0x10d9) and c:IsAbleToRemoveAsCost()
+	return c:IsSetCard(0x10db) and c:IsAbleToRemoveAsCost()
 end
 function c511009328.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511009328.cfilter,tp,LOCATION_GRAVE,0,2,nil) end
@@ -70,7 +70,6 @@ function c511009328.chkfilter(c,tp)
 end
 function c511009328.op(e,tp,eg,ep,ev,re,r,rp)
 	local ph=Duel.GetCurrentPhase()
-	-- return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE
 	local ct1=eg:FilterCount(c511009328.chkfilter,nil,tp)
 	local ct2=eg:FilterCount(c511009328.chkfilter,nil,1-tp)
 	if ct1>0 and ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE then
@@ -84,15 +83,7 @@ function c511009328.clear(e,tp,eg,ep,ev,re,r,rp)
 	c511009328[0]=0
 	c511009328[1]=0
 end
-function c511009328.drop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	Duel.Draw(tp,c3576031[tp],REASON_EFFECT)
-end
-function c511009328.spfilter(c,e,tp)
-	return c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-end
 function c511009328.damop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(c511009328.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
 	if c511009328[0]>0 or c511009328[1]>0 then
 		Duel.Hint(HINT_CARD,0,511009328)
 		Duel.Damage(tp,c511009328[1]*800,REASON_EFFECT)
