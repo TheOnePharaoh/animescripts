@@ -3,8 +3,8 @@
 function c511004334.initial_effect(c)
 	--battled
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_BATTLED)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetCode(EVENT_BATTLE_CONFIRM)
 	e1:SetCondition(c511004334.condition)
 	e1:SetOperation(c511004334.atop)
 	c:RegisterEffect(e1)
@@ -28,5 +28,10 @@ function c511004334.atop(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
 		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END+RESET_SELF_TURN,3)
 		bc:RegisterEffect(e2)
+		local e3=Effect.CreateEffect(c)
+		e3:SetType(EFFECT_TYPE_SINGLE)
+		e3:SetCode(EFFECT_CANNOT_TRIGGER)
+		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END+RESET_SELF_TURN,3)
+		bc:RegisterEffect(e3)
 	 end
 end
