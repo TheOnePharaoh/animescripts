@@ -101,6 +101,9 @@ function c513000059.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Recover(p,d,REASON_EFFECT)
 	end
 end
+function c511010207.rumfilter(c)
+	return c:IsCode(48739166) and not c:IsPreviousLocation(LOCATION_OVERLAY)
+end
 function c513000059.regcon(e,tp,eg,ep,ev,re,r,rp)
 		local rc=re:GetHandler()
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and (rc:IsSetCard(0x95) or rc:IsCode(100000581) or rc:IsCode(111011002) or rc:IsCode(511000580) or rc:IsCode(511002068) or rc:IsCode(511002164) or rc:IsCode(93238626)) and e:GetHandler():GetMaterial():IsExists(c513000059.rumfilter,1,nil)
