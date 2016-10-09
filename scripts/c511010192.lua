@@ -70,7 +70,7 @@ function c511010192.rumfilter(c)
 end
 function c511010192.regcon(e,tp,eg,ep,ev,re,r,rp)
 		local rc=re:GetHandler()
-	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and rc:IsSetCard(0x95) and e:GetHandler():GetMaterial():IsExists(c511010192.rumfilter,1,nil)
+	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and (rc:IsSetCard(0x95) or rc:IsCode(100000581) or rc:IsCode(111011002) or rc:IsCode(511000580) or rc:IsCode(511002068) or rc:IsCode(511002164) or rc:IsCode(93238626)) and e:GetHandler():GetMaterial():IsExists(c511010192.rumfilter,1,nil)
 end
 function c511010192.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
