@@ -111,7 +111,7 @@ function c511000369.desop(e,tp,eg,ep,ev,re,r,rp)
 	if sg2:IsExists(Card.IsPreviousLocation,1,nil,LOCATION_MZONE)
 	local g1=sg2:Filter(c511000369.tpfilter,nil,tp)
 	local g2=sg2:Filter(c511000369.tpfilter,nil,1-tp)
-	if g1:GetCount()>Duel.GetLocationCount(tp,LOCATION_MZONE) or g2:GetCount()>Duel.GetLocationCount(1-tp,LOCATION_MZONE) then return end
+	if g1:GetCount()>Duel.GetLocationCount(tp,LOCATION_SZONE) or g2:GetCount()>Duel.GetLocationCount(1-tp,LOCATION_SZONE) then return end
 	local tc=sg2:GetFirst()
 	while tc do
 		Duel.MoveToField(tc,tp,tc:GetPreviousControler(),tc:GetPreviousLocation(),tc:GetPreviousPosition(),true)
