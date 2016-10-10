@@ -24,6 +24,12 @@ function c511002830.initial_effect(c)
 	e2:SetTarget(c511002830.destg)
 	e2:SetOperation(c511002830.desop)
 	c:RegisterEffect(e2)
+	--battle indestructable
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511002830.indes)
+	c:RegisterEffect(e3)
 	if not c511002830.global_check then
 		c511002830.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -47,7 +53,7 @@ function c511002830.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
 	local tc=g:GetFirst()
 	while tc do
-		tc:AddCounter(0x24,1)
+		tc:AddCounter(0x1024,1)
 		tc=g:GetNext()
 	end
 	Duel.RegisterFlagEffect(tp,511002830,RESET_PHASE+PHASE_END,0,2)
@@ -56,7 +62,7 @@ function c511002830.descon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(tp,511002830)~=0 and Duel.GetTurnPlayer()~=tp
 end
 function c511002830.desfilter(c)
-	return c:GetCounter(0x24)~=0 and c:IsDestructable()
+	return c:GetCounter(0x1024)~=0 and c:IsDestructable()
 end
 function c511002830.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511002830.desfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
@@ -87,4 +93,7 @@ end
 function c511002830.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,75433814)
 	Duel.CreateToken(1-tp,75433814)
+end
+function c511002830.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

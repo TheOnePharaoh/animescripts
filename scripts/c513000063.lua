@@ -24,6 +24,12 @@ function c513000063.initial_effect(c)
 	e2:SetTarget(c513000063.rmtg)
 	e2:SetOperation(c513000063.rmop)
 	c:RegisterEffect(e2)
+	--battle indestructable
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c513000063.indes)
+	c:RegisterEffect(e3)
 	if not c513000063.global_check then
 		c513000063.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -221,4 +227,7 @@ end
 function c513000063.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,20563387)
 	Duel.CreateToken(1-tp,20563387)
+end
+function c513000063.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

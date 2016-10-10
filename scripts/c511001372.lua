@@ -1,9 +1,9 @@
---CNo.88 ギミック・パペット－ディザスター・レオ
+--Number C88: Gimmick Puppet Disaster Leo (Anime)
 function c511001372.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,9,4)
 	c:EnableReviveLimit()
-	--
+	--immunity
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -34,6 +34,12 @@ function c511001372.initial_effect(c)
 	e4:SetCondition(c511001372.con)
 	e4:SetOperation(c511001372.winop)
 	c:RegisterEffect(e4)
+	--battle indestructable
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511001372.indes)
+	c:RegisterEffect(e5)
 	if not c511001372.global_check then
 		c511001372.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -59,8 +65,8 @@ end
 function c511001372.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetTargetPlayer(1-tp)
-	Duel.SetTargetParam(2000)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,2000)
+	Duel.SetTargetParam(4000)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,4000)
 end
 function c511001372.operation(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
@@ -78,4 +84,7 @@ end
 function c511001372.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,6165656)
 	Duel.CreateToken(1-tp,6165656)
+end
+function c511001372.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

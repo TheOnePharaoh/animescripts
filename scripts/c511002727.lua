@@ -27,6 +27,12 @@ function c511002727.initial_effect(c)
 	e3:SetCost(c511002727.damcost)
 	e3:SetOperation(c511002727.surop)
 	c:RegisterEffect(e3)
+	--battle indestructable
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511002727.indes)
+	c:RegisterEffect(e4)
 	if not c511002727.global_check then
 		c511002727.global_check=true
 		local ge3=Effect.CreateEffect(c)
@@ -70,4 +76,7 @@ function c511002727.surop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002727.damopx(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChangeBattleDamage(tp,0)
+end
+function c511002727.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

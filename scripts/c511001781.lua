@@ -1,4 +1,4 @@
---CNo.6 先史遺産カオス・アトランタル
+--Number C6: Chronomaly Chaos Atlandis (Anime)
 function c511001781.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,7,3)
@@ -70,6 +70,12 @@ function c511001781.initial_effect(c)
 	e6:SetTarget(c511001781.sptg)
 	e6:SetOperation(c511001781.spop)
 	c:RegisterEffect(e6)
+	--battle indestructable
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_SINGLE)
+	e7:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e7:SetValue(c511001781.indes)
+	c:RegisterEffect(e7)
 	if not c511001781.global_check then
 		c511001781.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -177,7 +183,6 @@ function c511001781.lpcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if sg:IsExists(Card.IsCode,1,nil,9161357) then
 		c:RegisterFlagEffect(511001780,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_STANDBY+RESET_SELF_TURN,0,0)
 	end
-	Duel.SkipPhase(tp,PHASE_MAIN1,RESET_PHASE+PHASE_END,1)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
@@ -223,4 +228,7 @@ end
 function c511001781.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,6387204)
 	Duel.CreateToken(1-tp,6387204)
+end
+function c511001781.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

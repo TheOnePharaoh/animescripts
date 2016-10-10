@@ -50,7 +50,7 @@ function c511004113.activate(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetReset(RESET_EVENT+0x1fe0000)
 		tc:RegisterEffect(e3)
 		local e4=e3:Clone()
-		e4:SetCode(EFFECT_SET_BASE_DEFENCE)
+		e4:SetCode(EFFECT_SET_BASE_DEFENSE)
 		tc:RegisterEffect(e4)
 		tc=g:GetNext()
 		end

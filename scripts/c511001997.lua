@@ -1,4 +1,4 @@
---No.44 白天馬スカイ・ペガサス
+--Number 44: Sky Pegasus (Anime)
 function c511001997.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,4,2)
@@ -36,6 +36,12 @@ function c511001997.initial_effect(c)
 	e3:SetTarget(c511001997.eqtg)
 	e3:SetOperation(c511001997.eqop)
 	c:RegisterEffect(e3)
+	--battle indestructable
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511001997.indes)
+	c:RegisterEffect(e4)
 	if not c511001997.global_check then
 		c511001997.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -131,4 +137,7 @@ end
 function c511001997.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,80764541)
 	Duel.CreateToken(1-tp,80764541)
+end
+function c511001997.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

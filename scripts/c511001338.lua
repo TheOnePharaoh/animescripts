@@ -34,6 +34,12 @@ function c511001338.initial_effect(c)
 	e3:SetTarget(c511001338.destg)
 	e3:SetOperation(c511001338.desop)
 	c:RegisterEffect(e3)
+	--battle indestructable
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511001338.indes)
+	c:RegisterEffect(e4)
 end
 c511001338.xyz_number=1
 function c511001338.tgcon(e,tp,eg,ep,ev,re,r,rp)
@@ -82,7 +88,7 @@ function c511001338.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function c511001338.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then
+	if tc and tc:IsRelateToEffect(e) then
 		local atk=tc:GetAttack()
 		if tc:IsFacedown() or not tc:IsType(TYPE_MONSTER) then
 			atk=0
@@ -92,4 +98,7 @@ function c511001338.desop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.Damage(1-tp,atk,REASON_EFFECT)
 		end
 	end
+end
+function c511001338.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

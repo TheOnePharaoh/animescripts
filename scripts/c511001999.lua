@@ -1,4 +1,4 @@
---No.15 ギミック・パペット－ジャイアントキラー
+--Number 15: Gimmick Puppet Giant Grinder (Anime)
 function c511001999.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,8,2)
@@ -12,6 +12,12 @@ function c511001999.initial_effect(c)
 	e1:SetTarget(c511001999.destg)
 	e1:SetOperation(c511001999.desop)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511001999.indes)
+	c:RegisterEffect(e2)
 	if not c511001999.global_check then
 		c511001999.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -55,4 +61,7 @@ end
 function c511001999.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,88120966)
 	Duel.CreateToken(1-tp,88120966)
+end
+function c511001999.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

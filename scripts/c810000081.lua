@@ -17,7 +17,14 @@ function c810000081.initial_effect(c)
 	e1:SetTarget(c810000081.distg)
 	e1:SetOperation(c810000081.disop)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c810000081.indes)
+	c:RegisterEffect(e2)
 end
+c810000081.xyz_number=3
 function c810000081.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
@@ -56,4 +63,7 @@ function c810000081.disop(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetValue(500)
 		c:RegisterEffect(e3)
 	end
+end
+function c810000081.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

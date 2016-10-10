@@ -16,6 +16,12 @@ function c511000512.initial_effect(c)
 	e1:SetTarget(c511000512.target)
 	e1:SetOperation(c511000512.operation)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511000512.indes)
+	c:RegisterEffect(e2)
 end
 c511000512.xyz_number=28
 function c511000512.condition(e,tp,eg,ep,ev,re,r,rp)
@@ -33,4 +39,7 @@ end
 function c511000512.operation(e,tp,eg,ep,ev,re,r,rp)
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	Duel.Damage(p,Duel.GetFieldGroupCount(p,LOCATION_HAND,0)*500,REASON_EFFECT)
+end
+function c511000512.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

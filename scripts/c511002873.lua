@@ -1,4 +1,4 @@
---No.58 炎圧鬼バーナー・バイサー
+--No.58 Burner visor
 function c511002873.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,4,2)
@@ -31,6 +31,12 @@ function c511002873.initial_effect(c)
 	e3:SetTarget(c511002873.damtg)
 	e3:SetOperation(c511002873.damop)
 	c:RegisterEffect(e3)
+	--battle indestructable
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511002873.indes)
+	c:RegisterEffect(e4)
 	if not c511002873.global_check then
 		c511002873.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -99,4 +105,7 @@ end
 function c511002873.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,93108839)
 	Duel.CreateToken(1-tp,93108839)
+end
+function c511002873.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

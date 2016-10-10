@@ -14,6 +14,12 @@ function c511002658.initial_effect(c)
 	e1:SetTarget(c511002658.target)
 	e1:SetOperation(c511002658.operation)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511002658.indes)
+	c:RegisterEffect(e2)
 end
 c511002658.xyz_number=10
 function c511002658.cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -33,4 +39,7 @@ function c511002658.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 	if g:GetFirst():IsLocation(LOCATION_GRAVE) then
 		Duel.Draw(tp,1,REASON_EFFECT)
 	end
+end
+function c511002658.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

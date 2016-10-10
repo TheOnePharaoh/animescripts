@@ -31,6 +31,12 @@ function c511001336.initial_effect(c)
 	e3:SetOperation(c511001336.op)
 	e3:SetLabelObject(e2)
 	c:RegisterEffect(e3)
+	--battle indestructable
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(c511001336.indes)
+	c:RegisterEffect(e4)
 end
 c511001336.xyz_number=4
 function c511001336.desfilter(c)
@@ -89,4 +95,7 @@ function c511001336.sumop(e,tp,eg,ep,ev,re,r,rp)
 		at=g:GetNext()
 	end
 	Duel.SpecialSummonComplete()
+end
+function c511001336.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

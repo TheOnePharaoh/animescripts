@@ -7,7 +7,6 @@ function c511009141.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCondition(c511009141.condition)
-	e1:SetCost(c511009141.cost)
 	e1:SetTarget(c511009141.target)
 	e1:SetOperation(c511009141.activate)
 	c:RegisterEffect(e1)
@@ -24,7 +23,7 @@ function c511009141.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(c511009141.cfilter,tp,LOCATION_GRAVE,0,5,nil)
 end
 function c511009141.filter(c)
-	return c:IsFacedown() and c:IsDefencePos() and c:IsDestructable()
+	return c:IsFacedown() and c:IsDefensePos() and c:IsDestructable()
 end
 function c511009141.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:GetLocation()==LOCATION_MZONE and c511009141.filter(chkc) end

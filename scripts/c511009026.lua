@@ -26,12 +26,9 @@ function c511009026.initial_effect(c)
 	e3:SetOperation(c511009026.mtop)
 	c:RegisterEffect(e3)
 end
---Predator Plant collection
-c511009026.collection={
-	[22011689]=true;[69105797]=true;[96622984]=true;
-}
+
 function c511009026.filter(c,e,sp)
-	return (c511009026.collection[c:GetCode()]) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)
+	return c:IsSetCard(0xf3) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,sp,false,false)
 end
 function c511009026.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511009026.filter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) end

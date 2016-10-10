@@ -25,6 +25,12 @@ function c511002059.initial_effect(c)
 	e2:SetTarget(c511002059.destg2)
 	e2:SetOperation(c511002059.desop2)
 	c:RegisterEffect(e2)
+	--battle indestructable
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511002059.indes)
+	c:RegisterEffect(e3)
 	if not c511002059.global_check then
 		c511002059.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -64,4 +70,7 @@ end
 function c511002059.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,84417082)
 	Duel.CreateToken(1-tp,84417082)
+end
+function c511002059.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

@@ -1,4 +1,4 @@
---No.73 激瀧神アビス・スプラッシュ
+--Number 73: Abyss Splash (anime)
 function c511002092.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,5,2)
@@ -16,6 +16,12 @@ function c511002092.initial_effect(c)
 	e1:SetCost(c511002092.atkcost)
 	e1:SetOperation(c511002092.atkop)
 	c:RegisterEffect(e1)
+	--battle indestructable
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e2:SetValue(c511002092.indes)
+	c:RegisterEffect(e2)
 	if not c511002092.global_check then
 		c511002092.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -49,4 +55,7 @@ end
 function c511002092.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,36076683)
 	Duel.CreateToken(1-tp,36076683)
+end
+function c511002092.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

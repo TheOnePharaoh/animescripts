@@ -1,4 +1,4 @@
---No.43 魂魄傀儡鬼ソウル・マリオネッター
+--Number 43: Manipulator of Souls (anime)
 function c511001776.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsAttribute,ATTRIBUTE_DARK),2,3)
@@ -61,6 +61,12 @@ function c511001776.initial_effect(c)
 	e6:SetTarget(c511001776.distg)
 	e6:SetOperation(c511001776.disop)
 	c:RegisterEffect(e6)
+	--battle indestructable
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_SINGLE)
+	e7:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e7:SetValue(c511001776.indes)
+	c:RegisterEffect(e7)
 	if not c511001776.global_check then
 		c511001776.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -156,4 +162,7 @@ end
 function c511001776.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(tp,56051086)
 	Duel.CreateToken(1-tp,56051086)
+end
+function c511001776.indes(e,c)
+	return not c:IsSetCard(0x48)
 end

@@ -40,7 +40,7 @@ function c511009036.condition(e,tp,eg,ep,ev,re,r,rp)
 	-- return eg:GetCount()==1 and eg:GetFirst():IsSetCard(0xaf)
 	local g=eg:Filter(Card.IsType,nil,TYPE_MONSTER)
 	local tc=g:GetFirst()
-	e:SetLabel(tc:GetDefence())
+	e:SetLabel(tc:GetDefense())
 	return g:GetCount()==1 and tc:IsSetCard(0xaf) and tc:IsType(TYPE_PENDULUM)
 end
 function c511009036.target(e,tp,eg,ep,ev,re,r,rp,chk)
