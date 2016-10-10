@@ -40,6 +40,7 @@ function c511002954.initial_effect(c)
 		Duel.RegisterEffect(ge2,0)
 	end
 end
+c511002954.miracle_synchro_fusion=true
 function c511002954.mat_filter(c)
 	return c:IsFusionSetCard(0xf0)
 end
