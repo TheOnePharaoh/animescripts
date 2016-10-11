@@ -75,15 +75,23 @@ function c511010165.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
+	local choice=Duel.SelectOption(tp,aux.Stringid(511010165,1),aux.Stringid(511010165,0))
+	
+	if choice>0 then 
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
+		e2:SetValue(-1000)
+		e2:SetReset(RESET_EVENT+0x1fe0000)
+		tc:RegisterEffect(e2)
+	else
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(-1000)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		tc:RegisterEffect(e1)
-		local e2=e1:Clone()
-		e2:SetCode(EFFECT_UPDATE_DEFENSE)
-		tc:RegisterEffect(e2)
+	end
 	end
 end
 function c511010165.numchk(e,tp,eg,ep,ev,re,r,rp)
