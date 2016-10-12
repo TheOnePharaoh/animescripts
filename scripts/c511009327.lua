@@ -11,7 +11,7 @@ function c511009327.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511009327.filter1(c,e,tp)
-	return c:IsSetCard(0x10d9) and c:IsType(TYPE_XYZ) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x10db) and c:IsType(TYPE_XYZ) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 		and Duel.IsExistingMatchingCard(c511009327.filter2,tp,LOCATION_EXTRA,0,1,nil,e,tp,c,c:GetRank()+2)
 end
 function c511009327.filter2(c,e,tp,mc,rk)
