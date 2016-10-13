@@ -4,27 +4,27 @@ function c511000294.initial_effect(c)
 	aux.AddXyzProcedure(c,nil,12,5)
 	c:EnableReviveLimit()
 	--negate and cannot attack
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetCode(EFFECT_DISABLE)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetTargetRange(0,LOCATION_MZONE)
-		e1:SetTarget(c511000294.negfilter)
-		c:RegisterEffect(e1)
-		local e2=Effect.CreateEffect(c)
-		e2:SetType(EFFECT_TYPE_FIELD)
-		e2:SetCode(EFFECT_DISABLE_EFFECT)
-		e2:SetRange(LOCATION_MZONE)
-		e2:SetTargetRange(0,LOCATION_MZONE)
-		e2:SetTarget(c511000294.negfilter)
-		c:RegisterEffect(e2)
-		local e3=Effect.CreateEffect(c)
-		e3:SetType(EFFECT_TYPE_FIELD)
-		e3:SetCode(EFFECT_CANNOT_ATTACK)
-		e3:SetRange(LOCATION_MZONE)
-		e3:SetTargetRange(0,LOCATION_MZONE)
-		e3:SetTarget(c511000294.negfilter)
-		c:RegisterEffect(e3)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_DISABLE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetTargetRange(0,LOCATION_MZONE)
+	e1:SetTarget(c511000294.negfilter)
+	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetCode(EFFECT_DISABLE_EFFECT)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetTargetRange(0,LOCATION_MZONE)
+	e2:SetTarget(c511000294.negfilter)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetCode(EFFECT_CANNOT_ATTACK)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetTargetRange(0,LOCATION_MZONE)
+	e3:SetTarget(c511000294.negfilter)
+	c:RegisterEffect(e3)
 	--Destroy replace
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
@@ -34,7 +34,7 @@ function c511000294.initial_effect(c)
 	e4:SetTarget(c511000294.desreptg)
 	e4:SetOperation(c511000294.desrepop)
 	c:RegisterEffect(e4)
-	--destroy and summon
+	--destroy and summon C
 	local e5=Effect.CreateEffect(c)
 	e5:SetCategory(CATEGORY_DESTROY)
 	e5:SetDescription(aux.Stringid(511000294,2))
@@ -47,22 +47,22 @@ function c511000294.initial_effect(c)
 	e5:SetTarget(c511000294.destg)
 	e5:SetOperation(c511000294.desop)
 	c:RegisterEffect(e5)
-	--battle indestructable
+	--destroy and summon Battle
 	local e6=Effect.CreateEffect(c)
-	e6:SetType(EFFECT_TYPE_SINGLE)
-	e6:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e6:SetValue(c511000294.indes)
+	e6:SetCategory(CATEGORY_DESTROY)
+	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e6:SetRange(LOCATION_MZONE)
+	e6:SetCountLimit(1)
+	e6:SetCode(EVENT_PHASE+PHASE_BATTLE)
+	e6:SetTarget(c511000294.des2tg)
+	e6:SetOperation(c511000294.des2op)
 	c:RegisterEffect(e6)
-	if not c511000294.global_check then
-		c511000294.global_check=true
-		local ge2=Effect.CreateEffect(c)
-		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge2:SetCode(EVENT_ADJUST)
-		ge2:SetCountLimit(1)
-		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
-		ge2:SetOperation(c511000294.numchk)
-		Duel.RegisterEffect(ge2,0)
-	end
+	--battle indestructable
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_SINGLE)
+	e7:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e7:SetValue(c511000294.indes)
+	c:RegisterEffect(e7)
 end
 c511000294.xyz_number=1000
 function c511000294.negfilter(e,c)
@@ -77,13 +77,13 @@ function c511000294.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 		and Duel.IsExistingMatchingCard(c511000294.repfilter,tp,LOCATION_MZONE,0,1,c) end
 	if Duel.SelectYesNo(tp,aux.Stringid(511000294,1)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESREPLACE)
-		local g=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,0,c)
+		local g=Duel.SelectMatchingCard(c511000294.repfilter,tp,LOCATION_MZONE,0,1,1,c)
 		return true
 	else return false end
 end
 function c511000294.desrepop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,0,c)
+	local g=Duel.SelectMatchingCard(c511000294.repfilter,tp,LOCATION_MZONE,0,1,1,c)
 	Duel.Destroy(g,REASON_EFFECT+REASON_REPLACE)
 end
 function c511000294.descost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -141,6 +141,38 @@ function c511000294.desop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+function c511000294.ssfilter(c,e,tp,tid)
+	return c:GetTurnID()==tid and c:IsPreviousLocation(LOCATION_ONFIELD) 
+	and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+end
+function c511000294.des2tg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,0,LOCATION_MZONE,1,nil) end
+	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
+end
+function c511000294.des2op(e,tp,eg,ep,ev,re,r,rp)
+	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
+	if Duel.Destroy(sg,REASON_EFFECT)~=0 then
+	local tid=Duel.GetTurnCount()
+	if Duel.IsExistingMatchingCard(c511000294.ssfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil,e,tp,tid) then
+	local g=Duel.GetMatchingGroup(c511000294.ssfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil,e,tp,tid)
+	if g:GetCount()>0 then
+		local fc=Duel.GetLocationCount(tp,LOCATION_MZONE)
+		if g:GetCount()>fc then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+			g=g:Select(tp,fc,fc,nil)
+		end
+		local tc=g:GetFirst()
+		while tc do
+			Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
+			tc=g:GetNext()
+		end
+		Duel.SpecialSummonComplete()
+		end
+		end
+		end
+end
+
 function c511000294.indes(e,c)
 	return not c:IsSetCard(0x48)
 end
