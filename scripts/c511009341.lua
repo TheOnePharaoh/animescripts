@@ -11,7 +11,7 @@ function c511009341.initial_effect(c)
 end
 --OCG Parasite collection
 c511009341.collection={
-[0]=true;
+[6205579]=true;
 }
 function c511009341.filter(c)
 	return c:IsFaceup() and (c511009341.collection[c:GetCode()] or c:IsSetCard(0x410))
