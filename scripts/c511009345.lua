@@ -20,19 +20,19 @@ function c511009345.eqfilter(c)
 	return c:IsCode(6205579)
 end
 function c511009345.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-		if chk==0 then return Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1 or Duel.GetLocationCount(tp,LOCATION_SZONE)>1
+		if chk==0 then return (Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1 or Duel.GetLocationCount(tp,LOCATION_SZONE)>1)
 		and Duel.IsExistingMatchingCard(c511009345.eqfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,2,nil) end
-		-- and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil)
 		if Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1 and Duel.GetLocationCount(tp,LOCATION_SZONE)>1 then
-		local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-		Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_GRAVE)
-		elseif Duel.GetLocationCount(tp,LOCATION_SZONE)>1 and not Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1 then
-		 local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
-		 Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_GRAVE)
-		elseif not Duel.GetLocationCount(tp,LOCATION_SZONE)>1 and Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1 then
-		 local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
-		 Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_GRAVE)
-		 end
+			local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+			Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_GRAVE)
+		
+		elseif Duel.GetLocationCount(tp,LOCATION_SZONE)>1 and not (Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1) then
+			local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
+			Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_GRAVE)
+		elseif Duel.GetLocationCount(1-tp,LOCATION_SZONE)>1 and not (Duel.GetLocationCount(tp,LOCATION_SZONE)>1) then
+			local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
+			Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_GRAVE)
+		end
 end
 function c511009345.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
