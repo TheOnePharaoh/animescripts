@@ -68,12 +68,11 @@ function c511010132.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.IsExistingMatchingCard(c511010132.rfilter,tp,LOCATION_GRAVE,0,1,nil) then
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
 	else 
-	local og=c:GetOverlayGroup()
+	local og=e:GetHandler():GetOverlayGroup()
 	if og:GetCount()>0 then
 		local mg=og:Select(tp,c511010132.rfilter,1,1,nil)
-			local oc=mg:GetFirst():GetOverlayTarget()
 			Duel.SendtoGrave(mg,REASON_COST)
-			Duel.RaiseSingleEvent(oc,EVENT_DETACH_MATERIAL,e,0,0,0,0)
+			Duel.RaiseSingleEvent(e:GetHandler(),EVENT_DETACH_MATERIAL,e,0,0,0,0)
 		end
 	end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)

@@ -32,7 +32,6 @@ function c511010039.initial_effect(c)
 	end
 end
 c511010039.xyz_number=39
-
 function c511010039.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
@@ -45,9 +44,8 @@ function c511010039.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=c:GetOverlayGroup()
 		if g:GetCount()>0 then
 			local mg=g:Select(tp,1,1,nil)
-			local oc=mg:GetFirst():GetOverlayTarget()
 			Duel.SendtoGrave(mg,REASON_COST)
-			Duel.RaiseSingleEvent(oc,EVENT_DETACH_MATERIAL,e,0,0,0,0)
+			Duel.RaiseSingleEvent(c,EVENT_DETACH_MATERIAL,e,0,0,0,0)
 			Duel.Overlay(bc,mg)
 		end
 end
