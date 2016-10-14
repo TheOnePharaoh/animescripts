@@ -162,5 +162,5 @@ function c511009347.retop(e,tp,eg,ep,ev,re,r,rp)
 Duel.SendtoDeck(e:GetHandler(),nil,2,REASON_EFFECT)
 end
 function c511009347.indestg(e,c)
-	return c:IsFaceup() and c:IsSetCard(0x410)
+	return c:IsFaceup() and (c511009338.collection[c:GetCode()] or c:IsSetCard(0x410))
 end
