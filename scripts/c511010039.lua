@@ -44,7 +44,6 @@ function c511010039.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return c:CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	local g=c:GetOverlayGroup()
 		if g:GetCount()>0 then
-			Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(47660516,0))
 			local mg=g:Select(tp,1,1,nil)
 			local oc=mg:GetFirst():GetOverlayTarget()
 			Duel.SendtoGrave(mg,REASON_COST)
