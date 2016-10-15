@@ -1,4 +1,4 @@
---Number 93: Utopia Kaiser
+--No.93 希望皇ホープ・カイザー
 function c511001608.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,12,2)
