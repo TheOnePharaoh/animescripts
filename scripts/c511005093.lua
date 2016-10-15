@@ -174,11 +174,24 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(tc,nil,REASON_RULE)
 		if tc:IsLocation(LOCATION_HAND) then Duel.SendtoDeck(tc,nil,2,REASON_RULE) end
 		p=1-p
-	until g:GetCount()==0 and Duel.GetFieldGroupCount(0,LOCATION_DECK,0)>=45 and Duel.GetFieldGroupCount(1,LOCATION_DECK,0)>=45
+	until g:GetCount()==0 and Duel.GetFieldGroupCount(0,LOCATION_DECK+LOCATION_EXTRA,0)>=45 and Duel.GetFieldGroupCount(1,LOCATION_DECK+LOCATION_EXTRA,0)>=45
 	--Confirm cards
 	for p=0,1 do
 		Duel.ConfirmCards(p,Duel.GetFieldGroup(p,LOCATION_DECK+LOCATION_EXTRA,0))
 	end
+	--Reduce (min. 40) if the player wants to
+	local rg=Group.CreateGroup()
+	for p=0,1 do
+		local dg=Duel.GetFieldGroup(p,LOCATION_DECK)
+		local ct=dg:GetCount()-40
+		if ct>0 and Duel.SelectYesNo(p,aux.Stringid(4002,7)) then
+			Duel.Hint(HINT_SELECTMSG,p,HINTMSG_REMOVE)
+			local sg=g:Select(p,1,ct,nil)
+			_prepSide(p,sg)
+			rg:Merge(sg)
+		end
+	end
+	if rg:GetCount()>0 then Duel.SendtoDeck(rg,nil,-2,REASON_RULE)
 	_printDeck()
 	--Shuffle Deck
 	for p=0,1 do

@@ -32,7 +32,6 @@ function c511001608.initial_effect(c)
 	e4:SetCode(EFFECT_IMMUNE_EFFECT)
 	e4:SetCondition(c511001608.indcon)
 	e4:SetValue(c511001608.efilter)
-	e4:SetOwnerPlayer(tp)
 	c:RegisterEffect(e4)
 	--no damage
 	local e5=Effect.CreateEffect(c)
