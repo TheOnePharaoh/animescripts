@@ -137,6 +137,11 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,0,s_id)
 	Duel.Hint(HINT_CODE,e:GetHandler():GetOwner(),s_id)
 	--note hand card (5)
+	--SetLP
+	drawnum[0]=5
+	drawnum[1]=5
+	Duel.SetLP(0,8000)
+	Duel.SetLP(1,8000)
 	--FOR RANDOOM
 	local rseed=0
 	for i=1,6 do
@@ -192,7 +197,6 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 	if rg:GetCount()>0 then Duel.SendtoDeck(rg,nil,-2,REASON_RULE)
-	_printDeck()
 	--Shuffle Deck
 	for p=0,1 do
 		Duel.ShuffleDeck(p)
@@ -202,4 +206,6 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(Duel.GetDecktopGroup(p,handnum[p]),nil,REASON_RULE)
 	end
 	e:Reset()
+	--disabled; uncomment the function if want to have
+	_printDeck()
 end
