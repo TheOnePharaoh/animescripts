@@ -29,11 +29,10 @@ function c511010238.initial_effect(c)
 end
 c511010238.xyz_number=39
 function c511010238.regcon(e,tp,eg,ep,ev,re,r,rp)
-	return re and re:GetHandler():IsCode(92365601)
+	return re and re:GetHandler():IsCode(92365601) 
 end
 function c511010238.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and c:IsFaceup() then
 		--destroy
 		local e1=Effect.CreateEffect(c)
 		e1:SetDescription(aux.Stringid(66970002,0))
@@ -47,7 +46,6 @@ function c511010238.regop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(c511010238.desop)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		c:RegisterEffect(e1)
-	end
 end
 function c511010238.filter(c)
 	return c:IsDestructable()
