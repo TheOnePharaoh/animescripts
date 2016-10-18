@@ -34,6 +34,9 @@ end
 function Auxiliary.FConditionFilter22(c,code1,code2,sub,fc)
 	return c:IsFusionCode(code1,code2) or (sub and c:CheckFusionSubstitute(fc))
 end
+function c511000990.UOFilter(c,tp)
+	return c:IsFusionCode(80604091) and (c:IsControler(tp) or c:IsLocation(LOCATION_GRAVE) or c:IsPublic() or c:IsFaceup())
+end
 function c511000990.fscon(e,g,gc,chkfnf)
 	if g==nil then return true end
 	local chkf=bit.band(chkfnf,0xff)
@@ -49,7 +52,7 @@ function c511000990.fscon(e,g,gc,chkfnf)
 		if chkf~=PLAYER_NONE and not aux.FConditionCheckF(gc,chkf) then
 			mg=mg:Filter(c511000990.FConditionCheckF,nil,chkf)
 		end
-		local sg=Duel.GetMatchingGroup(Card.IsCode,e:GetHandlerPlayer(),LOCATION_ONFIELD+LOCATION_HAND,0,nil,80604091)
+		local sg=Duel.GetMatchingGroup(c511000990.UOFilter,e:GetHandlerPlayer(),LOCATION_ONFIELD+LOCATION_HAND,0,nil,e:GetHandlerPlayer())
 		if b1+b2+bw>1 or bwx==1 then
 			if mg:IsExists(aux.FConditionFilter22,1,nil,78010363,80604091,true,e:GetHandler()) then return true
 			else return sg:GetCount()>0 end
@@ -82,7 +85,7 @@ function c511000990.fscon(e,g,gc,chkfnf)
 	if not fs then return false end
 	if ct>1 and b1+b2+bw+bwxct>1 then return true end
 	if b2==1 then return false end
-	local sg=Duel.GetMatchingGroup(Card.IsCode,e:GetHandlerPlayer(),LOCATION_ONFIELD+LOCATION_HAND,0,nil,80604091)
+	local sg=Duel.GetMatchingGroup(c511000990.UOFilter,e:GetHandlerPlayer(),loc1,loc2,nil)
 	return ct>0 and b1+bw+bwxct>0 and sg:GetCount()>0
 end
 function c511000990.fsop(e,tp,eg,ep,ev,re,r,rp,gc,chkfnf)
@@ -96,7 +99,7 @@ function c511000990.fsop(e,tp,eg,ep,ev,re,r,rp,gc,chkfnf)
 		end
 	else
 		local sg=g:Filter(Auxiliary.FConditionFilter22,nil,code1,code2,true,e:GetHandler())
-		local sg2=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_ONFIELD+LOCATION_HAND,0,nil,80604091)
+		local sg2=Duel.GetMatchingGroup(c511000990.UOFilter,tp,LOCATION_ONFIELD+LOCATION_HAND,0,nil,tp)
 		g:Merge(sg2)
 		sg:Merge(sg2)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
