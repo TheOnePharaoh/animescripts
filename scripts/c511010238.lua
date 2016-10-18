@@ -3,13 +3,13 @@ function c511010238.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,5,3)
 	c:EnableReviveLimit()
-	--summon success
+	--Rank Up Check
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e1:SetCondition(c511010238.regcon)
-	e1:SetOperation(c511010238.regop)
+	e1:SetCondition(c511010238.rankupregcon)
+	e1:SetOperation(c511010238.rankupregop)
 	c:RegisterEffect(e1)	
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
@@ -28,10 +28,10 @@ function c511010238.initial_effect(c)
 	end
 end
 c511010238.xyz_number=39
-function c511010238.regcon(e,tp,eg,ep,ev,re,r,rp)
+function c511010238.rankupregcon(e,tp,eg,ep,ev,re,r,rp)
 	return re and re:GetHandler():IsCode(92365601) 
 end
-function c511010238.regop(e,tp,eg,ep,ev,re,r,rp)
+function c511010238.rankupregop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 		--destroy
 		local e1=Effect.CreateEffect(c)
