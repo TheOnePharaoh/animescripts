@@ -73,12 +73,12 @@ function c511010205.initial_effect(c)
 	e8:SetTarget(c511010205.reatttg)
 	e8:SetOperation(c511010205.reattop)
 	c:RegisterEffect(e8)
-	--summon success
+	--Rank Up Check
 	local e9=Effect.CreateEffect(c)
 	e9:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
 	e9:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e9:SetCondition(c511010205.regcon)
-	e9:SetOperation(c511010205.regop)
+	e9:SetCondition(c511010205.rankupregcon)
+	e9:SetOperation(c511010205.rankupregop)
 	c:RegisterEffect(e9)
 	--battle indestructable
 	local e10=Effect.CreateEffect(c)
@@ -215,11 +215,11 @@ function c511010205.rumfilter(c)
 	return c:IsCode(511010005) and not c:IsPreviousLocation(LOCATION_OVERLAY)
 end
 
-function c511010205.regcon(e,tp,eg,ep,ev,re,r,rp)
+function c511010205.rankupregcon(e,tp,eg,ep,ev,re,r,rp)
 		local rc=re:GetHandler()
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and rc:IsSetCard(0x95) and e:GetHandler():GetMaterial():IsExists(c511010205.rumfilter,1,nil)
 end
-function c511010205.regop(e,tp,eg,ep,ev,re,r,rp)
+function c511010205.rankupregop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	--material
 	local e9=Effect.CreateEffect(c)
