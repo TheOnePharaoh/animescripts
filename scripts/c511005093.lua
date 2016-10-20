@@ -89,8 +89,6 @@ local pack={}
 	for _,v in ipairs(pack[3]) do table.insert(pack[5],v) end
 	for _,v in ipairs(pack[4]) do table.insert(pack[5],v) end
 local packopen=false
-local addok=false
-local drawok=false
 local handnum={[0]=5;[1]=5}
 
 --DangerZone
@@ -105,6 +103,7 @@ local function _prepSide(p,g)
 end
 
 local function _printDeck()
+	--[[
 	local io=require("io")
 	for p=0,1 do
 		local f=io.open("./deck/bdduel"..p..".ydk","w+")
@@ -128,6 +127,7 @@ local function _printDeck()
 		end
 		f:close()
 	end
+	--]]
 end
 
 function scard.op(e,tp,eg,ep,ev,re,r,rp)
@@ -135,13 +135,27 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	packopen=true
 	--Hint
 	Duel.Hint(HINT_CARD,0,s_id)
-	Duel.Hint(HINT_CODE,e:GetHandler():GetOwner(),s_id)
+	for p=0,1 do
+		local c=Duel.CreateToken(p,s_id)
+		Duel.Remove(c,POS_FACEUP,REASON_RULE)
+		Duel.Hint(HINT_CODE,p,s_id)
+		--protection (steal Boss Duel xD)
+		local e10=Effect.CreateEffect(c)
+		e10:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+		e10:SetType(EFFECT_TYPE_SINGLE)
+		e10:SetCode(EFFECT_CANNOT_TO_GRAVE)
+		c:RegisterEffect(e10)
+		local e11=e10:Clone()
+		e11:SetCode(EFFECT_CANNOT_TO_HAND)
+		c:RegisterEffect(e11)
+		local e12=e10:Clone()
+		e12:SetCode(EFFECT_CANNOT_TO_DECK) 
+		c:RegisterEffect(e12)
+		local e13=e10:Clone()
+		e13:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+		c:RegisterEffect(e13)
+	end
 	--note hand card (5)
-	--SetLP
-	drawnum[0]=5
-	drawnum[1]=5
-	Duel.SetLP(0,8000)
-	Duel.SetLP(1,8000)
 	--FOR RANDOOM
 	local rseed=0
 	for i=1,6 do
@@ -187,7 +201,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	--Reduce (min. 40) if the player wants to
 	local rg=Group.CreateGroup()
 	for p=0,1 do
-		local dg=Duel.GetFieldGroup(p,LOCATION_DECK)
+		local dg=Duel.GetFieldGroup(p,LOCATION_DECK,0)
 		local ct=dg:GetCount()-40
 		if ct>0 and Duel.SelectYesNo(p,aux.Stringid(4002,7)) then
 			Duel.Hint(HINT_SELECTMSG,p,HINTMSG_REMOVE)
@@ -196,7 +210,7 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 			rg:Merge(sg)
 		end
 	end
-	if rg:GetCount()>0 then Duel.SendtoDeck(rg,nil,-2,REASON_RULE)
+	if rg:GetCount()>0 then Duel.SendtoDeck(rg,nil,-2,REASON_RULE) end
 	--Shuffle Deck
 	for p=0,1 do
 		Duel.ShuffleDeck(p)
@@ -205,7 +219,6 @@ function scard.op(e,tp,eg,ep,ev,re,r,rp)
 	for p=0,1 do
 		Duel.SendtoHand(Duel.GetDecktopGroup(p,handnum[p]),nil,REASON_RULE)
 	end
-	e:Reset()
-	--disabled; uncomment the function if want to have
 	_printDeck()
+	e:Reset()
 end
