@@ -7,8 +7,8 @@ function c511010196.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e1:SetCondition(c511010196.regcon)
-	e1:SetOperation(c511010196.regop)
+	e1:SetCondition(c511010196.rankupregcon)
+	e1:SetOperation(c511010196.rankupregop)
 	c:RegisterEffect(e1)
 	--Share Battle Damage If Destroyed By Battle
 	local e2=Effect.CreateEffect(c)
@@ -40,11 +40,11 @@ c511010196.xyz_number=96
 function c511010196.rumfilter(c)
 	return c:IsCode(55727845) and not c:IsPreviousLocation(LOCATION_OVERLAY)
 end
-function c511010196.regcon(e,tp,eg,ep,ev,re,r,rp)
+function c511010196.rankupregcon(e,tp,eg,ep,ev,re,r,rp)
 		local rc=re:GetHandler()
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and (rc:IsSetCard(0x95) or rc:IsCode(100000581) or rc:IsCode(111011002) or rc:IsCode(511000580) or rc:IsCode(511002068) or rc:IsCode(511002164) or rc:IsCode(93238626)) and e:GetHandler():GetMaterial():IsExists(c511010196.rumfilter,1,nil)
 end
-function c511010196.regop(e,tp,eg,ep,ev,re,r,rp)
+function c511010196.rankupregop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	--atk
 	local e3=Effect.CreateEffect(c)
