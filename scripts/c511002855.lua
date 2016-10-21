@@ -3,13 +3,13 @@ function c511002855.initial_effect(c)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,9,4)
 	c:EnableReviveLimit()
-	--summon success
+	--Rank Up Check
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e1:SetCondition(c511002855.regcon)
-	e1:SetOperation(c511002855.regop)
+	e1:SetCondition(c511002855.rankupregcon)
+	e1:SetOperation(c511002855.rankupregop)
 	c:RegisterEffect(e1)
 	--negate
 	local e2=Effect.CreateEffect(c)
@@ -27,11 +27,11 @@ end
 function c511002855.rumfilter(c)
 	return c:IsCode(30741334) and not c:IsPreviousLocation(LOCATION_OVERLAY)
 end
-function c511002855.regcon(e,tp,eg,ep,ev,re,r,rp)
+function c511002855.rankupregcon(e,tp,eg,ep,ev,re,r,rp)
 		local rc=re:GetHandler()
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and (rc:IsSetCard(0x95) or rc:IsCode(100000581) or rc:IsCode(111011002) or rc:IsCode(511000580) or rc:IsCode(511002068) or rc:IsCode(511002164) or rc:IsCode(93238626)) and e:GetHandler():GetMaterial():IsExists(c511002855.rumfilter,1,nil)
 end
-function c511002855.regop(e,tp,eg,ep,ev,re,r,rp)
+function c511002855.rankupregop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	--draw
 	local e1=Effect.CreateEffect(c)
