@@ -11,6 +11,7 @@ function c511018507.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1)
 	e1:SetCost(c511018507.atkcost)
 	e1:SetTarget(c511018507.atktg)
 	e1:SetOperation(c511018507.atkop)
@@ -26,7 +27,7 @@ end
 function c511018507.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingMatchingCard(c511018507.atkfilter,tp,LOCATION_GRAVE,0,1,nil)
-		and Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end		
+		and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end		
 end
 function c511018507.atkop(e,tp,eg,ep,ev,re,r,rp)
 	    local g=Duel.GetMatchingGroup(c511018507.atkfilter,tp,LOCATION_GRAVE,0,nil)
@@ -37,8 +38,7 @@ function c511018507.atkop(e,tp,eg,ep,ev,re,r,rp)
 		local code=ct:GetCode()
 		Duel.Hint(HINT_CARD,0,code)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-		local tc=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
-		local tc=Duel.GetFirstTarget()
+		local tc=Duel.SelectMatchingCard(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil):GetFirst()
 		if tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
