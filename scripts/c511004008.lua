@@ -1,7 +1,7 @@
 --Spiritual Fusion
 --Scripted by Edo9300
 function c511004008.initial_effect(c)
-	local f=Duel.SelectFusionMaterial
+	local fsel=Duel.SelectFusionMaterial
 	Duel.SelectFusionMaterial=function(tp,c,g,gc,chkf)
 		if c:IsCode(511000990) then
 			if g:IsExists(c511000990.sameplayerchk,1,nil,tp) then
@@ -44,7 +44,6 @@ function c511004008.op(e)
 	Duel.ResetFlagEffect(tp,511004011)
 end
 function c511004008.activate(e,tp,eg,ep,ev,re,r,rp)
-	Debug.Message("ciao")
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(5000)
@@ -60,4 +59,3 @@ function c511004008.activate(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetReset(RESET_PHASE+PHASE_END,1)
 	Duel.RegisterEffect(e2,e:GetHandlerPlayer())
 end
-
