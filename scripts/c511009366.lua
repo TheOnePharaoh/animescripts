@@ -4,7 +4,7 @@ function c511009366.initial_effect(c)
 	aux.EnablePendulumAttribute(c)
 	--Back to hand
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(41546,0))
+	e1:SetDescription(aux.Stringid(65518099,0))
 	e1:SetCategory(CATEGORY_TOHAND)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_PZONE)
@@ -33,7 +33,7 @@ function c511009366.initial_effect(c)
 	
 	--effect gain
 	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(69890967,1))
+	e4:SetDescription(aux.Stringid(25793414,1))
 	e4:SetCategory(CATEGORY_ATKCHANGE)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_MZONE)
@@ -41,8 +41,27 @@ function c511009366.initial_effect(c)
 	e4:SetTarget(c511009366.eftg)
 	e4:SetOperation(c511009366.efop)
 	c:RegisterEffect(e4)
+	if not c89792713.global_check then
+		c89792713.global_check=true
+		local ge=Effect.CreateEffect(c)
+		ge:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge:SetCode(EVENT_CHAINING)
+		ge:SetOperation(c89792713.checkop)
+		Duel.RegisterEffect(ge,0)
+	end
 end
-
+function c2948263.checkcon(e,tp,eg,ep,ev,re,r,rp)
+	return re:IsActiveType(TYPE_MONSTER) and re:GetFlagEffect(511009366)==0
+end
+function c89792713.checkop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=eg:GetFirst()
+	while tc do
+		if tc:IsFaceup() then
+			tc:RegisterFlagEffect(511009366,RESET_EVENT,0,1)
+		end
+		tc=eg:GetNext()
+	end
+end
 function c511009366.thfil(c)
 	return c:IsSetCard(0x414) and c:IsAbleToHand()
 end
@@ -73,7 +92,7 @@ function c511009366.atlimit2(e,c)
 end
 
 function c511009366.effilter(c)
-	return c:IsFaceup() and c:IsSummonType(SUMMON_TYPE_PENDULUM) and c:IsPreviousLocation(LOCATION_HAND) and c:IsSetCard(0x414) and c:GetFlagEffect(511009366)==0 and c:IsReleasableByEffect()
+	return c:IsFaceup() and c:IsSummonType(SUMMON_TYPE_PENDULUM) and c:IsPreviousLocation(LOCATION_HAND) and c:IsSetCard(0x414) and	c:GetFlagEffect(511009366)==0	and c:IsReleasableByEffect()
 end
 function c511009366.eftg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511009366.effilter(chkc) end
