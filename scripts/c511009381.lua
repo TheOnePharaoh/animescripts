@@ -15,7 +15,7 @@ function c511009381.initial_effect(c)
 	c:RegisterEffect(e1)
 	--Reduce ATK
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(7610,0))
+	e2:SetDescription(aux.Stringid(51570882,0))
 	e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DISABLE)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
@@ -26,7 +26,7 @@ function c511009381.initial_effect(c)
 	c:RegisterEffect(e2)
 	--destroy and damage
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(7610,1))
+	e3:SetDescription(aux.Stringid(51570882,1))
 	e3:SetCategory(CATEGORY_DESTROY+CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e3:SetCode(EVENT_TO_GRAVE)
@@ -84,7 +84,7 @@ function c511009381.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST)
 end
 function c511009381.spfilter(c,e,tp)
-	return c:IsCode(7610) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsCode(51570882) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511009381.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -110,7 +110,7 @@ function c511009381.spop(e,tp,eg,ep,ev,re,r,rp)
 		end
 end
 function c511009381.bantg(e,c)
-	return c:IsCode(7610)
+	return c:IsCode(51570882)
 end
 --------------------
 function c511009381.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
