@@ -143,7 +143,7 @@ function c511009381.op(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511009381.cfilter(c,tp)
 	return c:IsFaceup() and c:IsControler(tp) and c:GetPreviousControler()==tp
-		and c:IsReason(REASON_DESTROY) and c:IsCode(7610)
+		and c:IsReason(REASON_DESTROY) and c:IsCode(51570882)
 end
 function c511009381.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511009381.cfilter,1,nil,tp)
@@ -153,7 +153,7 @@ function c511009381.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST)
 end
 function c511009381.spfilter(c,e,tp)
-	return c:IsCode(7610) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsCode(51570882) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511009381.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
