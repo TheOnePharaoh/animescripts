@@ -119,9 +119,8 @@ end
 function c511004322.damop(e,tp,eg,ep,ev,re,r,rp)
     local sg=eg
     if sg:GetCount()>0 then
-        local sd=sg:GetFirst()
-        Duel.SendtoDeck(sd,nil,0,REASON_RULE)
-        if sd:IsContains(Card.IsControler,nil,tp) then
+        Duel.SendtoDeck(sg,nil,0,REASON_RULE)
+        if sg:IsContains(Card.IsControler,nil,tp) then
             Duel.ShuffleDeck(tp)
             forbidden[tp]={}
         end
