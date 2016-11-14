@@ -117,18 +117,15 @@ function c511004322.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return re and re:GetHandler()~=e:GetHandler() and not re:GetHandler():IsCode(511004322) end
 end
 function c511004322.damop(e,tp,eg,ep,ev,re,r,rp)
-	local sg=eg
-	if sg:GetCount()>0 then
-		local sd=sg:GetFirst()
-		while sd do
-		   Duel.SendtoDeck(sd,nil,0,REASON_RULE)
-		   if sd:GetOwner()==tp then
-			   Duel.ShuffleDeck(sd:GetOwner())
-		   end
-		   sd=sg:GetNext()
-		end
-		forbidden[tp]={}
-	end
+    local sg=eg
+    if sg:GetCount()>0 then
+        local sd=sg:GetFirst()
+        Duel.SendtoDeck(sd,nil,0,REASON_RULE)
+        if sd:IsContains(Card.IsControler,nil,tp) then
+            Duel.ShuffleDeck(tp)
+            forbidden[tp]={}
+        end
+    end
 end
 --active condition+operation
 function c511004322.activecondition(e,tp,eg,ep,ev,re,r,rp)
