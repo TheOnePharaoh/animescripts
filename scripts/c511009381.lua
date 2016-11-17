@@ -1,8 +1,15 @@
 --Greedy Venom Fusion Dragon (Anime)
 function c511009381.initial_effect(c)
 	--
+	--aux.AddFusionProcFun2(c,aux.FilterBoolFunction(Card.IsFusionSetCard,0x10f3),c511009381.mat_fil,true)
 	c:EnableReviveLimit()
-	aux.AddFusionProcFun2(c,aux.FilterBoolFunction(Card.IsFusionSetCard,0x10f3),c511009381.mat_fil,true)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetCode(EFFECT_FUSION_MATERIAL)
+	e0:SetCondition(c511009381.funcon)
+	e0:SetOperation(c511009381.funop)
+	c:RegisterEffect(e0)
 	--give effect to material
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(30086349,0))
@@ -37,12 +44,74 @@ function c511009381.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 
+---fusion procedure-----
 function c511009381.mat_fil(c,fc)
 	local attr=c:IsAttribute(ATTRIBUTE_DARK)
 	if Card.IsFusionAttribute then
 		attr=c:IsFusionAttribute(ATTRIBUTE_DARK,fc)
 	end
 	return attr and c:GetLevel()>=8
+end
+function c511009381.funcon(e,g,gc,chkfnf)
+	if g==nil then return true end
+	local c=e:GetHandler()
+	local f2=aux.FilterBoolFunction(Card.IsFusionSetCard,0x10f3)
+	local chkf=bit.band(chkfnf,0xff)
+	local mg=g:Filter(Card.IsCanBeFusionMaterial,nil,e:GetHandler())
+	if gc then
+		if not gc:IsCanBeFusionMaterial(e:GetHandler()) then return false end
+		return (c511009381.mat_fil(gc,c) and mg:IsExists(f2,1,gc,c))
+			or (f2(gc) and mg:IsExists(c511009381.mat_fil,1,gc,c)) end
+	local g1=Group.CreateGroup() local g2=Group.CreateGroup() local fs=false
+	local tc=mg:GetFirst()
+	while tc do
+		if c511009381.mat_fil(tc,c) then g1:AddCard(tc) if Auxiliary.FConditionCheckF(tc,chkf) then fs=true end end
+		if f2(tc) then g2:AddCard(tc) if Auxiliary.FConditionCheckF(tc,chkf) then fs=true end end
+		tc=mg:GetNext()
+	end
+	if chkf~=PLAYER_NONE then
+		return fs and g1:IsExists(Auxiliary.FConditionFilterF2,1,nil,g2)
+	else return g1:IsExists(Auxiliary.FConditionFilterF2,1,nil,g2) end
+end
+function c511009381.funop(e,tp,eg,ep,ev,re,r,rp,gc,chkfnf)
+	local chkf=bit.band(chkfnf,0xff)
+	local c=e:GetHandler()
+	local f2=aux.FilterBoolFunction(Card.IsFusionSetCard,0x10f3)
+	local g=eg:Filter(Card.IsCanBeFusionMaterial,nil,e:GetHandler())
+	if gc then
+		local sg=Group.CreateGroup()
+		if c511009381.mat_fil(gc,c) then sg:Merge(g:Filter(f2,gc,c)) end
+		if f2(gc) then sg:Merge(g:Filter(c511009381.mat_fil,gc,c)) end
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
+		local g1=sg:Select(tp,1,1,nil)
+		Duel.SetFusionMaterial(g1)
+		return
+	end
+	local sg=g:Filter(c511009381.FConditionFilterF2c,nil,c)
+	local g1=nil
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
+	if chkf~=PLAYER_NONE then
+		g1=sg:FilterSelect(tp,Auxiliary.FConditionCheckF,1,1,nil,chkf)
+	else g1=sg:Select(tp,1,1,nil) end
+	local tc1=g1:GetFirst()
+	sg:RemoveCard(tc1)
+	local b1=c511009381.mat_fil(tc1,c)
+	local b2=f2(tc1)
+	if b1 and not b2 then sg:Remove(c511009381.FConditionFilterF2r1,nil,c) end
+	if b2 and not b1 then sg:Remove(c511009381.FConditionFilterF2r2,nil,c) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FMATERIAL)
+	local g2=sg:Select(tp,1,1,nil)
+	g1:Merge(g2)
+	Duel.SetFusionMaterial(g1)
+end
+function c511009381.FConditionFilterF2c(c,fc)
+	return c511009381.mat_fil(c,fc) or c:IsFusionSetCard(0x10f3)
+end
+function c511009381.FConditionFilterF2r1(c,fc)
+	return c511009381.mat_fil(c,fc) and not c:IsFusionSetCard(0x10f3)
+end
+function c511009381.FConditionFilterF2r2(c,fc)
+	return c:IsFusionSetCard(0x10f3) and not c511009381.mat_fil(c,fc)
 end
 -------------------
 function c511009381.con(e,tp,eg,ep,ev,re,r,rp)
@@ -74,7 +143,7 @@ function c511009381.op(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511009381.cfilter(c,tp)
 	return c:IsFaceup() and c:IsControler(tp) and c:GetPreviousControler()==tp
-		and c:IsReason(REASON_DESTROY) and c:IsCode(7610)
+		and c:IsReason(REASON_DESTROY) and c:IsCode(51570882)
 end
 function c511009381.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511009381.cfilter,1,nil,tp)
@@ -110,7 +179,7 @@ function c511009381.spop(e,tp,eg,ep,ev,re,r,rp)
 		end
 end
 function c511009381.bantg(e,c)
-	return c:IsCode(51570882)
+	return c:IsCode(7610)
 end
 --------------------
 function c511009381.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
@@ -125,6 +194,12 @@ function c511009381.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if ((tc:IsFaceup() and not tc:IsDisabled()) or tc:IsType(TYPE_TRAPMONSTER)) and tc:IsRelateToEffect(e) then
 		Duel.NegateRelatedChain(tc,RESET_TURN_SET)
+		local e0=Effect.CreateEffect(c)
+		e0:SetType(EFFECT_TYPE_SINGLE)
+		e0:SetCode(EFFECT_SET_ATTACK_FINAL)
+		e0:SetValue(0)
+		e0:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e0)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -146,12 +221,6 @@ function c511009381.atkop(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 			tc:RegisterEffect(e3)
 		end
-		local e4=Effect.CreateEffect(c)
-		e4:SetType(EFFECT_TYPE_SINGLE)
-		e4:SetCode(EFFECT_SET_ATTACK_FINAL)
-		e4:SetValue(0)
-		e4:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e4)
 	end
 end
 
