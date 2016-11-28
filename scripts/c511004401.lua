@@ -1,5 +1,5 @@
 --Ability Yeil
---scripted by andré and shad3
+--scripted by André and Shad3 and Cybercatman
 function c511004401.initial_effect(c)
 	--active
 	local e1=Effect.CreateEffect(c)
