@@ -1,7 +1,6 @@
 --Performapal Sky Magician
 function c511009393.initial_effect(c)
 	
-	--atkup
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
 	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -10,36 +9,55 @@ function c511009393.initial_effect(c)
 	e2:SetOperation(aux.chainreg)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e3:SetDescription(aux.Stringid(28201945,0))
+	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_CHAIN_SOLVING)
+	e3:SetProperty(EFFECT_FLAG_DELAY)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCode(EVENT_CHAIN_SOLVED)
-	e3:SetCondition(c511009393.atkcon)
-	e3:SetOperation(c511009393.atkop)
+	e3:SetCondition(c511009393.con)
+	e3:SetOperation(c511009393.op)
 	c:RegisterEffect(e3)
 	
-	--negate
-	-- local e1=Effect.CreateEffect(c)
-	-- e1:SetDescription(aux.Stringid(81020646,0))
-	-- e1:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY)
-	-- e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	-- e1:SetType(EFFECT_TYPE_QUICK_O)
-	-- e1:SetRange(LOCATION_MZONE)
-	-- e1:SetCode(EVENT_CHAINING)
-	-- e1:SetCondition(c511009393.discon)
-	-- e1:SetTarget(c511009393.distg)
-	-- e1:SetOperation(c511009393.disop)
-	-- c:RegisterEffect(e1)
+	--Spell change
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(81020646,0))
+	e4:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY)
+	e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e4:SetType(EFFECT_TYPE_QUICK_O)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCode(EVENT_CHAINING)
+	e4:SetCondition(c511009393.discon)
+	e4:SetTarget(c511009393.distg)
+	e4:SetOperation(c511009393.disop)
+	c:RegisterEffect(e4)
+	
+
+	--Special Summon
+	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(35952884,1))
+	e5:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
+	e5:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e5:SetCode(EVENT_TO_GRAVE)
+	e5:SetCondition(c511009393.descon)
+	e5:SetTarget(c511009393.destg)
+	e5:SetOperation(c511009393.desop)
+	c:RegisterEffect(e5)
+	local e6=e5:Clone()
+	e6:SetCode(EVENT_REMOVE)
+	c:RegisterEffect(e6)
+	local e7=e5:Clone()
+	e7:SetCode(EVENT_TO_DECK)
+	c:RegisterEffect(e7)
 end
-function c511009393.regop(e,tp,eg,ep,ev,re,r,rp)
-	if rp==tp or not re:IsHasType(EFFECT_TYPE_ACTIVATE) then return end
-	e:GetHandler():RegisterFlagEffect(26556950,RESET_EVENT+0x1fc0000+RESET_CHAIN,0,1)
+function c511009393.con(e,tp,eg,ep,ev,re,r,rp)
+	local c=re:GetHandler()
+	return rp==tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and c:GetType()==TYPE_SPELL+TYPE_CONTINUOUS and e:GetHandler():GetFlagEffect(1)>0
 end
-function c511009393.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	local tpe=re:GetActiveType()
-	return rp==tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and (tpe==TYPE_SPELL+TYPE_CONTINUOUS) and e:GetHandler():GetFlagEffect(1)>0
-end
-function c511009393.atkop(e,tp,eg,ep,ev,re,r,rp)
-local c=e:GetHandler()
+
+function c511009393.op(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -128,3 +146,32 @@ function c511009393.disop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+
+------------------------------------------
+
+function c511009393.descon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsPreviousPosition(POS_FACEUP) and c:IsPreviousLocation(LOCATION_ONFIELD)
+end
+function c511009393.desfilter(c)
+	return c:IsFacedown() or c:IsType(TYPE_SPELL)
+end
+
+function c511009393.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return chkc:IsLocation(LOCATION_SZONE) and c511009393.desfilter(chkc) end
+	if chk==0 then return true end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,c511009393.desfilter,tp,LOCATION_SZONE,LOCATION_SZONE,1,1,nil)
+	if g:GetCount()>0 and g:GetFirst():IsFaceup() then
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	end
+end
+function c511009393.desop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) then
+		if tc:IsFacedown() then Duel.ConfirmCards(tp,tc) end
+		if tc:IsType(TYPE_SPELL) then Duel.Destroy(tc,REASON_EFFECT) end
+	end
+end
+
+---------------------------------------------
