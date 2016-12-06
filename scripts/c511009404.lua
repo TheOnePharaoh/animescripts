@@ -1,10 +1,10 @@
 --Performapal Sky Illusion
-function c96457619.initial_effect(c)
+function c511009404.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCondition(c511001069.condition)
+	e1:SetCondition(c511009404.condition)
 	c:RegisterEffect(e1)
 	--
 	local e2=Effect.CreateEffect(c)
@@ -24,30 +24,30 @@ function c96457619.initial_effect(c)
 	e2:SetCode(EFFECT_CANNOT_SELECT_BATTLE_TARGET)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(0,LOCATION_MZONE)
-	e2:SetValue(c38026562.atlimit)
+	e2:SetValue(c511009404.atlimit)
 	c:RegisterEffect(e2)
 	 --Self Destruct
   local e3=Effect.CreateEffect(c)
   e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
   e3:SetCode(EVENT_PHASE+PHASE_END)
   e3:SetRange(LOCATION_SZONE)
-  e3:SetOperation(c38026562.des_op)
+  e3:SetOperation(c511009404.des_op)
   c:RegisterEffect(e3)
 end
-function c511001069.filter(c)
-	return c:IsFaceup() and c:IsCode(93368494) and Duel.IsExistingMatchingCard(c511001069.filter,tp,LOCATION_MZONE,0,1,c)
+function c511009404.filter(c)
+	return c:IsFaceup() and c:IsCode(100912001) and Duel.IsExistingMatchingCard(c511009404.filter,tp,LOCATION_MZONE,0,1,c)
 end
-function c511001069.filter(c)
+function c511009404.filter(c)
 	return c:IsFaceup() and c:IsRace(RACE_SPELLCASTER) 
 end
-function c511001069.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c511001069.filter,tp,LOCATION_MZONE,0,1,nil)
+function c511009404.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(c511009404.filter,tp,LOCATION_MZONE,0,1,nil)
 end
 
-function c38026562.atlimit(e,c)
-	return c:IsFaceup() and c:IsRace(RACE_SPELLCASTER) and not c:IsCode(511009393)
+function c511009404.atlimit(e,c)
+	return c:IsFaceup() and c:IsRace(RACE_SPELLCASTER) and not c:IsCode(100912001)
 end
 
-function c38026562.des_op(e,tp,eg,ep,ev,re,r,rp)
+function c511009404.des_op(e,tp,eg,ep,ev,re,r,rp)
   Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end
