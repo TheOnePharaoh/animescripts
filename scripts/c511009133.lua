@@ -25,6 +25,7 @@ function c511009133.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local phase=Duel.GetCurrentPhase()
 	if Duel.IsDamageCalculated() then return false end
 	local tc=Duel.GetAttacker()
+	local d=Duel.GetAttackTarget()
 	if not tc then return false end
 	if tc:IsControler(1-tp) then 
 	tc=Duel.GetAttackTarget()
