@@ -11,20 +11,13 @@ function c511002981.initial_effect(c)
 	c:RegisterEffect(e1)
 	local f=Card.IsCanBeFusionMaterial
 	Card.IsCanBeFusionMaterial=function(c,fc,ismon)
-		if (c:GetSequence()==6 or c:GetSequence()==7) and c:IsLocation(LOCATION_SZONE) then
-			return f(c,fc,true)
-		end
 		if c:IsCode(80604091) then return f(c,fc,true) end
 		return f(c,fc,ismon)
 	end
-	local tf=Card.IsType
-	Card.IsType=function(c,tpe)
-		if c:IsLocation(LOCATION_SZONE) and c:GetSequence()>=6 then return tf(c,tpe) or bit.band(c:GetOriginalType(),tpe)==tpe end
-		return tf(c,tpe)
-	end
 end
 function c511002981.filter1(c,e)
-	return c:IsCanBeFusionMaterial() and not c:IsImmuneToEffect(e)
+	c:AssumeProperty(ASSUME_TYPE,c:GetOriginalType())
+	return c:IsCanBeFusionMaterial(nil,true) and not c:IsImmuneToEffect(e)
 end
 function c511002981.filter2(c,e,tp,m,f,chkf)
 	return c:IsType(TYPE_FUSION) and (not f or f(c))
