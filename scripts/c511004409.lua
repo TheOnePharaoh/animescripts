@@ -63,6 +63,7 @@ function c511004409.spop(e,tp,eg,ev,ep,re,r,rp)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetValue(-3000)
+	e1:SetReset(RESET_EVENT+0x1fe0000)
 	red:RegisterEffect(e1)
 	Duel.SpecialSummon(tg,SUMMON_TYPE_SPECIAL,tp,tp,false,true,POS_FACEUP)
 end
