@@ -37,7 +37,7 @@ function c511004404.con(e,tp,eg,ev,ep,re,r,rp)
 	local lv=0
 	local c=eg:GetFirst()
 	while c do
-		if c:GetPreviousControler()==tp and bit.band(c:GetPreviousTypeOnField(),TYPE_MONSTER)==TYPE_MONSTER) and c:GetFlagEffect(511004404)~=0 and not c:IsType(TYPE_XYZ) and c:GetLevel()>lv then
+		if c:GetPreviousControler()==tp and bit.band(c:GetPreviousTypeOnField(),TYPE_MONSTER)==TYPE_MONSTER and c:GetFlagEffect(511004404)~=0 and not c:IsType(TYPE_XYZ) and c:GetLevel()>lv then
 			lv=c:GetLevel()
 		end
 		c=eg:GetNext()
