@@ -101,18 +101,18 @@ function c511010207.negop(e,tp,eg,ep,ev,re,r,rp)
 		local tc=g:GetFirst()
 		while tc do
 			if tc:GetFlagEffectLabel(511010208)==LOCATION_HAND then
-			Duel.SendtoHand(g,tc:GetFlagEffectLabel(511010209),REASON_EFFECT)
+				Duel.SendtoHand(g,tc:GetFlagEffectLabel(511010209),REASON_EFFECT)
 			elseif tc:GetFlagEffectLabel(511010208)==LOCATION_GRAVE then
-			Duel.SendtoGrave(tc,REASON_EFFECT,tc:GetFlagEffectLabel(511010209))
+				Duel.SendtoGrave(tc,REASON_EFFECT,tc:GetFlagEffectLabel(511010209))
 			elseif tc:GetFlagEffectLabel(511010208)==LOCATION_REMOVED then
-			Duel.Remove(tc,tc:GetPreviousPosition(),REASON_EFFECT,tc:GetFlagEffectLabel(511010209))
+				Duel.Remove(tc,tc:GetPreviousPosition(),REASON_EFFECT,tc:GetFlagEffectLabel(511010209))
 			elseif tc:GetFlagEffectLabel(511010208)==LOCATION_DECK then
-			Duel.SendtoDeck(tc,tc:GetFlagEffectLabel(511010209),0,REASON_EFFECT)
+				Duel.SendtoDeck(tc,tc:GetFlagEffectLabel(511010209),0,REASON_EFFECT)
 			elseif tc:GetFlagEffectLabel(511010208)==LOCATION_EXTRA then
-			Duel.SendtoDeck(tc,tc:GetFlagEffectLabel(511010209),0,REASON_EFFECT)
+				Duel.SendtoDeck(tc,tc:GetFlagEffectLabel(511010209),0,REASON_EFFECT)
 			else
-			Duel.MoveToField(tc,tc:GetFlagEffectLabel(511010209),tc:GetFlagEffectLabel(511010209),tc:GetFlagEffectLabel(511010208),tc:GetFlagEffectLabel(511010210),true)
-			Duel.MoveSequence(tc,tc:GetFlagEffectLabel(511010211))
+				Duel.MoveToField(tc,tc:GetFlagEffectLabel(511010209),tc:GetFlagEffectLabel(511010209),tc:GetFlagEffectLabel(511010208),tc:GetFlagEffectLabel(511010210),true)
+				Duel.MoveSequence(tc,tc:GetFlagEffectLabel(511010211))
 			end
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
@@ -129,24 +129,24 @@ function c511010207.negop(e,tp,eg,ep,ev,re,r,rp)
 	end
 	local ct=Duel.GetMatchingGroupCount(Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,c)
 	if ct>0 and Duel.SelectYesNo(tp,551) then 
-	local ga=Duel.SelectMatchingCard(tp,Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,0,ct,c)
-	local tca=ga:GetFirst()
-	while tca do
-	c:SetCardTarget(tca)
-	tca=ga:GetNext()
-	end
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_ACTIVATE)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(0,1)
-	e1:SetValue(c511010207.aclimit)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e1,tp)
+		local ga=Duel.SelectMatchingCard(tp,Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,0,ct,c)
+		local tca=ga:GetFirst()
+		while tca do
+			tca:RegisterFlagEffect(511010212,RESET_PHASE+PHASE_END,0,1)
+			tca=ga:GetNext()
+		end
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_CANNOT_ACTIVATE)
+		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e1:SetTargetRange(1,1)
+		e1:SetValue(c511010207.aclimit)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e1,tp)
 	end
 end
-function c511010207.aclimit(e,sg,re,tp)
-	return e:GetHandler():IsOnField() and not e:GetHandler():IsImmuneToEffect(e) and not sg:IsContains(e:GetHandler())
+function c511010207.aclimit(e,c,sg,re,tp)
+	return c:GetHandler():IsOnField() and not c:GetHandler():IsImmuneToEffect(e) and c:GetHandler():GetFlagEffect(511010212)==0
 end
 
 function c511010207.rumfilter(c)
@@ -201,5 +201,5 @@ function c511010207.numchk(e,tp,eg,ep,ev,re,r,rp)
 	Duel.CreateToken(1-tp,68396121)
 end
 function c511010207.indes(e,c)
-return not c:IsSetCard(0x48)
+	return not c:IsSetCard(0x48)
 end
