@@ -6,7 +6,6 @@ function c511009388.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
 	e1:SetRange(LOCATION_PZONE)
 	e1:SetCountLimit(1)
 	e1:SetCondition(c511009388.condition)
@@ -24,7 +23,7 @@ function c511009388.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511009388.filter,tp,0,LOCATION_SZONE,1,nil) end
 end
 function c511009388.operation(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(c511009388.filter,tp,LOCATION_SZONE,LOCATION_SZONE,nil)
+	local g=Duel.GetMatchingGroup(c511009388.filter,tp,0,LOCATION_SZONE,nil)
 	local tc=g:GetFirst()
 	while tc do
 		local e1=Effect.CreateEffect(e:GetHandler())
