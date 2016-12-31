@@ -24,7 +24,7 @@ function c511009442.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 --OCG Supreme King collection
-c511009443.collection={
+c511009442.collection={
 -- Odd-Eyes Raging Dragon 
 -- Odd-Eyes Rebellion Dragon
  -- Supreme King Dragon Zarc
@@ -36,13 +36,13 @@ c511009443.collection={
 }
 function c511009442.condition(e,tp,eg,ep,ev,re,r,rp)
 	local d=Duel.GetAttackTarget()
-	return d and d:IsControler(tp) and d:IsFaceup() and (c511009443.collection[d:GetCode()] or d:IsSetCard(0xfb) )
+	return d and d:IsControler(tp) and d:IsFaceup() and (c511009442.collection[d:GetCode()] or d:IsSetCard(0xfb) )
 end
 function c511009442.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateAttack()
 end
 function c511009442.filter(c)
-	return c:IsFaceup() and (c511009443.collection[c:GetCode()] or c:IsSetCard(0xfb))
+	return c:IsFaceup() and (c511009442.collection[c:GetCode()] or c:IsSetCard(0xfb))
 end
 function c511009442.con(e)
 	return Duel.IsExistingMatchingCard(c511009442.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,e:GetHandler())
