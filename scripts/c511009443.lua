@@ -55,7 +55,7 @@ function c511009443.ndcfilter(c)
 	return c:IsFaceup() and (c511009443.collection[c:GetCode()] or c:IsSetCard(0xfb))
 end
 function c511009443.ndcon(e)
-	return Duel.IsExistingMatchingCard(c511009443.ndcfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,nil)
+	return Duel.IsExistingMatchingCard(c511009443.ndcfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 function c511009443.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
