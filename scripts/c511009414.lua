@@ -1,10 +1,10 @@
---Performapal Drop gallop
+--Performapal Dropgallop
 --Fixed by TheOnePharaoh    
 function c511009414.initial_effect(c)
 	--draw
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DRAW)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetCondition(c511009414.con)
@@ -23,7 +23,7 @@ function c511009414.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c511009414.con(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsContains(e:GetHandler()) and eg:IsExists(c94693857.filter,1,e:GetHandler())
+	return e:GetHandler():GetSummonType()==SUMMON_TYPE_PENDULUM and eg:IsContains(e:GetHandler()) and eg:IsExists(c94693857.filter,1,nil)
 end
 function c511009414.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x9f)
