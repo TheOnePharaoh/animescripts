@@ -28,6 +28,17 @@ function c511009095.initial_effect(c)
 	e2:SetTarget(c511009095.target)
 	e2:SetOperation(c511009095.operation)
 	c:RegisterEffect(e2)
+		--pendulum
+	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(90036274,0))
+	e7:SetCategory(CATEGORY_DESTROY)
+	e7:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e7:SetCode(EVENT_DESTROYED)
+	e7:SetProperty(EFFECT_FLAG_DELAY)
+	e7:SetCondition(c511009095.pencon)
+	e7:SetTarget(c511009095.pentg)
+	e7:SetOperation(c511009095.penop)
+	c:RegisterEffect(e7)
 end
 
 function c511009095.spcfil1(c,tp)
@@ -87,5 +98,19 @@ function c511009095.operation(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetValue(RESET_TURN_SET)
 		e3:SetReset(RESET_EVENT+0x1fe0000)
 		tc:RegisterEffect(e3)
+	end
+end
+
+function c511009095.pencon(e,tp,eg,ep,ev,re,r,rp)
+	return bit.band(r,REASON_EFFECT+REASON_BATTLE)~=0 and e:GetHandler():IsPreviousLocation(LOCATION_MZONE)
+end
+function c511009095.pentg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.CheckLocation(tp,LOCATION_SZONE,6) or Duel.CheckLocation(tp,LOCATION_SZONE,7) end
+end
+function c511009095.penop(e,tp,eg,ep,ev,re,r,rp)
+	if not Duel.CheckLocation(tp,LOCATION_SZONE,6) and not Duel.CheckLocation(tp,LOCATION_SZONE,7) then return false end
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+		Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	end
 end

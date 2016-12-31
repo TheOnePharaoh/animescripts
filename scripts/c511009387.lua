@@ -1,5 +1,7 @@
 --Dark Anthelion Dragon
 function c511009387.initial_effect(c)
+	--pendulum summon
+	aux.EnablePendulumAttribute(c,false)
 	--xyz summon
 	aux.AddXyzProcedure(c,nil,7,2)
 	c:EnableReviveLimit()
@@ -14,6 +16,17 @@ function c511009387.initial_effect(c)
 	e1:SetTarget(c511009387.target)
 	e1:SetOperation(c511009387.operation)
 	c:RegisterEffect(e1)
+		--pendulum
+	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(90036274,0))
+	e7:SetCategory(CATEGORY_DESTROY)
+	e7:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e7:SetCode(EVENT_DESTROYED)
+	e7:SetProperty(EFFECT_FLAG_DELAY)
+	e7:SetCondition(c511009387.pencon)
+	e7:SetTarget(c511009387.pentg)
+	e7:SetOperation(c511009387.penop)
+	c:RegisterEffect(e7)
 end
 function c511009387.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
@@ -59,5 +72,19 @@ function c511009387.operation(e,tp,eg,ep,ev,re,r,rp)
 			c:RegisterEffect(e2)
 			Duel.Recover(tp,math.ceil(atk/2),REASON_EFFECT)
 		end
+	end
+end
+
+function c511009387.pencon(e,tp,eg,ep,ev,re,r,rp)
+	return bit.band(r,REASON_EFFECT+REASON_BATTLE)~=0 and e:GetHandler():IsPreviousLocation(LOCATION_MZONE)
+end
+function c511009387.pentg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.CheckLocation(tp,LOCATION_SZONE,6) or Duel.CheckLocation(tp,LOCATION_SZONE,7) end
+end
+function c511009387.penop(e,tp,eg,ep,ev,re,r,rp)
+	if not Duel.CheckLocation(tp,LOCATION_SZONE,6) and not Duel.CheckLocation(tp,LOCATION_SZONE,7) then return false end
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+		Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	end
 end
