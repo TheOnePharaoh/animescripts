@@ -48,5 +48,5 @@ function c511009442.filter(c)
 	return c:IsFaceup() and (c511009442.collection[c:GetCode()] or c:IsSetCard(0xfb))
 end
 function c511009442.con(e)
-	return Duel.IsExistingMatchingCard(c511009442.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,e:GetHandler())
+	return Duel.GetAttackTarget()==e:GetHandler() and Duel.IsExistingMatchingCard(c511009442.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,e:GetHandler())
 end
