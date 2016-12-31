@@ -32,11 +32,6 @@ function c511009437.initial_effect(c)
 		Duel.RegisterEffect(ge2,0)
 	end
 end
---OCG Supreme King collection
-c511009443.collection={
-[25880422]=true;[29549364]=true;[63102017]=true;
-[58921041]=true;[511000176]=true;
-}
 function c511009437.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	while tc do
