@@ -98,7 +98,7 @@ c511009441.collection={
 [100912017]=true;[100912018]=true;[100912019]=true;
 }
 function c511009441.splimit(e,se,sp,st)
-	return se:GetHandler():IsCode(100331001) --se:GetHandler():IsCode(76794549)
+	return se:GetHandler():IsCode(76794549)
 end
 
 -- summon itself
