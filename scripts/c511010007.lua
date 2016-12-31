@@ -4,7 +4,7 @@ function c511010007.initial_effect(c)
 	aux.AddXyzProcedure(c,nil,7,3)
 	c:EnableReviveLimit()
 	--atkup
-		local e1=Effect.CreateEffect(c)
+	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(96864105,0))
 	e1:SetCategory(CATEGORY_ATKCHANGE)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
