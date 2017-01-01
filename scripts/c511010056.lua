@@ -52,8 +52,8 @@ function c511010056.drop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511010056.numchk(e,tp,eg,ep,ev,re,r,rp)
-	Duel.CreateToken(tp,89642993)
-	Duel.CreateToken(1-tp,89642993)
+	Duel.CreateToken(tp,55935416)
+	Duel.CreateToken(1-tp,55935416)
 end
 function c511010056.indes(e,c)
 	return not c:IsSetCard(0x48)
