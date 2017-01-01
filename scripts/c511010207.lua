@@ -127,6 +127,7 @@ function c511010207.negop(e,tp,eg,ep,ev,re,r,rp)
 			tc=g:GetNext()
 		end
 	end
+	Duel.BreakEffect()
 	local ct=Duel.GetMatchingGroupCount(Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	if ct>0 and Duel.SelectYesNo(tp,551) then 
 		local ga=Duel.SelectMatchingCard(tp,Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,0,ct,nil)
