@@ -127,9 +127,9 @@ function c511010207.negop(e,tp,eg,ep,ev,re,r,rp)
 			tc=g:GetNext()
 		end
 	end
-	local ct=Duel.GetMatchingGroupCount(Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,c)
+	local ct=Duel.GetMatchingGroupCount(Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	if ct>0 and Duel.SelectYesNo(tp,551) then 
-		local ga=Duel.SelectMatchingCard(tp,Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,0,ct,c)
+		local ga=Duel.SelectMatchingCard(tp,Card.IsOnField,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,0,ct,nil)
 		local tca=ga:GetFirst()
 		while tca do
 			tca:RegisterFlagEffect(511010212,RESET_PHASE+PHASE_END,0,1)
@@ -139,7 +139,7 @@ function c511010207.negop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetCode(EFFECT_CANNOT_ACTIVATE)
 		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-		e1:SetTargetRange(1,1)
+		e1:SetTargetRange(0,1)
 		e1:SetValue(c511010207.aclimit)
 		e1:SetReset(RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e1,tp)
