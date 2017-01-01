@@ -17,7 +17,7 @@ function c511010104.initial_effect(c)
 	e1:SetTarget(c511010104.target)
 	e1:SetOperation(c511010104.operation)
 	c:RegisterEffect(e1)
-	--
+	--deck discard
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(2061963,1))
 	e2:SetCategory(CATEGORY_DECKDES)
