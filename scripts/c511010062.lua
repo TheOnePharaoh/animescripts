@@ -1,7 +1,8 @@
 --Number 62: Galaxy-Eyes Prime Photon Dragon (Anime)
 --No.62 銀河眼の光子竜皇 (Anime)
+--Scripted By TheOnePharaoh
 --Scripter Note: After including The Rank/Level Functions in the core follow the steps
---1)Uncomment e3 and e4 and delete e5
+--1)Uncomment e3
 --2)uncomment the first (commented) val and delete the second val
 --3)delete etemp (marked between comments)
 function c511010062.initial_effect(c)
@@ -36,30 +37,21 @@ function c511010062.initial_effect(c)
 	-- e3:SetCode(EFFECT_LEVEL_RANK_S)
 	-- e3:SetTarget(function (e,c) return not c:IsType(TYPE_XYZ)end)
 	-- c:RegisterEffect(e3)
-	-- -- Update Rank
-	-- local e4=Effect.CreateEffect(c)
-	-- e4:SetType(EFFECT_TYPE_IGNITION)
-	-- e4:SetRange(LOCATION_MZONE)
-	-- e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	-- e4:SetCountLimit(1)
-	-- e4:SetTarget(c511010062.target)
-	-- e4:SetOperation(c511010062.op)
-	-- c:RegisterEffect(e4)
-	--Update Rank/Level
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_IGNITION)
-	e5:SetRange(LOCATION_MZONE)
-	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e5:SetCountLimit(1)
-	e5:SetTarget(c511010062.target)
-	e5:SetOperation(c511010062.op)
-	c:RegisterEffect(e5)
+	-- Update Rank Rank/Level
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e4:SetCountLimit(1)
+	e4:SetTarget(c511010062.target)
+	e4:SetOperation(c511010062.op)
+	c:RegisterEffect(e4)
 	--battle indestructable
-	local e6=Effect.CreateEffect(c)
-	e6:SetType(EFFECT_TYPE_SINGLE)
-	e6:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e6:SetValue(c511010062.indes)
-	c:RegisterEffect(e6)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e5:SetValue(c511010062.indes)
+	c:RegisterEffect(e5)
 	--resetlevel
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
