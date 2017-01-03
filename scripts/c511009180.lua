@@ -1,4 +1,4 @@
---Cipher Stranger (Anime)
+--Cipher Étranger (Anime)
 function c511009180.initial_effect(c)
 	--search
 	local e2=Effect.CreateEffect(c)
