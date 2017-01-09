@@ -18,7 +18,7 @@ function c511002720.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002720.fusfilter(c)
-	return c:IsSetCard(0x21f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
+	return c:IsSetCard(0x121f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
 end
 function c511002720.filter(c,tp)
 	return c:GetPreviousControler()==1-tp and bit.band(c:GetReason(),0x41)==0x41

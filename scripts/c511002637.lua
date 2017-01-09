@@ -10,7 +10,7 @@ function c511002637.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002637.cfilter(c)
-	return c:IsSetCard(0x21a) or c:IsCode(82382815)
+	return c:IsSetCard(0x121a) or c:IsCode(82382815)
 end
 function c511002637.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE 

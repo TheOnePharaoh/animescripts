@@ -18,7 +18,7 @@ function c511002712.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002712.fusfilter(c)
-	return c:IsSetCard(0x21f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
+	return c:IsSetCard(0x121f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
 end
 function c511002712.descon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp and eg:IsExists(Card.IsControler,1,nil,1-tp)
