@@ -50,6 +50,7 @@ function c511012002.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.MoveSequence(tc,tc:GetPreviousSequence())
 		tc=g:GetNext()
 		end
+		end
 		elseif Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) then
 		Duel.SendtoGrave(c,REASON_RULE)
 	end
