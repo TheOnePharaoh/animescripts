@@ -41,7 +41,8 @@ function c511012002.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
 	if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		if eg:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(511012002,1)) then
+		--if eg:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(511012002,1)) then
+		if eg:GetCount()>0 and Duel.SelectYesNo(tp,210) then
 		Duel.BreakEffect()
 		local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
 		local tc=g:GetFirst()
