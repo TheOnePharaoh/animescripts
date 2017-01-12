@@ -1,5 +1,6 @@
 --Enchanted Sword Nothung
 function c511000416.initial_effect(c)
+	aux.AddEquipProcedure(c,nil,nil,nil,nil,c511000416.tg,c511000416.op)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_EQUIP+CATEGORY_DESTROY+CATEGORY_REMOVE)
@@ -15,13 +16,6 @@ function c511000416.initial_effect(c)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
 	e2:SetValue(400)
 	c:RegisterEffect(e2)
-	--Equip limit
-	local e3=Effect.CreateEffect(c)
-	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_EQUIP_LIMIT)
-	e3:SetValue(1)
-	c:RegisterEffect(e3)
 	--destroy all Dragons that battle
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(511000416,0))
@@ -35,24 +29,17 @@ function c511000416.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 function c511000416.filter(c)
-	return c:IsRace(RACE_DRAGON) and c:IsFaceup() and c:IsAbleToRemove() and c:IsDestructable()
+	return c:IsRace(RACE_DRAGON) and c:IsFaceup() and c:IsAbleToRemove()
 end
-function c511000416.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	local sg=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
+function c511000416.tg(e,tp,eg,ep,ev,re,r,rp,tc)
+	e:SetCategory(CATEGORY_EQUIP+CATEGORY_DESTROY+CATEGORY_REMOVE)
+	local sg=Duel.GetMatchingGroup(c511000416.filter,tp,0,LOCATION_MZONE,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,sg,sg:GetCount(),0,0)
 end
-function c511000416.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
+function c511000416.op(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetMatchingGroup(c511000416.filter,tp,0,LOCATION_MZONE,nil)
-	if e:GetHandler():IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.Equip(tp,e:GetHandler(),tc)
-		Duel.Destroy(sg,REASON_EFFECT,LOCATION_REMOVED)
-	end
+	Duel.Destroy(sg,REASON_EFFECT,LOCATION_REMOVED)
 end
 function c511000416.descon(e,tp,eg,ep,ev,re,r,rp)
 	local ec=e:GetHandler():GetEquipTarget()

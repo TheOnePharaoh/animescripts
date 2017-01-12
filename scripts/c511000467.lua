@@ -28,19 +28,6 @@ function c511000467.initial_effect(c)
 		ge2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_IMMEDIATELY_APPLY)
 		ge2:SetOperation(c511000467.setop)
 		Duel.RegisterEffect(ge2,0)
-		--check obsolete ruling
-		local ge3=Effect.CreateEffect(c)
-		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge3:SetCode(EVENT_DRAW)
-		ge3:SetOperation(c511000467.checkop)
-		Duel.RegisterEffect(ge3,0)
-	end
-end
-function c511000467.checkop(e,tp,eg,ep,ev,re,r,rp)
-	if bit.band(r,REASON_RULE)~=0 and Duel.GetTurnCount()==1 then
-		--obsolete
-		Duel.RegisterFlagEffect(tp,62765383,0,0,1)
-		Duel.RegisterFlagEffect(1-tp,62765383,0,0,1)
 	end
 end
 function c511000467.setop(e,tp,eg,ep,ev,re,r,rp)
@@ -50,12 +37,12 @@ function c511000467.setop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	while tc do
 		local fc=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
-		if Duel.GetFlagEffect(tp,62765383)>0 then
+		if Duel.IsDuelType(DUEL_OBSOLETE_RULING) then
 			if fc then Duel.Destroy(fc,REASON_RULE) end
-			of=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+			fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
 			if fc and Duel.Destroy(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
 		else
-			Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+			fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
 			if fc and Duel.SendtoGrave(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
 		end
 		Duel.MoveSequence(tc,5)

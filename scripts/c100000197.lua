@@ -1,13 +1,11 @@
 --アトリビュート・ボム
 function c100000197.initial_effect(c)
-	--Activate
+	aux.AddEquipProcedure(c,nil,nil,nil,nil,c100000197.tg)
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c100000197.target)
-	e1:SetOperation(c100000197.operation)
+	e1:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetCode(EVENT_LEAVE_FIELD_P)
+	e1:SetOperation(c100000197.desopchk)
 	c:RegisterEffect(e1)
 	--damage
 	local e2=Effect.CreateEffect(c)
@@ -20,29 +18,18 @@ function c100000197.initial_effect(c)
 	e2:SetOperation(c100000197.desop)
 	c:RegisterEffect(e2)
 	e1:SetLabelObject(e2)
-	--Equip limit
-	local e3=Effect.CreateEffect(c)
-	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_EQUIP_LIMIT)
-	e3:SetValue(1)
-	c:RegisterEffect(e3)
 end
-function c100000197.target(e,tp,eg,ep,ev,re,r,rp,chk)	
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)	
+function c100000197.tg(e,tp,eg,ep,ev,re,r,rp,tc)
 	Duel.Hint(HINT_SELECTMSG,tp,562)
 	local rc=Duel.AnnounceAttribute(tp,1,0xffff)
-	e:GetLabelObject():SetLabel(rc)
+	e:GetHandler():RegisterFlagEffect(10000197,RESET_EVENT+0x1fe0000,0,1,rc)
 	e:GetHandler():SetHint(CHINT_ATTRIBUTE,rc)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 end
-function c100000197.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if e:GetHandler():IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.Equip(tp,e:GetHandler(),tc)
+function c100000197.desopchk(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():GetFlagEffect(10000197)>0 then
+		e:GetLabelObject():SetLabel(e:GetHandler():GetFlagEffectLabel(10000197))
+	else
+		e:GetLabelObject():SetLabel(-2)
 	end
 end
 function c100000197.damcon(e,tp,eg,ep,ev,re,r,rp)
@@ -50,7 +37,7 @@ function c100000197.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local ec=c:GetPreviousEquipTarget()
 	local rc=ec:GetReasonCard()
 	local q=e:GetLabel()
-	return c:IsReason(REASON_LOST_TARGET) and ec:IsReason(REASON_BATTLE) and rc:IsAttribute(q)
+	return q>-2 and c:IsReason(REASON_LOST_TARGET) and ec:IsReason(REASON_BATTLE) and rc:IsAttribute(q)
 end
 function c100000197.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
