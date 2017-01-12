@@ -43,12 +43,19 @@ function c511001891.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,0,0)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_CHAIN_SOLVING)
+	e1:SetReset(RESET_CHAIN)
+	e1:SetLabel(Duel.GetCurrentChain())
+	e1:SetLabelObject(e)
+	e1:SetOperation(aux.EquipEquip)
+	Duel.RegisterEffect(e1,tp)
 end
 function c511001891.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if c:IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		if not Duel.Equip(tp,c,tc) then return end
 		if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 
 			or not Duel.IsPlayerCanSpecialSummonMonster(tp,511001892,0,0x4011,tc:GetAttack(),tc:GetDefense(),
 			tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end

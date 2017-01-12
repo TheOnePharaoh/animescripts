@@ -1,21 +1,6 @@
 --Spring Punch
 function c511001762.initial_effect(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c511001762.target)
-	e1:SetOperation(c511001762.operation)
-	c:RegisterEffect(e1)
-	--Equip limit
-	local e2=Effect.CreateEffect(c)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_EQUIP_LIMIT)
-	e2:SetValue(c511001762.eqlimit)
-	c:RegisterEffect(e2)
+	aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsRace,RACE_MACHINE))
 	--damage
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_DAMAGE)
@@ -45,25 +30,6 @@ function c511001762.atkchk(e,tp,eg,ep,ev,re,r,rp)
 		Duel.CreateToken(1-tp,419)
 		Duel.RegisterFlagEffect(tp,419,nil,0,1)
 		Duel.RegisterFlagEffect(1-tp,419,nil,0,1)
-	end
-end
-function c511001762.eqlimit(e,c)
-	return c:IsRace(RACE_MACHINE)
-end
-function c511001762.eqfilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_MACHINE)
-end
-function c511001762.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511001762.eqfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511001762.eqfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,c511001762.eqfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
-end
-function c511001762.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if e:GetHandler():IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.Equip(tp,e:GetHandler(),tc)
 	end
 end
 function c511001762.damcon(e,tp,eg,ep,ev,re,r,rp)

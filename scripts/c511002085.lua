@@ -1,21 +1,6 @@
 --Sky Excalibur
 function c511002085.initial_effect(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c511002085.target)
-	e1:SetOperation(c511002085.operation)
-	c:RegisterEffect(e1)
-	--equip limit
-	local e2=Effect.CreateEffect(c)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_EQUIP_LIMIT)
-	e2:SetValue(1)
-	c:RegisterEffect(e2)
+	aux.AddEquipProcedure(c,0)
 	--atk/def
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_EQUIP)
@@ -38,19 +23,6 @@ function c511002085.initial_effect(c)
 	e5:SetCode(EFFECT_IMMUNE_EFFECT)
 	e5:SetValue(c511002085.efilter)
 	c:RegisterEffect(e5)
-end
-function c511002085.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
-end
-function c511002085.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if e:GetHandler():IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.Equip(tp,e:GetHandler(),tc)
-	end
 end
 function c511002085.efilter(e,re)
 	return e:GetHandlerPlayer()~=re:GetOwnerPlayer()
