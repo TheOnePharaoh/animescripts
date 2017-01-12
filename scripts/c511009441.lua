@@ -136,18 +136,17 @@ function c511009441.damcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:GetHandler():RegisterEffect(e1)
 end
 function c511009441.damtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,e:GetHandler()) end
-	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_MZONE,1,e:GetHandler()) end
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_MZONE,e:GetHandler())
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,PLAYER_ALL,0)
 end
 function c511009441.damop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(c511009441.desfil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(c511009441.desfil,tp,0,LOCATION_MZONE,nil)
 	if Duel.Destroy(g,REASON_EFFECT)>0 then
 		local dg=Duel.GetOperatedGroup()
 		Duel.BreakEffect()
 		local dam=dg:GetSum(Card.GetPreviousAttackOnField)
-		if dg:IsExists(aux.FilterEqualFunction(Card.GetPreviousControler,tp),1,nil) then Duel.Damage(tp,dam,REASON_EFFECT,true) end
 		if dg:IsExists(aux.FilterEqualFunction(Card.GetPreviousControler,1-tp),1,nil) then Duel.Damage(1-tp,dam,REASON_EFFECT,true) end
 		Duel.RDComplete()
 	end
