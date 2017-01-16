@@ -1,14 +1,14 @@
 --Micron Force
 function c511001915.initial_effect(c)
-	--Activate
+	aux.AddPersistentProcedure(c,nil,aux.FilterBoolFunction(Card.IsFaceup),CATEGORY_ATKCHANGE,EFFECT_FLAG_DAMAGE_STEP,TIMING_DAMAGE_STEP,TIMING_DAMAGE_STEP,c511001915.condition)
+	--disable
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
-	e1:SetHintTiming(TIMING_DAMAGE_STEP)
-	e1:SetCondition(c511001915.condition)
-	e1:SetTarget(c511001915.target)
-	e1:SetOperation(c511001915.operation)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_SET_BASE_ATTACK)
+	e1:SetRange(LOCATION_SZONE)
+	e1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e1:SetTarget(c511001915.atktg)
+	e1:SetValue(c511001915.atkval)
 	c:RegisterEffect(e1)
 	--Destroy
 	local e2=Effect.CreateEffect(c)
@@ -19,33 +19,14 @@ function c511001915.initial_effect(c)
 	e2:SetOperation(c511001915.desop)
 	c:RegisterEffect(e2)
 end
+function c511001915.atktg(e,c)
+	return e:GetHandler():IsHasCardTarget(c)
+end
+function c511001915.atkval(e,c)
+	return c:GetBaseAttack()/2
+end
 function c511001915.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
-end
-function c511001915.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-end
-function c511001915.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=Duel.GetFirstTarget()
-	if c:IsRelateToEffect(e) and tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
-		c:SetCardTarget(tc)
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_OWNER_RELATE)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetCode(EFFECT_SET_BASE_ATTACK)
-		e1:SetValue(c511001915.val)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		e1:SetCondition(c511001915.rcon)
-		tc:RegisterEffect(e1,true)
-	end
-end
-function c511001915.rcon(e)
-	return e:GetOwner():IsHasCardTarget(e:GetHandler())
 end
 function c511001915.descon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -55,7 +36,4 @@ function c511001915.descon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511001915.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Destroy(e:GetHandler(), REASON_EFFECT)
-end
-function c511001915.val(e,c)
-	return e:GetHandler():GetBaseAttack()/2
 end

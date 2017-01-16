@@ -1,70 +1,58 @@
 --Power Change Barrier
 --パサー・チェンジ・バリア
 --  By Shad3
-
-local scard=c511005077
-
-function scard.initial_effect(c)
-  --Activate
-  local e1=Effect.CreateEffect(c)
-  e1:SetType(EFFECT_TYPE_ACTIVATE)
-  e1:SetCode(EVENT_FREE_CHAIN)
-  e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-  e1:SetTarget(scard.tg)
-  e1:SetOperation(scard.op)
-  c:RegisterEffect(e1)
-  --Negate, Decrease ATK
-  local e2=Effect.CreateEffect(c)
-  e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-  e2:SetCode(EVENT_CHAIN_ACTIVATING)
-  e2:SetRange(LOCATION_SZONE)
-  e2:SetCategory(CATEGORY_DISABLE)
-  e2:SetCondition(scard.neg_cd)
-  e2:SetOperation(scard.neg_op)
-  c:RegisterEffect(e2)
-  e1:SetLabelObject(e2)
-  --Self Destruct
-  local e3=Effect.CreateEffect(c)
-  e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-  e3:SetCode(EVENT_PHASE+PHASE_END)
-  e3:SetRange(LOCATION_SZONE)
-  e3:SetOperation(scard.des_op)
-  c:RegisterEffect(e3)
+--cleaned up and fixed by MLD
+function c511005077.initial_effect(c)
+	aux.AddPersistentProcedure(c,0,aux.FilterBoolFunction(Card.IsPosition,POS_FACEUP_ATTACK))
+	--Negate, Decrease ATK
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_F)
+	e2:SetCode(EVENT_CHAINING)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetCategory(CATEGORY_DISABLE)
+	e2:SetCondition(c511005077.discon)
+	e2:SetTarget(c511005077.distg)
+	e2:SetOperation(c511005077.disop)
+	c:RegisterEffect(e2)
+	--selfdes
+	local e3=Effect.CreateEffect(c)
+	e3:SetCategory(CATEGORY_DESTROY)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e3:SetCode(EVENT_PHASE+PHASE_END)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetCountLimit(1)
+	e3:SetTarget(c511005077.destg)
+	e3:SetOperation(c511005077.desop)
+	c:RegisterEffect(e3)
 end
-
-function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-  if chkc then return chkc:IsOnField() and chkc:IsFaceup() end
-  if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
-  Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
+function c511005077.discon(e,tp,eg,ep,ev,re,r,rp)
+	if rp==tp or not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then return false end
+	local g=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
+	local tc=e:GetHandler():GetFirstCardTarget()
+	return tc and g:IsContains(tc) and Duel.IsChainDisablable(ev)
 end
-
-function scard.op(e,tp,eg,ep,ev,re,r,rp)
-  local c=e:GetHandler()
-  local tc=Duel.GetFirstTarget()
-  if not (c:IsRelateToEffect(e) and tc:IsRelateToEffect(e)) then return end
-  c:SetCardTarget(tc)
-  local e1=Effect.CreateEffect(c)
-  e1:SetType(EFFECT_TYPE_SINGLE)
-  e1:SetCode(EFFECT_UPDATE_ATTACK)
-  e1:SetValue(function(e_,c_) return e_:GetLabel() end)
-  e1:SetLabel(0)
-  e1:SetReset(RESET_EVENT+0x1fe0000)
-  tc:RegisterEffect(e1)
-  e:GetLabelObject():SetLabelObject(e1)
+function c511005077.distg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local tc=e:GetHandler():GetFirstCardTarget()
+	if chk==0 then return tc end
+	Duel.SetOperationInfo(0,CATEGORY_DISABLE,eg,1,0,0)
 end
-
-function scard.neg_cd(e,tp,eg,ep,ev,re,r,rp)
-  local g=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
-  local tc=e:GetHandler():GetFirstCardTarget()
-  return re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) and g:IsContains(tc)
+function c511005077.disop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.NegateEffect(ev) then
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetReset(RESET_EVENT+0x1fe0000)
+		e1:SetValue(-600)
+		tc:RegisterEffect(e1)
+	end
 end
-
-function scard.neg_op(e,tp,eg,ep,ev,re,r,rp)
-  Duel.NegateEffect(ev)
-  local ne=e:GetLabelObject()
-  ne:SetLabel(ne:GetLabel()-600)
+function c511005077.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetHandler(),1,0,0)
 end
-
-function scard.des_op(e,tp,eg,ep,ev,re,r,rp)
-  Duel.Destroy(e:GetHandler(),REASON_EFFECT)
+function c511005077.desop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsFaceup() and c:IsRelateToEffect(e) then
+		Duel.Destroy(c,REASON_EFFECT)
+	end
 end

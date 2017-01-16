@@ -1,20 +1,6 @@
 --Glass Slippers
 function c511000433.initial_effect(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c511000433.target)
-	c:RegisterEffect(e1)
-	--Equip limit
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_EQUIP_LIMIT)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetValue(c511000433.eqlimit)
-	c:RegisterEffect(e2)
+	aux.AddEquipProcedure(c,nil,c511000433.filter)
 	--change equip
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(511000433,0))
@@ -57,34 +43,16 @@ function c511000433.initial_effect(c)
 	e6:SetOperation(c511000433.eqop)
 	c:RegisterEffect(e6)
 end
-function c511000433.eqlimit(e,c)
-	return c:IsCode(511000431) or c:GetControler()~=e:GetHandlerPlayer()
-end
-function c511000433.filter(c,tp)
-	return c:IsFaceup() and (c:IsCode(511000431) or c:GetControler()~=tp)
-end
-function c511000433.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511000433.filter(chkc,tp) end
-	if chk==0 then return Duel.IsExistingTarget(c511000433.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,tp) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,c511000433.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,tp)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_CHAIN_SOLVING)
-	e1:SetReset(RESET_CHAIN)
-	e1:SetLabel(Duel.GetCurrentChain())
-	e1:SetLabelObject(e)
-	e1:SetOperation(aux.EquipEquip)
-	Duel.RegisterEffect(e1,tp)
+function c511000433.filter(c,e,tp)
+	return c:IsCode(511000431) or c:GetControler()~=tp
 end
 function c511000433.eqcon(e,tp,eg,ep,ev,re,r,rp)
 	local eq=e:GetHandler():GetEquipTarget()
 	return ep~=tp and eq:IsCode(511000431) and eg:GetFirst()==eq
 end
-function c511000433.atkcon(e,tp,eg,ep,ev,re,r,rp)
+function c511000433.atkcon(e)
 	local eq=e:GetHandler():GetEquipTarget()
-	return eq:GetControler()~=e:GetHandler():GetControler()
+	return eq:GetControler()~=e:GetHandlerPlayer()
 end
 function c511000433.eqtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,0,0,LOCATION_MZONE,1,nil) end
@@ -112,5 +80,5 @@ end
 function c511000433.eqtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingTarget(c511000433.filter,tp,LOCATION_MZONE,0,1,nil,e) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(511000433,1))
-	local tc=Duel.SelectTarget(tp,c511000433.filter,tp,LOCATION_MZONE,0,1,1,nil,e)
+	Duel.SelectTarget(tp,c511000433.filter,tp,LOCATION_MZONE,0,1,1,nil,e)
 end

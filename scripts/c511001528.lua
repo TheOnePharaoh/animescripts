@@ -1,14 +1,14 @@
 --Darkness Half
 function c511001528.initial_effect(c)
-	--Activate
+	aux.AddPersistentProcedure(c,0,c511001528.filter,CATEGORY_ATKCHANGE+CATEGORY_SPECIAL_SUMMON,EFFECT_FLAG_DAMAGE_STEP,TIMING_DAMAGE_STEP,TIMING_DAMAGE_STEP,c511001528.condition,nil,c511001528.target,c511001528.operation)
+	--atk
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
-	e1:SetCondition(c511001528.condition)
-	e1:SetTarget(c511001528.target)
-	e1:SetOperation(c511001528.operation)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_SET_BASE_ATTACK)
+	e1:SetRange(LOCATION_SZONE)
+	e1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e1:SetTarget(c511001528.atktg)
+	e1:SetValue(c511001528.atkval)
 	c:RegisterEffect(e1)
 	--Destroy
 	local e2=Effect.CreateEffect(c)
@@ -25,56 +25,40 @@ function c511001528.initial_effect(c)
 	e3:SetOperation(c511001528.desop2)
 	c:RegisterEffect(e3)
 end
+function c511001528.atktg(e,c)
+	return e:GetHandler():IsHasCardTarget(c)
+end
+function c511001528.atkval(e,c)
+	return c:GetBaseAttack()/2
+end
 function c511001528.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
+	return (Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()) 
+		and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>1 and not Duel.IsPlayerAffectedByEffect(1-tp,59822133) 
+		and Duel.IsPlayerCanSpecialSummonMonster(1-tp,511001529,0,0x4011,1000,1000,3,RACE_FIEND,ATTRIBUTE_DARK)
 end
 function c511001528.cfilter(c,atk)
 	return c:IsFaceup() and c:GetAttack()>atk
 end
-function c511001528.filter(c,tp)
+function c511001528.filter(c,e,tp)
 	local atk=c:GetAttack()
 	return c:IsFaceup() and not Duel.IsExistingMatchingCard(c511001528.cfilter,tp,LOCATION_MZONE,0,1,nil,atk)
 end
-function c511001528.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c511001528.filter(chkc,tp) end
-	if chk==0 then return Duel.IsExistingTarget(c511001528.filter,tp,LOCATION_MZONE,0,1,nil,tp) 
-		and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>1 and not Duel.IsPlayerAffectedByEffect(1-tp,59822133) 
-		and Duel.IsPlayerCanSpecialSummonMonster(1-tp,511001529,0,0x4011,1000,1000,3,RACE_FIEND,ATTRIBUTE_DARK)end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,c511001528.filter,tp,LOCATION_MZONE,0,1,1,nil,tp)
+function c511001528.target(e,tp,eg,ep,ev,re,r,rp,tc)
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,2,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,0,0)
 end
 function c511001528.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if Duel.IsPlayerAffectedByEffect(1-tp,59822133) then return end
+	if Duel.GetLocationCount(1-tp,LOCATION_MZONE)<=1 or Duel.IsPlayerAffectedByEffect(1-tp,59822133) 
+		or not Duel.IsPlayerCanSpecialSummonMonster(1-tp,511001529,0,0x4011,1000,1000,3,RACE_FIEND,ATTRIBUTE_DARK) then return end
 	if c:IsRelateToEffect(e) and tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
-		c:SetCardTarget(tc)
-		if Duel.GetLocationCount(1-tp,LOCATION_MZONE)>1 
-			and Duel.IsPlayerCanSpecialSummonMonster(1-tp,511001529,0,0x4011,1000,1000,3,RACE_FIEND,ATTRIBUTE_DARK) then
-			for i=1,2 do
-				local token=Duel.CreateToken(tp,511001529)
-				Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP_ATTACK)
-			end
-			Duel.SpecialSummonComplete()
+		for i=1,2 do
+			local token=Duel.CreateToken(tp,511001529)
+			Duel.SpecialSummonStep(token,0,tp,1-tp,false,false,POS_FACEUP_ATTACK)
 		end
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_OWNER_RELATE)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetCode(EFFECT_SET_BASE_ATTACK)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		e1:SetCondition(c511001528.rcon)
-		e1:SetValue(c511001528.value)
-		tc:RegisterEffect(e1,true)
+		Duel.SpecialSummonComplete()
 	end
-end
-function c511001528.rcon(e)
-	return e:GetOwner():IsHasCardTarget(e:GetHandler())
-end
-function c511001528.value(e,c)
-	return c:GetBaseAttack()/2
 end
 function c511001528.descon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
