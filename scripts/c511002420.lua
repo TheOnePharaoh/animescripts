@@ -82,6 +82,9 @@ function c511002420.activate(e,tp,eg,ep,ev,re,r,rp,chk)
 				local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(te:GetCode(),true)
 				if op then op(te,tc:GetControler(),teg,tep,tev,tre,tr,trp) end
 			end
+			if g and tc:IsType(TYPE_EQUIP) and not tc:GetEquipTarget() then
+				Duel.Equip(tp,tc,g:GetFirst())
+			end
 			tc:ReleaseEffectRelation(te)
 			if etc then	
 				etc=g:GetFirst()

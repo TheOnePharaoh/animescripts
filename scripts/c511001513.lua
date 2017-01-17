@@ -8,7 +8,6 @@ function c511001513.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCondition(c511001513.condition)
 	e1:SetTarget(c511001513.target)
-	e1:SetOperation(c511001513.operation)
 	c:RegisterEffect(e1)
 	--Equip limit
 	local e2=Effect.CreateEffect(c)
@@ -47,18 +46,23 @@ function c511001513.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END+RESET_OPPO_TURN,3)
 	e:GetHandler():RegisterEffect(e1)
 	Duel.SetTargetCard(eg)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_CHAIN_SOLVING)
+	e1:SetReset(RESET_CHAIN)
+	e1:SetLabel(Duel.GetCurrentChain())
+	e1:SetLabelObject(e)
+	e1:SetOperation(Auxiliary.EquipEquip)
+	Duel.RegisterEffect(e1,tp)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,Duel.GetAttacker():GetAttack())
 end
-function c511001513.operation(e,tp,eg,ep,ev,re,r,rp)
+function c511001513.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if not c:IsLocation(LOCATION_SZONE) then return end
 	local tc=Duel.GetFirstTarget()
 	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		if Duel.Equip(tp,c,tc) then
-			Duel.NegateAttack()
-			Duel.Damage(1-tp,Duel.GetAttacker():GetAttack(),REASON_EFFECT)
-		end
+		Duel.NegateAttack()
+		Duel.Damage(1-tp,Duel.GetAttacker():GetAttack(),REASON_EFFECT)
 	end
 end
 function c511001513.tgcon(e,tp,eg,ep,ev,re,r,rp)

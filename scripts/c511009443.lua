@@ -41,8 +41,12 @@ c511009443.collection={
  -- Supreme King Gate Infinity
  -- Supreme King Gate Zero 
 -- Supreme King Servant Dragon Darkvrm 
+--King of Yamimakai
+--Number 80: Rhapsody in Berserk
+--Number C80: Requiem in Berserk
 [86238081]=true;[45627618]=true;[100912039]=true;
 [100912017]=true;[100912018]=true;[100912019]=true;
+[69455834]=true;[93568288]=true;[20563387]=true;
 }
 function c511009443.splimcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_MZONE,0)>0

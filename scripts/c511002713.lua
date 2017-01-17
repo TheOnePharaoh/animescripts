@@ -26,7 +26,7 @@ function c511002713.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c511002713.sfilter(c)
-	return c:IsSetCard(0x21f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
+	return c:IsSetCard(0x121f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
 end
 function c511002713.cfilter(c,tp)
 	return c511002713.sfilter(c) and c:GetPreviousControler()==tp and c:IsPreviousLocation(LOCATION_MZONE)
@@ -50,5 +50,5 @@ end
 function c511002713.descon2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:GetPreviousControler()==tp and c:IsPreviousLocation(LOCATION_MZONE)
-		and (c:IsPreviousSetCard(0x21f) or c:IsPreviousSetCard(0x21) or c:GetPreviousCodeOnField()==67105242 or c:GetPreviousCodeOnField()==67987302)
+		and (c:IsPreviousSetCard(0x121f) or c:IsPreviousSetCard(0x21) or c:GetPreviousCodeOnField()==67105242 or c:GetPreviousCodeOnField()==67987302)
 end

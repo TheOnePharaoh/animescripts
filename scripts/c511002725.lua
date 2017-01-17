@@ -17,7 +17,7 @@ function c511002725.condition(e,tp,eg,ep,ev,re,r,rp)
 	return (c511002725.cfilter(Duel.GetFieldCard(tp,LOCATION_SZONE,5)) or c511002725.cfilter(Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)))
 end
 function c511002725.filter1(c)
-	return (c:IsSetCard(0x21f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)) and c:IsType(TYPE_MONSTER) 
+	return (c:IsSetCard(0x121f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)) and c:IsType(TYPE_MONSTER) 
 		and c:IsAbleToHand()
 end
 function c511002725.filter2(c)

@@ -2,22 +2,7 @@
 --scripted by:urielkama
 --fixed by MLD
 function c511004100.initial_effect(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c511004100.target)
-	e1:SetOperation(c511004100.operation)
-	c:RegisterEffect(e1)
-	--Equip limit
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_EQUIP_LIMIT)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetValue(c511004100.eqlimit)
-	c:RegisterEffect(e2)
+	aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsRace,RACE_ZOMBIE))
 	--damage
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_DAMAGE)
@@ -47,25 +32,6 @@ function c511004100.initial_effect(c)
 	e5:SetCondition(c511004100.descon)
 	e5:SetOperation(c511004100.op)
 	c:RegisterEffect(e5)
-end
-function c511004100.eqlimit(e,c)
-	return c:IsRace(RACE_ZOMBIE)
-end
-function c511004100.filter(c)
-	return c:IsFaceup() and c:IsRace(RACE_ZOMBIE)
-end
-function c511004100.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511004100.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511004100.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	local g=Duel.SelectTarget(tp,c511004100.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
-end
-function c511004100.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if e:GetHandler():IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.Equip(tp,e:GetHandler(),tc)
-	end
 end
 function c511004100.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetFlagEffect(511004100)>0

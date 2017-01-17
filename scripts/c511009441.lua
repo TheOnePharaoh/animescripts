@@ -94,14 +94,18 @@ c511009441.collection={
  -- Supreme King Gate Infinity
  -- Supreme King Gate Zero 
 -- Supreme King Servant Dragon Darkvrm 
+--King of Yamimakai
+--Number 80: Rhapsody in Berserk
+--Number C80: Requiem in Berserk
 [86238081]=true;[45627618]=true;[100912039]=true;
 [100912017]=true;[100912018]=true;[100912019]=true;
+[69455834]=true;[93568288]=true;[20563387]=true;
 }
 function c511009441.splimit(e,se,sp,st)
 	return se:GetHandler():IsCode(76794549)
 end
 
--- summon itself
+-- summon Self
 function c511009441.costfilter(c)
 	return c511009441.collection[c:GetCode()] or c:IsSetCard(0xfb) 
 end
@@ -132,18 +136,17 @@ function c511009441.damcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:GetHandler():RegisterEffect(e1)
 end
 function c511009441.damtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,e:GetHandler()) end
-	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_MZONE,1,e:GetHandler()) end
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_MZONE,e:GetHandler())
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,PLAYER_ALL,0)
 end
 function c511009441.damop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(c511009441.desfil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(c511009441.desfil,tp,0,LOCATION_MZONE,nil)
 	if Duel.Destroy(g,REASON_EFFECT)>0 then
 		local dg=Duel.GetOperatedGroup()
 		Duel.BreakEffect()
 		local dam=dg:GetSum(Card.GetPreviousAttackOnField)
-		if dg:IsExists(aux.FilterEqualFunction(Card.GetPreviousControler,tp),1,nil) then Duel.Damage(tp,dam,REASON_EFFECT,true) end
 		if dg:IsExists(aux.FilterEqualFunction(Card.GetPreviousControler,1-tp),1,nil) then Duel.Damage(1-tp,dam,REASON_EFFECT,true) end
 		Duel.RDComplete()
 	end

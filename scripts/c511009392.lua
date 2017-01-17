@@ -70,7 +70,7 @@ function c511009392.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.SelectMatchingCard(tp,c511009392.cfilter,tp,LOCATION_ONFIELD+LOCATION_HAND,0,1,1,nil)
 	Duel.SendtoGrave(g,REASON_COST)
 end
-function c511009392.operation(e,tp,eg,ep,ev,re,r,rp)
+function c511009392.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(c)

@@ -45,12 +45,20 @@ function c810000002.activate(e,tp,eg,ep,ev,re,r,rp)
 		e:SetProperty(te:GetProperty())
 		Duel.ClearTargetCard()
 		if bit.band(tpe,TYPE_FIELD)~=0 then
-			local of=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
-			if of then Duel.Destroy(of,REASON_RULE) end
-			of=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-			if of and Duel.Destroy(of,REASON_RULE)==0 then Duel.SendtoGrave(of,REASON_RULE) end
+			local fc=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
+			if Duel.IsDuelType(DUEL_OBSOLETE_RULING) then
+				if fc then Duel.Destroy(fc,REASON_RULE) end
+				fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+				if fc and Duel.Destroy(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+			else
+				fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+				if fc and Duel.SendtoGrave(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+			end
 		end
 		Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+		if bit.band(tpe,TYPE_TRAP+TYPE_FIELD)==TYPE_TRAP+TYPE_FIELD then
+			Duel.MoveSequence(tc,5)
+		end
 		Duel.Hint(HINT_CARD,0,tc:GetCode())
 		tc:CreateEffectRelation(te)
 		if co then co(te,tp,eg,ep,ev,re,r,rp,1) end
@@ -65,6 +73,9 @@ function c810000002.activate(e,tp,eg,ep,ev,re,r,rp)
 			end
 		end
 		if op then op(te,tp,eg,ep,ev,re,r,rp) end
+		if g and tc:IsType(TYPE_EQUIP) and not tc:GetEquipTarget() then
+			Duel.Equip(tp,tc,g:GetFirst())
+		end
 		tc:ReleaseEffectRelation(te)
 		if etc then	
 			etc=g:GetFirst()

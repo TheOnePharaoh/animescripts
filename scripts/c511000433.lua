@@ -7,7 +7,6 @@ function c511000433.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetTarget(c511000433.target)
-	e1:SetOperation(c511000433.operation)
 	c:RegisterEffect(e1)
 	--Equip limit
 	local e2=Effect.CreateEffect(c)
@@ -59,23 +58,25 @@ function c511000433.initial_effect(c)
 	c:RegisterEffect(e6)
 end
 function c511000433.eqlimit(e,c)
-	return c:IsCode(511000431) or c:GetControler()~=e:GetHandler():GetControler()
+	return c:IsCode(511000431) or c:GetControler()~=e:GetHandlerPlayer()
 end
-function c511000433.filter(c,e)
-	return c:IsFaceup() and (c:IsCode(511000431) or c:GetControler()~=e:GetHandler():GetControler())
+function c511000433.filter(c,tp)
+	return c:IsFaceup() and (c:IsCode(511000431) or c:GetControler()~=tp)
 end
 function c511000433.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511000433.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511000433.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,e) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511000433.filter(chkc,tp) end
+	if chk==0 then return Duel.IsExistingTarget(c511000433.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,c511000433.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,e)
+	Duel.SelectTarget(tp,c511000433.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,tp)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
-end
-function c511000433.operation(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if e:GetHandler():IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		Duel.Equip(tp,e:GetHandler(),tc)
-	end
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_CHAIN_SOLVING)
+	e1:SetReset(RESET_CHAIN)
+	e1:SetLabel(Duel.GetCurrentChain())
+	e1:SetLabelObject(e)
+	e1:SetOperation(aux.EquipEquip)
+	Duel.RegisterEffect(e1,tp)
 end
 function c511000433.eqcon(e,tp,eg,ep,ev,re,r,rp)
 	local eq=e:GetHandler():GetEquipTarget()

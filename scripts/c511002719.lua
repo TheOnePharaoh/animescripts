@@ -26,7 +26,7 @@ function c511002719.initial_effect(c)
 	end
 end
 function c511002719.sfilter(c)
-	return c:IsSetCard(0x21f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
+	return c:IsSetCard(0x121f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302)
 end
 function c511002719.cfilter(tc)
 	return tc and tc:IsFaceup()

@@ -1,21 +1,6 @@
 --Training Wheels
 function c511000664.initial_effect(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_EQUIP)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c511000664.target)
-	e1:SetOperation(c511000664.operation)
-	c:RegisterEffect(e1)
-	--Equip limit
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_EQUIP_LIMIT)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e2:SetValue(c511000664.eqlimit)
-	c:RegisterEffect(e2)
+	aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsCode,45945685))
 	--direct attack
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_EQUIP)
@@ -32,26 +17,6 @@ function c511000664.initial_effect(c)
 	e4:SetTarget(c511000664.tg)
 	e4:SetOperation(c511000664.op)
 	c:RegisterEffect(e4)
-end
-function c511000664.eqlimit(e,c)
-	return c:IsCode(45945685)
-end
-function c511000664.filter(c)
-	return c:IsFaceup() and c:IsCode(45945685)
-end
-function c511000664.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c511000664.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511000664.filter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	Duel.SelectTarget(tp,c511000664.filter,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,e:GetHandler(),1,0,0)
-end
-function c511000664.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=Duel.GetFirstTarget()
-	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) and tc:IsControler(tp) and tc:IsFaceup() then
-		Duel.Equip(tp,c,tc)
-	end
 end
 function c511000664.condition(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp and Duel.GetAttackTarget()==nil and eg:GetFirst()==e:GetHandler():GetEquipTarget()

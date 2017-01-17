@@ -1,63 +1,5 @@
 --相克の魔術師
 function c511002096.initial_effect(c)
-	--Synchro monster, 1 tuner + n or more monsters
-	function aux.AddSynchroProcedure(c,f1,f2,ct)
-		local code=c:GetOriginalCode()
-		local mt=_G["c" .. code]
-		if f1 then
-			mt.tuner_filter=function(mc) return mc and f1(mc) end
-		else
-			mt.tuner_filter=function(mc) return true end
-		end
-		if f2 then
-			mt.nontuner_filter=function(mc) return mc and f2(mc) end
-		else
-			mt.nontuner_filter=function(mc) return true end
-		end
-		mt.minntct=ct
-		mt.maxntct=99
-		mt.sync=true
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetCode(EFFECT_SPSUMMON_PROC)
-		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
-		e1:SetRange(LOCATION_EXTRA)
-		e1:SetCondition(Auxiliary.SynCondition(f1,f2,ct,99))
-		e1:SetTarget(Auxiliary.SynTarget(f1,f2,ct,99))
-		e1:SetOperation(Auxiliary.SynOperation(f1,f2,ct,99))
-		e1:SetValue(SUMMON_TYPE_SYNCHRO)
-		c:RegisterEffect(e1)
-	end
-	--Synchro monster, 1 tuner + 1 monster
-	function Auxiliary.AddSynchroProcedure2(c,f1,f2)
-		local code=c:GetOriginalCode()
-		local mt=_G["c" .. code]
-		if f1 then
-			mt.tuner_filter=function(mc) return mc and f1(mc) end
-		else
-			mt.tuner_filter=function(mc) return true end
-		end
-		if f2 then
-			mt.nontuner_filter=function(mc) return mc and f2(mc) end
-		else
-			mt.nontuner_filter=function(mc) return true end
-		end
-		mt.minntct=1
-		mt.maxntct=1
-		mt.sync=true
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetCode(EFFECT_SPSUMMON_PROC)
-		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
-		e1:SetRange(LOCATION_EXTRA)
-		e1:SetCondition(Auxiliary.SynCondition(f1,f2,1,1))
-		e1:SetTarget(Auxiliary.SynTarget(f1,f2,1,1))
-		e1:SetOperation(Auxiliary.SynOperation(f1,f2,1,1))
-		e1:SetValue(SUMMON_TYPE_SYNCHRO)
-		c:RegisterEffect(e1)
-	end
-	
-	
 	--pendulum summon
 	aux.EnablePendulumAttribute(c)
 	--xyz level
@@ -79,27 +21,9 @@ function c511002096.initial_effect(c)
 	e3:SetTarget(c511002096.distg)
 	e3:SetOperation(c511002096.disop)
 	c:RegisterEffect(e3)
-	if not c511002096.global_check then
-		c511002096.global_check=true
-		local ge2=Effect.CreateEffect(c)
-		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge2:SetCode(EVENT_ADJUST)
-		ge2:SetCountLimit(1)
-		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
-		ge2:SetOperation(c511002096.synchk)
-		Duel.RegisterEffect(ge2,0)
-	end
-end
-function c511002096.synchk(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp,419)==0 and Duel.GetFlagEffect(1-tp,419)==0 then
-		Duel.CreateToken(tp,419)
-		Duel.CreateToken(1-tp,419)
-		Duel.RegisterFlagEffect(tp,419,nil,0,1)
-		Duel.RegisterFlagEffect(1-tp,419,nil,0,1)
-	end
 end
 function c511002096.xyzfilter(c)
-	return c:IsFaceup() and c:IsType(TYPE_XYZ)
+	return c:IsFaceup() and c:IsType(TYPE_XYZ) and not c:IsHasEffect(EFFECT_RANK_LEVEL) and not c:IsHasEffect(EFFECT_RANK_LEVEL_S) 
 end
 function c511002096.xyztg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511002096.xyzfilter(chkc) end
@@ -113,38 +37,9 @@ function c511002096.xyzop(e,tp,eg,ep,ev,re,r,rp)
 	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_XYZ_LEVEL)
-		e1:SetValue(c511002096.xyzlv)
+		e1:SetCode(EFFECT_RANK_LEVEL_S)
 		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
-		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_CHANGE_LEVEL_FINAL)
-		e2:SetValue(c511002096.xyzlv)
-		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e2)
-		local e3=Effect.CreateEffect(e:GetHandler())
-		e3:SetType(EFFECT_TYPE_SINGLE)
-		e3:SetCode(EFFECT_SYNCHRO_LEVEL)
-		e3:SetValue(c511002096.xyzlv)
-		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e3)
-		local e4=Effect.CreateEffect(e:GetHandler())
-		e4:SetType(EFFECT_TYPE_SINGLE)
-		e4:SetCode(EFFECT_RITUAL_LEVEL)
-		e4:SetValue(c511002096.xyzlv)
-		e4:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e4)
-		local e5=Effect.CreateEffect(e:GetHandler())
-		e5:SetType(EFFECT_TYPE_SINGLE)
-		e5:SetCode(511002096)
-		e5:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e5)
-		local e6=Effect.CreateEffect(e:GetHandler())
-		e6:SetType(EFFECT_TYPE_SINGLE)
-		e6:SetCode(511000538)
-		e6:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		tc:RegisterEffect(e6)
 	end
 end
 function c511002096.xyzlv(e,c,rc)
@@ -179,6 +74,6 @@ function c511002096.disop(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetType(EFFECT_TYPE_SINGLE)
 		e3:SetCode(EFFECT_CANNOT_TRIGGER)
 		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		c:RegisterEffect(e3)
+		tc:RegisterEffect(e3)
 	end
 end

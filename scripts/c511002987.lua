@@ -12,7 +12,7 @@ function c511002987.initial_effect(c)
 end
 function c511002987.filter(c,tp)
 	return c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsFaceup() 
-		and (c:IsSetCard(0x21f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302))
+		and (c:IsSetCard(0x121f) or c:IsSetCard(0x21) or c:IsCode(67105242) or c:IsCode(67987302))
 end
 function c511002987.indtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return eg:IsExists(c511002987.filter,1,nil,tp) end
