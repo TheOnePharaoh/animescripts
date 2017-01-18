@@ -74,6 +74,7 @@ local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(7548,1))
 	e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DESTROY)
+	e2:SetProperty(EFFECT_FLAG2_XMDETACH)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
@@ -134,7 +135,7 @@ function c511009340.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511009340.matfilter(c)
-	return c:IsType(TYPE_XYZ) and c:IsHasEffect(EFFECT_XYZ_LEVEL) and c:IsXyzLevel(c,7)
+	return c:IsType(TYPE_XYZ) and c:IsXyzLevel(c,7)
 end
 function c511009340.valcheck(e,c)
 	local g=c:GetMaterial()

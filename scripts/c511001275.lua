@@ -26,6 +26,7 @@ function c511001275.initial_effect(c)
 	--change battle target
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(511001275,2))
+	e3:SetProperty(EFFECT_FLAG2_XMDETACH)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_ATTACK_ANNOUNCE)
 	e3:SetRange(LOCATION_MZONE)
