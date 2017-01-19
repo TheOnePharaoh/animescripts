@@ -1,10 +1,6 @@
 --Number 62: Galaxy-Eyes Prime Photon Dragon (Anime)
 --No.62 銀河眼の光子竜皇 (Anime)
 --Scripted By TheOnePharaoh
---Scripter Note: After including The Rank/Level Functions in the core follow the steps
---1)Uncomment e3
---2)uncomment the first (commented) val and delete the second val
---3)delete etemp (marked between comments)
 function c511010062.initial_effect(c)
 --xyz summon
 	aux.AddXyzProcedure(c,nil,8,2)
@@ -29,14 +25,14 @@ function c511010062.initial_effect(c)
 	e2:SetCondition(c511010062.spcon)
 	e2:SetOperation(c511010062.spop)
 	c:RegisterEffect(e2)
-	-- -- Level/Rank
-	-- local e3=Effect.CreateEffect(c)
-	-- e3:SetType(EFFECT_TYPE_FIELD)
-	-- e3:SetRange(LOCATION_MZONE)
-	-- e3:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	-- e3:SetCode(EFFECT_LEVEL_RANK_S)
-	-- e3:SetTarget(function (e,c) return not c:IsType(TYPE_XYZ)end)
-	-- c:RegisterEffect(e3)
+	-- Level/Rank
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e3:SetCode(EFFECT_LEVEL_RANK_S)
+	e3:SetTarget(function (e,c) return not c:IsType(TYPE_XYZ)end)
+	c:RegisterEffect(e3)
 	-- Update Rank Rank/Level
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_IGNITION)
@@ -84,8 +80,7 @@ function c511010062.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
 		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	-- 	local val=math.ceil(g:GetSum(Card.GetRank))*200
-		local val=math.ceil(g:GetSum(Card.GetRank)+g:GetSum(Card.GetLevel))*200
+	 	local val=math.ceil(g:GetSum(Card.GetRank))*200
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -184,14 +179,6 @@ function c511010062.op(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(1)
 	e1:SetReset(RESET_EVENT+0x1ff0000)
 	tc:RegisterEffect(e1)
-	--start of temp effect to be Deleted
-	local etemp=Effect.CreateEffect(c)
-	etemp:SetType(EFFECT_TYPE_SINGLE)
-	etemp:SetCode(EFFECT_UPDATE_LEVEL)
-	etemp:SetValue(1)
-	etemp:SetReset(RESET_EVENT+0x1ff0000+RESET_EVENT+511010062)
-	tc:RegisterEffect(etemp)
-	--end of to be Deleted
 	tc=g:GetNext()
 	end
 end
