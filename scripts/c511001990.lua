@@ -1,15 +1,6 @@
 --Bee Formation
 function c511001990.initial_effect(c)
-	--Activate
-	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_DISABLE)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetHintTiming(TIMING_STANDBY_PHASE,0x1c0)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(c511001990.target)
-	e1:SetOperation(c511001990.activate)
-	c:RegisterEffect(e1)
+	aux.AddPersistentProcedure(c,0,c511001990.filter,nil,nil,TIMING_STANDBY_PHASE,0x1c0)
 	--Destroy
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
@@ -32,21 +23,10 @@ end
 function c511001990.filter(c)
 	return c:IsSetCard(0x214) and c:IsFaceup()
 end
-function c511001990.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c511001990.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511001990.filter,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
-	Duel.SelectTarget(tp,c511001990.filter,tp,LOCATION_MZONE,0,1,1,nil)
-end
-function c511001990.activate(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=Duel.GetFirstTarget()
-	if c:IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) then
-		c:SetCardTarget(tc)
-	end
-end
 function c511001990.descon(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetHandler():GetFirstCardTarget()
+	local c=e:GetHandler()
+	if c:IsStatus(STATUS_DESTROY_CONFIRMED) then return false end
+	local tc=c:GetFirstCardTarget()
 	return tc and eg:IsContains(tc)
 end
 function c511001990.desop(e,tp,eg,ep,ev,re,r,rp)

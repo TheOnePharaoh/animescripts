@@ -1,5 +1,6 @@
 --Grapple Chain
 --Scripted by Snrk and Edo
+--fixed by MLD
 function c511008027.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -10,62 +11,77 @@ function c511008027.initial_effect(c)
 	e1:SetTarget(c511008027.target)
 	e1:SetOperation(c511008027.activate)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetCode(EVENT_CHAIN_SOLVED)
+	e2:SetLabelObject(e1)
+	e2:SetCondition(c511008027.tgcon)
+	e2:SetOperation(c511008027.tgop)
+	c:RegisterEffect(e2)
+	--pos
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetCode(EFFECT_SET_POSITION)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+	e3:SetCondition(c511008027.poscon)
+	e3:SetTarget(c511008027.postg)
+	e3:SetValue(c511008027.posval)
+	c:RegisterEffect(e3)
+	--cannot attack
+	local e4=e3:Clone()
+	e4:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
+	c:RegisterEffect(e4)
+end
+function c511008027.poscon(e)
+	local g=e:GetHandler():GetCardTarget()
+	return g:Filter(Card.IsControler,nil,e:GetHandlerPlayer()):GetFirst()
+end
+function c511008027.postg(e,c)
+	return e:GetHandler():IsHasCardTarget(c) and c:IsControler(1-e:GetHandlerPlayer())
+end
+function c511008027.posval(e)
+	local g=e:GetHandler():GetCardTarget()
+	local tc1=g:Filter(Card.IsControler,nil,e:GetHandlerPlayer()):GetFirst()
+	return tc1:GetPosition()
 end
 function c511008027.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) end
+	if chkc then return false end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local g1=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local g2=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
-	local fid=e:GetHandler():GetFieldID()
-	g1:GetFirst():RegisterFlagEffect(511008027,RESET_EVENT+0x1fe0000,0,1,fid)
-	g2:GetFirst():RegisterFlagEffect(511008028,RESET_EVENT+0x1fe0000,0,1,fid)
-	e:SetLabel(fid)
-	g1:Merge(g2)
-	g1:KeepAlive()
-	e:SetLabelObject(g1)
-	Duel.SetOperationInfo(0,CATEGORY_POSITION,g2,1,0,0)
+	if g2:GetFirst():GetPosition()==g1:GetFirst():GetPosition() then
+		g1:Merge(g2)
+	end
+	Duel.SetOperationInfo(0,CATEGORY_POSITION,g1,g1:GetCount(),0,0)
 end
 function c511008027.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if e:GetLabelObject():GetCount()==2 then
-		local tc1=e:GetLabelObject():Filter(function(c)return c:GetFlagEffect(511008027)>0 end,nil):GetFirst()
-		local tc2=e:GetLabelObject():Filter(function(c)return c:GetFlagEffect(511008028)>0 end,nil):GetFirst()
-		if not tc2 or not tc1:IsRelateToEffect(e) then return end
-		if tc1:GetPosition()~=tc2:GetPosition() then
-			Duel.ChangePosition(tc2,tc1:GetPosition())
-		end
-		c:SetCardTarget(tc2)
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
-		e1:SetProperty(EFFECT_FLAG_OWNER_RELATE)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		e1:SetValue(c511008027.value)
-		tc2:RegisterEffect(e1,true)
-		local e2=Effect.CreateEffect(c)
-		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e2:SetCode(EVENT_ADJUST)
-		e2:SetRange(LOCATION_MZONE)
-		e2:SetLabelObject(tc1)
-		e2:SetLabel(e:GetLabel())
-		e2:SetProperty(EFFECT_FLAG_OWNER_RELATE)
-		e2:SetReset(RESET_EVENT+0x1fe0000)
-		e2:SetOperation(c511008027.changebpop)
-		tc2:RegisterEffect(e2,true)
-		--Debug.Message("DIS IS UEN DEE ODDA EFFAECT STATS!")
-	end
+	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	local g=tg:Filter(Card.IsRelateToEffect,nil,e)
+	if not c:IsRelateToEffect(e) or g:GetCount()~=2 then return end
+	local tc1=g:GetFirst()
+	local tc2=g:GetNext()
+	if tc1:IsControler(1-tp) then tc1,tc2=tc2,tc1 end
+	if tc1:IsControler(1-tp) or tc2:IsControler(tp) then return end
+	Duel.ChangePosition(tc1,POS_FACEUP_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)
 end
-function c511008027.value(e,c,re)
-	if re~=nil then return e~=re else return false end
+function c511008027.tgcon(e,tp,eg,ep,ev,re,r,rp)
+	return re==e:GetLabelObject()
 end
-function c511008027.changebpop(e)
+function c511008027.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if e:GetLabelObject():GetPosition()~=c:GetPosition()
-	and c:GetFlagEffectLabel(511008028)==e:GetLabel()
-	and e:GetLabelObject():GetFlagEffectLabel(511008027)==e:GetLabel() then
-		Duel.ChangePosition(c,e:GetLabelObject():GetPosition())
+	local g=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
+	if c:IsRelateToEffect(re) and g:FilterCount(Card.IsRelateToEffect,nil,re)==2 then
+		local tc=g:GetFirst()
+		while tc do
+			c:SetCardTarget(tc)
+			tc=g:GetNext()
+		end
 	end
 end

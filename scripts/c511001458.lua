@@ -9,13 +9,22 @@ function c511001458.initial_effect(c)
 	e1:SetTarget(c511001458.target)
 	e1:SetOperation(c511001458.operation)
 	c:RegisterEffect(e1)
-	--destroy
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_CHANGE_POS)
-	e2:SetOperation(c511001458.desop)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e2:SetRange(LOCATION_SZONE)
+	e2:SetCode(EVENT_CHAIN_SOLVED)
+	e2:SetLabelObject(e1)
+	e2:SetCondition(aux.PersistentTgCon)
+	e2:SetOperation(aux.PersistentTgOp)
 	c:RegisterEffect(e2)
+	--destroy
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e3:SetCode(EVENT_CHANGE_POS)
+	e3:SetOperation(c511001458.desop)
+	e3:SetRange(LOCATION_SZONE)
+	c:RegisterEffect(e3)
 end
 function c511001458.condition(e,tp,eg,ep,ev,re,r,rp)
 	return re and rp==tp
@@ -24,8 +33,8 @@ function c511001458.filter(c,e,tp)
 	return c:IsControler(1-tp) and c:IsCanBeEffectTarget(e) and c:IsLocation(LOCATION_MZONE)
 end
 function c511001458.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return false end
 	local g=eg:Filter(c511001458.filter,nil,e,tp)
+	if chkc then return g:IsContains(chkc) end
 	if chk==0 then return g:GetCount()>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_POSCHANGE)
 	local tc=g:Select(tp,1,1,nil)
@@ -38,16 +47,14 @@ function c511001458.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and c:IsRelateToEffect(e) then
-		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE,POS_FACEUP_DEFENSE)
-		c:SetCardTarget(tc)
+		Duel.ChangePosition(tc,POS_FACEUP_DEFENSE)
 	end
 end
 function c511001458.desop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=c:GetFirstCardTarget()
 	if tc and tc:IsAttackPos() then
-		if Duel.Destroy(tc,REASON_EFFECT)>0 then
-			Duel.Destroy(c,REASON_EFFECT)
-		end
+		local g=Group.FromCards(tc,c)
+		Duel.Destroy(g,REASON_EFFECT)>0
 	end
 end
