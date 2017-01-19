@@ -87,6 +87,7 @@ function c511001781.rankupregop(e,tp,eg,ep,ev,re,r,rp)
 	--lp 1
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(84926738,1))
+	e5:SetProperty(EFFECT_FLAG2_XMDETACH)
 	e5:SetType(EFFECT_TYPE_IGNITION)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetCost(c511001781.lpcost)
