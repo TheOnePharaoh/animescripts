@@ -1,4 +1,5 @@
---Chaos Barrier Field
+--Chaos Barrier Field (ANIME)
+--scripted by GameMaster (GM)
 function c511000220.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -34,6 +35,16 @@ function c511000220.activate(e,tp,eg,ep,ev,re,r,rp)
 		gd=gd:Select(tp,1,1,nil)
 	end
 	Duel.NegateAttack()
+	Duel.GetControl(gd,tp,PHASE_END,1)
+	if Duel.GetControl(gd,tp,PHASE_END,1) then
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_REFLECT_BATTLE_DAMAGE)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
+	Duel.RegisterEffect(e1,tp)	
 	Duel.CalculateDamage(ga:GetFirst(),gd:GetFirst())
 	Duel.SkipPhase(1-tp,PHASE_BATTLE,RESET_PHASE+PHASE_BATTLE,1)
+end
 end
