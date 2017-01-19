@@ -1,16 +1,18 @@
 --Golden Castle of Stromberg
+--modified by GameMaster
 function c511000435.initial_effect(c)
 	--activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	c:RegisterEffect(e1)
-	--maintain
+	--Discard half deck
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_PHASE+PHASE_STANDBY)
 	e2:SetRange(LOCATION_SZONE)
+	e2:SetCondition(c511000435.condition103)
 	e2:SetCountLimit(1)
 	e2:SetOperation(c511000435.mtop)
 	c:RegisterEffect(e2)
@@ -70,21 +72,19 @@ function c511000435.initial_effect(c)
 	e8:SetCondition(c511000435.batcon)
 	c:RegisterEffect(e8)
 end
+
+function c511000435.condition103(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()==tp
+end
+
 function c511000435.costfilter(c)
 	return c:IsAbleToGrave()
 end
 function c511000435.mtop(e,tp,eg,ep,ev,re,r,rp)
-	local g1=Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)
 	local g2=Duel.GetFieldGroupCount(1-tp,LOCATION_DECK,0)
-	if tp==Duel.GetTurnPlayer() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)~=0 and Duel.SelectYesNo(tp,aux.Stringid(511000435,0)) then
-		local gc=Duel.GetMatchingGroup(c511000435.costfilter,tp,LOCATION_DECK,0,nil):RandomSelect(tp,math.floor(g1/2))
-		Duel.SendtoGrave(gc,REASON_COST)
-	elseif tp~=Duel.GetTurnPlayer() and Duel.GetFieldGroupCount(1-tp,LOCATION_DECK,0)~=0 then
-		local gc=Duel.GetMatchingGroup(c511000435.costfilter,1-tp,LOCATION_DECK,0,nil):RandomSelect(1-tp,math.floor(g2/2))
-		Duel.SendtoGrave(gc,REASON_COST)
-	else
-		Duel.Destroy(e:GetHandler(),REASON_RULE)
-	end
+if g2==0 or g2%2~=0 then Duel.Destroy(e:GetHandler(),REASON_RULE) return end 
+local gc=Duel.GetMatchingGroup(c511000435.costfilter,1-tp,LOCATION_DECK,0,nil):RandomSelect(1-tp,math.floor(g2/2))
+Duel.SendtoGrave(gc,REASON_COST)
 end
 function c511000435.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp 
