@@ -77,7 +77,7 @@ function c511002164.condition2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511002164.filter2(c,e,tp,mc,rk,code)
-	if c:GetOriginalCode()==6165656 and code~=48995978 then return false end
+	if c.rum_limit_code and code~=c.rum_limit_code then return false end
 	return c:GetRank()==rk and mc:IsCanBeXyzMaterial(c) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511002164.target(e,tp,eg,ep,ev,re,r,rp,chk)

@@ -17,7 +17,7 @@ function c511000225.filter(c,e,tp)
 		and c:IsCanBeEffectTarget(e)
 end
 function c511000225.sfilter(c,rk,e,tp)
-	if c:GetOriginalCode()==6165656 then return false end
+	if c.rum_limit_code then return false end
 	return c:GetRank()<rk and c:IsType(TYPE_XYZ) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
 function c511000225.target(e,tp,eg,ep,ev,re,r,rp,chk)
