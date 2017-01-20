@@ -1,6 +1,6 @@
 --Phantom Fog Blade
 function c511001284.initial_effect(c)
-	aux.AddPersistentProcedure(c,1,c511001284.filter,CATEGORY_DISABLE,nil,nil,nil,nil,nil,c511001284.target)
+	aux.AddPersistentProcedure(c,1,c511001284.filter,CATEGORY_DISABLE,nil,nil,nil,nil,nil,c511001284.target,nil,true)
 	--disable
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)

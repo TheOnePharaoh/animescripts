@@ -1,6 +1,6 @@
 --RR Target Flag
 function c511002193.initial_effect(c)
-	aux.AddPersistentProcedure(c,1,nil,CATEGORY_DRAW,nil,TIMING_STANDBY_PHASE,0x1c0,c511002193.condition,nil,c511002193.target,c511002193.operation)
+	aux.AddPersistentProcedure(c,1,nil,CATEGORY_DRAW,nil,TIMING_STANDBY_PHASE,0x1c0,c511002193.condition,nil,c511002193.target,c511002193.operation,true)
 end
 function c511001197.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsPlayerCanDraw(tp,1)

@@ -1,6 +1,6 @@
 --追走の翼
 function c511002756.initial_effect(c)
-	aux.AddPersistentProcedure(c,0,nil,nil,nil,nil,0x1c0)
+	aux.AddPersistentProcedure(c,0,nil,nil,nil,nil,0x1c0,nil,nil,nil,nil,true)
 	--indes
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)

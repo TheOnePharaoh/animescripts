@@ -1,11 +1,12 @@
 --Spellbinding Circle
 function c511001016.initial_effect(c)
-	aux.AddPersistentProcedure(c,1,nil,CATEGORY_ATKCHANGE+CATEGORY_POSITION,EFFECT_FLAG_DAMAGE_STEP,TIMING_DAMAGE_STEP,TIMING_DAMAGE_STEP,c511001016.condition)
+	aux.AddPersistentProcedure(c,1,nil,CATEGORY_ATKCHANGE+CATEGORY_POSITION,EFFECT_FLAG_DAMAGE_STEP,TIMING_DAMAGE_STEP,TIMING_DAMAGE_STEP,c511001016.condition,nil,nil,nil,true)
 	--pos
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
 	e1:SetRange(LOCATION_SZONE)
+	e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e1:SetTarget(c511001016.tg)
 	c:RegisterEffect(e1)

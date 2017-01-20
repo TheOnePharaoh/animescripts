@@ -14,7 +14,7 @@ function c511002095.initial_effect(c)
 	e2:SetCode(EVENT_CHAIN_SOLVED)
 	e2:SetLabelObject(e1)
 	e2:SetCondition(aux.PersistentTgCon)
-	e2:SetOperation(aux.PersistentTgOp)
+	e2:SetOperation(aux.PersistentTgOp(false))
 	c:RegisterEffect(e2)
 	--name
 	local e3=Effect.CreateEffect(c)
