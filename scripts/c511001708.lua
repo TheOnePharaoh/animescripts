@@ -18,7 +18,7 @@ function c511001708.filter1(c,e,tp)
 		and (Duel.GetLocationCount(tp,LOCATION_MZONE)>0 or c:IsLocation(LOCATION_MZONE))
 end
 function c511001708.filter2(c,e,tp,mc,rk,code)
-	if c:GetOriginalCode()==6165656 and code~=48995978 then return false end
+	if c.rum_limit_code and code~=c.rum_limit_code then return false end
 	return c:GetRank()==rk and (c:IsCode(56832966) or c:IsCode(86532744) or c:IsCode(52653092)) and mc:IsCanBeXyzMaterial(c)
 		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
