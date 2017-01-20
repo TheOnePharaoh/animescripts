@@ -1,30 +1,33 @@
 --Zombie's Jewel
---scripted by GameMaster(GM) 
 function c511000170.initial_effect(c)
---AddSpell and op.Draws1
-local e1=Effect.CreateEffect(c)
-e1:SetDescription(aux.Stringid(511000170,0))
-e1:SetType(EFFECT_TYPE_ACTIVATE)
-e1:SetCode(EVENT_FREE_CHAIN)
-e1:SetTarget(c511000170.target)
-e1:SetOperation(c511000170.operation)
-c:RegisterEffect(e1)
+	--spsummon
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_DRAW)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_TO_GRAVE)
+	e1:SetCondition(c511000170.condition)
+	e1:SetTarget(c511000170.target)
+	e1:SetOperation(c511000170.activate)
+	c:RegisterEffect(e1)
 end
-function c511000170.filter(c)
-return c:IsType(TYPE_SPELL) and c:IsAbleToHand()
+function c511000170.filter(c,tp)
+	return c:IsControler(1-tp) and c:IsAbleToHand() and c:IsType(TYPE_SPELL)
+end
+function c511000170.condition(e,tp,eg,ep,ev,re,r,rp)
+	local g=eg:Filter(c511000170.filter,nil,tp)
+	return g:GetCount()==1
 end
 function c511000170.target(e,tp,eg,ep,ev,re,r,rp,chk)
-if chk==0 then return Duel.IsPlayerCanDraw(1-tp,1) and 
-Duel.IsExistingMatchingCard(c511000170.filter,tp,0,LOCATION_GRAVE,1,nil)end
-Duel.SetTargetPlayer(1-tp)
-Duel.SetTargetParam(1)
-Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,1-tp,1)
+	local g=eg:Filter(c511000170.filter,nil,tp)
+	if chk==0 then return Duel.IsPlayerCanDraw(1-tp,1) end
+	Duel.SetTargetCard(g)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,1-tp,1)
 end
-function c511000170.operation(e,tp,eg,ep,ev,re,r,rp)
-local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-local g=Duel.SelectMatchingCard(tp,c511000170.filter,tp,0,LOCATION_GRAVE,1,1,nil)
-if g:GetCount()>0 then
-Duel.SendtoHand(g,tp,REASON_EFFECT)
-end
-Duel.Draw(p,d,REASON_EFFECT)
+function c511000170.activate(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) then
+		Duel.SendtoHand(tc,tp,REASON_EFFECT)
+		Duel.Draw(1-tp,1,REASON_EFFECT)
+	end
 end

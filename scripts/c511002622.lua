@@ -1,6 +1,6 @@
 --Blade Shade
 function c511002622.initial_effect(c)
-	aux.AddPersistentProcedure(c,0,nil,nil,nil,TIMING_STANDBY_PHASE,0x1c0)
+	aux.AddPersistentProcedure(c,0,nil,nil,nil,TIMING_STANDBY_PHASE,0x1c0,nil,nil,nil,nil,true)
 	--Destroy
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
