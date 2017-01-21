@@ -1,61 +1,67 @@
---Supreme King Gate Infinity (Anime)
+--覇王門無限
 function c511009444.initial_effect(c)
 	aux.EnablePendulumAttribute(c)
 	--selfdes
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetCode(EFFECT_SELF_DESTROY)
+	e1:SetRange(LOCATION_PZONE)
+	e1:SetCondition(c511009444.descon)
+	c:RegisterEffect(e1)
+	--copy	
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e2:SetCode(EFFECT_SELF_DESTROY)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_DAMAGE_STEP)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetCategory(CATEGORY_RECOVER)
+	e2:SetCode(511009444)
 	e2:SetRange(LOCATION_PZONE)
-	e2:SetCondition(c511009444.descon)
+	e2:SetTarget(c511009444.rectg)
+	e2:SetOperation(c511009444.recop)
 	c:RegisterEffect(e2)
-	-- Supreme King Gate Zero damage recover
-	--damage conversion
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_REVERSE_DAMAGE)
-	e2:SetRange(LOCATION_PZONE)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetTargetRange(1,0)
-	e2:SetValue(1)
-	c:RegisterEffect(e2)
-	--Search
-	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(100912018,2))
-	e6:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
-	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e6:SetCode(EVENT_DESTROYED)
-	e6:SetProperty(EFFECT_FLAG_DELAY)
-	e6:SetCondition(c511009444.thcon)
-	e6:SetTarget(c511009444.thtg)
-	e6:SetOperation(c511009444.thop)
-	c:RegisterEffect(e6)
+	--tohand
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(22211622,2))
+	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_DESTROYED)
+	e3:SetProperty(EFFECT_FLAG_DELAY)
+	e3:SetCondition(c511009444.thcon)
+	e3:SetTarget(c511009444.thtg)
+	e3:SetOperation(c511009444.thop)
+	c:RegisterEffect(e3)
 end
 function c511009444.descon(e)
 	local seq=e:GetHandler():GetSequence()
 	local tc=Duel.GetFieldCard(e:GetHandlerPlayer(),LOCATION_SZONE,13-seq)
-	return not tc or not tc:IsCode(100912017)
+	return not tc or not tc:IsCode(96227613)
 end
-function c511009444.reccon(e,tp,eg,ep,ev,re,r,rp)
-	local seq=e:GetHandler():GetSequence()
-	local pc=Duel.GetFieldCard(tp,LOCATION_SZONE,13-seq)
-	return pc and pc:IsCode(100912017) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and not pc:IsDisabled()
+function c511009444.rectg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(ev)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,ev)
+end
+function c511009444.recop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
 end
 function c511009444.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsFaceup()
 end
-function c511009444.thfil(c)
-	return c:IsCode(100912017) and c:IsAbleToHand()
+function c511009444.filter(c)
+	return c:IsCode(96227613) and c:IsAbleToHand()
 end
 function c511009444.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511009444.thfil,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c511009444.filter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function c511009444.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,c511009444.thfil,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,c511009444.filter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end
