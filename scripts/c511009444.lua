@@ -36,10 +36,20 @@ function c511009444.descon(e)
 	local tc=Duel.GetFieldCard(e:GetHandlerPlayer(),LOCATION_SZONE,13-seq)
 	return not tc or not tc:IsCode(100912017)
 end
+function c511009444.ndocgcfilter(c)
+	return c:IsFaceup() and c:IsCode(13331639)
+end
+function c511009444.ndcanimefilter(c)
+	return c:IsFaceup() and c:IsSetCard(0xf8)
+end
 function c511009444.reccon(e,tp,eg,ep,ev,re,r,rp)
 	local seq=e:GetHandler():GetSequence()
 	local pc=Duel.GetFieldCard(tp,LOCATION_SZONE,13-seq)
-	return pc and pc:IsCode(100912017) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and not pc:IsDisabled()
+	if pc and pc:IsOriginalCode(511009443) then
+	return pc and pc:IsOriginalCode(511009443) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and not pc:IsDisabled() and Duel.IsExistingMatchingCard(c511009444.ndcanimefilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	else
+	return pc and pc:IsCode(96227613) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and not pc:IsDisabled() and Duel.IsExistingMatchingCard(c511009444.ndocgcfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,nil)
+	end
 end
 function c511009444.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
