@@ -21,7 +21,7 @@ function c511009444.initial_effect(c)
 	c:RegisterEffect(e2)
 	--Search
 	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(100912018,2))
+	e6:SetDescription(aux.Stringid(22211622,2))
 	e6:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e6:SetCode(EVENT_DESTROYED)
@@ -34,7 +34,7 @@ end
 function c511009444.descon(e)
 	local seq=e:GetHandler():GetSequence()
 	local tc=Duel.GetFieldCard(e:GetHandlerPlayer(),LOCATION_SZONE,13-seq)
-	return not tc or not tc:IsCode(100912017)
+	return not tc or not tc:IsCode(96227613)
 end
 function c511009444.ndocgcfilter(c)
 	return c:IsFaceup() and c:IsCode(13331639)
@@ -46,9 +46,9 @@ function c511009444.reccon(e,tp,eg,ep,ev,re,r,rp)
 	local seq=e:GetHandler():GetSequence()
 	local pc=Duel.GetFieldCard(tp,LOCATION_SZONE,13-seq)
 	if pc and pc:IsOriginalCode(511009443) then
-	return pc and pc:IsOriginalCode(511009443) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and not pc:IsDisabled() and Duel.IsExistingMatchingCard(c511009444.ndcanimefilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	return pc and pc:IsOriginalCode(511009443) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and Duel.IsExistingMatchingCard(c511009444.ndcanimefilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil) and not pc:IsDisabled()
 	else
-	return pc and pc:IsCode(96227613) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and not pc:IsDisabled() and Duel.IsExistingMatchingCard(c511009444.ndocgcfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,nil)
+	return pc and pc:IsCode(96227613) and pc:IsHasEffect(EFFECT_CHANGE_DAMAGE) and Duel.IsExistingMatchingCard(c511009444.ndocgcfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,0,1,nil) and not pc:IsDisabled() 
 	end
 end
 function c511009444.thcon(e,tp,eg,ep,ev,re,r,rp)
@@ -56,7 +56,7 @@ function c511009444.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsFaceup()
 end
 function c511009444.thfil(c)
-	return c:IsCode(100912017) and c:IsAbleToHand()
+	return c:IsCode(96227613) and c:IsAbleToHand()
 end
 function c511009444.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511009444.thfil,tp,LOCATION_DECK,0,1,nil) end
