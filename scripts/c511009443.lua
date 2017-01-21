@@ -50,7 +50,7 @@ function c511009443.splimit(e,c,sump,sumtype,sumpos,targetp)
 	return bit.band(sumtype,SUMMON_TYPE_PENDULUM)==SUMMON_TYPE_PENDULUM
 end
 function c511009443.cfilter(c)
-	return c:IsFaceup() and c:IsCode(96227613,22211622,13331639,69610326,13331639,20563387)
+	return c:IsFaceup() and c:IsSetCard(0xf8)
 end
 function c511009443.damcon(e)
 	return Duel.IsExistingMatchingCard(c511009443.cfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
