@@ -23,7 +23,7 @@ function c511009443.initial_effect(c)
 	c:RegisterEffect(e2)
 	--Search
 	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(100912018,2))
+	e6:SetDescription(aux.Stringid(22211622,2))
 	e6:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e6:SetCode(EVENT_DESTROYED)
@@ -33,21 +33,6 @@ function c511009443.initial_effect(c)
 	e6:SetOperation(c511009443.thop)
 	c:RegisterEffect(e6)
 end
---OCG Supreme King collection
-c511009443.collection={
--- Odd-Eyes Raging Dragon 
--- Odd-Eyes Rebellion Dragon
- -- Supreme King Dragon Zarc
- -- Supreme King Gate Infinity
- -- Supreme King Gate Zero 
--- Supreme King Servant Dragon Darkvrm 
---King of Yamimakai
---Number 80: Rhapsody in Berserk
---Number C80: Requiem in Berserk
-[86238081]=true;[45627618]=true;[100912039]=true;
-[100912017]=true;[100912018]=true;[100912019]=true;
-[69455834]=true;[93568288]=true;[20563387]=true;
-}
 function c511009443.splimcon(e)
 	return Duel.GetFieldGroupCount(e:GetHandlerPlayer(),LOCATION_MZONE,0)>0
 end
@@ -56,7 +41,7 @@ function c511009443.splimit(e,c,sump,sumtype,sumpos,targetp)
 end
 
 function c511009443.ndcfilter(c)
-	return c:IsFaceup() and (c511009443.collection[c:GetCode()] or c:IsSetCard(0xfb))
+	return c:IsFaceup() and c:IsSetCard(0xf8)
 end
 function c511009443.ndcon(e)
 	return Duel.IsExistingMatchingCard(c511009443.ndcfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
@@ -66,7 +51,7 @@ function c511009443.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsPreviousLocation(LOCATION_MZONE) and c:IsFaceup()
 end
 function c511009443.thfil(c)
-	return c:IsCode(100912018) and c:IsAbleToHand()
+	return c:IsCode(22211622) and c:IsAbleToHand()
 end
 function c511009443.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511009443.thfil,tp,LOCATION_DECK,0,1,nil) end

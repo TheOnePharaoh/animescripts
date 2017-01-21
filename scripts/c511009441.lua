@@ -2,12 +2,12 @@
 function c511009441.initial_effect(c)
 	c:EnableUnsummonable()
 	aux.EnablePendulumAttribute(c,false)
-	--level/rank (waiting for update)
-	-- local e0=Effect.CreateEffect(c)
-	-- e0:SetType(EFFECT_TYPE_SINGLE)
-	-- e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	-- e0:SetCode(EFFECT_RANK_LEVEL_S)
-	-- c:RegisterEffect(e0)
+	--level/rank
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetCode(EFFECT_RANK_LEVEL_S)
+	c:RegisterEffect(e0)
 	--splimit
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -66,7 +66,7 @@ function c511009441.initial_effect(c)
 	c:RegisterEffect(e1)
 	--special summon SK dragon
 	local e8=Effect.CreateEffect(c)
-	e8:SetDescription(aux.Stringid(100912039,2))
+	e8:SetDescription(aux.Stringid(13331639,2))
 	e8:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e8:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e8:SetCode(EVENT_BATTLE_DESTROYING)
@@ -76,7 +76,7 @@ function c511009441.initial_effect(c)
 	c:RegisterEffect(e8)
 	--destroy drawn
 	local e9=Effect.CreateEffect(c)
-	e9:SetDescription(aux.Stringid(100912039,0))
+	e9:SetDescription(aux.Stringid(13331639,0))
 	e9:SetCategory(CATEGORY_DESTROY)
 	e9:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e9:SetCode(EVENT_TO_HAND)
@@ -86,28 +86,13 @@ function c511009441.initial_effect(c)
 	e9:SetOperation(c511009441.ddop)
 	c:RegisterEffect(e9)
 end
---OCG Supreme King collection
-c511009441.collection={
--- Odd-Eyes Raging Dragon 
--- Odd-Eyes Rebellion Dragon
- -- Supreme King Dragon Zarc
- -- Supreme King Gate Infinity
- -- Supreme King Gate Zero 
--- Supreme King Servant Dragon Darkvrm 
---King of Yamimakai
---Number 80: Rhapsody in Berserk
---Number C80: Requiem in Berserk
-[86238081]=true;[45627618]=true;[100912039]=true;
-[100912017]=true;[100912018]=true;[100912019]=true;
-[69455834]=true;[93568288]=true;[20563387]=true;
-}
 function c511009441.splimit(e,se,sp,st)
 	return se:GetHandler():IsCode(76794549)
 end
 
 -- summon Self
 function c511009441.costfilter(c)
-	return c511009441.collection[c:GetCode()] or c:IsSetCard(0xfb) 
+	return c:IsSetCard(0xf8)
 end
 function c511009441.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,c511009441.costfilter,1,nil) end

@@ -22,30 +22,15 @@ function c511009442.initial_effect(c)
 	e2:SetOperation(c511009442.operation)
 	c:RegisterEffect(e2)
 end
---OCG Supreme King collection
-c511009442.collection={
--- Odd-Eyes Raging Dragon 
--- Odd-Eyes Rebellion Dragon
- -- Supreme King Dragon Zarc
- -- Supreme King Gate Infinity
- -- Supreme King Gate Zero 
--- Supreme King Servant Dragon Darkvrm 
---King of Yamimakai
---Number 80: Rhapsody in Berserk
---Number C80: Requiem in Berserk
-[86238081]=true;[45627618]=true;[100912039]=true;
-[100912017]=true;[100912018]=true;[100912019]=true;
-[69455834]=true;[93568288]=true;[20563387]=true;
-}
 function c511009442.condition(e,tp,eg,ep,ev,re,r,rp)
 	local d=Duel.GetAttackTarget()
-	return d and d:IsControler(tp) and d:IsFaceup() and (c511009442.collection[d:GetCode()] or d:IsSetCard(0xfb) )
+	return d and d:IsControler(tp) and d:IsFaceup() and c:IsSetCard(0xf8)
 end
 function c511009442.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateAttack()
 end
 function c511009442.filter(c)
-	return c:IsFaceup() and (c511009442.collection[c:GetCode()] or c:IsSetCard(0xfb))
+	return c:IsFaceup() and c:IsSetCard(0xf8)
 end
 function c511009442.con(e)
 	return Duel.GetAttackTarget()==e:GetHandler() and Duel.IsExistingMatchingCard(c511009442.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,e:GetHandler())
