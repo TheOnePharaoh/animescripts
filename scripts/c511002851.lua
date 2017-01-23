@@ -16,7 +16,7 @@ function c511002851.initial_effect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_SZONE)
-	e2:SetCondition(c511002851.uncon)
+	e2:SetCondition(aux.IsUnionState)
 	e2:SetTarget(c511002851.sptg)
 	e2:SetOperation(c511002851.spop)
 	c:RegisterEffect(e2)
@@ -25,21 +25,21 @@ function c511002851.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_EQUIP)
 	e3:SetCode(EFFECT_UPDATE_ATTACK)
 	e3:SetValue(500)
-	e3:SetCondition(c511002851.uncon)
+	e3:SetCondition(aux.IsUnionState)
 	c:RegisterEffect(e3)
 	--Def up
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_EQUIP)
 	e4:SetCode(EFFECT_UPDATE_DEFENSE)
 	e4:SetValue(500)
-	e4:SetCondition(c511002851.uncon)
+	e4:SetCondition(aux.IsUnionState)
 	c:RegisterEffect(e4)
 	--destroy sub
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_EQUIP)
 	e5:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e5:SetCode(EFFECT_DESTROY_SUBSTITUTE)
-	e5:SetCondition(c511002851.uncon)
+	e5:SetCondition(aux.IsUnionState)
 	e5:SetValue(1)
 	c:RegisterEffect(e5)
 	--eqlimit
@@ -50,9 +50,7 @@ function c511002851.initial_effect(c)
 	e6:SetValue(c511002851.eqlimit)
 	c:RegisterEffect(e6)
 end
-function c511002851.uncon(e)
-	return e:GetHandler():IsStatus(STATUS_UNION)
-end
+c511002851.old_union=true
 function c511002851.eqlimit(e,c)
 	return c:IsRace(RACE_MACHINE)
 end
@@ -77,7 +75,7 @@ function c511002851.eqop(e,tp,eg,ep,ev,re,r,rp)
 		return
 	end
 	if not Duel.Equip(tp,c,tc,false) then return end
-	c:SetStatus(STATUS_UNION,true)
+	aux.SetUnionState(c)
 end
 function c511002851.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():GetFlagEffect(511002851)==0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
