@@ -52,8 +52,9 @@ function c513000039.initial_effect(c)
 	c:RegisterEffect(e9)
 end
 function c513000039.damop(e,tp,eg,ep,ev,re,r,rp)
-	if ep==tp and e:GetHandler():IsPosition(POS_FACEUP_ATTACK) and Duel.SelectYesNo(tp,aux.Stringid(93816465,1)) then
+	if e:GetHandler():IsPosition(POS_FACEUP_ATTACK) and Duel.SelectYesNo(tp,aux.Stringid(93816465,1)) then
 		Duel.ChangeBattleDamage(tp,0)
+		Duel.ChangeBattleDamage(1-tp,0)
 	end
 end
 function c513000039.thcon(e,tp,eg,ep,ev,re,r,rp)

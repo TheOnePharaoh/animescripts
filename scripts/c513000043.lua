@@ -1,5 +1,11 @@
 --時械神 ガブリオン
 function c513000043.initial_effect(c)
+	--no damage
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
+	e1:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+	e1:SetOperation(c513000043.damop)
+	c:RegisterEffect(e1)
 	--indes
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
@@ -11,10 +17,6 @@ function c513000043.initial_effect(c)
 	local e4=e3:Clone()
 	e4:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	c:RegisterEffect(e4)
-	local e5=e3:Clone()
-	e5:SetCondition(c513000043.damcon)
-	e5:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
-	c:RegisterEffect(e5)
 	--todeck
 	local e6=Effect.CreateEffect(c)
 	e6:SetCategory(CATEGORY_TODECK)
@@ -47,8 +49,11 @@ function c513000043.initial_effect(c)
 	e9:SetTarget(c513000043.sumlimit)
 	c:RegisterEffect(e9)
 end
-function c513000043.damcon(e)
-	return e:GetHandler():IsAttackPos()
+function c513000043.damop(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():IsPosition(POS_FACEUP_ATTACK) and Duel.SelectYesNo(tp,aux.Stringid(93816465,1)) then
+		Duel.ChangeBattleDamage(tp,0)
+		Duel.ChangeBattleDamage(1-tp,0)
+	end
 end
 function c513000043.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
