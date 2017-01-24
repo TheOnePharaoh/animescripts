@@ -66,11 +66,12 @@ function c511004014.initial_effect(c)
 	c:RegisterEffect(e6)
 	--Quick
 	local e7=Effect.CreateEffect(c)
-	e7:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+	e7:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE)
 	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e7:SetCode(EVENT_ADJUST)
+	e7:SetCode(EFFECT_BECOME_QUICK)
 	e7:SetRange(LOCATION_REMOVED)
-	e7:SetOperation(c511004014.operation)
+	e7:SetTargetRange(0xff,0xff)
+	e7:SetCondition(function(e)return Duel.GetCurrentPhase()>=0x08 and Duel.GetCurrentPhase()<=0x80 and Duel.GetTurnPlayer()~=e:GetHandler():GetControler() end)
 	c:RegisterEffect(e7)
 	--Negate
 	local e8=Effect.CreateEffect(c)
@@ -139,99 +140,6 @@ function c511004014.negop2(e,tp,eg,ep,ev,re,r,rp)
 	while tc do
 		tc:RegisterFlagEffect(511000173,0,RESET_CHAIN,1)
 		tc=eg:GetNext()
-	end
-end
-function c511004014.spfilter(c)
-	local te=c:GetActivateEffect()
-	return te and c:GetFlagEffect(511000171)==0 
-		and c:IsType(TYPE_SPELL) and not c:IsType(TYPE_QUICKPLAY)
-end
-function c511004014.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(c511004014.spfilter,c:GetControler(),LOCATION_SZONE+LOCATION_HAND,LOCATION_SZONE+LOCATION_HAND,nil)
-	if g:GetCount()<=0 then return end
-	local tc=g:GetFirst()
-	while tc do
-		local te=tc:GetActivateEffect()
-		if tc:GetFlagEffect(511000171)==0 and te then
-			local e1=Effect.CreateEffect(tc)
-			e1:SetType(EFFECT_TYPE_QUICK_O)
-			e1:SetCode(te:GetCode())
-			e1:SetRange(LOCATION_SZONE+LOCATION_HAND)
-			e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
-			e1:SetCondition(c511004014.accon)
-			e1:SetCost(c511004014.acco)
-			e1:SetTarget(c511004014.actg)
-			e1:SetOperation(c511004014.acop)
-			tc:RegisterEffect(e1)
-			tc:RegisterFlagEffect(511000171,nil,0,1)
-		end
-		tc=g:GetNext()
-	end
-end
-function c511004014.accon(e,tp,eg,ep,ev,re,r,rp)
-	local ph=Duel.GetCurrentPhase()
-	local c=e:GetHandler()
-	local te=c:GetActivateEffect()
-	local condition=te:GetCondition()
-	return (not condition or condition(te,tp,eg,ep,ev,re,r,rp)) 
-		and not e:GetHandler():IsStatus(STATUS_CHAINING) and ph>=0x08 and ph<=0x80
-end
-function c511004014.acco(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	local te=c:GetActivateEffect()
-	local cost=te:GetCost()
-	if cost then
-	if chk==0 then return (not cost or cost(e,tp,eg,ep,ev,re,r,rp,chk)) end
-	end
-	local con=false
-	if Duel.GetTurnPlayer()~=c:GetControler() then
-		con=not c:IsStatus(STATUS_SET_TURN) and c:IsFacedown() and not c:IsLocation(LOCATION_HAND)
-	else
-		if Duel.GetCurrentChain()>0 or not (Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2) then
-			if c:IsLocation(LOCATION_HAND) then
-				con=(Duel.GetLocationCount(tp,LOCATION_SZONE)>0 or c:IsType(TYPE_FIELD))
-			elseif c:IsLocation(LOCATION_SZONE) then
-				con=not c:IsStatus(STATUS_SET_TURN) and c:IsFacedown()
-			end
-		end
-	end
-	local target=te:GetTarget()
-	local tpe=c:GetType()
-	if chk==0 then return con and (not target or target(te,tp,eg,ep,ev,re,r,rp,0)) end
-	e:SetCategory(te:GetCategory())
-	if bit.band(tpe,TYPE_FIELD)~=0 then
-		local of=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
-		if of and Duel.Destroy(of,REASON_RULE)==0 and Duel.SendtoGrave(of,REASON_RULE)==0 then Duel.SendtoGrave(c,REASON_RULE) end
-	end
-	if c:IsLocation(LOCATION_ONFIELD) and c:IsFacedown() then
-		Duel.ChangePosition(c,POS_FACEUP)
-	else
-		Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
-	end
-	if cost then
-		return cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	end
-end
-function c511004014.actg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local te=e:GetHandler():GetActivateEffect()
-	local target=te:GetTarget()
-	if chk==0 then return (not target or target(e,tp,eg,ep,ev,re,r,rp,chk)) end
-	if te:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then
-		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	else e:SetProperty(0) end
-	if target then target(e,tp,eg,ep,ev,re,r,rp,chk) end
-end
-function c511004014.acop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local te=c:GetActivateEffect()
-	local op=te:GetOperation()
-	local tpe=c:GetType()
-	if op then
-		if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 and not c:IsHasEffect(EFFECT_REMAIN_FIELD) then
-			c:CancelToGrave(false)
-		end
-		if op then op(e,tp,eg,ep,ev,re,r,rp) end
 	end
 end
 function c511004014.gvop(e,tp,eg,ep,ev,re,r,rp)
