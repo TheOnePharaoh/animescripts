@@ -16,7 +16,7 @@ function c511001593.cfilter(c,tp)
 	return c:IsType(TYPE_MONSTER) and c:GetPreviousControler()==tp and c:IsPreviousLocation(LOCATION_MZONE)
 end
 function c511001593.condition(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(c511001593.cfilter,1,nil,tp)
+	return eg and eg:IsExists(c511001593.cfilter,1,nil,tp)
 end
 function c511001593.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,1000) end

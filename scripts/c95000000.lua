@@ -32,12 +32,11 @@ function c95000000.initial_effect(c)
 	--cannot lose for draw
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_FIELD)
-	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_PLAYER_TARGET)
-	e5:SetCode(EFFECT_DRAW_COUNT)
-	e5:SetTargetRange(1,0)
-	e5:SetValue(c95000000.value)
-	e5:SetCondition(c95000000.deckcon)
+	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e5:SetCode(EFFECT_CANNOT_LOSE_DECK)
 	e5:SetRange(LOCATION_REMOVED)
+	e5:SetTargetRange(1,0)
+	e5:SetValue(1)
 	c:RegisterEffect(e5)
 	--rearrange
 	local e6=Effect.CreateEffect(c)
@@ -190,7 +189,9 @@ function c95000000.ordercon(e,tp,eg,ep,ev,re,r,rp)
 	gn:Sub(g)
 	local tc2=gn:GetFirst()
 	local markchk=tc1.mark
+	if not markchk then return false end
 	while tc2 do
+		if not tc2.mark then return false end
 		if markchk>tc2.mark then
 			return true
 		elseif markchk<tc2.mark then

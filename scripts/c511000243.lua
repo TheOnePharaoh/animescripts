@@ -64,8 +64,9 @@ function c511000243.forbop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local c=e:GetHandler()
 	local g=Duel.SelectMatchingCard(tp,c511000243.forbfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil)
-	local tc=g:GetFirst()
-	Duel.SendtoGrave(tc,REASON_EFFECT)
+	if g:GetCount()>0 then
+		Duel.SendtoGrave(g,REASON_EFFECT)
+	end
 end
 function c511000243.atkfilter(c)
 	return c:IsSetCard(0x40) and c:IsType(TYPE_MONSTER)
