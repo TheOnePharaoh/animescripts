@@ -39,7 +39,6 @@ function c511000192.initial_effect(c)
 	--prevent destroy
 	local e7=Effect.CreateEffect(c)
 	e7:SetDescription(aux.Stringid(59251766,0))
-	e7:SetProperty(EFFECT_FLAG2_XMDETACH)
 	e7:SetType(EFFECT_TYPE_QUICK_O)
 	e7:SetCode(EVENT_FREE_CHAIN)
 	e7:SetCountLimit(1)
@@ -50,7 +49,6 @@ function c511000192.initial_effect(c)
 	--prevent effect damage
 	local e8=Effect.CreateEffect(c)
 	e8:SetDescription(aux.Stringid(20450925,0))
-	e8:SetProperty(EFFECT_FLAG2_XMDETACH)
 	e8:SetType(EFFECT_TYPE_QUICK_O)
 	e8:SetCode(EVENT_FREE_CHAIN)
 	e8:SetCountLimit(1)
@@ -69,6 +67,7 @@ function c511000192.initial_effect(c)
 		Duel.RegisterEffect(ge2,0)
 	end
 end
+c511000192.xyz_number=0
 function c511000192.ovfilter(c,xyz)
 	if c:IsLocation(LOCATION_GRAVE) and not c:IsHasEffect(511002793) then return false end
 	if c:IsOnField() and c:IsFacedown() then return false end

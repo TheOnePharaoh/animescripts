@@ -13,7 +13,7 @@ end
 function c511000461.filter(c,e,tp)
 	local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_HAND,0,c,TYPE_MONSTER)
 	local tg=g:GetMaxGroup(Card.GetAttack)
-	return c:IsAbleToHand() and tg:IsExists(Card.IsCanBeSpecialSummoned,1,nil,e,0,tp,false,false,c:GetPosition(),tp)
+	return c:IsAbleToHand() and tg and tg:IsExists(Card.IsCanBeSpecialSummoned,1,nil,e,0,tp,false,false,c:GetPosition(),tp)
 end
 function c511000461.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511000461.filter(chkc,e,tp) end
@@ -30,6 +30,7 @@ function c511000461.activate(e,tp,eg,ep,ev,re,r,rp)
 		if Duel.SendtoHand(tc,nil,REASON_EFFECT)>0 then
 			local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_HAND,0,tc,TYPE_MONSTER)
 			local tg=g:GetMaxGroup(Card.GetAttack)
+			if not tg then return false end
 			if tg:GetCount()>1 then
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 				tg=tg:FilterSelect(tp,Card.IsCanBeSpecialSummoned,1,1,nil,e,0,tp,false,false,pos,tp)

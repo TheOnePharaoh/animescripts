@@ -22,8 +22,8 @@ function c170000152.filter2(c,code,e,tp)
 	if not c.material_count or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) then return false end
 	for i=1,c.material_count do
 		if code==c.material[i] then
-			for i=1,c.material_count do
-				if 1784686==c.material[i] then return true end
+			for j=1,c.material_count do
+				if 1784686==c.material[j] then return true end
 			end
 		end
 	end
@@ -40,20 +40,18 @@ end
 function c170000152.activate(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=-1 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local tg=Duel.SelectMatchingCard(tp,c170000152.filter1,tp,LOCATION_MZONE,0,1,1,nil,e,tp)
-	local co=tg:GetFirst()
-	tg:AddCard(e:GetHandler())
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sg=Duel.SelectMatchingCard(tp,c170000152.filter2,tp,LOCATION_EXTRA,0,1,1,nil,co:GetCode(),e,tp)
-	Duel.SendtoGrave(tg,REASON_EFFECT)
-	Duel.BreakEffect()
-	local sc=sg:GetFirst()
-	if sg then
-		sc:SetMaterial(tg)
-		Duel.SendtoGrave(tg,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
-		Duel.BreakEffect()
-		Duel.SpecialSummon(sc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
-		sc:CompleteProcedure()
+	local g=Duel.SelectMatchingCard(tp,c170000152.filter1,tp,LOCATION_MZONE,0,1,1,nil,e,tp)
+	if g:GetCount()>0 then
+		g:AddCard(e:GetHandler())
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local sc=Duel.SelectMatchingCard(tp,c170000152.filter2,tp,LOCATION_EXTRA,0,1,1,nil,g:GetFirst():GetCode(),e,tp):GetFirst()
+		if sc then
+			sc:SetMaterial(g)
+			Duel.SendtoGrave(g,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
+			Duel.BreakEffect()
+			Duel.SpecialSummon(sc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
+			sc:CompleteProcedure()
+		end
 	end
 end
 function c170000152.monval(e,c)
