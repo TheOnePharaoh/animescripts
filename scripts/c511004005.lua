@@ -60,33 +60,21 @@ function c511004005.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,c511004005.filter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()
+		local fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+		if fc then
+			Duel.SendtoGrave(fc,REASON_RULE)
+			Duel.BreakEffect()
+		end
+		local fc2=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
+		if fc2 and Duel.IsDuelType(DUEL_OBSOLETE_RULING) then
+			Duel.Destroy(fc2,REASON_RULE)
+			Duel.BreakEffect()
+		end
 		Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 		local te=tc:GetActivateEffect()
 		local tep=tc:GetControler()
 		local cost=te:GetCost()
 		if cost then cost(te,tep,eg,ep,ev,re,r,rp,1) end
 		Duel.RaiseEvent(tc,EVENT_CHAIN_SOLVED,tc:GetActivateEffect(),0,tp,tp,Duel.GetCurrentChain())
-		Duel.BreakEffect()
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONTROL)
-		tc=Duel.SelectTarget(tp,c511004005.cfilter,tp,0,LOCATION_MZONE,1,1,nil):GetFirst()
-		if not tc or Duel.GetLocationCount(e:GetHandlerPlayer(),LOCATION_SZONE)<=0 then return end
-		Duel.Equip(tp,e:GetHandler(),tc)
-		--Add Equip limit
-		local e1=Effect.CreateEffect(tc)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_EQUIP_LIMIT)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		e1:SetValue(c511004005.eqlimit)
-		e:GetHandler():RegisterEffect(e1)
-		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_EQUIP)
-		e2:SetCode(EFFECT_SET_CONTROL)
-		e2:SetValue(tp)
-		e2:SetReset(RESET_EVENT+0x1fc0000)
-		e:GetHandler():RegisterEffect(e2)
 	end
-end
-function c511004005.eqlimit(e,c)
-	return e:GetOwner()==c
 end
