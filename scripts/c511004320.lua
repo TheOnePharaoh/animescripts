@@ -1,5 +1,7 @@
---ローガーディアン a.k.a Skull Guardian (DOR)
+--Skull Guardian (DOR)
+--scripted by GameMaster(GM)
 function c511004320.initial_effect(c)
+	c:EnableReviveLimit()
 	--flip effect & atkchange
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(511004320,0))
@@ -15,6 +17,9 @@ function c511004320.initial_effect(c)
 	e2:SetCondition(c511004320.condtion)
 	e2:SetValue(900)
 	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetCode(EFFECT_UPDATE_DEFENSE)
+	c:RegisterEffect(e3)
 end
 function c511004320.condtion(e)
 	local ph=Duel.GetCurrentPhase()
@@ -27,7 +32,7 @@ function c511004320.atktg(e,c)
 end
 function c511004320.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and c:IsFaceup() then
+	if c:IsRelateToEffect(e)  then
 		local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,LOCATION_MZONE)
 		local mg,fid=g:GetMaxGroup(Card.GetFieldID)
 		local e1=Effect.CreateEffect(c)
@@ -40,6 +45,9 @@ function c511004320.operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetLabel(fid)
 		e1:SetReset(RESET_EVENT+0x1ff0000)
 		c:RegisterEffect(e1)
+		local e2=e1:Clone()
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
+		c:RegisterEffect(e2)
 	end
 end
 

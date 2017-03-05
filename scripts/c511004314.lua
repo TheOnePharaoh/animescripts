@@ -1,6 +1,8 @@
---エビルナイト・ドラゴン a.k.a Serpent Night Dragon (DOR)
+-- Serpent Night Dragon (DOR)
+--Scripted by GameMaster(GM)
 function c511004314.initial_effect(c)
-	--atkchange
+	c:EnableReviveLimit()
+	--atk/def change
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -9,6 +11,9 @@ function c511004314.initial_effect(c)
 	e1:SetCondition(c511004314.condtion)
 	e1:SetValue(900)
 	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
+	c:RegisterEffect(e2)
 end
 function c511004314.condtion(e)
 	local ph=Duel.GetCurrentPhase()
