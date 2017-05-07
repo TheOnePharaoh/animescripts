@@ -1,6 +1,7 @@
---ホーリー・ナイト・ドラゴン a.k.a Seiyaryu (DOR)
+-- Seiyaryu (DOR)
+--scripted by GameMaster(GM)
 function c511004312.initial_effect(c)
-	--attack update when battled fiend type monster
+	--attack/Defense update when battled fiend type monster
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -9,6 +10,9 @@ function c511004312.initial_effect(c)
 	e1:SetCondition(c511004312.condtion)
 	e1:SetValue(300)
 	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
+	c:RegisterEffect(e2)
 end
 function c511004312.condtion(e)
 	local ph=Duel.GetCurrentPhase()

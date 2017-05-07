@@ -17,16 +17,16 @@ function c511005597.initial_effect(c)
 	e2:SetDescription(aux.Stringid(511005597,0))
 	e2:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e2:SetCode(EVENT_LEAVE_FIELD)
+	e2:SetCode(EVENT_BATTLE_DESTROYED)
 	e2:SetCondition(c511005597.descon)
 	e2:SetTarget(c511005597.destg)
 	e2:SetOperation(c511005597.desop)
 	c:RegisterEffect(e2)
 	--check
 	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetCode(EVENT_LEAVE_FIELD)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e3:SetRange(LOCATION_GRAVE)
+	e3:SetCode(EVENT_BATTLE_DESTROYED)
 	e3:SetOperation(c511005597.chkop)
 	c:RegisterEffect(e3)
 end
@@ -39,13 +39,16 @@ end
 function c511005597.con(e)
 	return e:GetHandler():IsDefensePos()
 end
+
+
+
 function c511005597.tglimit(e,c)
 	return c~=e:GetHandler()
 end
 function c511005597.descon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsPreviousPosition(POS_FACEUP) and not c:IsLocation(LOCATION_DECK)
-		and Duel.IsExistingMatchingCard(c511005597.havefieldfilter,0,LOCATION_SZONE,LOCATION_SZONE,1,e:GetHandler())
+	return   c:IsPreviousLocation(LOCATION_MZONE) 
+		
 end
 function c511005597.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

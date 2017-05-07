@@ -1,6 +1,7 @@
 --Mask of Shine and Dark (DOR)
 --Scripted by GameMaster (GM)
 function c511005606.initial_effect(c)
+	c:EnableReviveLimit()
 	--gain 900 atk against warrior race
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -10,6 +11,9 @@ function c511005606.initial_effect(c)
 	e1:SetCondition(c511005606.condtion)
 	e1:SetValue(900)
 	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
+	c:RegisterEffect(e2)
 end
 function c511005606.condtion(e)
 	local ph=Duel.GetCurrentPhase()
