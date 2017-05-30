@@ -27,11 +27,8 @@ function c511000770.accost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,500) end
 	Duel.PayLPCost(tp,500)
 end
-function c511000770.filter(c)
-	return c:IsType(TYPE_SPELL)
-end
 function c511000770.accon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsDefensePos() and not Duel.IsExistingMatchingCard(c511000770.filter,tp,LOCATION_GRAVE,0,1,nil)
+	return e:GetHandler():IsDefensePos() and not Duel.IsExistingMatchingCard(Card.IsType,tp,LOCATION_GRAVE,0,1,nil,TYPE_SPELL)
 end
 function c511000770.acfilter(c,tp)
 	return c:IsType(TYPE_SPELL) and c:IsSSetable(true) and (c:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0)
@@ -55,15 +52,20 @@ function c511000770.acop(e,tp,eg,ep,ev,re,r,rp)
 		e:SetProperty(te:GetProperty())
 		Duel.ClearTargetCard()
 		if bit.band(tpe,TYPE_FIELD)~=0 then
-			local of=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
-			if of then Duel.Destroy(of,REASON_RULE) end
-			of=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-			if of and Duel.Destroy(of,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+			local fc=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
+			if Duel.IsDuelType(DUEL_OBSOLETE_RULING) then
+				if fc then Duel.Destroy(fc,REASON_RULE) end
+				fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+				if fc and Duel.Destroy(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+			else
+				fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+				if fc and Duel.SendtoGrave(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+			end
 		end
 		Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 		Duel.Hint(HINT_CARD,0,tc:GetCode())
 		tc:CreateEffectRelation(te)
-		if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 then
+		if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 and not tc:IsHasEffect(EFFECT_REMAIN_FIELD) then
 			tc:CancelToGrave(false)
 		end
 		if co then co(te,tp,eg,ep,ev,re,r,rp,1) end

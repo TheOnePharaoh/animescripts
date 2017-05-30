@@ -14,9 +14,26 @@ function c511009308.initial_effect(c)
 	e2:SetTarget(c511009308.target)
 	e2:SetOperation(c511009308.operation)
 	c:RegisterEffect(e2)
+	if not c511009308.global_check then
+		c511009308.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511009308.archchk)
+		Duel.RegisterEffect(ge2,0)
+	end
+end
+function c511009308.archchk(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetFlagEffect(0,420)==0 then 
+		Duel.CreateToken(tp,420)
+		Duel.CreateToken(1-tp,420)
+		Duel.RegisterFlagEffect(0,420,0,0,0)
+	end
 end
 function c511009308.filter(c)
-	return c:IsSetCard(0x202) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return c420.IsWhite(c) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function c511009308.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511009308.filter,tp,LOCATION_GRAVE,0,1,nil) end

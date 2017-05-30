@@ -109,6 +109,7 @@ function c511002854.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,tp,e:GetHandler():GetAttack())
 end
 function c511002854.disop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	Duel.NegateEffect(ev)
 	if c:IsRelateToEffect(e) then
 		Duel.BreakEffect()

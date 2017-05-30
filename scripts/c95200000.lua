@@ -61,13 +61,19 @@ function c95200000.op(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c95200000.start(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,0,95200000)
-	local ac=math.random(1,c95200000.commct)
-	local code=c95200000.command[ac]
+	local ac
+	local te
+	local code
+	local tc
 	local p=Duel.GetTurnPlayer()
+	while not te do
+		ac=math.random(1,c95200000.commct)
+		code=c95200000.command[ac]
+		tc=Duel.CreateToken(p,code)
+		te=tc:GetActivateEffect()
+	end
 	if Duel.GetLocationCount(p,LOCATION_SZONE)<=0 then return end
-	local tc=Duel.CreateToken(p,code)
 	local tpe=tc:GetType()
-	local te=tc:GetActivateEffect()
 	local tg=te:GetTarget()
 	local co=te:GetCost()
 	local op=te:GetOperation()

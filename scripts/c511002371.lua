@@ -16,7 +16,7 @@ function c511002371.tdtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,g:GetCount(),0,0)
 end
 function c511002371.rfilter(c)
-	return c:IsLocation(LOCATION_DECK+LOCATION_EXTRA) and c:IsRace(0x10000000) and bit.band(c:GetPreviousPosition(),POS_FACEUP)~=0
+	return c:IsLocation(LOCATION_DECK+LOCATION_EXTRA) and c:IsRace(0x80000000) and bit.band(c:GetPreviousPosition(),POS_FACEUP)~=0
 end
 function c511002371.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())

@@ -27,19 +27,13 @@ function c513000031.initial_effect(c)
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(35952884,1))
 	e4:SetType(EFFECT_TYPE_TRIGGER_F+EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
+	e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e4:SetCategory(CATEGORY_DESTROY+CATEGORY_SPECIAL_SUMMON)
-	e4:SetCode(EVENT_TO_GRAVE)
+	e4:SetCode(EVENT_LEAVE_FIELD)
 	e4:SetCondition(c513000031.sumcon)
 	e4:SetTarget(c513000031.sumtg)
 	e4:SetOperation(c513000031.sumop)
 	c:RegisterEffect(e4)
-	local e5=e4:Clone()
-	e5:SetCode(EVENT_REMOVE)
-	c:RegisterEffect(e5)
-	local e6=e4:Clone()
-	e6:SetCode(EVENT_TO_DECK)
-	c:RegisterEffect(e6)
 	--destroy
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -89,12 +83,12 @@ function c513000031.filter(c,e,tp)
 end
 function c513000031.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
 function c513000031.sumop(e,tp,eg,ep,ev,re,r,rp)
-	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	Duel.Destroy(sg,REASON_EFFECT)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -139,31 +133,25 @@ function c513000031.desop(e,tp,eg,ep,ev,re,r,rp)
 		end
 		local tc=g:GetFirst()
 		while tc do
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_DISABLE)
-			e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-			e1:SetReset(RESET_CHAIN)
-			tc:RegisterEffect(e1)
-			local e2=Effect.CreateEffect(e:GetHandler())
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_DISABLE_EFFECT)
-			e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-			e2:SetReset(RESET_CHAIN)
-			tc:RegisterEffect(e2)
-			tc:SetStatus(STATUS_BATTLE_DESTROYED,true)
+			if tc:SetStatus(STATUS_BATTLE_DESTROYED,true)~=0 and tc:IsLocation(LOCATION_ONFIELD) then
+			Duel.Destroy(tc,REASON_BATTLE)
+				if tc:SetStatus(STATUS_BATTLE_DESTROYED,true)~=0 and tc:IsLocation(LOCATION_ONFIELD) then
+				Duel.SendtoGrave(tc,REASON_DESTROY+REASON_BATTLE)
+				end
+			end
 			tc=g:GetNext()
 		end
-		Duel.Destroy(g,REASON_BATTLE)
 	end
 end
 function c513000031.damcon(e)
 	local ph=Duel.GetCurrentPhase()
-	return ph>=0x08 and ph<=0x20
+	return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE
 end
 function c513000031.damval(e,re,val,r,rp,rc)
-	if bit.band(r,REASON_EFFECT)~=0 then return 0 end
-	return val
+	if bit.band(r,REASON_EFFECT)~=0 then 
+	return 0
+	else return val
+	end
 end
 function c513000031.efilter(e,re)
 	return e:GetOwnerPlayer()~=re:GetOwnerPlayer() and re:IsActiveType(TYPE_MONSTER)

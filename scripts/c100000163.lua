@@ -2,13 +2,12 @@
 function c100000163.initial_effect(c)
 	--
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetRange(LOCATION_MZONE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetCode(EFFECT_REMOVE_ATTRIBUTE)
-	e1:SetTargetRange(LOCATION_MZONE,0)
-	e1:SetTarget(c100000163.ratg)
 	e1:SetValue(ATTRIBUTE_DARK)
-	c:RegisterEffect(e1)	
+	c:RegisterEffect(e1)
 	--summon with 1 tribute
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(100000163,0))
@@ -28,9 +27,6 @@ function c100000163.initial_effect(c)
 	e3:SetCondition(c100000163.adcon)
 	e3:SetValue(c100000163.adval)
 	c:RegisterEffect(e3)
-end
-function c100000163.ratg(e)
-	return e:GetHandler()
 end
 function c100000163.otcon(e,c)
 	if c==nil then return true end

@@ -18,8 +18,11 @@ function c511000600.initial_effect(c)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
 end
+function c511000600.cfilter(c,tp)
+	return c:GetSummonPlayer()~=tp
+end
 function c511000600.con(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp
+	return eg:IsExists(c511000600.cfilter,1,nil,tp)
 end
 function c511000600.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end

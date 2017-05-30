@@ -29,6 +29,8 @@ function c511001099.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end
-function c511001099.indval(e,re,rp)
-	return re:GetOwner()~=e:GetOwner()
+
+
+function c511001099.indval(e,re,tp)
+	return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
 end

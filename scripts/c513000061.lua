@@ -17,7 +17,7 @@ function c513000061.initial_effect(c)
 	--negate
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_DISABLE+CATEGORY_DESTROY+CATEGORY_DAMAGE)
-	e2:SetProperty(EFFECT_FLAG2_XMDETACH)
+	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP,EFFECT_FLAG2_XMDETACH)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_CHAINING)
 	e2:SetRange(LOCATION_MZONE)
@@ -74,16 +74,19 @@ function c513000061.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c513000061.negcon(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.IsChainDisablable(ev) then return false end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_REMOVE)
-	if ex and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_DESTROY)
-	if ex and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TODECK)
-	if ex and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOGRAVE)
-	if ex and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOHAND)
-	return ex and tg~=nil and tg:IsContains(e:GetHandler())
+	local ev,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_CONTROL)
+	if ev and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
+	local ev,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_REMOVE)
+	if ev and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
+	local ev,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_DESTROY)
+	if ev and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
+	local ev,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TODECK)
+	if ev and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
+	local ev,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOGRAVE)
+	if ev and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
+	local ev,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_TOHAND)
+	if ev and tg~=nil and tg:IsContains(e:GetHandler()) then return true end
+	return ev and tg~=nil and tg:IsContains(e:GetHandler())
 end
 function c513000061.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
@@ -91,14 +94,14 @@ function c513000061.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c513000061.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
 	Duel.SetOperationInfo(0,CATEGORY_DISABLE,eg,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,0)
 end
 function c513000061.negop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateEffect(ev)
-	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
+	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,e:GetHandler())
 	if Duel.Destroy(sg,REASON_EFFECT)>0 then
 		local dg=Duel.GetOperatedGroup()
 		local sum=dg:GetSum(Card.GetAttack)

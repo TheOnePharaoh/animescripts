@@ -12,13 +12,13 @@ function c100000502.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100000502.cfilter(c,tp)
-	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsSetCard(0x5008) and c:IsType(TYPE_MONSTER)
+	return c:IsPreviousLocation(LOCATION_ONFIELD) and (c:IsSetCard(0x5008) or c:IsCode(27780618)) and c:IsType(TYPE_MONSTER)
 end
 function c100000502.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c100000502.cfilter,1,nil,tp)
 end
 function c100000502.spfilter(c,e,tp)
-	return c:IsLevelBelow(4) and c:IsSetCard(0x5008) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsLevelBelow(4) and (c:IsSetCard(0x5008) or c:IsCode(27780618)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c100000502.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

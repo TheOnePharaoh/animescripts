@@ -1,39 +1,5 @@
 --デステニー・オーバーレイ
 function c100000490.initial_effect(c)
-	function aux.AddXyzProcedure(c,f,lv,ct,alterf,desc,maxct,op)
-		local code=c:GetOriginalCode()
-		local mt=_G["c" .. code]
-		mt.xyz_filter=function(mc) return mc and (not f or f(mc)) and mc:IsXyzLevel(c,lv) and not mc:IsType(TYPE_TOKEN) end
-		mt.minxyzct=ct
-		if not maxct then
-			mt.maxxyzct=ct
-		else
-			if maxct==5 and code~=14306092 and code~=63504681 and code~=23776077 then
-				maxct=63
-				mt.maxxyzct=63
-			else
-				mt.maxxyzct=maxct
-			end
-		end
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetCode(EFFECT_SPSUMMON_PROC)
-		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-		e1:SetRange(LOCATION_EXTRA)
-		if not maxct then maxct=ct end
-		if alterf then
-			e1:SetCondition(Auxiliary.XyzCondition2(f,lv,ct,maxct,alterf,desc,op))
-			e1:SetTarget(Auxiliary.XyzTarget2(f,lv,ct,maxct,alterf,desc,op))
-			e1:SetOperation(Auxiliary.XyzOperation2(f,lv,ct,maxct,alterf,desc,op))
-		else
-			e1:SetCondition(Auxiliary.XyzCondition(f,lv,ct,maxct))
-			e1:SetTarget(Auxiliary.XyzTarget(f,lv,ct,maxct))
-			e1:SetOperation(Auxiliary.XyzOperation(f,lv,ct,maxct))
-		end
-		e1:SetValue(SUMMON_TYPE_XYZ)
-		c:RegisterEffect(e1)
-	end
-	
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -48,47 +14,69 @@ function c100000490.filter(c,e)
 	return c:IsFaceup() and c:IsCanBeEffectTarget(e) and not c:IsType(TYPE_TOKEN)
 end
 function c100000490.xyzfilter(c,mg)
-	return c:IsXyzSummonable(mg)
+	return c:IsXyzSummonable(mg,mg:GetCount(),mg:GetCount())
 end
-function c100000490.xyzfilter2(c,mg,ct)
-	return c:IsXyzSummonable(mg) and (c.minxyzct==ct or c.maxxyzct>=ct)
+function c100000490.cfilter(c)
+	return not c:IsHasEffect(EFFECT_XYZ_MATERIAL)
 end
-function c100000490.mfilter1(c,exg)
-	return exg:IsExists(c100000490.mfilter2,1,nil,c)
-end
-function c100000490.mfilter2(c,mc)
-	return c.xyz_filter(mc)
+function c100000490.xyzfilter2(c,g,matg,tp)
+	local tg=matg:Clone()
+	local mg=g:Clone()
+	tg:AddCard(c)
+	mg:RemoveCard(c)
+	local g=tg:Filter(c100000490.cfilter,nil)
+	local tc=g:GetFirst()
+	while tc do
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetCode(EFFECT_XYZ_MATERIAL)
+		e1:SetReset(RESET_CHAIN)
+		tc:RegisterEffect(e1)
+		tc=g:GetNext()
+	end
+	local res=Duel.IsExistingMatchingCard(c100000490.xyzfilter,tp,LOCATION_EXTRA,0,1,nil,tg) or mg:IsExists(c100000490.xyzfilter2,1,nil,mg,tg,tp)
+	tc=g:GetFirst()
+	while tc do
+		tc:ResetEffect(EFFECT_XYZ_MATERIAL,RESET_CODE)
+		tc=g:GetNext()
+	end
+	return res
 end
 function c100000490.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
 	local mg=Duel.GetMatchingGroup(c100000490.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil,e)
-	if chk==0 then return mg:GetCount()>0 and Duel.IsExistingMatchingCard(c100000490.xyzfilter,tp,LOCATION_EXTRA,0,1,nil,mg) end
-	local exg=Duel.GetMatchingGroup(c100000490.xyzfilter,tp,LOCATION_EXTRA,0,nil,mg)
-	local extc=exg:GetFirst()
-	local minct=99
-	local maxct=0
-	while extc do
-		if extc.minxyzct<minct then
-			minct=extc.minxyzct
-		end
-		if extc.maxxyzct>maxct then
-			maxct=extc.maxxyzct
-		end
-		extc=exg:GetNext()
+	local g=Group.CreateGroup()
+	if chk==0 then return mg:IsExists(c100000490.xyzfilter2,1,nil,mg,g,tp) end
+	local tg=Group.CreateGroup()
+	while not Duel.IsExistingMatchingCard(c100000490.xyzfilter,tp,LOCATION_EXTRA,0,1,nil,g) 
+		or (mg:IsExists(c100000490.xyzfilter2,1,nil,mg,g,tp) and Duel.SelectYesNo(tp,513)) do
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_XMATERIAL)
+		local sg=mg:FilterSelect(tp,c100000490.xyzfilter2,1,1,nil,mg,g,tp)
+		local tc=sg:GetFirst()
+		mg:RemoveCard(tc)
+		g:AddCard(tc)
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_XYZ_MATERIAL)
+		e1:SetReset(RESET_CHAIN)
+		tc:RegisterEffect(e1)
 	end
-	local g=mg:Filter(c100000490.mfilter1,nil,exg)
-	local mgt=Group.CreateGroup()
-	local ct=0
-	repeat
-		mgt=g:Select(tp,minct,maxct,nil)
-		ct=mgt:GetCount()
-	until exg:IsExists(c100000490.xyzfilter2,1,nil,mgt,ct)
-	Duel.SetTargetCard(mgt)
+	Duel.SetTargetCard(g)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
 function c100000490.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
-	local xyzg=Duel.GetMatchingGroup(c100000490.xyzfilter2,tp,LOCATION_EXTRA,0,nil,g,g:GetCount())
+	local tc=g:GetFirst()
+	while tc do
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_XYZ_MATERIAL)
+		e1:SetReset(RESET_CHAIN)
+		tc:RegisterEffect(e1)
+		tc=g:GetNext()
+	end
+	local xyzg=Duel.GetMatchingGroup(c100000490.xyzfilter,tp,LOCATION_EXTRA,0,nil,g)
 	if xyzg:GetCount()>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local xyz=xyzg:Select(tp,1,1,nil):GetFirst()

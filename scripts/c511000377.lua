@@ -3,7 +3,7 @@ function c511000377.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_CARD_TARGET)
-	e1:SetCode(511001762)
+	e1:SetCode(511000377)
 	e1:SetCondition(c511000377.condition)
 	e1:SetTarget(c511000377.target)
 	e1:SetOperation(c511000377.activate)
@@ -11,73 +11,88 @@ function c511000377.initial_effect(c)
 	if not c511000377.global_check then
 		c511000377.global_check=true
 		--register
-		local e2=Effect.CreateEffect(c)
-		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e2:SetCode(EVENT_ADJUST)
-		e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e2:SetOperation(c511000377.operation)
-		Duel.RegisterEffect(e2,0)
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_ADJUST)
+		ge1:SetCountLimit(1)
+		ge1:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge1:SetOperation(c511000377.atkchk)
+		Duel.RegisterEffect(ge1,0)
 	end
 end
-function c511000377.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()	
-	local g=Duel.GetMatchingGroup(nil,0,LOCATION_MZONE,LOCATION_MZONE,nil)
-	local tc=g:GetFirst()
-	while tc do
-		if tc:GetFlagEffect(511001762)==0 then
-			local e1=Effect.CreateEffect(c)	
-			e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-			e1:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
-			e1:SetCode(EVENT_CHAIN_SOLVED)
-			e1:SetRange(LOCATION_MZONE)
-			e1:SetLabel(tc:GetAttack())
-			e1:SetOperation(c511000377.op)
-			e1:SetReset(RESET_EVENT+0x1fe0000)
-			tc:RegisterEffect(e1)
-			tc:RegisterFlagEffect(511001762,RESET_EVENT+0x1fe0000,0,1) 	
-		end	
-		tc=g:GetNext()
+function c511000377.atkchk(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetFlagEffect(tp,419)==0 and Duel.GetFlagEffect(1-tp,419)==0 then
+		Duel.CreateToken(tp,419)
+		Duel.CreateToken(1-tp,419)
+		Duel.RegisterFlagEffect(tp,419,nil,0,1)
+		Duel.RegisterFlagEffect(1-tp,419,nil,0,1)
 	end
 end
-function c511000377.op(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if e:GetLabel()==c:GetAttack() then return end
+function c511000377.cfilter(c,tp)
 	local val=0
-	if c:GetAttack()>e:GetLabel() then
-		val=c:GetAttack()-e:GetLabel()
-		Duel.RaiseEvent(c,511001762,re,REASON_EFFECT,rp,tp,val)
-	end
-	e:SetLabel(c:GetAttack())
+	if c:GetFlagEffect(284)>0 then val=c:GetFlagEffectLabel(284) end
+	return c:IsFaceup() and c:IsControler(1-tp) and c:GetAttack()~=val
 end
 function c511000377.condition(e,tp,eg,ep,ev,re,r,rp)
-	local ec=eg:GetFirst()
-	return ec:IsControler(1-tp) and ev>0 and re and re:IsActiveType(TYPE_SPELL)
+	return eg:IsExists(c511000377.cfilter,1,nil,tp) and re and re:IsActiveType(TYPE_SPELL)
+end
+function c511000377.diffilter1(c,g)
+	local dif=0
+	local val=0
+	if c:GetFlagEffect(284)>0 then val=c:GetFlagEffectLabel(284) end
+	if c:GetAttack()>val then dif=c:GetAttack()-val
+	else dif=val-c:GetAttack() end
+	return g:IsExists(c511000377.diffilter2,1,c,dif)
+end
+function c511000377.diffilter2(c,dif)
+	local dif2=0
+	local val=0
+	if c:GetFlagEffect(284)>0 then val=c:GetFlagEffectLabel(284) end
+	if c:GetAttack()>val then dif2=c:GetAttack()-val
+	else dif2=val-c:GetAttack() end
+	return dif~=dif2
 end
 function c511000377.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local ec=eg:GetFirst()
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
+	local gchk=eg:Filter(Card.IsControler,nil,1-tp)
+	local ec=gchk:GetFirst()
+	local g=gchk:Filter(c511000377.diffilter1,nil,gchk)
+	local g2=Group.CreateGroup()
+	if g:GetCount()>0 then g2=g:Select(tp,1,1,nil) ec=g2:GetFirst() end
+	if g2:GetCount()>0 then Duel.HintSelection(g2) end
+	ec:CreateEffectRelation(e)
+	local dam=0
+	local val=0
+	if ec:GetFlagEffect(284)>0 then val=ec:GetFlagEffectLabel(284) end
+	if ec:GetAttack()>val then dam=ec:GetAttack()-val
+	else dam=val-ec:GetAttack() end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
-	ec:CreateEffectRelation(e)
+	Duel.SetTargetParam(dam)
 end
 function c511000377.activate(e,tp,eg,ep,ev,re,r,rp)
-	local ec=eg:GetFirst()
+	local g=eg:Filter(Card.IsRelateToEffect,nil,e)
 	local tc=Duel.GetFirstTarget()
-	if ec and ec:IsRelateToEffect(e) and ec:IsFaceup() then
+	local ec=g:GetFirst()
+	if not tc or g:GetCount()<=0 then return end
+	if g:GetCount()>1 then
+		if tc==ec then ec=g:GetNext() end
+	end
+	if ec:IsControler(tp) then return end
+	local atk=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
+	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
-		e1:SetValue(-ev)
+		e1:SetValue(-atk)
 		ec:RegisterEffect(e1)
-		if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-			local e2=Effect.CreateEffect(e:GetHandler())
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_UPDATE_ATTACK)
-			e2:SetReset(RESET_EVENT+0x1fe0000)
-			e2:SetValue(ev)
-			tc:RegisterEffect(e2)
-		end
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_UPDATE_ATTACK)
+		e2:SetReset(RESET_EVENT+0x1fe0000)
+		e2:SetValue(atk)
+		tc:RegisterEffect(e2)
 	end
 end

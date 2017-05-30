@@ -18,7 +18,7 @@ function c511002370.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST)
 end
 function c511002370.filter(c,e,tp)
-	return c:IsRace(0x10000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsRace(0x80000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511002370.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and c511002370.filter(chkc,e,tp) end

@@ -13,13 +13,14 @@ function c100000069.initial_effect(c)
 	c:RegisterEffect(e1)	
 end
 function c100000069.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsReleasable() and not Duel.CheckAttackActivity(tp) end
-	Duel.Release(e:GetHandler(),REASON_COST)
-	local e1=Effect.CreateEffect(e:GetHandler())
+	local c=e:GetHandler()
+	if chk==0 then return c:IsReleasable() and Duel.GetActivityCount(tp,ACTIVITY_ATTACK)==0 end
+	Duel.Release(c,REASON_COST)
+	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_ATTACK_ANNOUNCE)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
-	e1:SetTargetRange(1,0)
+	e1:SetCode(EFFECT_CANNOT_ATTACK)
+	e1:SetProperty(EFFECT_FLAG_OATH+EFFECT_FLAG_IGNORE_IMMUNE)
+	e1:SetTargetRange(LOCATION_MZONE,0)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end

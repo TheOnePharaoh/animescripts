@@ -42,7 +42,7 @@ function c511002967.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_END and c511002967[tp]
 end
 function c511002967.op(e,tp,eg,ep,ev,re,r,rp)
-	if ep==tp and e:GetHandler():GetFlagEffect(511002967)==0 and Duel.SelectYesNo(tp,aux.Stringid(93816465,1)) then
+	if ep==tp and e:GetHandler():GetFlagEffect(511002967)==0 and Duel.SelectEffectYesNo(tp,e:GetHandler()) then
 		e:GetHandler():RegisterFlagEffect(511002967,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 		Duel.ChangeBattleDamage(tp,0)
 	end

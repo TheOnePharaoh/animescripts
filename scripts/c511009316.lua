@@ -1,4 +1,5 @@
 --Smile Potion
+--fixed by MLD
 function c511009316.initial_effect(c)
 	--activate
 	local e1=Effect.CreateEffect(c)

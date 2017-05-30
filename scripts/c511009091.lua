@@ -1,4 +1,5 @@
 --D/D Savant Thomas (anime)
+--fixed by MLD
 function c511009091.initial_effect(c)
 	aux.EnablePendulumAttribute(c)
 	--Back to hand
@@ -23,7 +24,6 @@ function c511009091.initial_effect(c)
 	e2:SetOperation(c511009091.spop)
 	c:RegisterEffect(e2)
 end
-
 function c511009091.thfil(c)
 	return c:IsFaceup() and c:IsType(TYPE_PENDULUM) and c:IsAbleToHand()
 end
@@ -40,26 +40,35 @@ function c511009091.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
-
-function c511009091.spcfil(c)
+function c511009091.desfilter(c)
 	local seq=c:GetSequence()
-	return c:IsSetCard(0xaf) and (seq==6 or seq==7) and c:IsDestructable()
+	return c:IsSetCard(0xaf) and (seq==6 or seq==7)
 end
 function c511009091.spfil(c,e,tp)
 	return c:IsSetCard(0x10af) and c:GetLevel()==8 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511009091.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and c511009091.spcfil(chkc) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingTarget(c511009091.spcfil,tp,LOCATION_SZONE,0,1,nil) and Duel.IsExistingMatchingCard(c511009091.spfil,tp,LOCATION_DECK,0,1,nil,e,tp) end
+	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and c511009091.desfilter(chkc) end
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
+		and Duel.IsExistingTarget(c511009091.desfilter,tp,LOCATION_SZONE,0,1,nil) 
+		and Duel.IsExistingMatchingCard(c511009091.spfil,tp,LOCATION_DECK,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,c511009091.spcfil,tp,LOCATION_SZONE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,c511009091.desfilter,tp,LOCATION_SZONE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function c511009091.spop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<1 then return end
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local c=e:GetHandler()
+	local e0=Effect.CreateEffect(e:GetHandler())
+	e0:SetType(EFFECT_TYPE_FIELD)
+	e0:SetCode(EFFECT_CHANGE_DAMAGE)
+	e0:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e0:SetTargetRange(0,1)
+	e0:SetValue(c511009091.val)
+	e0:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e0,tp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)>0 then
+	if tc and tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local g=Duel.SelectMatchingCard(tp,c511009091.spfil,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 		local sc=g:GetFirst()
@@ -74,9 +83,12 @@ function c511009091.spop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetCode(EFFECT_DISABLE_EFFECT)
 			e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 			sc:RegisterEffect(e2)
-			
-			Duel.RegisterEffect(e3,tp)
 			Duel.SpecialSummonComplete()
 		end
 	end
+end
+function c511009091.val(e,re,dam,r,rp,rc)
+	if bit.band(r,REASON_BATTLE)~=0 then
+		return dam/2
+	else return dam end
 end

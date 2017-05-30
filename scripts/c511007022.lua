@@ -1,5 +1,6 @@
 --coded by Lyris
 --Cyber Phoenix (Anime)
+--modified by MLD
 function c511007022.initial_effect(c)
 	--disable
 	local e1=Effect.CreateEffect(c)
@@ -42,7 +43,7 @@ function c511007022.disop(e,tp,eg,ep,ev,re,r,rp)
 	if not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then return end
 	local g=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
 	if not g then return end
-	if g:IsExists(c511007022.disfilter,1,nil,tp,1) and Duel.SelectYesNo(tp,aux.Stringid(511007022,1)) then
+	if g:IsExists(c511007022.disfilter,1,nil,tp,1) and Duel.SelectEffectYesNo(tp,e:GetHandler()) then
 		Duel.NegateEffect(ev)
 	end
 end

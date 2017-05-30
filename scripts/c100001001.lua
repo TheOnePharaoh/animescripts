@@ -12,7 +12,7 @@ function c100001001.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100001001.tgfilter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsRace(0x10000000) and c:IsAbleToGrave()
+	return c:IsType(TYPE_MONSTER) and c:IsRace(0x80000000) and c:IsAbleToGrave()
 end
 function c100001001.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100001001.tgfilter,tp,LOCATION_DECK,0,1,nil) end

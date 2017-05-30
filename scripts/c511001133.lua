@@ -38,7 +38,7 @@ function c511001133.activate(e,tp,eg,ep,ev,re,r,rp)
 	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e5:SetTargetRange(1,0)
 	e5:SetCode(EFFECT_SKIP_DP)
-	if Duel.GetTurnPlayer()==tp and Duel.GetCurrentPhase()==PHASE_BATTLE then
+	if Duel.GetTurnPlayer()==tp and (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE) then
 		e5:SetCondition(c511001133.skipcon)
 		e5:SetLabel(Duel.GetTurnCount())
 		e5:SetReset(RESET_PHASE+PHASE_BATTLE+RESET_SELF_TURN,2)

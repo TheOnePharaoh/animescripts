@@ -19,7 +19,7 @@ function c511001409.cfilter(c,atk)
 	return c:IsSetCard(0x10af) and c:GetAttack()>atk
 end
 function c511001409.costfilter(c,tp)
-	return c:IsSetCard(0x10af) and c:IsAbleToRemoveAsCost() 
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x10af) and c:IsAbleToRemoveAsCost() 
 		and not Duel.IsExistingMatchingCard(c511001409.cfilter,tp,LOCATION_GRAVE,0,1,nil,c:GetAttack())
 end
 function c511001409.cost(e,tp,eg,ep,ev,re,r,rp,chk)

@@ -15,7 +15,7 @@ function c511009204.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
 end
 function c511009204.filter(c,e,tp)
-	return (c:IsCode(511002160) or c:IsCode(511002522)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x669) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511009204.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

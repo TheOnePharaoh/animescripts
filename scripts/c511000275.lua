@@ -45,6 +45,12 @@ function c511000275.initial_effect(c)
 	e6:SetTarget(c511000275.numtg)
 	e6:SetOperation(c511000275.numop)
 	c:RegisterEffect(e6)
+	local chain=Duel.GetCurrentChain
+	copychain=0
+	Duel.GetCurrentChain=function()
+		if copychain==1 then copychain=0 return chain()-1
+		else return chain() end
+	end
 end
 function c511000275.accon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp and Duel.GetFieldGroupCount(tp,LOCATION_ONFIELD,0)==0
@@ -64,9 +70,9 @@ function c511000275.rcon(e,tp,eg,ep,ev,re,r,rp)
 		and re:GetHandler():IsSetCard(0x1ff)
 end
 function c511000275.numcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetFieldGroupCount(tp,LOCATION_ONFIELD,0)==1
+	return Duel.GetFieldGroupCount(tp,LOCATION_ONFIELD,0)<=1
 end
-function c511000275.tgfilter(c,e,tp,eg,ep,ev,re,r,rp,chain)
+function c511000275.tgfilter(c,e,tp,eg,ep,ev,re,r,rp,chain,chk)
 	local te=c:GetActivateEffect()
 	if not c:IsSetCard(0x1ff) or not c:IsAbleToGrave() or not te then return end
 	local condition=te:GetCondition()
@@ -82,6 +88,7 @@ function c511000275.tgfilter(c,e,tp,eg,ep,ev,re,r,rp,chain)
 			and (not target or target(e,tp,g,p,chain,te2,REASON_EFFECT,p,0))
 	elseif (te:GetCode()==EVENT_FREE_CHAIN and e:GetCode()==EVENT_FREE_CHAIN) 
 		or (te:GetCode()==EVENT_SPSUMMON and e:GetCode()==EVENT_SPSUMMON) then
+		if te:GetCode()==EVENT_SPSUMMON and chk then copychain=1 end
 		return (not condition or condition(e,tp,eg,ep,ev,re,r,rp)) and (not cost or cost(e,tp,eg,ep,ev,re,r,rp,0))
 			and (not target or target(e,tp,eg,ep,ev,re,r,rp,0))
 	else
@@ -94,12 +101,11 @@ function c511000275.numtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
 end
 function c511000275.numop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.RegisterFlagEffect(tp,511001666,RESET_CHAIN,0,1)
-	Duel.RegisterFlagEffect(tp,95000027,RESET_CHAIN,0,1)
 	local chain=Duel.GetCurrentChain()-1
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,c511000275.tgfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp,chain)
+	local g=Duel.SelectMatchingCard(tp,c511000275.tgfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp,chain,true)
 	local tc=g:GetFirst()
+	copychain=0
 	if tc and Duel.SendtoGrave(g,REASON_EFFECT)>0 then
 		local te=tc:GetActivateEffect()
 		local cost=te:GetCost()

@@ -1,6 +1,12 @@
 --Fenrir of the Nordic Wicked Wolves
 function c511000012.initial_effect(c)  
-	c:EnableUnsummonable()
+	c:EnableReviveLimit()
+	--cannot special summon
+	local e0=Effect.CreateEffect(c)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_SPSUMMON_CONDITION)
+	c:RegisterEffect(e0)
 	--special summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
@@ -68,7 +74,9 @@ function c511000012.sdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Damage(1-ep,ev,REASON_BATTLE)
 end
 function c511000012.spccon(e,c,tp)
-	return Duel.GetActivityCount(tp,ACTIVITY_NORMALSUMMON)==0 and Duel.GetCurrentPhase()==PHASE_MAIN1
+	local tp=e:GetHandler():GetControler()
+	return Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0
+		and Duel.GetActivityCount(tp,ACTIVITY_NORMALSUMMON)==0 and Duel.GetCurrentPhase()==PHASE_MAIN1
 end
 function c511000012.spcop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -91,7 +99,9 @@ function c511000012.spcop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e3,tp)
 end
 function c511000012.spcost(e,c,tp)
-	return Duel.GetActivityCount(tp,ACTIVITY_NORMALSUMMON)==0 and Duel.GetCurrentPhase()==PHASE_MAIN1
+	local tp=e:GetHandler():GetControler()
+	return Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0
+		and Duel.GetActivityCount(tp,ACTIVITY_NORMALSUMMON)==0 and Duel.GetCurrentPhase()==PHASE_MAIN1
 end
 function c511000012.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

@@ -8,16 +8,24 @@ function c511001112.initial_effect(c)
 	e1:SetTarget(c511001112.target)
 	e1:SetOperation(c511001112.operation)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001408)
+	c:RegisterEffect(e2)
 end
 function c511001112.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
+end
+function c511001112.cfilter(c,e,tp,eg,ep,ev,re,r,rp)
+	return not c:IsHasEffect(511001408) and not c:IsHasEffect(511001283) and c511001112.filter(c,e,tp,eg,ep,ev,re,r,rp)
 end
 function c511001112.filter(c,e,tp,eg,ep,ev,re,r,rp)
 	return c:IsType(TYPE_SPELL) and c:CheckActivateEffect(false,false,false)~=nil and not c:IsType(TYPE_FIELD)
 end
 function c511001112.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) or chkc:IsLocation(LOCATION_MZONE) and chkc:GetControler()~=tp and c511001112.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c511001112.filter,tp,0,LOCATION_GRAVE,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(c511001112.cfilter,tp,0,LOCATION_GRAVE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local g=Duel.SelectTarget(tp,c511001112.filter,tp,0,LOCATION_GRAVE,1,1,nil)
 end

@@ -30,6 +30,7 @@ end
 function c511000414.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ec=c:GetPreviousEquipTarget()
+	if not ec then return false end
 	e:SetLabel(ec:GetPreviousControler())
 	return c:IsReason(REASON_DESTROY)
 end

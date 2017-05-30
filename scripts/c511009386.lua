@@ -1,4 +1,5 @@
 --Pendulum Holt
+--fixed by MLD
 function c511009386.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)

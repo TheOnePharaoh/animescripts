@@ -9,7 +9,7 @@ function c810000101.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c810000101.op(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():IsDestructable() and ep==tp and Duel.SelectYesNo(tp,aux.Stringid(93816465,1)) 
+	if e:GetHandler():IsDestructable(e) and ep==tp and Duel.SelectEffectYesNo(tp,e:GetHandler()) 
 		and Duel.Destroy(e:GetHandler(),REASON_EFFECT+REASON_REPLACE) then
 		Duel.ChangeBattleDamage(tp,0)
 	end

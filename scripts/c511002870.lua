@@ -22,6 +22,12 @@ function c511002870.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTarget(c511002870.reptg)
 	c:RegisterEffect(e2)
+	--battle indestructable
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e3:SetValue(c511002870.indes)
+	c:RegisterEffect(e3)
 	if not c511002870.global_check then
 		c511002870.global_check=true
 		local ge2=Effect.CreateEffect(c)
@@ -31,22 +37,6 @@ function c511002870.initial_effect(c)
 		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
 		ge2:SetOperation(c511002870.numchk)
 		Duel.RegisterEffect(ge2,0)
-	end
-	--battle indestructable
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e3:SetValue(c511002870.indes)
-	c:RegisterEffect(e3)
-	if not c511002870.global_check then
-		c511002870.global_check=true
-		local ge3=Effect.CreateEffect(c)
-		ge3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge3:SetCode(EVENT_ADJUST)
-		ge3:SetCountLimit(1)
-		ge3:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
-		ge3:SetOperation(c511002870.numchk)
-		Duel.RegisterEffect(ge3,0)
 	end
 end
 c511002870.xyz_number=102
@@ -85,6 +75,7 @@ function c511002870.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c511002870.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	if chk==0 then return c:CheckRemoveOverlayCard(tp,1,REASON_EFFECT) end
 	if Duel.SelectYesNo(tp,aux.Stringid(49678559,1)) then
 		local g=c:GetOverlayGroup()

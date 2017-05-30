@@ -29,7 +29,7 @@ function c511001132.initial_effect(c)
 		c511001132[4]=0
 		local ge1=Effect.GlobalEffect()
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetCode(EVENT_PHASE_START+PHASE_BATTLE)
+		ge1:SetCode(EVENT_PHASE_START+PHASE_BATTLE_START)
 		ge1:SetProperty(EFFECT_FLAG_REPEAT)
 		ge1:SetCountLimit(1)
 		ge1:SetOperation(c511001132.checkop)

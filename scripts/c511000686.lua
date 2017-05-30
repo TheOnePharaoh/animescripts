@@ -16,7 +16,8 @@ function c511000686.condition(e,tp,eg,ep,ev,re,r,rp)
 	local bc=tc:GetBattleTarget()
 	return eg:GetCount()==1 and tc:IsControler(tp) and bc:IsReason(REASON_BATTLE)
 end
-function c511000686.filter2(c,rk,e,tp)
+function c511000686.filter2(c,rk,e,tp,code)
+	if c.rum_limit_code and code~=c.rum_limit_code then return false end
 	return c:GetRank()==rk 
 		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
@@ -26,8 +27,8 @@ function c511000686.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc==tg end
 	if chk==0 then
 	return tg:IsOnField() and tg:IsCanBeEffectTarget(e) and tg:IsAbleToGrave() 
-	and Duel.IsExistingMatchingCard(c511000686.filter2,tp,LOCATION_EXTRA,0,1,nil,rk+1,e,tp)
-	and  Duel.IsExistingMatchingCard(c511000686.filter2,tp,LOCATION_EXTRA,0,1,nil,rk+2,e,tp) end
+	and Duel.IsExistingMatchingCard(c511000686.filter2,tp,LOCATION_EXTRA,0,1,nil,rk+1,e,tp,tg:GetCode())
+	and  Duel.IsExistingMatchingCard(c511000686.filter2,tp,LOCATION_EXTRA,0,1,nil,rk+2,e,tp,tg:GetCode()) end
 	Duel.SetTargetCard(tg)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,tg,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_EXTRA)
@@ -39,8 +40,10 @@ function c511000686.activate(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SendtoGrave(tc,REASON_EFFECT)==0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g1=Duel.SelectMatchingCard(tp,c511000686.filter2,tp,LOCATION_EXTRA,0,1,1,nil,tc:GetRank()+1,e,tp):GetFirst()
+	g1:SetMaterial(Group.FromCards(tc))
 	Duel.SpecialSummon(g1,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP_ATTACK)
 	local g2=Duel.SelectMatchingCard(tp,c511000686.filter2,tp,LOCATION_EXTRA,0,1,1,nil,tc:GetRank()+2,e,tp):GetFirst()
+	g2:SetMaterial(Group.FromCards(tc))
 	Duel.SpecialSummon(g2,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_SINGLE)

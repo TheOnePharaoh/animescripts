@@ -72,7 +72,7 @@ function c511009212.checkop(e,tp,eg,ep,ev,re,r,rp)
 	while tc do
 		local te=tc:GetActivateEffect()
 		te:SetCondition(aux.TRUE)
-		if te:IsActivatable(tc:GetControler()) and Duel.SelectYesNo(tc:GetControler(),aux.Stringid(28265983,0)) then
+		if te:IsActivatable(tc:GetControler()) and Duel.SelectEffectYesNo(tp,tc) then
 			Duel.ChangePosition(tc,POS_FACEUP)
 			--g2:AddCard(tc)
 		end

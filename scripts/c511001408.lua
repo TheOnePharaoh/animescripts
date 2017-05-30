@@ -8,6 +8,14 @@ function c511001408.initial_effect(c)
 	e1:SetTarget(c511001408.target)
 	e1:SetOperation(c511001408.operation)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001408)
+	c:RegisterEffect(e2)
+end
+function c511001408.cfilter(c,e,tp,eg,ep,ev,re,r,rp,tid)
+	return not c:IsHasEffect(511001408) and not c:IsHasEffect(511001283) and c511001408.filter(c,e,tp,eg,ep,ev,re,r,rp,tid)
 end
 function c511001408.filter(c,e,tp,eg,ep,ev,re,r,rp,tid)
 	local te=c:GetActivateEffect()
@@ -20,7 +28,8 @@ end
 function c511001408.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local tid=Duel.GetTurnCount()
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(1-tp) and c511001408.filter(chkc,tp,eg,ep,ev,re,r,rp,tid) end
-	if chk==0 then return Duel.IsExistingTarget(c511001408.filter,tp,0,LOCATION_GRAVE,1,nil,e,tp,eg,ep,ev,re,r,rp,tid) end
+	if chk==0 then return Duel.IsExistingTarget(c511001408.cfilter,tp,0,LOCATION_GRAVE,1,nil,e,tp,eg,ep,ev,re,r,rp,tid) end
+	e:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local tc=Duel.SelectTarget(tp,c511001408.filter,tp,0,LOCATION_GRAVE,1,1,nil,e,tp,eg,ep,ev,re,r,rp,tid):GetFirst()
 	local te=tc:GetActivateEffect()

@@ -19,7 +19,7 @@ function c700000020.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c700000020.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_BATTLE 
+	return (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE)
 end
 function c700000020.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x10ec)

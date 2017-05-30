@@ -68,7 +68,16 @@ function c511000431.spop(e,tp,eg,ep,ev,re,r,rp)
 					etc=g:GetNext()
 				end
 			end
-			if op then op(te,tp,eg,ep,ev,re,r,rp) end
+			tc:SetStatus(STATUS_ACTIVATED,true)
+			if not tc:IsDisabled() then
+				if op then op(te,tp,eg,ep,ev,re,r,rp) end
+			else
+				--insert negated animation here
+			end
+			Duel.RaiseEvent(Group.CreateGroup(tc),EVENT_CHAIN_SOLVED,te,0,tp,tp,Duel.GetCurrentChain())
+			if g and tc:IsType(TYPE_EQUIP) and not tc:GetEquipTarget() then
+				Duel.Equip(tp,tc,g:GetFirst())
+			end
 			tc:ReleaseEffectRelation(te)
 			if etc then	
 				etc=g:GetFirst()

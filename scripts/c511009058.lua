@@ -9,25 +9,28 @@ function c511009058.initial_effect(c)
 	e1:SetTarget(c511009058.target)
 	e1:SetOperation(c511009058.activate)
 	c:RegisterEffect(e1)
-end 
---White monster collection
-c511009058.collection={
-	[1571945]=true;[3557275]=true;[9433350]=true;[13429800]=true;
-	[15150365]=true;[20193924]=true;[24644634]=true;[32269855]=true;
-	[38517737]=true;[73398797]=true;[73891874]=true;[79473793]=true;
-	[79814787]=true;[89631139]=true;[92409659]=true;[98024118]=true;
-	[22804410]=true;[71039903]=true;[84812868]=true;
-	[501000016]=true;
-	[511002341]=true;
-	[511001977]=true;[511001978]=true;[511001979]=true;[511001980]=true;
-	[511001090]=true;[511001091]=true;	
-	[95100846]=true;[95100847]=true;
-	
-}
+	if not c511009058.global_check then
+		c511009058.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511009058.archchk)
+		Duel.RegisterEffect(ge2,0)
+	end
+end
+function c511009058.archchk(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetFlagEffect(0,420)==0 then 
+		Duel.CreateToken(tp,420)
+		Duel.CreateToken(1-tp,420)
+		Duel.RegisterFlagEffect(0,420,0,0,0)
+	end
+end
 function c511009058.filter(c,tp)
 	return c:IsFaceup() and c:IsDestructable()
 		and Duel.IsExistingMatchingCard(c511009058.nfilter1,tp,LOCATION_DECK,0,1,nil,c)
-		and (c511009058.collection[c:GetCode()] or c:IsSetCard(0x202))
+		and c420.IsWhite(c)
 end
 function c511009058.nfilter1(c,tc)
 	return c:IsCode(tc:GetCode()) and c:IsAbleToHand()

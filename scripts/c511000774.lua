@@ -40,7 +40,7 @@ function c511000774.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 		return Duel.GetFlagEffect(tp,511000774)==0 and g:GetCount()>0
 	end
 	e:SetLabel(g:GetCount())
-	return Duel.SelectYesNo(tp,aux.Stringid(511000774,0))
+	return Duel.SelectEffectYesNo(tp,e:GetHandler())
 end
 function c511000774.value(e,c)
 	return c:IsLocation(LOCATION_ONFIELD) and c:IsControler(e:GetHandlerPlayer())

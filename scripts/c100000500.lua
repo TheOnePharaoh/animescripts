@@ -11,7 +11,7 @@ function c100000500.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100000500.filter(c,e,sp)
-	return c:IsFaceup() and c:IsSetCard(0x5008) and c:IsCanBeSpecialSummoned(e,0,sp,true,false)
+	return c:IsFaceup() and (c:IsSetCard(0x5008) or c:IsCode(27780618)) and c:IsCanBeSpecialSummoned(e,0,sp,true,false)
 end
 function c100000500.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and c100000500.filter(chkc,e,tp) end

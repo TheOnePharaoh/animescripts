@@ -1,7 +1,7 @@
 --Lyrical Luscinia - Turquoise Warbler
 --fixed by MLD
 function c511009322.initial_effect(c)
-		--special summon rule
+	--special summon rule
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
@@ -26,7 +26,7 @@ function c511009322.spcon(e,c)
 		and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,LOCATION_MZONE)==0
 end
 function c511009322.filter(c,e,tp)
-	return c:GetLevel()==1 and c:IsSetCard(0x1f8) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:GetLevel()==1 and c:IsSetCard(0xf7) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511009322.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

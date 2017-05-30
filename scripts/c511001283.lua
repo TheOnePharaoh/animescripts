@@ -8,30 +8,42 @@ function c511001283.initial_effect(c)
 	e1:SetTarget(c511001283.target)
 	e1:SetOperation(c511001283.activate)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001283)
+	c:RegisterEffect(e2)
+end
+function c511001283.cfilter1(c)
+	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsFacedown() and not c:IsHasEffect(511001283) 
+		and c:CheckActivateEffect(true,true,false)~=nil
 end
 function c511001283.cfilter(c)
-	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsFacedown() and c:CheckActivateEffect(true,true,true)~=nil
-		and c:GetCode()~=511001283
+	return c:IsType(TYPE_TRAP) and c:IsType(TYPE_CONTINUOUS) and c:IsFacedown() and c:CheckActivateEffect(true,true,false)~=nil
 end
 function c511001283.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511001283.cfilter,tp,LOCATION_SZONE,0,1,e:GetHandler()) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
-	local g=Duel.SelectMatchingCard(tp,c511001283.cfilter,tp,LOCATION_SZONE,0,1,1,nil)
-	Duel.ConfirmCards(1-tp,g)
-	e:SetLabelObject(g:GetFirst())
+	e:SetLabel(1)
+	if chk==0 then return true end
 end
 function c511001283.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return true end
-	local tc=e:GetLabelObject()
+	if chk==0 then
+		if e:GetLabel()~=1 then return false end
+		e:SetLabel(0)
+		return Duel.IsExistingMatchingCard(c511001283.cfilter1,tp,LOCATION_SZONE,0,1,e:GetHandler())
+	end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+	local g=Duel.SelectMatchingCard(tp,c511001283.cfilter,tp,LOCATION_SZONE,0,1,1,nil)
+	Duel.ConfirmCards(1-tp,g)
+	local tc=g:GetFirst()
 	if not tc then return end
-	local te,eg,ep,ev,re,r,rp=tc:CheckActivateEffect(true,true,true)
+	local te,teg,tep,tev,tre,tr,trp=tc:CheckActivateEffect(true,true,true)
 	e:SetLabelObject(te)
 	Duel.ClearTargetCard()
 	local tg=te:GetTarget()
 	e:SetCategory(te:GetCategory())
 	e:SetProperty(te:GetProperty())
-	if tg and tg(e,tp,eg,ep,ev,re,r,rp,0) then tg(e,tp,eg,ep,ev,re,r,rp,1) end
+	if tg and tg(e,tp,teg,tep,tev,tre,tr,trp,0) then tg(e,tp,teg,tep,tev,tre,tr,trp,1) end
 end
 function c511001283.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

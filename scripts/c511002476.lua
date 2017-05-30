@@ -58,7 +58,7 @@ function c511002476.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Draw(tp,1,REASON_EFFECT)
 		if hc then
 			Duel.ConfirmCards(1-tp,hc)
-			if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and hc:IsSetCard(0xe3) then
+			if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and hc:IsSetCard(0xe6) and hc:IsType(TYPE_MONSTER) then
 				Duel.SpecialSummonStep(hc,0,tp,tp,true,false,POS_FACEUP)
 				local e1=Effect.CreateEffect(e:GetHandler())
 				e1:SetType(EFFECT_TYPE_SINGLE)
@@ -68,7 +68,7 @@ function c511002476.activate(e,tp,eg,ep,ev,re,r,rp)
 				hc:RegisterEffect(e1,true)
 				Duel.SpecialSummonComplete()
 			elseif hc:IsType(TYPE_MONSTER) then
-				local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,0,nil)
+				local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,0,nil)
 				if Duel.Destroy(sg,REASON_EFFECT)>0 then
 					local lp=Duel.GetLP(tp)
 					Duel.SetLP(tp,math.ceil(lp/2))

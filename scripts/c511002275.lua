@@ -17,7 +17,7 @@ function c511002275.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c511002275.spfilter,1,nil,tp)
 end
 function c511002275.filter(c,e,tp)
-	return c:IsRace(0x10000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY)
+	return c:IsRace(0x80000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY)
 end
 function c511002275.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

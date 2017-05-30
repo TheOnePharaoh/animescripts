@@ -1,4 +1,4 @@
-﻿--エクシーズ弁当
+--エクシーズ弁当
 function c100000263.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)

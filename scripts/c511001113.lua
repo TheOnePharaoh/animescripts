@@ -43,6 +43,7 @@ end
 function c511001113.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc1=e:GetLabelObject()
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
+	if g:GetCount()<=1 then return end
 	local tc2=g:GetFirst()
 	if tc1==tc2 then tc2=g:GetNext() end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(34016756,3))

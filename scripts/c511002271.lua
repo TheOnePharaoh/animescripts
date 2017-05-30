@@ -10,7 +10,7 @@ function c511002271.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002271.filter(c)
-	return c:IsAbleToGrave() and c:IsRace(0x10000000)
+	return c:IsAbleToGrave() and c:IsRace(0x80000000)
 end
 function c511002271.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c511002271.filter,tp,LOCATION_MZONE,0,1,nil) end

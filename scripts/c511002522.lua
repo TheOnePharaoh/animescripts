@@ -12,7 +12,7 @@ function c511002522.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002522.filter(c)
-	return (c:IsCode(511002522) or c:IsCode(511002160)) and c:IsFaceup()
+	return c:IsSetCard(0x669) and c:IsFaceup()
 end
 function c511002522.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

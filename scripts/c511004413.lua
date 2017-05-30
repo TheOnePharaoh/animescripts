@@ -74,14 +74,12 @@ function c511004413.operation(e,tp,eg,ev,ep,re,r,rp)
 	ov:Merge(s2)
 	ov:Merge(mg)
 	if m1 and m2 and Duel.IsExistingMatchingCard(c511004413.filtersp,tp,LOCATION_EXTRA,0,1,nil,e,tp,mg) then
-		--[[
-		effect rank level
+		--effect rank level
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_RANK_LEVEL)
 		e1:SetReset(RESET_EVENT+0x1fe0000)
 		m1:RegisterEffect(e1)
-		--]]
 		local g=Duel.SelectMatchingCard(tp,c511004413.filtersp,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,mg)
 		Duel.SendtoGrave(ov,REASON_RULE)
 		Duel.SpecialSummon(g,SUMMON_TYPE_XYZ,tp,tp,false,true,POS_FACEUP)

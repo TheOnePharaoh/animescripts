@@ -21,8 +21,8 @@ function c100000117.con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetBattleDamage(tp)>0
 end
 function c100000117.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckLPCost(tp,800) end
-	Duel.PayLPCost(tp,800)
+	if chk==0 then return Duel.CheckLPCost(tp,400) end
+	Duel.PayLPCost(tp,400)
 end
 function c100000117.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

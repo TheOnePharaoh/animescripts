@@ -22,7 +22,7 @@ function c100000504.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100000504.cfilter(c)
-	return c:IsSetCard(0x5008) and c:IsFaceup()
+	return (c:IsSetCard(0x5008) or c:IsCode(27780618)) and c:IsFaceup()
 end
 function c100000504.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(c100000504.cfilter,tp,LOCATION_MZONE,0,1,nil)

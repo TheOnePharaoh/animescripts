@@ -120,8 +120,8 @@ function c511002521.loseop(e,tp,eg,ep,ev,re,r,rp)
 	local WIN_REASON_RELAY_SOUL=0x1a
 	Duel.Win(e:GetLabel(),WIN_REASON_RELAY_SOUL)
 end
-function c511002521.con(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetLabelObject() and e:GetLabelObject():IsLocation(LOCATION_ONFIELD) then
+function c511002521.con(e)
+	if e:GetLabelObject() and not e:GetLabelObject():IsReason(REASON_DESTROY) then
 		return true
 	end
 	if e:GetLabel()==0 then

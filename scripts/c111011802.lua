@@ -24,24 +24,25 @@ function c111011802.initial_effect(c)
 	e3:SetCondition(c111011802.discon1)
 	e3:SetOperation(c111011802.disop1)
 	c:RegisterEffect(e3)
-	local e4=Effect.CreateEffect(c)	
-	e4:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e4:SetRange(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_ONFIELD)
-	e4:SetTargetRange(LOCATION_MZONE,0)
-	e4:SetOperation(c111011802.spop)
-	c:RegisterEffect(e4)
+	if not c111011802.global_check then
+		c111011802.global_check=true
+		local e4=Effect.CreateEffect(c)	
+		e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+		e4:SetOperation(c111011802.spop)
+		Duel.RegisterEffect(e4,0)
+	end
 end
 function c111011802.drfilter(c)
-	return c:GetSummonType()==SUMMON_TYPE_XYZ
+	return c:IsFaceup() and c:IsType(TYPE_XYZ)
 end
 function c111011802.drcon(e,tp,eg,ep,ev,re,r,rp)
+	if not re then return false end
 	local rc=re:GetHandler()
 	return eg:IsExists(c111011802.drfilter,1,nil) and rc:IsSetCard(0x95)
 end
 function c111011802.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
+	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
 	Duel.SetTargetPlayer(tp)
 	Duel.SetTargetParam(1)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
@@ -52,8 +53,7 @@ function c111011802.drop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Draw(p,d,REASON_EFFECT)
 end
 function c111011802.discon1(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetAttacker():GetFlagEffect(111011802)~=0
-	and Duel.GetAttacker():GetControler()==tp
+	return Duel.GetAttacker():GetFlagEffect(111011802)~=0 and Duel.GetAttacker():IsType(TYPE_XYZ) and Duel.GetAttacker():GetControler()==tp
 end
 function c111011802.disop1(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -85,10 +85,13 @@ function c111011802.disop2(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c111011802.spop(e,tp,eg,ep,ev,re,r,rp)
-	local tg=eg:GetFirst()
+	if not re then return end
 	local rc=re:GetHandler()
-	if eg:GetCount()==1  and tg:GetSummonType()==SUMMON_TYPE_XYZ
-	and rc:IsSetCard(0x95) then
-		tg:RegisterFlagEffect(111011802,RESET_EVENT+0x1fe0000,0,1) 	
+	if rc:IsSetCard(0x95) then
+		local tc=eg:GetFirst()
+		while tc do
+			tc:RegisterFlagEffect(111011802,RESET_EVENT+0x1fe0000,0,1) 	
+			tc=eg:GetNext()
+		end
 	end
 end

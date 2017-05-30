@@ -15,7 +15,7 @@ function c100000503.condition(e,tp,eg,ep,ev,re,r,rp)
 	return d and d:IsControler(tp)
 end
 function c100000503.spfilter(c)
-	return c:IsSetCard(0x5008) 
+	return (c:IsSetCard(0x5008) or c:IsCode(27780618))
 end
 function c100000503.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c100000503.spfilter(chkc) end

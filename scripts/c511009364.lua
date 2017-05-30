@@ -58,6 +58,11 @@ function c511009364.checkop(e,tp,eg,ep,ev,re,r,rp)
 		tc=eg:GetNext()
 	end
 end
+function c511009364.clearop()
+	for p=0,1 do
+		c511009364[p]=0
+	end
+end
 function c511009364.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return c511009364[tp]>0
 end

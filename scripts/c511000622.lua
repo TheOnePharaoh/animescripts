@@ -6,7 +6,7 @@ function c511000622.initial_effect(c)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetCategory(CATEGORY_CONTROL)
 	e1:SetCondition(c511000622.condition)
-	e1:SetTarget(c511000773.target)
+	e1:SetTarget(c511000622.target)
 	e1:SetOperation(c511000622.activate)
 	c:RegisterEffect(e1)
 end
@@ -14,7 +14,7 @@ function c511000622.condition(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	return eg:GetCount()==1 and tc:GetSummonType()~=SUMMON_TYPE_SYNCHRO and tc:IsType(TYPE_SYNCHRO) and ep~=tp
 end
-function c511000773.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function c511000622.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=eg:GetFirst()
 	if chk==0 then return tc:IsAbleToChangeControler() end
 	Duel.SetTargetCard(eg)

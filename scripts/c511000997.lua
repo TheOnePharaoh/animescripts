@@ -59,19 +59,23 @@ end
 function c511000997.filter(c)
 	return not c:IsReason(REASON_RULE)
 end
+function c511000997.cfilter(c,tp)
+	return c:IsType(TYPE_PENDULUM) and c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and c:IsPreviousLocation(LOCATION_MZONE)
+end
 function c511000997.spcon(e,tp,eg,ep,ev,re,r,rp)
-	local tc=eg:GetFirst()
-	return eg:GetCount()==1 and tc:IsType(TYPE_PENDULUM) and tc:IsPreviousPosition(POS_FACEUP) and tc:GetPreviousControler()==tp
-		and tc:IsPreviousLocation(LOCATION_MZONE)
+	local g=eg:Filter(c511000997.cfilter,nil,tp)
+	return g:GetCount()==1
 end
 function c511000997.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local tc=eg:GetFirst()
-	if chk==0 then return tc:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
-	tc:CreateEffectRelation(e)
+	local g=eg:Filter(c511000997.cfilter,nil,tp)
+	local tc=g:GetFirst()
+	if chk==0 then return tc and tc:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+	Duel.SetTargetCard(tc)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,tc,1,0,0)
 end
 function c511000997.spop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=eg:GetFirst()
+	local g=eg:Filter(c511000997.cfilter,nil,tp)
+	local tc=g:GetFirst()
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end

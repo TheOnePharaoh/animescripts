@@ -1,4 +1,5 @@
 --Gladiator Beast Andabatae
+--cleaned up by MLD
 function c511009300.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
@@ -24,12 +25,12 @@ function c511009300.initial_effect(c)
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(7573135,0))
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e3:SetTarget(c511009300.hsptg)
 	e3:SetOperation(c511009300.hspop)
 	c:RegisterEffect(e3)
-	
 	--special summon after battle
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(48156348,1))
@@ -83,12 +84,8 @@ function c511009300.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	end
 	Duel.SendtoDeck(g1,nil,2,REASON_COST)
 end
-
-
-
-
 function c511009300.hspfilter(c,e,tp)
-	return c:IsSetCard(0x19) and not c:IsCode(511009300) and c:IsCanBeSpecialSummoned(e,113,tp,true,false)
+	return c:IsSetCard(0x19) and not c:IsCode(511009300) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 function c511009300.hsptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -123,9 +120,6 @@ function c511009300.retop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	Duel.SendtoDeck(tc,nil,2,REASON_EFFECT)
 end
-
-
-
 function c511009300.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetBattledGroupCount()>0
 end
@@ -135,7 +129,7 @@ function c511009300.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoDeck(c,nil,0,REASON_COST)
 end
 function c511009300.filter(c,e,tp)
-	return c:IsSetCard(0x19) and c:IsCanBeSpecialSummoned(e,120,tp,false,false)
+	return c:IsSetCard(0x19) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c511009300.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return not Duel.IsPlayerAffectedByEffect(tp,59822133)
@@ -151,11 +145,11 @@ function c511009300.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg=g:Select(tp,2,2,nil)
 		local tc=sg:GetFirst()
-		Duel.SpecialSummonStep(tc,120,tp,tp,false,false,POS_FACEUP)
-		tc:RegisterFlagEffect(tc:GetOriginalCode(),RESET_EVENT+0x1ff0000,0,0)
-		tc=sg:GetNext()
-		Duel.SpecialSummonStep(tc,120,tp,tp,false,false,POS_FACEUP)
-		tc:RegisterFlagEffect(tc:GetOriginalCode(),RESET_EVENT+0x1ff0000,0,0)
+		while tc do
+			Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
+			tc:RegisterFlagEffect(tc:GetOriginalCode(),RESET_EVENT+0x1ff0000,0,0)
+			tc=sg:GetNext()
+		end
 		Duel.SpecialSummonComplete()
 	end
 end

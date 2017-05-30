@@ -1,17 +1,6 @@
 --Line World
---  By Shad3
-
-local function getID()
-  local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")
-  str=string.sub(str,1,string.len(str)-4)
-  local scard=_G[str]
-  local s_id=tonumber(string.sub(str,2))
-  return scard,s_id
-end
-
-local scard,s_id=getID()
-
-function scard.initial_effect(c)
+--Scripted by Sahim
+function c511005032.initial_effect(c)
   --Activate
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -23,49 +12,52 @@ function scard.initial_effect(c)
   e2:SetCode(EFFECT_UPDATE_ATTACK)
   e2:SetRange(LOCATION_FZONE)
   e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-  e2:SetValue(scard.line_val)
+  e2:SetTarget(c511005032.tg)
+  e2:SetValue(500)
   c:RegisterEffect(e2)
-  local e3=Effect.CreateEffect(c)
-  e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-  e3:SetCode(EFFECT_SEND_REPLACE)
-  e3:SetRange(LOCATION_FZONE)
-  e3:SetTarget(scard.tg)
-  e3:SetValue(scard.val)
-  c:RegisterEffect(e3)
+	--destroyed to opp grave
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e3:SetRange(LOCATION_FZONE)
+	e3:SetCode(EFFECT_DESTROY_REPLACE)
+	e3:SetTarget(c511005032.reptg)
+	e3:SetValue(1)
+	c:RegisterEffect(e3)
+  
+	if not c511005032.global_check then
+		c511005032.global_check=true
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge2:SetCode(EVENT_ADJUST)
+		ge2:SetCountLimit(1)
+		ge2:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
+		ge2:SetOperation(c511005032.archchk)
+		Duel.RegisterEffect(ge2,0)
+	end
+end
+function c511005032.archchk(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetFlagEffect(0,420)==0 then 
+		Duel.CreateToken(tp,420)
+		Duel.CreateToken(1-tp,420)
+		Duel.RegisterFlagEffect(0,420,0,0,0)
+	end
 end
 
-if not scard.SetLineW then
-  scard.setLineW={
-    [41493640]=true,
-    [32476434]=true,
-    [75253697]=true,
-    [511005006]=true
-  }
+function c511005032.tg(e,c)
+  return c420.IsLineMonster(c)
 end
-
-function scard.line_val(e,c)
-  if scard.setLineW[c:GetCode()] then return 500 end
-  return 0
+function c511005032.filter(c,tp)
+	return c:IsType(TYPE_MONSTER) and c:IsControler(1-tp)
 end
+function c511005032.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
 
-function scard.fil(c)
-  return c:GetFlagEffect(s_id)==0 and bit.band(c:GetReason(),REASON_DESTROY)~=0 and bit.band(c:GetReason(),REASON_RULE)==0 and c:GetDestination()==LOCATION_GRAVE and c:GetOwner()~=c:GetReasonPlayer() and not c:IsType(TYPE_TOKEN)
-end
-
-function scard.tg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return eg:IsExists(scard.fil,1,nil) end
-  local c=eg:GetFirst()
-  local ph=Duel.GetCurrentPhase()
-  while c do
-    if scard.fil(c) then
-      c:RegisterFlagEffect(s_id,RESET_EVENT+0x1be0000+RESET_PHASE+ph,0,0)
-      Duel.SendtoGrave(c,r,c:GetReasonPlayer())
-    end
-    c=eg:GetNext()
-  end
-  return true
-end
-
-function scard.val(e,c)
-  return false
+	if eg:IsExists(c511005032.filter,1,nil,rp) then
+		local c=eg:GetFirst():GetReasonCard()
+		if not c then c=re:GetHandler() end
+		Duel.RaiseEvent(c, 511005032, e, r, rp, ep, ev)
+	end
+	
+	Duel.SendtoGrave(eg,REASON_EFFECT,rp)
+	return true
 end

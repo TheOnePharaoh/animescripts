@@ -7,18 +7,27 @@ function c100000594.initial_effect(c)
 	e1:SetTarget(c100000594.target)
 	e1:SetOperation(c100000594.operation)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001283)
+	c:RegisterEffect(e2)
+end
+function c100000594.cfilter(c)
+	return not c:IsHasEffect(511001283) and c100000594.filter(c)
 end
 function c100000594.filter(c)
 	return c:IsFacedown() and c:CheckActivateEffect(true,true,false)~=nil
 end
 function c100000594.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.IsExistingTarget(c100000594.filter,tp,LOCATION_SZONE,0,1,e:GetHandler()) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c100000594.cfilter,tp,LOCATION_SZONE,0,1,e:GetHandler()) end
 end
 function c100000594.allfilter(c)
 	return c:IsFaceup() and c:IsCode(100000595)
 end
 function c100000594.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,100000590,RESET_CHAIN,0,1)
+	if not Duel.IsExistingMatchingCard(c100000594.cfilter,tp,LOCATION_SZONE,0,1,e:GetHandler()) then return end
 	if Duel.IsExistingMatchingCard(c100000594.allfilter,tp,LOCATION_SZONE,0,1,nil) then
 		local sg=Duel.GetMatchingGroup(c100000594.filter,tp,LOCATION_SZONE,0,e:GetHandler())
 		Duel.ChangePosition(sg,POS_FACEUP)
@@ -33,14 +42,19 @@ function c100000594.operation(e,tp,eg,ep,ev,re,r,rp)
 			e:SetProperty(te:GetProperty())
 			Duel.ClearTargetCard()
 			if bit.band(tpe,TYPE_FIELD)~=0 then
-				local of=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
-				if of then Duel.Destroy(of,REASON_RULE) end
-				of=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-				if of and Duel.Destroy(of,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+				local fc=Duel.GetFieldCard(1-tp,LOCATION_SZONE,5)
+				if Duel.IsDuelType(DUEL_OBSOLETE_RULING) then
+					if fc then Duel.Destroy(fc,REASON_RULE) end
+					fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+					if fc and Duel.Destroy(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+				else
+					fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+					if fc and Duel.SendtoGrave(fc,REASON_RULE)==0 then Duel.SendtoGrave(tc,REASON_RULE) end
+				end
 			end
 			Duel.Hint(HINT_CARD,0,tc:GetCode())
 			tc:CreateEffectRelation(te)
-			if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 then
+			if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 and not tc:IsHasEffect(EFFECT_REMAIN_FIELD) then
 				tc:CancelToGrave(false)
 			end
 			if co then co(te,tp,eg,ep,ev,re,r,rp,1) end

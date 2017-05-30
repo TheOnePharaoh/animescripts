@@ -19,9 +19,9 @@ end
 function c511000926.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-		and Duel.IsExistingTarget(c511000926.ecfilter,tp,LOCATION_GRAVE,0,1,nil) end
+		and Duel.IsExistingTarget(c511000926.ecfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(511000926,0))
-	local g=Duel.SelectTarget(tp,c511000926.ecfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,c511000926.ecfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,1,nil)
 	local ec=g:GetFirst()
 	e:SetLabelObject(ec)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(511000926,1))

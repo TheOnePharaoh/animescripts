@@ -51,10 +51,10 @@ function c170000168.adval(e,c)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
 	if ph==PHASE_DAMAGE_CAL or PHASE_DAMAGE or Duel.IsDamageCalculated() and c:IsRelateToBattle() then
-		if a==c and d:IsAttackPos() then return d:GetAttack()+300 end
-		if a==c and d:IsDefensePos() then return d:GetDefense()+300 end
+		if a==c and d and d:IsAttackPos() then return d:GetAttack()+300 end
+		if a==c and d and d:IsDefensePos() then return d:GetDefense()+300 end
 		if d==c then return a:GetAttack()+300 end
-		if not a==c and not d==c then return 0 end
+		if a~=c and d~=c then return 0 end
 	end
 	if not ph==PHASE_DAMAGE_CAL or not PHASE_DAMAGE or not Duel.IsDamageCalculated() then return 0 end
 end

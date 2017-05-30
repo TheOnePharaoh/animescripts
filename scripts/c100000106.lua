@@ -30,7 +30,6 @@ function c100000106.coinop(e,tp,eg,ep,ev,re,r,rp)
 	c100000106.arcanareg(c,res)
 end
 function c100000106.arcanareg(c,coin)
-	c:RegisterFlagEffect(100000106,RESET_EVENT+0x1ff0000,EFFECT_FLAG_CLIENT_HINT,1,coin,63-coin)
 	--coin effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(100000106,1))
@@ -41,43 +40,47 @@ function c100000106.arcanareg(c,coin)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
 	e1:SetCondition(c100000106.descon)
-	if c:GetFlagEffectLabel(100000106)==1 then
-		e1:SetTarget(c100000106.destg1)
-	else	
-		e1:SetTarget(c100000106.destg2)
-	end
+	e1:SetTarget(c100000106.destg)
 	e1:SetOperation(c100000106.desop)
-	e1:SetReset(RESET_EVENT+0x1ff0000)
+	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
+	c:RegisterFlagEffect(36690018,RESET_EVENT+0x1fe0000,EFFECT_FLAG_CLIENT_HINT,1,coin,63-coin)
 end
 function c100000106.descon(e,tp,eg,ep,ev,re,r,rp)
 	return tp==Duel.GetTurnPlayer()
 end
-function c100000106.filter(c)
-	return c:IsFaceup() and c:IsDestructable()
-end
-function c100000106.destg1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c100000106.filter(chkc) end
+function c100000106.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	local heads=e:GetHandler():GetFlagEffectLabel(36690018)==1
+	if chkc then 
+		if not chkc:IsLocation(LOCATION_MZONE) or chkc:IsFacedown() then return false end
+		if heads then return chkc:IsControler(tp)
+		else return chkc:IsControler(1-tp) end
+	end
 	if chk==0 then return true end
+	local gp
+	local g
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,c100000106.filter,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SetTargetPlayer(tp)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,tp,0)
-end
-function c100000106.destg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and c100000106.filter(chkc) end
-	if chk==0 then return true end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,c100000106.filter,tp,0,LOCATION_MZONE,1,1,nil)
-	Duel.SetTargetPlayer(1-tp)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,0)
+	if heads then
+		g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,0,1,1,nil)
+		gp=tp
+	else
+		g=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
+		gp=1-tp
+	end
+	if g:GetCount()>0 then
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+		Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,gp,g:GetFirst():GetAttack())
+	end
+	Duel.SetTargetParam(e:GetHandler():GetFlagEffectLabel(36690018))
 end
 function c100000106.desop(e,tp,eg,ep,ev,re,r,rp)
+	local heads=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)==1
 	local tc=Duel.GetFirstTarget()
-	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	if tc and tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)>0 then
-		Duel.Damage(p,tc:GetAttack(),REASON_EFFECT)
+		if heads then
+			Duel.Damage(tp,tc:GetAttack(),REASON_EFFECT)
+		else
+			Duel.Damage(1-tp,tc:GetAttack(),REASON_EFFECT)
+		end
 	end
 end

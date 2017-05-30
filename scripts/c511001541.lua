@@ -25,7 +25,8 @@ function c511001541.cfilter(c,fc,e,tp)
 end
 function c511001541.spfilter(c,e,tp,eg)
 	local ct=c.material_count
-	return ct~=nil and eg:IsExists(c511001541.cfilter,1,nil,c,e,tp) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false)
+	return ct~=nil and eg:IsExists(c511001541.cfilter,1,nil,c,e,tp) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) 
+		and c:CheckFusionMaterial()
 end
 function c511001541.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local sg=Duel.GetMatchingGroup(c511001541.spfilter,tp,LOCATION_EXTRA,0,nil,e,tp,eg)

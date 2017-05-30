@@ -23,71 +23,70 @@ function c511009324.initial_effect(c)
 	e4:SetOperation(c511009324.eqop)
 	c:RegisterEffect(e4)
 end
-function c511009324.eqfilter(c,g,tp)
-	return c:IsFaceup() and c:IsCode(6205579) and c:IsControler(tp) and c:IsAbleToGrave() and g:IsExists(c511009324.eqfilter2,1,c)
+function c511009324.filter2(c,tp,chk)
+	return c:IsFaceup() and c:IsCode(6205579) and (chk or c:IsLocation(LOCATION_MZONE)) and c:IsAbleToGrave()
 end
-function c511009324.eqfilter2(c)
-	return c:IsFaceup() and c:IsCode(6205579) and c:IsAbleToGrave()
+function c511009324.eqfilter(c)
+	return c:IsFaceup() and c:IsCode(6205579)
 end
 function c511009324.filter(c,tp)
 	local g=c:GetEquipGroup()
-	if c:IsControler(1-tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return false end 
-	return g:IsExists(c511009324.eqfilter,1,nil,g,tp) and c:IsAbleToGrave() and Duel.GetLocationCount(tp,LOCATION_MZONE)>-1
+	local chk=false
+	if c:IsControler(tp) or Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then chk=true end
+	return g:IsExists(c511009324.eqfilter,1,nil) and c:IsAbleToGrave() 
+		and Duel.IsExistingTarget(c511009324.filter2,tp,LOCATION_ONFIELD,0,1,c,tp,chk)
 end
 function c511009324.spfilter(c,e,tp)
-	return c:IsCode(511009344) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) 
+	return c:IsCode(511009344) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false) and c:CheckFusionMaterial()
 end
 function c511009324.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511009324.filter(chkc,tp) end
+	if chkc then return false end
 	if chk==0 then return Duel.IsExistingTarget(c511009324.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,tp) 
 		and Duel.IsExistingMatchingCard(c511009324.spfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g1=Duel.SelectTarget(tp,c511009324.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,tp)
-	local g2=g1:GetFirst():GetEquipGroup()
+	local tc=g1:GetFirst()
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g2=Duel.SelectTarget(tp,c511009324.filter2,tp,LOCATION_ONFIELD,0,1,1,tc,tp,(tc:IsControler(tp) or Duel.GetLocationCount(tp,LOCATION_MZONE)>0))
 	g1:Merge(g2)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g1,g1:GetCount(),0,0)
 end
 function c511009324.operation(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if not c:IsRelateToEffect(e) then return end
-	local tc=Duel.GetFirstTarget()
-	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		local g=tc:GetEquipGroup()
-		if not c511009324.filter(tc,tp) then return end
-		g:AddCard(tc)
-		if Duel.SendtoGrave(g,REASON_EFFECT)>2 and tc:IsLocation(LOCATION_GRAVE) and g:IsExists(Card.IsLocation,2,tc,LOCATION_GRAVE) then
-			if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-			local sc=Duel.SelectMatchingCard(tp,c511009324.spfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
-			if sc and Duel.SpecialSummonStep(sc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP) then
-				local e1=Effect.CreateEffect(e:GetHandler())
-				e1:SetType(EFFECT_TYPE_SINGLE)
-				e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-				e1:SetRange(LOCATION_MZONE)
-				e1:SetCode(EFFECT_IMMUNE_EFFECT)
-				e1:SetValue(c511009324.efilter)
-				e1:SetOwnerPlayer(tp)
-				e1:SetReset(RESET_EVENT+0x1fe0000)
-				tc:RegisterEffect(e1,true)
-				Duel.SpecialSummonComplete()
-				local eqg=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil,6205579)
-				if eqg:GetCount()>Duel.GetLocationCount(tp,LOCATION_SZONE) then return end
-				local eqc=eqg:GetFirst()
-				while eqc do
-					if Duel.Equip(tp,eqc,sc,true) then
-						local e1=Effect.CreateEffect(c)
-						e1:SetType(EFFECT_TYPE_SINGLE)
-						e1:SetProperty(EFFECT_FLAG_OWNER_RELATE)
-						e1:SetCode(EFFECT_EQUIP_LIMIT)
-						e1:SetReset(RESET_EVENT+0x1fe0000)
-						e1:SetValue(c511009324.eqlimit)
-						e1:SetLabelObject(sc)
-						eqc:RegisterEffect(e1)
-					end
-					eqc=eqg:GetNext()
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	local g=tg:Filter(Card.IsRelateToEffect,nil,e)
+	if g:GetCount()>0 and Duel.SendtoGrave(g,REASON_EFFECT)>0 then
+		if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local sc=Duel.SelectMatchingCard(tp,c511009324.spfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp):GetFirst()
+		if sc and Duel.SpecialSummonStep(sc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP) then
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+			e1:SetRange(LOCATION_MZONE)
+			e1:SetCode(EFFECT_IMMUNE_EFFECT)
+			e1:SetValue(c511009324.efilter)
+			e1:SetOwnerPlayer(tp)
+			e1:SetReset(RESET_EVENT+0x1fe0000)
+			sc:RegisterEffect(e1,true)
+			Duel.SpecialSummonComplete()
+			local eqg=Duel.GetMatchingGroup(Card.IsCode,tp,LOCATION_GRAVE,LOCATION_GRAVE,nil,6205579)
+			if eqg:GetCount()>Duel.GetLocationCount(tp,LOCATION_SZONE) then return end
+			local eqc=eqg:GetFirst()
+			while eqc do
+				if Duel.Equip(tp,eqc,sc,true) then
+					local e1=Effect.CreateEffect(eqc)
+					e1:SetType(EFFECT_TYPE_SINGLE)
+					e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_IGNORE_IMMUNE)
+					e1:SetCode(EFFECT_EQUIP_LIMIT)
+					e1:SetReset(RESET_EVENT+0x1fe0000)
+					e1:SetValue(c511009324.eqlimit)
+					e1:SetLabelObject(sc)
+					eqc:RegisterEffect(e1)
 				end
-				Duel.EquipComplete()
+				eqc=eqg:GetNext()
 			end
+			Duel.EquipComplete()
 		end
 	end
 end

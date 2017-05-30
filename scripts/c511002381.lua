@@ -11,7 +11,7 @@ function c511002381.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511002381.cfilter(c)
-	return c:IsCode(511002380) and c:IsPosition(POS_FACEUP_ATTACK)
+	return c:IsCode(7714344) and c:IsPosition(POS_FACEUP_ATTACK)
 end
 function c511002381.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()

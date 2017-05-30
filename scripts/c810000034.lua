@@ -56,13 +56,6 @@ function c810000034.activate(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetCode(EFFECT_SET_BASE_DEFENSE)
 			e2:SetValue(tc:GetDefense())
 			token:RegisterEffect(e2)
-			local e3=Effect.CreateEffect(e:GetHandler())
-			e3:SetType(EFFECT_TYPE_SINGLE)
-			e3:SetCode(EFFECT_UNRELEASABLE_SUM)
-			e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-			e3:SetValue(1)
-			e3:SetReset(RESET_EVENT+0x1fe0000)
-			token:RegisterEffect(e3,true)
 		end
 		Duel.SpecialSummonComplete()
 	else

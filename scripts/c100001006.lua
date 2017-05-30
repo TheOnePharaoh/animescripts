@@ -28,10 +28,10 @@ end
 function c100001006.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>-2
-		and Duel.CheckReleaseGroup(c:GetControler(),Card.IsRace,2,nil,0x10000000)
+		and Duel.CheckReleaseGroup(c:GetControler(),Card.IsRace,2,nil,0x80000000)
 end
 function c100001006.spop(e,tp,eg,ep,ev,re,r,rp,c)
-	local g=Duel.SelectReleaseGroup(tp,Card.IsRace,2,2,nil,0x10000000)
+	local g=Duel.SelectReleaseGroup(tp,Card.IsRace,2,2,nil,0x80000000)
 	Duel.Release(g,REASON_COST)
 end
 function c100001006.pcon(e)

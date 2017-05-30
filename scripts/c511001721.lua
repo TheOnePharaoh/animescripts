@@ -40,7 +40,7 @@ function c511001721.activate(e,tp,eg,ep,ev,re,r,rp)
 				local e3=e2:Clone()
 				e3:SetCode(EFFECT_SET_DEFENSE_FINAL)
 				tc:RegisterEffect(e3)
-			elseif tc:IsType(TYPE_MONSTER) then
+			elseif tc:IsType(TYPE_MONSTER) and not tc:IsSetCard(0xe6) then
 				Duel.SendtoGrave(tc,REASON_EFFECT)
 				Duel.Damage(p,1000,REASON_EFFECT)
 			end

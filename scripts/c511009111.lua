@@ -16,7 +16,7 @@ function c511009111.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tc:IsControler(1-tp) and Duel.GetAttackTarget()==nil
 end
 function c511009111.cfilter(c)
-	return c:GetAttack()>0 and c:IsRace(RACE_WARRIOR) and c:IsDiscardable()
+	return c:GetAttack()>0 and c:IsRace(RACE_WARRIOR) and c:IsAbleToGraveAsCost()
 end
 function c511009111.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(1)
@@ -28,10 +28,10 @@ function c511009111.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		if e:GetLabel()~=1 then return false end
 		e:SetLabel(0)
 		return Duel.IsExistingMatchingCard(c511009111.cfilter,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,c511009111.cfilter,tp,LOCATION_HAND,0,1,1,nil)
 	local atk=g:GetFirst():GetBaseAttack()
-	Duel.SendtoGrave(g,REASON_COST+REASON_DISCARD)
+	Duel.SendtoGrave(g,REASON_COST)
 	Duel.SetTargetParam(atk)
 	Duel.SetTargetCard(tc)
 end
@@ -47,4 +47,3 @@ function c511009111.activate(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e1)
 	end
 end
-

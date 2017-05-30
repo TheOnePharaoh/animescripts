@@ -1,4 +1,5 @@
 --Speedroid Vidroskull
+--fixed by MLD
 function c511009385.initial_effect(c)
 	--spsummon
 	local e3=Effect.CreateEffect(c)

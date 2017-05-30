@@ -22,10 +22,7 @@ function c511001690.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c511001690.spfilter(c)
-	return (c:IsSetCard(0xec) or c:IsSetCard(0xb1) or c:IsSetCard(0x75) or c:IsSetCard(0x74) or c:IsCode(87303357) or c:IsCode(53375573) 
-		or c:IsCode(40387124) or c:IsCode(74069667) or c:IsCode(29424328) or c:IsCode(86442081) or c:IsCode(18318842) or c:IsCode(88409165) 
-		or c:IsCode(44223284) or c:IsCode(84478195) or c:IsCode(67111213) or c:IsCode(9753964) or c:IsCode(96864105) or c:IsCode(36076683)
-		or c:IsCode(21044178) or c:IsCode(97232518)) and c:IsAbleToRemoveAsCost()
+	return (c:IsSetCard(0x437) or c:IsCode(12538374,51534754)) and c:IsAbleToRemoveAsCost()
 end
 function c511001690.spcon(e,c)
 	if c==nil then return true end

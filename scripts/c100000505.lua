@@ -44,11 +44,18 @@ function c100000505.recop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetLocation()~=LOCATION_GRAVE then return false end
 	Duel.MoveToField(c,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+	local e1=Effect.CreateEffect(c)
+	e1:SetCode(EFFECT_CHANGE_TYPE)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e1:SetReset(RESET_EVENT+0x1fc0000)
+	e1:SetValue(TYPE_TRAP+TYPE_CONTINUOUS)
+	c:RegisterEffect(e1)
 	c:RegisterFlagEffect(100000501,RESET_EVENT+0x1fe0000,0,1)
 end
 
 function c100000505.costfilter(c)
-	return c:IsSetCard(0x5008)
+	return (c:IsSetCard(0x5008) or c:IsCode(27780618))
 end
 function c100000505.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,c100000505.costfilter,1,nil) end

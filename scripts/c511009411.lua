@@ -1,4 +1,5 @@
 --Seed Cannon Salvo
+--fixed by MLD
 function c511009411.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)

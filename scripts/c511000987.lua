@@ -21,17 +21,20 @@ function c511000987.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,1,0,0)
 end
-function c511000987.mgfilter(c,e,tp,fusc)
-	return not c:IsControler(tp) or not c:IsLocation(LOCATION_GRAVE)
-		or bit.band(c:GetReason(),0x40008)~=0x40008 or c:GetReasonCard()~=fusc
-		or not c:IsCanBeSpecialSummoned(e,0,tp,false,false) or c:IsHasEffect(EFFECT_NECRO_VALLEY)
+function c511000987.mgfilter(c,e,tp,fusc,mg)
+	return c:IsControler(c:GetOwner()) and c:IsLocation(LOCATION_GRAVE)
+		and bit.band(c:GetReason(),0x40008)==0x40008 and c:GetReasonCard()==fusc
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and fusc:CheckFusionMaterial(mg,c)
 end
 function c511000987.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if not (tc:IsRelateToEffect(e) and tc:IsFaceup()) then return end
+	if not tc or not tc:IsRelateToEffect(e) or tc:IsFacedown() then return end
 	local mg=tc:GetMaterial()
+	local ct=mg:GetCount()
 	local sumable=true
 	local sumtype=tc:GetSummonType()
+	local p=tc:GetControler()
 	local op=0
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
 	if tc:IsAbleToExtra() and tc:IsAbleToGrave() then
@@ -49,13 +52,11 @@ function c511000987.activate(e,tp,eg,ep,ev,re,r,rp)
 	else
 		ch=Duel.SendtoDeck(tc,nil,0,REASON_EFFECT)
 	end
-	if ch==0 or bit.band(sumtype,SUMMON_TYPE_FUSION)~=SUMMON_TYPE_FUSION or mg:GetCount()==0
-		or mg:GetCount()>Duel.GetLocationCount(tc:GetControler(),LOCATION_MZONE)
-		or mg:IsExists(c511000987.mgfilter,1,nil,e,tc:GetControler(),tc) then
-		sumable=false
-	end
-	if sumable then
+	if ch~=0 and bit.band(sumtype,SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
+		and ct>0 and ct<=Duel.GetLocationCount(p,LOCATION_MZONE)
+		and mg:FilterCount(aux.NecroValleyFilter(c511000987.mgfilter),nil,e,p,tc,mg)==ct
+		and (ct<=1 or not Duel.IsPlayerAffectedByEffect(p,59822133)) then
 		Duel.BreakEffect()
-		Duel.SpecialSummon(mg,0,tc:GetControler(),tc:GetControler(),false,false,POS_FACEUP)
+		Duel.SpecialSummon(mg,0,tp,p,false,false,POS_FACEUP)
 	end
 end

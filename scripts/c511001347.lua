@@ -37,7 +37,7 @@ function c511001347.clear(e,tp,eg,ep,ev,re,r,rp)
 	c511001347[1]=false
 end
 function c511001347.condition(e,tp,eg,ep,ev,re,r,rp)
-	return c511001347[tp] and Duel.GetCurrentPhase()==PHASE_BATTLE
+	return c511001347[tp] and (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE)
 end
 function c511001347.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,800) end

@@ -19,7 +19,7 @@ function c511002274.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,eg:GetCount(),0,0)
 end
 function c511002274.cfilter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsRace(0x10000000) and c:IsAbleToRemoveAsCost()
+	return c:IsType(TYPE_MONSTER) and c:IsRace(0x80000000) and c:IsAbleToRemoveAsCost()
 end
 function c511002274.filter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsCode(68722455)

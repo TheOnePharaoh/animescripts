@@ -27,17 +27,41 @@ function c100000105.coinop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsHasEffect(73206827) then
 		res=1-Duel.SelectOption(tp,60,61)
 	else res=Duel.TossCoin(tp,1) end
-	local g
-	if res==0 then
-		Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_CONTROL)
-		g=Duel.SelectMatchingCard(1-tp,Card.IsControlerCanBeChanged,1-tp,0,LOCATION_MZONE,1,1,e:GetHandler())
-	else
+	c100000105.arcanareg(c,res)
+end
+function c100000105.arcanareg(c,coin)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_ADJUST)
+	e1:SetRange(LOCATION_MZONE)	
+	e1:SetOperation(c100000105.ctop)
+	e1:SetReset(RESET_EVENT+0x1fe0000)
+	c:RegisterEffect(e1)
+	c:RegisterFlagEffect(36690018,RESET_EVENT+0x1fe0000,EFFECT_FLAG_CLIENT_HINT,1,coin,63-coin)
+	c:RegisterFlagEffect(100000105,RESET_EVENT+0x1fe0000,0,1,coin)
+end
+function c100000105.ctop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	--heads
+	if c:GetFlagEffectLabel(36690018)==1 and c:GetFlagEffectLabel(100000105)==1 then
+		c:SetFlagEffectLabel(100000105,0)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONTROL)
-		g=Duel.SelectMatchingCard(tp,Card.IsControlerCanBeChanged,tp,0,LOCATION_MZONE,1,1,nil)			
+		local g=Duel.SelectMatchingCard(tp,Card.IsControlerCanBeChanged,tp,0,LOCATION_MZONE,1,1,nil)
+		local tc=g:GetFirst()
+		if tc then
+			Duel.HintSelection(g)
+			Duel.GetControl(tc,tp)
+		end
 	end
-	local tc=g:GetFirst()
-	if tc then
-		Duel.HintSelection(g)
-		Duel.GetControl(tc,1-tc:GetControler())
+	--tails
+	if c:GetFlagEffectLabel(36690018)==0 and c:GetFlagEffectLabel(100000105)==0 then
+		c:SetFlagEffectLabel(100000105,1)
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONTROL)
+		local g=Duel.SelectMatchingCard(1-tp,Card.IsControlerCanBeChanged,1-tp,0,LOCATION_MZONE,1,1,c)
+		local tc=g:GetFirst()
+		if tc then
+			Duel.HintSelection(g)
+			Duel.GetControl(tc,1-tp)
+		end
 	end
 end

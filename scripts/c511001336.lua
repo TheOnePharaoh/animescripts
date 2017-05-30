@@ -62,7 +62,6 @@ function c511001336.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511001336.op(e,tp,eg,ep,ev,re,r,rp)
 	local g=e:GetHandler():GetOverlayGroup()
-	if g:GetCount()==0 then return end
 	g:KeepAlive()
 	e:GetLabelObject():SetLabelObject(g)
 end

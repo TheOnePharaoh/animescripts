@@ -11,6 +11,6 @@ function c511002270.initial_effect(c)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(LOCATION_GRAVE,LOCATION_GRAVE)
 	e2:SetCode(EFFECT_CHANGE_RACE)
-	e2:SetValue(0x10000000)
+	e2:SetValue(0x80000000)
 	c:RegisterEffect(e2)
 end

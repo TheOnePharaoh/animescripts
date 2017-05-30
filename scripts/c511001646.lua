@@ -23,11 +23,11 @@ function c511001646.initial_effect(c)
 	c:RegisterEffect(e6)
 end
 function c511001646.filter(c,tp)
-	return c:IsFaceup() and (c:GetLevel()>0 or (c:IsHasEffect(EFFECT_ALLOW_NEGATIVE) and c:GetLevel()>0 or c:GetLevel()<0)))
+	return c:IsFaceup() and c:GetLevel()>0
 		and Duel.IsExistingMatchingCard(c511001646.lvfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,c,c:GetLevel())
 end
 function c511001646.lvfilter(c,lv)
-	return c:IsFaceup() and (c:GetLevel()>0 or (c:IsHasEffect(EFFECT_ALLOW_NEGATIVE) and c:GetLevel()>0 or c:GetLevel()<0))) and c:GetLevel()~=lv
+	return c:IsFaceup() and c:GetLevel()>0 and c:GetLevel()~=lv
 end
 function c511001646.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c511001646.filter(chkc,tp) end
@@ -43,15 +43,6 @@ function c511001646.lvop(e,tp,eg,ep,ev,re,r,rp)
 		local tc2=g:GetFirst()
 		if tc2 then
 			Duel.HintSelection(g)
-			if not tc:IsHasEffect(EFFECT_ALLOW_NEGATIVE) and tc2:IsHasEffect(EFFECT_ALLOW_NEGATIVE) then
-				--Negative Level
-				local e0=Effect.CreateEffect(e:GetHandler())
-				e0:SetType(EFFECT_TYPE_SINGLE)
-				e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-				e0:SetCode(EFFECT_ALLOW_NEGATIVE)
-				e0:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-				tc:RegisterEffect(e0)
-			end
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_CHANGE_LEVEL)

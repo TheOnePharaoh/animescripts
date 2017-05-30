@@ -16,6 +16,13 @@ function c511002182.initial_effect(c)
 		ge1:SetCode(EVENT_BE_BATTLE_TARGET)
 		ge1:SetOperation(c511002182.checkop)
 		Duel.RegisterEffect(ge1,0)
+		local ge2=Effect.CreateEffect(c)
+		ge2:SetType(EFFECT_TYPE_FIELD)
+		ge2:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
+		ge2:SetTarget(c511002182.cttg)
+		ge2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+		ge2:SetValue(1)
+		Duel.RegisterEffect(ge2,0)
 	end
 end
 function c511002182.filter(c)
@@ -49,4 +56,7 @@ end
 function c511002182.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local bt=eg:GetFirst()
 	bt:RegisterFlagEffect(511002182,RESET_EVENT+0x1fc0000,0,0)
+end
+function c511002182.cttg(e,c)
+	return c:GetCounter(0x1015)>0
 end

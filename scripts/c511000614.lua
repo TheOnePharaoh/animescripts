@@ -103,10 +103,10 @@ function c511000614.eqop(e,tp,eg,ep,ev,re,r,rp)
 			if tc:IsFaceup() then
 				local e3=Effect.CreateEffect(c)
 				e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+				e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 				e3:SetCode(EVENT_ADJUST)
-				e3:SetRange(LOCATION_SZONE)	
-				e3:SetOperation(c511000614.operation)
-				e3:SetReset(RESET_EVENT+0x1fe0000)
+				e3:SetRange(0x7f)
+				e3:SetOperation(c511000614.op)
 				tc:RegisterEffect(e3)
 			end
 		else Duel.SendtoGrave(tc,REASON_EFFECT) end
@@ -116,14 +116,23 @@ function c511000614.condition(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetDecktopGroup(e:GetHandlerPlayer(),1)
 	return g and g:GetFirst():GetCode()==100000270 and g:GetFirst():IsFaceup()
 end
-function c511000614.operation(e,tp,eg,ep,ev,re,r,rp)
+function c511000614.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local eq=e:GetHandler():GetEquipTarget()
+	local eq=c:GetEquipTarget()
+	local o=e:GetOwner()
 	local code=c:GetOriginalCode()
-	if eq:IsFaceup() and eq:GetFlagEffect(code)==0 then
-		eq:CopyEffect(code,RESET_EVENT+0x1fe0000+EVENT_CHAINING,1)
-		eq:RegisterFlagEffect(code,RESET_EVENT+0x1fe0000+EVENT_CHAINING,0,1) 	
+	if eq==o and eq:IsFaceup() and eq:GetFlagEffect(code)==0 and not eq:IsDisabled() then
+		local cid=eq:CopyEffect(code,RESET_EVENT+0x1fe0000,1)
+		eq:RegisterFlagEffect(code,RESET_EVENT+0x1fe0000,0,1)
+		e:SetLabel(cid)
 	end	
+	if not eq or o~=eq or eq:IsDisabled() then
+		local cid=e:GetLabel()
+		o:ResetEffect(cid,RESET_COPY)
+	end
+	if not eq or o~=eq then
+		e:Reset()
+	end
 end
 function c511000614.efilter(e,te)
 	return (te:IsActiveType(TYPE_SPELL) or te:IsActiveType(TYPE_TRAP)) and te:GetOwnerPlayer()~=e:GetHandlerPlayer()

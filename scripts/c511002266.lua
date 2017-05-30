@@ -11,6 +11,6 @@ function c511002266.initial_effect(c)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e2:SetCode(EFFECT_CHANGE_RACE)
-	e2:SetValue(0x10000000)
+	e2:SetValue(0x80000000)
 	c:RegisterEffect(e2)
 end

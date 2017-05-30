@@ -71,6 +71,7 @@ function c511010192.rumfilter(c)
 	return c:IsCode(97403510) and not c:IsPreviousLocation(LOCATION_OVERLAY)
 end
 function c511010192.rankupregcon(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():GetFlagEffect(511015134)~=0 then return true end
 	local rc=re:GetHandler()
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_XYZ) and re 
 		and (rc:IsSetCard(0x95) or rc:IsCode(100000581) or rc:IsCode(111011002) or rc:IsCode(511000580) or rc:IsCode(511002068) or rc:IsCode(511002164) or rc:IsCode(93238626)) 
@@ -79,18 +80,17 @@ end
 function c511010192.rankupregop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	--negate
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(511010192,1))
-	e1:SetCategory(CATEGORY_DISABLE)
-	e1:SetProperty(EFFECT_FLAG2_XMDETACH)
-	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCountLimit(1)
-	e1:SetCost(c511010192.discost)
-	e1:SetTarget(c511010192.distg)
-	e1:SetOperation(c511010192.disop)
-	e1:SetReset(RESET_EVENT+0x1fe0000)
-	c:RegisterEffect(e1)
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(511010192,1))
+	e4:SetCategory(CATEGORY_DISABLE)
+	e4:SetType(EFFECT_TYPE_IGNITION)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCountLimit(1)
+	e4:SetCost(c511010192.discost)
+	e4:SetTarget(c511010192.distg)
+	e4:SetOperation(c511010192.disop)
+	e4:SetReset(RESET_EVENT+0x1fe0000)
+	c:RegisterEffect(e4)
 end
 function c511010192.reccon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp

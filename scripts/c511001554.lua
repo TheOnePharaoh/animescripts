@@ -9,21 +9,24 @@ function c511001554.initial_effect(c)
 	e1:SetTarget(c511001554.target)
 	e1:SetOperation(c511001554.activate)
 	c:RegisterEffect(e1)
-	local ge1=Effect.CreateEffect(c)
-	ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	ge1:SetCode(EVENT_BATTLE_DESTROYING)
-	ge1:SetOperation(c511001554.checkop)
-	Duel.RegisterEffect(ge1,0)
+	if not c511001554.global_check then
+		c511001554.global_check=true
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		ge1:SetCode(EVENT_BATTLE_DESTROYING)
+		ge1:SetOperation(c511001554.checkop)
+		Duel.RegisterEffect(ge1,0)
+	end
 end
 function c511001554.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
 	local bc=tc:GetBattleTarget()
-	if tc:IsFaceup() and bc:IsRace(RACE_AQUA) and bc:GetPreviousControler()==tp then
+	if tc:IsFaceup() and bc and bc:IsRace(RACE_AQUA) and tc:GetControler()~=bc:GetPreviousControler() then
 		tc:RegisterFlagEffect(511001554,RESET_EVENT+0x1fe0000,0,1)
 	end
 end
 function c511001554.filter(c)
-	return c:IsFaceup() and c:GetFlagEffect(511001554)>0 and c:IsDestructable()
+	return c:IsFaceup() and c:GetFlagEffect(511001554)>0
 end
 function c511001554.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and c511001554.filter(chkc) end

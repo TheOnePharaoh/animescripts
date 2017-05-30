@@ -30,51 +30,51 @@ function c100000116.coinop(e,tp,eg,ep,ev,re,r,rp)
 	c100000116.arcanareg(c,res)
 end
 function c100000116.arcanareg(c,coin)
-	c:RegisterFlagEffect(100000116,RESET_EVENT+0x1ff0000,EFFECT_FLAG_CLIENT_HINT,1,coin,63-coin)
 	--coin effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
-	if c:GetFlagEffectLabel(100000116)==1 then
-		e1:SetTarget(c100000116.destg1)
-		e1:SetOperation(c100000116.desop1)
-	else	
-		e1:SetTarget(c100000116.desalltg)
-		e1:SetOperation(c100000116.desallop)
-	end
-	e1:SetReset(RESET_EVENT+0x1ff0000)
+	e1:SetTarget(c100000116.destg)
+	e1:SetOperation(c100000116.desop)
+	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
+	c:RegisterFlagEffect(36690018,RESET_EVENT+0x1fe0000,EFFECT_FLAG_CLIENT_HINT,1,coin,63-coin)
 end
-function c100000116.destg1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsDestructable() end
+function c100000116.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	local heads=e:GetHandler():GetFlagEffectLabel(36690018)==1
+	if heads then
+		e:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
+		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	else
+		e:SetCategory(CATEGORY_DESTROY)
+		e:SetProperty(0)
+	end
+	if chkc then return heads and chkc:IsLocation(LOCATION_MZONE) end
 	if chk==0 then return true end
-	e:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
-	e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,g:GetFirst():GetControler(),500)
+	if heads then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+		local g=Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+		Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,g:GetFirst():GetControler(),500)
+	else
+		local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
+	end
+	Duel.SetTargetParam(e:GetHandler():GetFlagEffectLabel(36690018))
 end
-function c100000116.desop1(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc and tc:IsRelateToEffect(e) then
-		if Duel.Destroy(tc,REASON_EFFECT)~=0 then
-			Duel.Damage(tc:GetPreviousControler(),500,REASON_EFFECT)
-		else
-			if e:GetHandler():IsRelateToEffect(e) then
+function c100000116.desop(e,tp,eg,ep,ev,re,r,rp)
+	local heads=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)==1
+	if heads then
+		local tc=Duel.GetFirstTarget()
+		if tc then
+			if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)~=0 then
+				Duel.Damage(tc:GetPreviousControler(),500,REASON_EFFECT)
+			elseif e:GetHandler():IsRelateToEffect(e) then
 				Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 			end
 		end
+	else
+		local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+		Duel.Destroy(sg,REASON_EFFECT)
 	end
-end
-function c100000116.desalltg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return true end
-	e:SetCategory(CATEGORY_DESTROY)
-	e:SetProperty(0)
-	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,sg:GetCount(),0,0)
-end
-function c100000116.desallop(e,tp,eg,ep,ev,re,r,rp)
-	local sg=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-	Duel.Destroy(sg,REASON_EFFECT)
 end

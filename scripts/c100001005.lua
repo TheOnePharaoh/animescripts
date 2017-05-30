@@ -11,7 +11,7 @@ function c100001005.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100001005.cfilter(c)
-	return c:IsRace(0x10000000) and c:IsAbleToGraveAsCost()
+	return c:IsRace(0x80000000) and c:IsAbleToGraveAsCost()
 end
 function c100001005.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100001005.cfilter,tp,LOCATION_HAND,0,1,nil) end

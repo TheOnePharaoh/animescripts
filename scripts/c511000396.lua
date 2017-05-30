@@ -21,6 +21,16 @@ function c511000396.initial_effect(c)
 	e3:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e3:SetTarget(c511000396.target)
 	c:RegisterEffect(e3)
+	if not c511000396.global_check then
+		c511000396.global_check=true
+		local ge1=Effect.CreateEffect(c)
+		ge1:SetType(EFFECT_TYPE_FIELD)
+		ge1:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
+		ge1:SetTarget(c511000396.target)
+		ge1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
+		ge1:SetValue(1)
+		Duel.RegisterEffect(ge1,0)
+	end
 end
 function c511000396.atkval(e,c)
 	return c:GetCounter(0x1015)*-500

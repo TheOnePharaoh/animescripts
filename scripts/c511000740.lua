@@ -2,6 +2,7 @@
 function c511000740.initial_effect(c)
 	--
 	local e3=Effect.CreateEffect(c)
+	e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_BE_MATERIAL)
 	e3:SetCondition(c511000740.indcon)

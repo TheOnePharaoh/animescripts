@@ -17,7 +17,7 @@ function c511001713.con(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511001713.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsAbleToGraveAsCost() and Duel.SelectYesNo(tp,aux.Stringid(2407147,0)) 
+	if c:IsAbleToGraveAsCost() and Duel.SelectEffectYesNo(tp,c) 
 		and Duel.SendtoGrave(c,REASON_COST+REASON_REPLACE)>0 then
 		local cid=Duel.GetChainInfo(ev,CHAININFO_CHAIN_ID)
 		local e1=Effect.CreateEffect(e:GetHandler())

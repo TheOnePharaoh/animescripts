@@ -1,5 +1,6 @@
 --Scripted by Eerie Code
 --Performapal Bot-Eyes Lizard
+--fixed by MLD
 function c700000011.initial_effect(c)
 	--Change name
 	local e1=Effect.CreateEffect(c)
@@ -30,15 +31,11 @@ function c700000011.condition(e,tp,eg,ep,ev,re,r,rp)
 end
 function c700000011.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.Hint(HINT_SELECTMSG,tp,0)
-	local ac=0
-	local token
-	repeat
-		ac=Duel.AnnounceCard(tp)
-		token=Duel.CreateToken(tp,ac)
-	until token:IsSetCard(0x99)
+	local code=e:GetHandler():GetCode()
+	c700000011.announce_filter={0x99,OPCODE_ISSETCARD,code,OPCODE_ISCODE,OPCODE_NOT,OPCODE_AND,TYPE_MONSTER,OPCODE_ISTYPE,OPCODE_AND}
+	local ac=Duel.AnnounceCardFilter(tp,table.unpack(c700000011.announce_filter))
 	Duel.SetTargetParam(ac)
-	Duel.SetOperationInfo(0,CATEGORY_ANNOUNCE,nil,0,tp,ANNOUNCE_CARD)
+	Duel.SetOperationInfo(0,CATEGORY_ANNOUNCE,nil,0,tp,ANNOUNCE_CARD_FILTER)
 end
 function c700000011.operation(e,tp,eg,ep,ev,re,r,rp)
 	local ac=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
@@ -46,8 +43,7 @@ function c700000011.operation(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-		e1:SetRange(LOCATION_MZONE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetCode(EFFECT_CHANGE_CODE)
 		e1:SetValue(ac)
 		e1:SetReset(RESET_EVENT+0x1fe0000)

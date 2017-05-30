@@ -1,4 +1,5 @@
 --Dowsing Fusion
+--fixed by MLD
 function c511009389.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -10,7 +11,7 @@ function c511009389.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511009389.filter1(c,e)
-	return c:IsType(TYPE_PENDULUM) and c:IsCanBeFusionMaterial() and not c:IsImmuneToEffect(e)
+	return c:IsType(TYPE_PENDULUM) and c:IsType(TYPE_MONSTER) and c:IsCanBeFusionMaterial() and (not e or not c:IsImmuneToEffect(e))
 end
 function c511009389.filter2(c,e,tp,m,f,chkf)
 	return c:IsType(TYPE_FUSION) and (not f or f(c)) 
@@ -19,7 +20,7 @@ end
 function c511009389.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
 		local chkf=Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and PLAYER_NONE or tp
-		local mg1=Duel.GetMatchingGroup(c511009389.filter1,tp,LOCATION_GRAVE,0,nil,e)
+		local mg1=Duel.GetMatchingGroup(c511009389.filter1,tp,LOCATION_GRAVE,0,nil)
 		local res=Duel.IsExistingMatchingCard(c511009389.filter2,tp,LOCATION_EXTRA,0,1,nil,e,tp,mg1,nil,chkf)
 		if not res then
 			local ce=Duel.GetChainMaterial(tp)
@@ -56,7 +57,7 @@ function c511009389.activate(e,tp,eg,ep,ev,re,r,rp)
 		if sg1:IsContains(tc) and (sg2==nil or not sg2:IsContains(tc) or not Duel.SelectYesNo(tp,ce:GetDescription())) then
 			local mat1=Duel.SelectFusionMaterial(tp,tc,mg1,nil,chkf)
 			tc:SetMaterial(mat1)
-			Duel.SendtoGrave(mat1,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
+			Duel.SendtoExtraP(mat1,nil,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
 			Duel.BreakEffect()
 			Duel.SpecialSummonStep(tc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
 		else

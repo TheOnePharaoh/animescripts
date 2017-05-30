@@ -7,21 +7,46 @@ function c511001499.initial_effect(c)
 	e1:SetTarget(c511001499.target)
 	e1:SetOperation(c511001499.activate)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001283)
+	c:RegisterEffect(e2)
 end
-function c511001499.filter(c,tp,eg,ep,ev,re,r,rp)
+function c511001499.cfilter(c,tp,eg,ep,ev,re,r,rp,chain)
+	return not c:IsHasEffect(511001283) and c511001499.filter(c,tp,eg,ep,ev,re,r,rp,chain)
+end
+function c511001499.filter(c,tp,eg,ep,ev,re,r,rp,chain)
+	if not c:IsType(TYPE_FIELD) and Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return false end
 	local te=c:GetActivateEffect()
 	if not te then return false end
 	local condition=te:GetCondition()
 	local cost=te:GetCost()
 	local target=te:GetTarget()
-	return (not condition or condition(te,tp,eg,ep,ev,re,r,rp)) and (not cost or cost(te,tp,eg,ep,ev,re,r,rp,0))
-		and (not target or target(te,tp,eg,ep,ev,re,r,rp,0))
+	if te:GetCode()==EVENT_CHAINING then
+		if chain<=0 then return false end
+		local te2=Duel.GetChainInfo(chain,CHAININFO_TRIGGERING_EFFECT)
+		local tc=te2:GetHandler()
+		local g=Group.FromCards(tc)
+		local p=tc:GetControler()
+		return (not condition or condition(te,tp,g,p,chain,te2,REASON_EFFECT,p)) and (not cost or cost(te,tp,g,p,chain,te2,REASON_EFFECT,p,0)) 
+			and (not target or target(te,tp,g,p,chain,te2,REASON_EFFECT,p,0))
+	elseif te:GetCode()==EVENT_FREE_CHAIN then
+		return (not condition or condition(te,tp,eg,ep,ev,re,r,rp)) and (not cost or cost(te,tp,eg,ep,ev,re,r,rp,0))
+			and (not target or target(te,tp,eg,ep,ev,re,r,rp,0))
+	else
+		local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(te:GetCode(),true)
+		return res and (not condition or condition(te,tp,teg,tep,tev,tre,tr,trp)) and (not cost or cost(te,tp,teg,tep,tev,tre,tr,trp,0))
+			and (not target or target(te,tp,teg,tep,tev,tre,tr,trp,0))
+	end
 end
 function c511001499.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511001499.filter,tp,LOCATION_GRAVE,0,1,nil,tp,eg,ep,ev,re,r,rp) 
+	local chain=Duel.GetCurrentChain()
+	if chk==0 then return Duel.IsExistingMatchingCard(c511001499.cfilter,tp,LOCATION_GRAVE,0,1,e:GetHandler(),tp,eg,ep,ev,re,r,rp,chain) 
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 end
 function c511001499.activate(e,tp,eg,ep,ev,re,r,rp)
+	local chain=Duel.GetCurrentChain()-1
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return end
 	local sg=Duel.GetMatchingGroup(nil,tp,LOCATION_GRAVE,0,nil)
 	local g=sg:RandomSelect(tp,1)
@@ -30,12 +55,12 @@ function c511001499.activate(e,tp,eg,ep,ev,re,r,rp)
         local tpe=tc:GetType()
 		local te=tc:GetActivateEffect()
 		if not te then return end
+		if not Duel.IsExistingMatchingCard(c511001499.cfilter,tp,LOCATION_GRAVE,0,1,e:GetHandler(),tp,eg,ep,ev,re,r,rp,chain) then return end
 		local con=te:GetCondition()
 		local co=te:GetCost()
 		local tg=te:GetTarget()
 		local op=te:GetOperation()
-		if (not condition or condition(te,tp,eg,ep,ev,re,r,rp)) and (not cost or cost(te,tp,eg,ep,ev,re,r,rp,0))
-			and (not target or target(te,tp,eg,ep,ev,re,r,rp,0)) then
+		if c511001499.filter(tc,tp,eg,ep,ev,re,r,rp,chain) then
 			Duel.ClearTargetCard()
 			e:SetCategory(te:GetCategory())
 			e:SetProperty(te:GetProperty())
@@ -56,11 +81,24 @@ function c511001499.activate(e,tp,eg,ep,ev,re,r,rp)
 			end
 			Duel.Hint(HINT_CARD,0,tc:GetCode())
 			tc:CreateEffectRelation(te)
-			if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 then
+			if bit.band(tpe,TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD)==0 and not tc:IsHasEffect(EFFECT_REMAIN_FIELD) then
 				tc:CancelToGrave(false)
 			end
-			if co then co(te,tp,eg,ep,ev,re,r,rp,1) end
-			if tg then tg(te,tp,eg,ep,ev,re,r,rp,1) end
+			if te:GetCode()==EVENT_CHAINING then
+				local te2=Duel.GetChainInfo(chain,CHAININFO_TRIGGERING_EFFECT)
+				local tc=te2:GetHandler()
+				local g=Group.FromCards(tc)
+				local p=tc:GetControler()
+				if co then co(te,tp,g,p,chain,te2,REASON_EFFECT,p,1) end
+				if tg then tg(te,tp,g,p,chain,te2,REASON_EFFECT,p,1) end
+			elseif te:GetCode()==EVENT_FREE_CHAIN then
+				if co then co(te,tp,eg,ep,ev,re,r,rp,1) end
+				if tg then tg(te,tp,eg,ep,ev,re,r,rp,1) end
+			else
+				local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(te:GetCode(),true)
+				if co then co(te,tp,teg,tep,tev,tre,tr,trp,1) end
+				if tg then tg(te,tp,teg,tep,tev,tre,tr,trp,1) end
+			end
 			local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
 			if g then
 				local etc=g:GetFirst()
@@ -70,7 +108,24 @@ function c511001499.activate(e,tp,eg,ep,ev,re,r,rp)
 				end
 			end
 			Duel.BreakEffect()
-			if op then op(te,tp,eg,ep,ev,re,r,rp) end
+			tc:SetStatus(STATUS_ACTIVATED,true)
+			if not tc:IsDisabled() then
+				if te:GetCode()==EVENT_CHAINING then
+					local te2=Duel.GetChainInfo(chain,CHAININFO_TRIGGERING_EFFECT)
+					local tc=te2:GetHandler()
+					local g=Group.FromCards(tc)
+					local p=tc:GetControler()
+					if op then op(te,tp,g,p,chain,te2,REASON_EFFECT,p) end
+				elseif te:GetCode()==EVENT_FREE_CHAIN then
+					if op then op(te,tp,eg,ep,ev,re,r,rp) end
+				else
+					local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(te:GetCode(),true)
+					if op then op(te,tp,teg,tep,tev,tre,tr,trp) end
+				end
+			else
+				--insert negated animation here
+			end
+			Duel.RaiseEvent(Group.CreateGroup(tc),EVENT_CHAIN_SOLVED,te,0,tp,tp,Duel.GetCurrentChain())
 			if g and tc:IsType(TYPE_EQUIP) and not tc:GetEquipTarget() then
 				Duel.Equip(tp,tc,g:GetFirst())
 			end

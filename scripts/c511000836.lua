@@ -10,10 +10,10 @@ function c511000836.initial_effect(c)
 end
 function c511000836.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_DECK+LOCATION_EXTRA)>0 end
-	Duel.Hint(HINT_SELECTMSG,tp,564)
-	local ac=Duel.AnnounceCard(tp)
+	c511000836.announce_filter={TYPE_MONSTER,OPCODE_ISTYPE}
+	local ac=Duel.AnnounceCardFilter(tp,table.unpack(c511000836.announce_filter))
 	Duel.SetTargetParam(ac)
-	Duel.SetOperationInfo(0,CATEGORY_ANNOUNCE,nil,0,tp,ANNOUNCE_CARD)
+	Duel.SetOperationInfo(0,CATEGORY_ANNOUNCE,nil,0,tp,ANNOUNCE_CARD_FILTER)
 end
 function c511000836.filter(c,code)
 	return c:IsType(TYPE_MONSTER) and c:IsCode(code)

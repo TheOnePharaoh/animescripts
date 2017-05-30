@@ -20,7 +20,7 @@ end
 function c511002201.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)==0 
 		and eg:IsExists(c511002201.repfilter,1,nil) end
-	return Duel.SelectYesNo(tp,aux.Stringid(511002201,0))
+	return Duel.SelectEffectYesNo(tp,e:GetHandler())
 end
 function c511002201.repval(e,c)
 	return c:IsOnField() and c:IsReason(REASON_EFFECT)

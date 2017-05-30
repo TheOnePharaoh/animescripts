@@ -10,7 +10,7 @@ function c511001498.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c511001498.condition(e,tp,eg,ep,ev,re,r,rp)
-	return re and re:GetHandler():IsType(TYPE_SPELL+TYPE_TRAP)
+	return re and re:GetHandler():IsType(TYPE_SPELL+TYPE_TRAP) and re:IsHasType(EFFECT_TYPE_ACTIONS)
 end
 function c511001498.activate(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetTurnPlayer()==tp then

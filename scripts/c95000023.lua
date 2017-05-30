@@ -26,12 +26,24 @@ function c95000023.initial_effect(c)
 	local e6=Effect.CreateEffect(c)
 	e6:SetDescription(aux.Stringid(93016201,0))
 	e6:SetType(EFFECT_TYPE_QUICK_O)
-	e6:SetCode(EVENT_SPSUMMON)
+	e6:SetCode(EVENT_SUMMON)
 	e6:SetRange(LOCATION_SZONE)
 	e6:SetCondition(c95000023.accon)
 	e6:SetTarget(c95000023.accost)
 	e6:SetOperation(c95000023.acop)
 	c:RegisterEffect(e6)
+	local e7=e6:Clone()
+	e7:SetCode(EVENT_SPSUMMON)
+	c:RegisterEffect(e7)
+	local e8=e6:Clone()
+	e8:SetCode(EVENT_FLIP_SUMMON)
+	c:RegisterEffect(e8)
+	local chain=Duel.GetCurrentChain
+	copychain=0
+	Duel.GetCurrentChain=function()
+		if copychain==1 then copychain=0 return chain()-1
+		else return chain() end
+	end
 end
 c95000023.mark=0
 function c95000023.valcon(e,re,r,rp)
@@ -40,7 +52,7 @@ end
 function c95000023.accon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_ONFIELD,0)<=1
 end
-function c95000023.cfilter(c,e,tp,eg,ep,ev,re,r,rp,chain)
+function c95000023.cfilter(c,e,tp,eg,ep,ev,re,r,rp,chain,chk)
 	local te=c:GetActivateEffect()
 	if not te or not c:IsType(TYPE_SPELL+TYPE_TRAP) or not c:IsAbleToGraveAsCost() then return false end
 	local condition=te:GetCondition()
@@ -54,19 +66,24 @@ function c95000023.cfilter(c,e,tp,eg,ep,ev,re,r,rp,chain)
 		local p=tc:GetControler()
 		return (not condition or condition(e,tp,g,p,chain,te2,REASON_EFFECT,p)) and (not cost or cost(e,tp,g,p,chain,te2,REASON_EFFECT,p,0)) 
 			and (not target or target(e,tp,g,p,chain,te2,REASON_EFFECT,p,0))
-	elseif (te:GetCode()==EVENT_SPSUMMON and e:GetCode()==EVENT_SPSUMMON) or (e:GetCode()==EVENT_FREE_CHAIN and te:GetCode()~=EVENT_SPSUMMON) then
+	elseif (te:GetCode()==EVENT_SPSUMMON or te:GetCode()==EVENT_SUMMON or te:GetCode()==EVENT_FLIP_SUMMON or te:GetCode()==EVENT_FREE_CHAIN) 
+		and te:GetCode()==e:GetCode() then
+		if chk then copychain=1 end
 		return (not condition or condition(e,tp,eg,ep,ev,re,r,rp)) and (not cost or cost(e,tp,eg,ep,ev,re,r,rp,0)) 
 			and (not target or target(e,tp,eg,ep,ev,re,r,rp,0))
+	else
+		local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(te:GetCode(),true)
+		return res and (not condition or condition(e,tp,teg,tep,tev,tre,tr,trp)) and (not cost or cost(e,tp,teg,tep,tev,tre,tr,trp,0))
+			and (not target or target(e,tp,teg,tep,tev,tre,tr,trp,0))
 	end
 end
 function c95000023.accost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local chain=Duel.GetCurrentChain()
 	if chk==0 then return Duel.IsExistingMatchingCard(c95000023.cfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,eg,ep,ev,re,r,rp,chain) end
 	chain=chain-1
-	Duel.RegisterFlagEffect(tp,511001666,RESET_CHAIN,0,1)
-	Duel.RegisterFlagEffect(tp,95000027,RESET_CHAIN,0,1)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,c95000023.cfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp,chain)
+	local g=Duel.SelectMatchingCard(tp,c95000023.cfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp,chain,true)
+	copychain=0
 	Duel.SendtoGrave(g,REASON_COST)
 	Duel.SetTargetCard(g:GetFirst())
 end
@@ -89,10 +106,15 @@ function c95000023.acop(e,tp,eg,ep,ev,re,r,rp)
 			if co then co(e,tp,g,p,chain,te2,REASON_EFFECT,p,1) end
 			if tg then tg(e,tp,g,p,chain,te2,REASON_EFFECT,p,1) end
 			if op then op(e,tp,g,p,chain,te2,REASON_EFFECT,p) end
-		else
+		elseif te:GetCode()==EVENT_SUMMON or te:GetCode()==EVENT_FLIP_SUMMON or te:GetCode()==EVENT_SPSUMMON or te:GetCode()==EVENT_FREE_CHAIN then
 			if co then co(e,tp,eg,ep,ev,re,r,rp,1) end
 			if tg then tg(e,tp,eg,ep,ev,re,r,rp,1) end
 			if op then op(e,tp,eg,ep,ev,re,r,rp) end
+		else
+			local res,teg,tep,tev,tre,tr,trp=Duel.CheckEvent(te:GetCode(),true)
+			if co then co(e,tp,teg,tep,tev,tre,tr,trp,1) end
+			if tg then tg(e,tp,teg,tep,tev,tre,tr,trp,1) end
+			if op then op(e,tp,teg,tep,tev,tre,tr,trp) end
 		end
 	end
 end

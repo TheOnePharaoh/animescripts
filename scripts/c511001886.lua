@@ -46,6 +46,6 @@ function c511001886.desop(e,tp,eg,ep,ev,re,r,rp)
 	local dg=Duel.GetMatchingGroup(c511001886.desfilter,tp,0,LOCATION_MZONE,nil)
 	if dg:GetCount()>0 and Duel.Destroy(dg,REASON_EFFECT)>0 then
 		local sum=dg:GetSum(Card.GetPreviousAttackOnField)
-		Duel.Damage(tp,sum,REASON_EFFECT)
+		Duel.Damage(1-tp,sum,REASON_EFFECT)
 	end
 end

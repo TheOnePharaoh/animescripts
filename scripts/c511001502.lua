@@ -8,13 +8,18 @@ function c511001502.initial_effect(c)
 	e1:SetTarget(c511001502.target)
 	e1:SetOperation(c511001502.activate)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001283)
+	c:RegisterEffect(e2)
 end
 function c511001502.condition(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsActiveType(TYPE_TRAP) and re:IsHasType(EFFECT_TYPE_ACTIVATE) and rp~=tp
 end
 function c511001502.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tg=re:GetTarget()
-	if chk==0 then return not tg or tg(e,tp,eg,ep,ev,re,r,rp,0) end
+	if chk==0 then return not re:GetHandler():IsHasEffect(511001283) and (not tg or tg(e,tp,eg,ep,ev,re,r,rp,0)) end
 	e:SetCategory(re:GetCategory())
 	e:SetProperty(re:GetProperty())
 	e:SetLabelObject(re)

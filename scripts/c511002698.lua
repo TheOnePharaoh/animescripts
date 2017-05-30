@@ -54,7 +54,7 @@ function c511002698.atkop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local g=Duel.SelectMatchingCard(tp,c511002698.cfilter,tp,LOCATION_MZONE,0,1,1,Duel.GetAttackTarget())
 	if g:GetCount()>0 then
-		Duel.ChangeAttackTarget(g:GetFirst())
+		Duel.ChangeAttackTarget(g:GetFirst(),true)
 	end
 end
 function c511002698.descon(e,tp,eg,ep,ev,re,r,rp)

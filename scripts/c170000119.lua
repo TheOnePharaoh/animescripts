@@ -10,13 +10,13 @@ function c170000119.initial_effect(c)
 	e1:SetOperation(c170000119.activate)
 	c:RegisterEffect(e1)
 end
-function c170000119.filter(c)
-	return c:IsFacedown() and c:IsDestructable() and c:IsType(TYPE_SPELL+TYPE_TRAP)
+function c170000119.filter(c,e)
+	return c:IsFacedown() and c:IsDestructable(e) and c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function c170000119.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c170000119.filter,tp,LOCATION_SZONE,0,1,e:GetHandler()) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c170000119.filter,tp,LOCATION_SZONE,0,1,e:GetHandler(),e) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectMatchingCard(tp,c170000119.filter,tp,LOCATION_SZONE,0,1,1,e:GetHandler())
+	local g=Duel.SelectMatchingCard(tp,c170000119.filter,tp,LOCATION_SZONE,0,1,1,e:GetHandler(),e)
 	Duel.Destroy(g,REASON_COST)
 end
 function c170000119.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)

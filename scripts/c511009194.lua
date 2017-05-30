@@ -3,7 +3,7 @@
 function c511009194.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
-	aux.AddFusionProcCodeFun(c,511009193,aux.FilterBoolFunction(Card.IsFusionSetCard,0x1f8),1,true,true)
+	aux.AddFusionProcCodeFun(c,48608796,aux.FilterBoolFunction(Card.IsFusionSetCard,0xf7),1,true,true)
 	--level
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -44,8 +44,8 @@ function c511009194.valcheck(e,c)
 	local lvl=0
 	local tc=g:GetFirst()
 	if not tc then return end
-	if not tc:IsCode(511009193) then tc=g:GetNext() end
-	if tc:IsCode(511009193) then
+	if not tc:IsCode(48608796) then tc=g:GetNext() end
+	if tc:IsCode(48608796) then
 		lvl=tc:GetOverlayCount()
 	end
 	e:SetLabel(lvl)

@@ -36,7 +36,7 @@ function c511002963.atcon(e)
 end
 function c511002963.negop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetAttacker():IsControler(1-tp) and Duel.GetAttackTarget()~=e:GetHandler() 
-		and Duel.SelectYesNo(tp,aux.Stringid(8279188,0)) then
+		and Duel.SelectEffectYesNo(tp,e:GetHandler()) then
 		Duel.NegateAttack()
 	end
 end

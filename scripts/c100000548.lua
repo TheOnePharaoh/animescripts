@@ -29,11 +29,11 @@ function c100000548.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,c100000548.filter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil,e,tp)
-	local tc=g:GetFirst()
-	Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)		
+	if g:GetCount()>0 then
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+	end
 end
 function c100000548.xyzlimit(e,c)
 	if not c then return false end
 	return not c:IsRace(RACE_PLANT)
 end
-

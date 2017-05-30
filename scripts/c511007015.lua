@@ -1,7 +1,8 @@
 --coded by Lyris
 --Clock Knight No. 3
+--modified by MLD
 function c511007015.initial_effect(c)
-	--Once per turn, you can toss a coin. If the result is Heads, this card gains 1200 ATK until the End Phase. Otherwise, destroy this card. [Clock Knight No. 12]
+	--
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(89718302,0))
 	e1:SetCategory(CATEGORY_COIN)
@@ -50,7 +51,7 @@ function c511007015.coincon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c511007015.coinop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():GetFlagEffect(511007015)~=0 then return end
-	if Duel.SelectYesNo(tp,aux.Stringid(36562627,0)) then
+	if Duel.SelectEffectYesNo(tp,e:GetHandler()) then
 		Duel.Hint(HINT_CARD,0,511007015)
 		e:GetHandler():RegisterFlagEffect(511007015,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 		Duel.TossCoin(tp,ev)

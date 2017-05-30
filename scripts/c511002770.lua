@@ -9,9 +9,17 @@ function c511002770.initial_effect(c)
 	e1:SetTarget(c511002770.target)
 	e1:SetOperation(c511002770.activate)
 	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(511001283)
+	c:RegisterEffect(e2)
 end
 function c511002770.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttacker():IsControler(1-tp)
+end
+function c511002770.cfilter(c,e,tp,eg,ep,ev,re,r,rp)
+	return not c:IsHasEffect(511001283) and c511002770.filter(c,e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002770.filter(c,e,tp,eg,ep,ev,re,r,rp)
 	local te=c:GetActivateEffect()
@@ -23,7 +31,7 @@ function c511002770.filter(c,e,tp,eg,ep,ev,re,r,rp)
 end
 function c511002770.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c511002770.filter(chkc,tp,eg,ep,ev,re,r,rp) end
-	if chk==0 then return Duel.IsExistingTarget(c511002770.filter,tp,LOCATION_GRAVE,0,1,nil,e,tp,eg,ep,ev,re,r,rp) end
+	if chk==0 then return Duel.IsExistingTarget(c511002770.cfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,eg,ep,ev,re,r,rp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local tc=Duel.SelectTarget(tp,c511002770.filter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp,eg,ep,ev,re,r,rp):GetFirst()
 	local te=tc:GetActivateEffect()

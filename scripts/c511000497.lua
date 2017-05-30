@@ -15,7 +15,7 @@ function c511000497.initial_effect(c)
 	e3:SetDescription(aux.Stringid(511000497,0))
 	e3:SetCategory(CATEGORY_DAMAGE+CATEGORY_RECOVER)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e3:SetCode(EVENT_DAMAGE_STEP_END)
+	e3:SetCode(EVENT_BATTLE_CONFIRM)
 	e3:SetTarget(c511000497.damtg)
 	e3:SetOperation(c511000497.damop)
 	c:RegisterEffect(e3)
@@ -47,8 +47,8 @@ function c511000497.fusfilter(c)
 	return code==78371393 or code==4779091 or code==31764700
 end
 function c511000497.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetAttackTarget()~=nil end
 	local bc=e:GetHandler():GetBattleTarget()
+	if chk==0 then return bc end
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,bc:GetAttack())
 	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,bc:GetDefense())
 end

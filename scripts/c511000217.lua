@@ -15,17 +15,21 @@ function c511000217.initial_effect(c)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
-end
-function c511000217.filter(c)
-	return c:IsType(TYPE_RITUAL) and c:IsAbleToHand()
+	--remain field
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_REMAIN_FIELD)
+	c:RegisterEffect(e3)
 end
 function c511000217.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c511000217.filter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return e:IsHasType(EFFECT_TYPE_ACTIVATE) end
+end
+function c511000217.filter(c)
+	return c:GetType()==0x82 and c:IsAbleToHand()
 end
 function c511000217.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then
-		c:CancelToGrave()
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e1:SetRange(LOCATION_SZONE)
@@ -43,16 +47,10 @@ function c511000217.tohand(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():SetTurnCounter(ct+1)
 	if ct==2 then
 		if Duel.SendtoGrave(e:GetHandler(),REASON_RULE)>0 then
-			if Duel.IsExistingMatchingCard(c511000217.filter,tp,LOCATION_DECK,0,1,nil) then
-				local g=Duel.SelectMatchingCard(tp,c511000217.filter,tp,LOCATION_DECK,0,1,1,nil)
-				if g:GetCount()>0 then
-					Duel.SendtoHand(g,nil,REASON_EFFECT)
-					Duel.ConfirmCards(1-tp,g)
-				else
-					local dg=Duel.GetFieldGroup(tp,LOCATION_DECK,0)
-					Duel.ConfirmCards(1-tp,dg)
-					Duel.ShuffleDeck(tp)
-				end
+			local g=Duel.SelectMatchingCard(tp,c511000217.filter,tp,LOCATION_DECK,0,1,1,nil)
+			if g:GetCount()>0 then
+				Duel.SendtoHand(g,nil,REASON_EFFECT)
+				Duel.ConfirmCards(1-tp,g)
 			end
 		end
 	else e:SetLabel(ct+1) end

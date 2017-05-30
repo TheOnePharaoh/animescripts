@@ -22,9 +22,11 @@ end
 function c511001167.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() and c:IsRelateToEffect(e) then
+	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() and c:IsRelateToEffect(e) then
+		local fid=c:GetFieldID()
 		c:CancelToGrave()
 		Duel.Overlay(tc,Group.FromCards(c))
+		tc:RegisterFlagEffect(51101167,RESET_EVENT+0x1fe0000,0,1,fid)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 		e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
@@ -33,13 +35,18 @@ function c511001167.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(c511001167.op)
 		e1:SetReset(RESET_EVENT+0x1fa0000)
 		e1:SetLabelObject(tc)
+		e1:SetLabel(fid)
 		c:RegisterEffect(e1)
 	end
 end
 function c511001167.con(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsReason(REASON_COST) and re:IsHasType(0x7e0) and re:IsActiveType(TYPE_MONSTER)
-		and bit.band(c:GetPreviousLocation(),LOCATION_OVERLAY)~=0
+	local tc=e:GetLabelObject()
+	if not tc or tc:GetFlagEffect(51101167)==0 or tc:GetFlagEffectLabel(51101167)~=e:GetLabel() then
+		e:Reset()
+		return false
+	else return c:IsReason(REASON_COST) and re:IsHasType(0x7e0) and re:IsActiveType(TYPE_MONSTER)
+		and bit.band(c:GetPreviousLocation(),LOCATION_OVERLAY)~=0 end
 end
 function c511001167.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -53,8 +60,10 @@ function c511001167.op(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCountLimit(1)
 	e1:SetCost(c511001167.atcost)
 	e1:SetCondition(c511001167.atcon)
+	e1:SetTarget(c511001167.attg)
 	e1:SetOperation(c511001167.atop)
 	e1:SetLabelObject(tc)
+	e1:SetLabel(e:GetLabel())
 	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
 end
@@ -64,12 +73,19 @@ function c511001167.atcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c511001167.atcon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
-	return tp==Duel.GetTurnPlayer() and tc:IsLocation(LOCATION_MZONE) and tc:IsFaceup()
+	if not tc or tc:GetFlagEffect(51101167)==0 or tc:GetFlagEffectLabel(51101167)~=e:GetLabel() then
+		return false
+	else return tp==Duel.GetTurnPlayer() end
+end
+function c511001167.attg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local tc=e:GetLabelObject()
+	if chk==0 then return tc and tc:IsLocation(LOCATION_MZONE) and tc:IsFaceup() end
+	Duel.SetTargetCard(tc)
 end
 function c511001167.atop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local tc=e:GetLabelObject()
-	if tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) and c:IsRelateToEffect(e) then
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:GetFlagEffect(51101167)>0 and tc:GetFlagEffectLabel(51101167)==e:GetLabel() and c:IsRelateToEffect(e) then
 		Duel.Overlay(tc,Group.FromCards(c))
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -79,6 +95,7 @@ function c511001167.atop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetOperation(c511001167.op)
 		e1:SetReset(RESET_EVENT+0x1fa0000)
 		e1:SetLabelObject(tc)
+		e1:SetLabel(e:GetLabel())
 		c:RegisterEffect(e1)
 	end
 end

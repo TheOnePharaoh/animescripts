@@ -16,7 +16,7 @@ function c511001958.operation(e,tp,eg,ep,ev,re,r,rp)
 	local ats=eg:GetFirst():GetAttackableTarget()
 	local at=Duel.GetAttackTarget()
 	if ats:FilterCount(aux.TRUE,at)<=0 then return end
-	if Duel.SelectYesNo(tp,aux.Stringid(511001958,0)) then
+	if Duel.SelectEffectYesNo(tp,e:GetHandler()) then
 		local g=ats:Select(tp,1,1,at)
 		Duel.Hint(HINT_CARD,0,511001958)
 		Duel.HintSelection(g)

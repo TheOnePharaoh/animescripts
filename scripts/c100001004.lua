@@ -10,7 +10,7 @@ function c100001004.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100001004.filter(c,e,tp)
-	return c:IsRace(0x10000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsRace(0x80000000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c100001004.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
